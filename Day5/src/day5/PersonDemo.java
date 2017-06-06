@@ -27,7 +27,10 @@ public class PersonDemo {
 		//p.age = 20;
 		p.setAge(20);
 		p.speak();
-	
+		Person q = new Person();
+		//p.age = 20;
+		q.setAge(20);
+		q.speak();
 	}
 	
 }
