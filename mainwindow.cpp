@@ -701,6 +701,7 @@ void MainWindow::mstopFunction()
     }
 }
 //回放功能
+//打开
 void MainWindow::openFunction()
 {
     if(openSet=="./icon/3_2.png")
@@ -714,4 +715,91 @@ void MainWindow::openFunction()
         openSet="./icon/3_2.png";
     }
 }
+//播放
+void MainWindow::playFunction()
+{
+    if(playSet=="./icon/4_2.png")
+    {
+        play->setIcon(QPixmap("./icon/4_1.png"));
+        playSet="./icon/4_1.png";
+    }
+    else
+    {
+        play->setIcon(QPixmap("./icon/4_2.png"));
+        playSet="./icon/4_2.png";
+    }
+}
+//暂停
+void MainWindow::rstopFunction()
+{
+    if(rstopSet=="./icon/2_2.png")
+    {
+        rstop->setIcon(QPixmap("./icon/2_1.png"));
+        rstopSet="./icon/2_1.png";
+    }
+    else
+    {
+        rstop->setIcon(QPixmap("./icon/2_2.png"));
+        rstopSet="./icon/2_2.png";
+    }
+}
+//时间线
+void MainWindow::timeLineFunction()
+{
+    if(timeLineSet=="./icon/5_2.png")
+    {
+        timeLine->setIcon(QPixmap("./icon/5_1.png"));
+        timeLineSet="./icon/5_1.png";
+    }
+    else
+    {
+        timeLine->setIcon(QPixmap("./icon/5_2.png"));
+        timeLineSet="./icon/5_2.png";
+    }
+}
+//图像
+//自动
+void MainWindow::automFunction()
+{
+    if(automSet=="./icon/6_2.png")
+    {
+        autom->setIcon(QPixmap("./icon/6_1.png"));
+        automSet="./icon/6_1.png";
+    }
+    else
+    {
+        autom->setIcon(QPixmap("./icon/6_2.png"));
+        automSet="./icon/6_2.png";
+    }
+}
+//亮度
+void MainWindow::brightnessFunction()
+{
+    if(brightnessSet=="./icon/7_2.png")
+    {
+        brightness->setIcon(QPixmap("./icon/7_1.png"));
+        brightnessSet="./icon/7_1.png";
+    }
+    else
+    {
+        brightness->setIcon(QPixmap("./icon/7_2.png"));
+        brightnessSet="./icon/7_2.png";
+    }
+}
+//饱和度
+void MainWindow::saturationFunction()
+{
+    if(saturationSet=="./icon/8_2.png")
+    {
+        saturation->setIcon(QPixmap("./icon/8_1.png"));
+        saturationSet="./icon/8_1.png";
+    }
+    else
+    {
+        saturation->setIcon(QPixmap("./icon/8_2.png"));
+        saturationSet="./icon/8_2.png";
+    }
+}
+
+
 
