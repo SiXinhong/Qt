@@ -715,3 +715,128 @@ void MainWindow::openFunction()
     }
 }
 
+//伪彩色
+void MainWindow::pseudoColorFunction()
+{
+    if(pseudoColorSet=="./icon/9_2.png")
+    {
+        pseudoColor->setIcon(QPixmap("./icon/9_1.png"));
+        pseudoColorSet="./icon/9_1.png";
+    }
+    else
+    {
+        pseudoColor->setIcon(QPixmap("./icon/9_2.png"));
+        pseudoColorSet="./icon/9_2.png";
+    }
+}
+//编号
+void MainWindow::serialNumberFunction()
+{
+    if(serialNumberSet=="./icon/17_2.png")
+    {
+        serialNumber->setIcon(QPixmap("./icon/17_1.png"));
+        serialNumberSet="./icon/17_1.png";
+    }
+    else
+    {
+        serialNumber->setIcon(QPixmap("./icon/17_2.png"));
+        serialNumberSet="./icon/17_2.png";
+    }
+}
+//时间
+void MainWindow::timeFunction()
+{
+    if(timeSet=="./icon/10_2.png")
+    {
+        time->setIcon(QPixmap("./icon/10_1.png"));
+        timeSet="./icon/10_1.png";
+    }
+    else
+    {
+        time->setIcon(QPixmap("./icon/10_2.png"));
+        timeeSet="./icon/10_2.png";
+    }
+}
+//打开关闭
+void MainWindow::openCloseFunction()
+{
+    if(openCloseSet=="./icon/11_2.png")
+    {
+        openClose->setIcon(QPixmap("./icon/11_1.png"));
+        openCloseSet="./icon/11_1.png";
+    }
+    else
+    {
+        openClose->setIcon(QPixmap("./icon/11_2.png"));
+        openCloseSet="./icon/11_2.png";
+    }
+}
+//手动
+void MainWindow::manualFunction()
+{
+    if(manualSet=="./icon/12_2.png")
+    {
+        manual->setIcon(QPixmap("./icon/12_1.png"));
+        manualSet="./icon/12_1.png";
+    }
+    else
+    {
+        manual->setIcon(QPixmap("./icon/12_2.png"));
+        manualSet="./icon/12_2.png";
+    }
+}
+//属性
+void MainWindow::attributeFunction()
+{
+    if(attributeSet=="./icon/13_2.png")
+    {
+        attribute->setIcon(QPixmap("./icon/13_1.png"));
+        attributeSet="./icon/13_1.png";
+    }
+    else
+    {
+        attribute->setIcon(QPixmap("./icon/13_2.png"));
+        attributeSet="./icon/13_2.png";
+    }
+}
+//设置
+void MainWindow::setUpFunction()
+{
+    if(osetUpSet=="./icon/14_2.png")
+    {
+        setUp->setIcon(QPixmap("./icon/14_1.png"));
+        setUpSet="./icon/14_1.png";
+    }
+    else
+    {
+        setUp->setIcon(QPixmap("./icon/14_2.png"));
+        setUpSet="./icon/14_2.png";
+    }
+}
+//声音
+void MainWindow::voiceFunction()
+{
+    if(voiceSet=="./icon/15_2.png")
+    {
+        voice->setIcon(QPixmap("./icon/15_1.png"));
+        voiceSet="./icon/15_1.png";
+    }
+    else
+    {
+        voice->setIcon(QPixmap("./icon/15_2.png"));
+        voiceSet="./icon/15_2.png";
+    }
+}
+void MainWindow::lightFunction()
+{
+    if(lightSet=="./icon/16_2.png")
+    {
+        light->setIcon(QPixmap("./icon/16_1.png"));
+        lightSet="./icon/16_1.png";
+    }
+    else
+    {
+        light->setIcon(QPixmap("./icon/16_2.png"));
+        lightSet="./icon/16_2.png";
+    }
+}
