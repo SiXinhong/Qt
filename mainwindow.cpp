@@ -130,7 +130,7 @@ void MainWindow::addMyToolBar()
     startStop->setToolTip(tr("启/停"));
    // startStop->setCheckable(false);
     startStopSet="./icon/1_2.png";
-    startStop->setIcon(QPixmap("./icon/1_2.png"));
+    startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
     mainToolBar->addWidget(startStop);
     connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
@@ -138,47 +138,50 @@ void MainWindow::addMyToolBar()
     mstop = new QToolButton(this);
     mstop->setToolTip(tr("暂停"));
  //   mstop->setCheckable(true);
-    mstop->setIcon(QPixmap("./icon/2_2.png"));
+    mstopSet="./icon/2_2.png";
+    mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
     mainToolBar->addWidget(mstop);
     mainToolBar->addSeparator();
-
+    connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
     //回放
     listLabel2=new QLabel(tr("回放"));
     mainToolBar->addWidget(listLabel2);
     open = new QToolButton(this);
     open->setToolTip(tr("打开"));
-    open->setIcon(QPixmap("./icon/3_2.png"));
+    openSet="./icon/3_2.png";
+    open->setIcon(QPixmap(openSet));
     open->setMinimumHeight(35);
     mainToolBar->addWidget(open);
 
-  //  connect(open,SIGNAL(click()),this,SLOT(ShowOpenFile());
+    connect(open,SIGNAL(clicked()),this,SLOT(openFunction());
 
 
 
     play = new QToolButton(this);
     play->setToolTip(tr("播放"));
-   // play->setCheckable(true);
-    play->setIcon(QPixmap("./icon/4_2.png"));
+    playSet="./icon/4_2.png";
+    play->setIcon(QPixmap(playSet));
     play->setMinimumHeight(35);
     mainToolBar->addWidget(play);
-
+    connect(open,SIGNAL(clicked()),this,SLOT(playFunction());
 
     rstop = new QToolButton(this);
     rstop->setToolTip(tr("暂停"));
-  //  rstop->setCheckable(true);
-    rstop->setIcon(QPixmap("./icon/2_2.png"));
+    rstopSet="./icon/4_2.png";
+    rstop->setIcon(QPixmap(rstopSet));
     rstop->setMinimumHeight(35);
     mainToolBar->addWidget(rstop);
-
+    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction());
 
 
     timeLine = new QToolButton(this);
     timeLine->setToolTip(tr("时间线"));
-  //  timeLine->setCheckable(true);
-    timeLine->setIcon(QPixmap("./icon/5_2.png"));
+    timeLineSet="./icon/5_2.png";
+    timeLine->setIcon(QPixmap(timeLineSet));
     timeLine->setMinimumHeight(35);
     mainToolBar->addWidget(timeLine);
+    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction());
 
     mainToolBar->addSeparator();
     //图像
@@ -186,90 +189,103 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel3);
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
- //   autom->setCheckable(true);
-    autom->setIcon(QPixmap("./icon/6_2.png"));
+    automSet="./icon/6_2.png";
+    autom->setIcon(QPixmap(automSet));
     autom->setMinimumHeight(35);
     mainToolBar->addWidget(autom);
+    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction());
 
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
- //   brightness->setCheckable(true);
-    brightness->setIcon(QPixmap("./icon/7_2.png"));
+    brightnessSet="./icon/7_2.png";
+    brightness->setIcon(QPixmap(brightnessSet));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(brightness);
+    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction());
 
     saturation = new QToolButton(this);
     saturation->setToolTip(tr("饱和度"));
-  //  saturation->setCheckable(true);
-    saturation->setIcon(QPixmap("./icon/8_2.png"));
+    saturationSet="./icon/8_2.png";
+    saturation->setIcon(QPixmap(saturationSet));
     saturation->setMinimumHeight(35);
     mainToolBar->addWidget(saturation);
+    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction());
 
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
- //   pseudoColor->setCheckable(true);
-    pseudoColor->setIcon(QPixmap("./icon/9_2.png"));
+    pseudoColorSet="./icon/9_2.png";
+    pseudoColor->setIcon(QPixmap(pseudoColorSet));
     pseudoColor->setMinimumHeight(35);
     mainToolBar->addWidget(pseudoColor);
+    connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction());
 
     serialNumber = new QToolButton(this);
     serialNumber->setToolTip(tr("编号"));
- //   serialNumber->setCheckable(true);
-    serialNumber->setIcon(QPixmap("./icon/17_2.png"));
+    serialNumberSet="./icon/9_2.png";
+    serialNumber->setIcon(QPixmap(serialNumberSet));
     serialNumber->setMinimumHeight(35);
     mainToolBar->addWidget(serialNumber);
+    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction());
 
     time = new QToolButton(this);
     time->setToolTip(tr("时间"));
-   // time->setCheckable(true);
-    time->setIcon(QPixmap("./icon/10_2.png"));
+    timeSet="./icon/10_2.png";
+    time->setIcon(QPixmap(timeSet));
     time->setMinimumHeight(35);
     mainToolBar->addWidget(time);
     mainToolBar->addSeparator();
+    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction());
+
     //告警
     listLabel4=new QLabel(tr("告警"));
     mainToolBar->addWidget(listLabel4);
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("开/关"));
-   // openClose->setCheckable(true);
-    openClose->setIcon(QPixmap("./icon/11_2.png"));
+    openCloseSet="./icon/11_2.png";
+    openClose->setIcon(QPixmap(openCloseSet));
     openClose->setMinimumHeight(35);
     mainToolBar->addWidget(openClose);
+    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction());
 
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
-  //  manual->setCheckable(true);
-    manual->setIcon(QPixmap("./icon/12_2.png"));
+    manualSet="./icon/12_2.png";
+    manual->setIcon(QPixmap(manualSet));
     manual->setMinimumHeight(35);
     mainToolBar->addWidget(manual);
+    connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction());
 
     attribute = new QToolButton(this);
     attribute->setToolTip(tr("属性"));
-  //  attribute->setCheckable(true);
-    attribute->setIcon(QPixmap("./icon/13_2.png"));
+    attributeSet="./icon/13_2.png";
+    attribute->setIcon(QPixmap(attributeSet));
     attribute->setMinimumHeight(35);
     mainToolBar->addWidget(attribute);
+    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction());
 
     setUp = new QToolButton(this);
     setUp->setToolTip(tr("设置"));
-  //  setUp->setCheckable(true);
-    setUp->setIcon(QPixmap("./icon/14_2.png"));
+    setUpSet="./icon/14_2.png";
+    setUp->setIcon(QPixmap(setUpSet));
     setUp->setMinimumHeight(35);
     mainToolBar->addWidget(setUp);
+    connect(setUp,SIGNAL(clicked()),this,SLOT(setUpFunction());
 
     voice = new QToolButton(this);
     voice->setToolTip(tr("声音"));
-  //  voice->setCheckable(true);
-    voice->setIcon(QPixmap("./icon/15_2.png"));
+    voiceSet="./icon/15_2.png";
+    voice->setIcon(QPixmap(voiceSet));
     voice->setMinimumHeight(35);
     mainToolBar->addWidget(voice);
+    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction());
 
     light = new QToolButton(this);
     light->setToolTip(tr("指示灯"));
-  //  light->setCheckable(true);
-    light->setIcon(QPixmap("./icon/16_2.png"));
+    lightSet="./icon/15_2.png";
+    light->setIcon(QPixmap(lightSet));
     light->setMinimumHeight(35);
     mainToolBar->addWidget(light);
+    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction());
     mainToolBar->addSeparator();
 }
 //---xiaotian 绘制界面上的图片3  图片4

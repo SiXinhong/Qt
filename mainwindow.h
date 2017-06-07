@@ -134,6 +134,7 @@ protected:
 
 protected slots:
      void startStopFunction();
+     void lightFunction();
 
 private:
     Ui::MainWindow *ui;
