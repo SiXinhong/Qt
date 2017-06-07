@@ -24,32 +24,32 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui
 
-INCLUDEPATH+=D:\micai\QTsource\OpenCV\include\opencv\
+INCLUDEPATH+=E:\QTsource\OpenCV\include\opencv\
 
-             INCLUDEPATH+=D:\micai\QTsource\OpenCV\include\opencv2\
+             INCLUDEPATH+=E:\QTsource\OpenCV\include\opencv2\
 
-             INCLUDEPATH+=D:\micai\QTsource\OpenCV\include
+             INCLUDEPATH+=E:\QTsource\OpenCV\include
 
-LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
+LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_contrib231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_contrib231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_core231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_core231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_features2d231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_features2d231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_flann231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_flann231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_gpu231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_gpu231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_highgui231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_highgui231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_imgproc231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_imgproc231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_legacy231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_legacy231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_ml231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_ml231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_objdetect231.dll.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_objdetect231.dll.a\
 
-        LIBS+=D:\micai\QTsource\OpenCV\lib\libopencv_ts231.a\
+        LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
