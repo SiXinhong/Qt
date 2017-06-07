@@ -124,7 +124,7 @@ void MainWindow::addMyToolBar()
     mainToolBar = addToolBar("monitoring");
     //监控
     mainToolBar->addSeparator();
-    listLabel1=new QLabel(tr("监控"));
+    listLabel1=new QLabel(tr(" 监控 "));
     mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
     startStop->setToolTip(tr("启/停"));
@@ -143,7 +143,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addSeparator();
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
     //回放
-    listLabel2=new QLabel(tr("回放"));
+    listLabel2=new QLabel(tr(" 回放 "));
     mainToolBar->addWidget(listLabel2);
     open = new QToolButton(this);
     open->setToolTip(tr("打开"));
@@ -152,7 +152,7 @@ void MainWindow::addMyToolBar()
     open->setMinimumHeight(35);
     mainToolBar->addWidget(open);
 
-    connect(open,SIGNAL(clicked()),this,SLOT(openFunction());
+    connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
 
 
@@ -162,15 +162,15 @@ void MainWindow::addMyToolBar()
     play->setIcon(QPixmap(playSet));
     play->setMinimumHeight(35);
     mainToolBar->addWidget(play);
-    connect(open,SIGNAL(clicked()),this,SLOT(playFunction());
+    connect(play,SIGNAL(clicked()),this,SLOT(playFunction()));
 
     rstop = new QToolButton(this);
     rstop->setToolTip(tr("暂停"));
-    rstopSet="./icon/4_2.png";
+    rstopSet="./icon/2_2.png";
     rstop->setIcon(QPixmap(rstopSet));
     rstop->setMinimumHeight(35);
     mainToolBar->addWidget(rstop);
-    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction());
+    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction()));
 
 
     timeLine = new QToolButton(this);
@@ -179,11 +179,11 @@ void MainWindow::addMyToolBar()
     timeLine->setIcon(QPixmap(timeLineSet));
     timeLine->setMinimumHeight(35);
     mainToolBar->addWidget(timeLine);
-    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction());
+    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
 
     mainToolBar->addSeparator();
     //图像
-    listLabel3=new QLabel(tr("图像"));
+    listLabel3=new QLabel(tr(" 图像 "));
     mainToolBar->addWidget(listLabel3);
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
@@ -191,7 +191,7 @@ void MainWindow::addMyToolBar()
     autom->setIcon(QPixmap(automSet));
     autom->setMinimumHeight(35);
     mainToolBar->addWidget(autom);
-    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction());
+    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
 
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
@@ -199,7 +199,7 @@ void MainWindow::addMyToolBar()
     brightness->setIcon(QPixmap(brightnessSet));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(brightness);
-    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction());
+    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
 
     saturation = new QToolButton(this);
     saturation->setToolTip(tr("饱和度"));
@@ -207,7 +207,7 @@ void MainWindow::addMyToolBar()
     saturation->setIcon(QPixmap(saturationSet));
     saturation->setMinimumHeight(35);
     mainToolBar->addWidget(saturation);
-    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction());
+    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
 
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
@@ -215,15 +215,15 @@ void MainWindow::addMyToolBar()
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
     pseudoColor->setMinimumHeight(35);
     mainToolBar->addWidget(pseudoColor);
-    connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction());
+    connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
 
     serialNumber = new QToolButton(this);
     serialNumber->setToolTip(tr("编号"));
-    serialNumberSet="./icon/9_2.png";
+    serialNumberSet="./icon/17_2.png";
     serialNumber->setIcon(QPixmap(serialNumberSet));
     serialNumber->setMinimumHeight(35);
     mainToolBar->addWidget(serialNumber);
-    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction());
+    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction()));
 
     time = new QToolButton(this);
     time->setToolTip(tr("时间"));
@@ -232,10 +232,10 @@ void MainWindow::addMyToolBar()
     time->setMinimumHeight(35);
     mainToolBar->addWidget(time);
     mainToolBar->addSeparator();
-    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction());
+    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction()));
 
     //告警
-    listLabel4=new QLabel(tr("告警"));
+    listLabel4=new QLabel(tr(" 告警 "));
     mainToolBar->addWidget(listLabel4);
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("开/关"));
@@ -243,7 +243,7 @@ void MainWindow::addMyToolBar()
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setMinimumHeight(35);
     mainToolBar->addWidget(openClose);
-    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction());
+    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
 
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
@@ -251,7 +251,7 @@ void MainWindow::addMyToolBar()
     manual->setIcon(QPixmap(manualSet));
     manual->setMinimumHeight(35);
     mainToolBar->addWidget(manual);
-    connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction());
+    connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
 
     attribute = new QToolButton(this);
     attribute->setToolTip(tr("属性"));
@@ -259,7 +259,7 @@ void MainWindow::addMyToolBar()
     attribute->setIcon(QPixmap(attributeSet));
     attribute->setMinimumHeight(35);
     mainToolBar->addWidget(attribute);
-    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction());
+    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
 
     setUp = new QToolButton(this);
     setUp->setToolTip(tr("设置"));
@@ -267,7 +267,7 @@ void MainWindow::addMyToolBar()
     setUp->setIcon(QPixmap(setUpSet));
     setUp->setMinimumHeight(35);
     mainToolBar->addWidget(setUp);
-    connect(setUp,SIGNAL(clicked()),this,SLOT(setUpFunction());
+    connect(setUp,SIGNAL(clicked()),this,SLOT(setUpFunction()));
 
     voice = new QToolButton(this);
     voice->setToolTip(tr("声音"));
@@ -275,17 +275,15 @@ void MainWindow::addMyToolBar()
     voice->setIcon(QPixmap(voiceSet));
     voice->setMinimumHeight(35);
     mainToolBar->addWidget(voice);
-    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction());
+    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
-      light = new QToolButton(this);
+    light = new QToolButton(this);
     light->setToolTip(tr("指示灯"));
-  //  light->setCheckable(true);
-    light->setIcon(QPixmap("./icon/16_2.png"));
-    lightSet="./icon/15_2.png";
+    lightSet="./icon/16_2.png";
     light->setIcon(QPixmap(lightSet));
     light->setMinimumHeight(35);
     mainToolBar->addWidget(light);
-    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction());
+    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
     mainToolBar->addSeparator();
 }
 //---xiaotian 绘制界面上的图片3  图片4
@@ -842,7 +840,7 @@ void MainWindow::timeFunction()
     else
     {
         time->setIcon(QPixmap("./icon/10_2.png"));
-        timeeSet="./icon/10_2.png";
+        timeSet="./icon/10_2.png";
     }
 }
 //打开关闭
@@ -890,7 +888,7 @@ void MainWindow::attributeFunction()
 //设置
 void MainWindow::setUpFunction()
 {
-    if(osetUpSet=="./icon/14_2.png")
+    if(setUpSet=="./icon/14_2.png")
     {
         setUp->setIcon(QPixmap("./icon/14_1.png"));
         setUpSet="./icon/14_1.png";

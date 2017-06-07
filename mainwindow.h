@@ -116,6 +116,7 @@ protected:
      QToolButton *timeLine;//Ê±¼äÏß
      //Í¼Ïñ
      QLabel *listLabel3;
+     QString automSet;
      QString brightnessSet;
      QString saturationSet;
      QString pseudoColorSet;

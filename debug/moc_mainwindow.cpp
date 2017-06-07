@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Wed Jun 7 21:22:55 2017
+** Created: Wed Jun 7 23:01:31 2017
 **      by: The Qt Meta Object Compiler version 62 (Qt 4.7.3)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        5,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+      19,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -33,12 +33,38 @@ static const uint qt_meta_data_MainWindow[] = {
  // slots: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x0a,
       25,   11,   11,   11, 0x09,
+      45,   11,   11,   11, 0x09,
+      61,   11,   11,   11, 0x09,
+      76,   11,   11,   11, 0x09,
+      91,   11,   11,   11, 0x09,
+     107,   11,   11,   11, 0x09,
+     126,   11,   11,   11, 0x09,
+     142,   11,   11,   11, 0x09,
+     163,   11,   11,   11, 0x09,
+     184,   11,   11,   11, 0x09,
+     206,   11,   11,   11, 0x09,
+     229,   11,   11,   11, 0x09,
+     244,   11,   11,   11, 0x09,
+     264,   11,   11,   11, 0x09,
+     281,   11,   11,   11, 0x09,
+     301,   11,   11,   11, 0x09,
+     317,   11,   11,   11, 0x09,
+     333,   11,   11,   11, 0x09,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_MainWindow[] = {
     "MainWindow\0\0onTimerOut()\0startStopFunction()\0"
+    "mstopFunction()\0openFunction()\0"
+    "playFunction()\0rstopFunction()\0"
+    "timeLineFunction()\0automFunction()\0"
+    "brightnessFunction()\0saturationFunction()\0"
+    "pseudoColorFunction()\0serialNumberFunction()\0"
+    "timeFunction()\0openCloseFunction()\0"
+    "manualFunction()\0attributeFunction()\0"
+    "setUpFunction()\0voiceFunction()\0"
+    "lightFunction()\0"
 };
 
 const QMetaObject MainWindow::staticMetaObject = {
@@ -72,9 +98,26 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: onTimerOut(); break;
         case 1: startStopFunction(); break;
+        case 2: mstopFunction(); break;
+        case 3: openFunction(); break;
+        case 4: playFunction(); break;
+        case 5: rstopFunction(); break;
+        case 6: timeLineFunction(); break;
+        case 7: automFunction(); break;
+        case 8: brightnessFunction(); break;
+        case 9: saturationFunction(); break;
+        case 10: pseudoColorFunction(); break;
+        case 11: serialNumberFunction(); break;
+        case 12: timeFunction(); break;
+        case 13: openCloseFunction(); break;
+        case 14: manualFunction(); break;
+        case 15: attributeFunction(); break;
+        case 16: setUpFunction(); break;
+        case 17: voiceFunction(); break;
+        case 18: lightFunction(); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 19;
     }
     return _id;
 }
