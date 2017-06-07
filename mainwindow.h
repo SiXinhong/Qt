@@ -147,6 +147,7 @@ protected:
 protected slots:
      void startStopFunction();
 	 void mstopFunction();
+
      void openFunction();
      void playFunction();
      void rstopFunction();
