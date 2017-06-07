@@ -163,6 +163,7 @@ void MainWindow::addMyToolBar()
     play->setMinimumHeight(35);
     mainToolBar->addWidget(play);
 
+
     rstop = new QToolButton(this);
     rstop->setToolTip(tr("ÔÝÍ£"));
   //  rstop->setCheckable(true);
