@@ -97,17 +97,18 @@ protected:
      //工具条需要的变量
      void addMyToolBar();
      QToolBar *mainToolBar;
-//     QToolBar *monitoringToolBar;
-//     QToolBar *playbackToolBar;
-//     QToolBar *imageToolBar;
-//     QToolBar *alarmToolBar;
 
      //监控
      QLabel *listLabel1;
      QString startStopSet;
+     QString mstopSet;
      QToolButton *startStop;//打开/暂停
      QToolButton *mstop;//暂停
      //回放
+     QString openSet;
+     QString playSet;
+     QString rstopSet;
+     QString timeLineSet;
      QLabel *listLabel2;
      QToolButton *open;//打开
      QToolButton *play;//播放
@@ -115,6 +116,11 @@ protected:
      QToolButton *timeLine;//时间线
      //图像
      QLabel *listLabel3;
+     QString brightnessSet;
+     QString saturationSet;
+     QString pseudoColorSet;
+     QString serialNumberSet;
+     QString timeSet;
      QToolButton *autom;//自动
      QToolButton *brightness;//亮度
      QToolButton *saturation;//饱和度
@@ -123,6 +129,12 @@ protected:
      QToolButton *time;//时间
      //告警
      QLabel *listLabel4;
+     QString openCloseSet;
+     QString manualSet;
+     QString attributeSet;
+     QString setUpSet;
+     QString voiceSet;
+     QString lightSet;
      QToolButton *openClose;//开/关
      QToolButton *manual;//手动
      QToolButton *attribute;//属性
@@ -134,6 +146,26 @@ protected:
 
 protected slots:
      void startStopFunction();
+     void mstopFunction();
+
+     void openFunction();
+     void playFunction();
+     void rstopFunction();
+     void timeLineFunction();
+
+     void automFunction();
+     void brightnessFunction();
+     void saturationFunction();
+     void pseudoColorFunction();
+     void serialNumberFunction();
+     void timeFunction();
+
+     void openCloseFunction();
+     void manualFunction();
+     void attributeFunction();
+     void setUpFunction();
+     void voiceFunction();
+     void lightFunction();
 
 private:
     Ui::MainWindow *ui;
