@@ -128,7 +128,6 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
     startStop->setToolTip(tr("启/停"));
-   // startStop->setCheckable(false);
     startStopSet="./icon/1_2.png";
     startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
@@ -137,7 +136,6 @@ void MainWindow::addMyToolBar()
 
     mstop = new QToolButton(this);
     mstop->setToolTip(tr("暂停"));
- //   mstop->setCheckable(true);
     mstopSet="./icon/2_2.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
@@ -279,8 +277,10 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction());
 
-    light = new QToolButton(this);
+      light = new QToolButton(this);
     light->setToolTip(tr("指示灯"));
+  //  light->setCheckable(true);
+    light->setIcon(QPixmap("./icon/16_2.png"));
     lightSet="./icon/15_2.png";
     light->setIcon(QPixmap(lightSet));
     light->setMinimumHeight(35);
@@ -673,10 +673,9 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
         return QImage();
     }
 }
-
+//监控
 void MainWindow::startStopFunction()
 {
-    qDebug() << "zhixing";
     if(startStopSet=="./icon/1_2.png")
     {
         startStop->setIcon(QPixmap("./icon/1_1.png"));
@@ -688,16 +687,31 @@ void MainWindow::startStopFunction()
         startStopSet="./icon/1_2.png";
     }
 }
+void MainWindow::mstopFunction()
+{
+    if(mstopSet=="./icon/2_2.png")
+    {
+        mstop->setIcon(QPixmap("./icon/2_1.png"));
+        mstopSet="./icon/2_1.png";
+    }
+    else
+    {
+        mstop->setIcon(QPixmap("./icon/2_2.png"));
+        mstopSet="./icon/2_2.png";
+    }
+}
 //回放功能
-//打开
-//void MainWindow::ShowOpenFile()
-//{
-//    QString fileName=QFileDialog::getOpenFileName(this);
-//    if(!fileName.isEmpty())
-//    {
-//        if(showWidget->text->document()->isEmpty())
-//        {
-//            loadFile(filename);
-//        }
-//    }
-//}
+void MainWindow::openFunction()
+{
+    if(openSet=="./icon/3_2.png")
+    {
+        open->setIcon(QPixmap("./icon/3_1.png"));
+        openSet="./icon/3_1.png";
+    }
+    else
+    {
+        open->setIcon(QPixmap("./icon/3_2.png"));
+        openSet="./icon/3_2.png";
+    }
+}
+
