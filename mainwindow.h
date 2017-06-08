@@ -97,7 +97,6 @@ protected:
      //工具条需要的变量
      void addMyToolBar();
      QToolBar *mainToolBar;
-
      //监控
      QLabel *listLabel1;
      QString startStopSet;
@@ -142,7 +141,7 @@ protected:
      QToolButton *setUp;//设置
      QToolButton *voice;//声音
      QToolButton *light;//指示灯
-
+     //菜单栏需要的变量
 
 
 protected slots:

@@ -27,36 +27,21 @@
     <property name="title">
      <string>监控</string>
     </property>
-    <addaction name="start_stop1"/>
-    <addaction name="stop1"/>
    </widget>
    <widget class="QMenu" name="playback">
     <property name="title">
      <string>回放</string>
     </property>
-    <addaction name="open"/>
-    <addaction name="play"/>
-    <addaction name="stop2"/>
    </widget>
    <widget class="QMenu" name="image">
     <property name="title">
      <string>图像</string>
     </property>
-    <addaction name="automatic"/>
-    <addaction name="brightness"/>
-    <addaction name="saturation"/>
-    <addaction name="pseudoColor"/>
-    <addaction name="action"/>
    </widget>
    <widget class="QMenu" name="alarm">
     <property name="title">
      <string>告警</string>
     </property>
-    <addaction name="start_stop2"/>
-    <addaction name="manual"/>
-    <addaction name="attribute"/>
-    <addaction name="set"/>
-    <addaction name="action_16"/>
    </widget>
    <addaction name="monitoring"/>
    <addaction name="playback"/>
@@ -64,111 +49,6 @@
    <addaction name="alarm"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="start_stop1">
-   <property name="text">
-    <string>启/停</string>
-   </property>
-  </action>
-  <action name="open">
-   <property name="text">
-    <string>打开</string>
-   </property>
-  </action>
-  <action name="stop1">
-   <property name="text">
-    <string>暂停</string>
-   </property>
-  </action>
-  <action name="action_3">
-   <property name="text">
-    <string>退出实时监控</string>
-   </property>
-  </action>
-  <action name="action_4">
-   <property name="text">
-    <string>校正相机</string>
-   </property>
-  </action>
-  <action name="action_5">
-   <property name="text">
-    <string>相机调焦</string>
-   </property>
-  </action>
-  <action name="action_6">
-   <property name="text">
-    <string>参数设置</string>
-   </property>
-  </action>
-  <action name="action_7">
-   <property name="text">
-    <string>相机状态</string>
-   </property>
-  </action>
-  <action name="automatic">
-   <property name="text">
-    <string>自动</string>
-   </property>
-  </action>
-  <action name="brightness">
-   <property name="text">
-    <string>亮度</string>
-   </property>
-  </action>
-  <action name="saturation">
-   <property name="text">
-    <string>饱和度</string>
-   </property>
-  </action>
-  <action name="pseudoColor">
-   <property name="text">
-    <string>伪彩色</string>
-   </property>
-  </action>
-  <action name="start_stop2">
-   <property name="text">
-    <string>开/关</string>
-   </property>
-  </action>
-  <action name="manual">
-   <property name="text">
-    <string>手动</string>
-   </property>
-  </action>
-  <action name="attribute">
-   <property name="text">
-    <string>属性</string>
-   </property>
-  </action>
-  <action name="set">
-   <property name="text">
-    <string>设置</string>
-   </property>
-  </action>
-  <action name="action_16">
-   <property name="text">
-    <string>声音</string>
-   </property>
-  </action>
-  <action name="action_17">
-   <property name="text">
-    <string>关于</string>
-   </property>
-  </action>
-  <action name="play">
-   <property name="text">
-    <string>播放</string>
-   </property>
-  </action>
-  <action name="stop2">
-   <property name="text">
-    <string>暂停</string>
-   </property>
-  </action>
-  <action name="action">
-   <property name="text">
-    <string>编号</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

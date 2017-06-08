@@ -73,19 +73,96 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
 
     // 创建工具栏
-      addMyToolBar();
+    addMyToolBar();
+    //创建菜单栏
+    //监控
+    QActionGroup *group=new QActionGroup(this);
+    QAction *startStopc=group->addAction(tr("启/停"));
+    ui->monitoring->addAction(startStopc);
+    connect(startStopc,SIGNAL(triggered()),this,SLOT(startStopFunction()));
+
+    QAction *mstopc=group->addAction(tr("暂停"));
+    ui->monitoring->addAction(mstopc);
+    connect(mstopc,SIGNAL(triggered()),this,SLOT(mstopFunction()));
+
+    //回放
+    QActionGroup *group2=new QActionGroup(this);
+    QAction *openc=group2->addAction(tr("打开"));
+    ui->playback->addAction(openc);
+    connect(openc,SIGNAL(triggered()),this,SLOT(openFunction()));
+
+    QAction *playc=group2->addAction(tr("播放"));
+    ui->playback->addAction(playc);
+    connect(playc,SIGNAL(triggered()),this,SLOT(playFunction()));
+
+    QAction *rstopc=group2->addAction(tr("暂停"));
+    ui->playback->addAction(rstopc);
+    connect(rstopc,SIGNAL(triggered()),this,SLOT(rstopFunction()));
+
+    QAction *timeLinec=group2->addAction(tr("时间线"));
+    ui->playback->addAction(timeLinec);
+    connect(timeLinec,SIGNAL(triggered()),this,SLOT(timeLineFunction()));
+
+    //图像
+    QActionGroup *group3=new QActionGroup(this);
+    QAction *automc=group3->addAction(tr("自动"));
+    ui->image->addAction(automc);
+    connect(automc,SIGNAL(triggered()),this,SLOT(automFunction()));
+
+    QAction *brightnessc=group3->addAction(tr("亮度"));
+    ui->image->addAction(brightnessc);
+    connect(brightnessc,SIGNAL(triggered()),this,SLOT(brightnessFunction()));
+
+    QAction *saturationc=group3->addAction(tr("饱和度"));
+    ui->image->addAction(saturationc);
+    connect(saturationc,SIGNAL(triggered()),this,SLOT(saturationFunction()));
+
+    QAction *pseudoColorc=group3->addAction(tr("伪彩色"));
+    ui->image->addAction(pseudoColorc);
+    connect(pseudoColorc,SIGNAL(triggered()),this,SLOT(pseudoColorFunction()));
+
+    QAction *serialNumberc=group3->addAction(tr("编号"));
+    ui->image->addAction(serialNumberc);
+    connect(serialNumberc,SIGNAL(triggered()),this,SLOT(serialNumberFunction()));
+
+    //告警
+    QActionGroup *group4=new QActionGroup(this);
+    QAction *openClosec=group4->addAction(tr("开/关"));
+    ui->alarm->addAction(openClosec);
+    connect(openClosec,SIGNAL(triggered()),this,SLOT(openCloseFunction()));
+
+    QAction *manualc=group4->addAction(tr("手动"));
+    ui->alarm->addAction(manualc);
+    connect(manualc,SIGNAL(triggered()),this,SLOT(manualFunction()));
+
+    QAction *attributec=group4->addAction(tr("属性"));
+    ui->alarm->addAction(attributec);
+    connect(attributec,SIGNAL(triggered()),this,SLOT(attributeFunction()));
+
+    QAction *setUpc=group4->addAction(tr("设置"));
+    ui->alarm->addAction(setUpc);
+    connect(setUpc,SIGNAL(triggered()),this,SLOT(setUpFunction()));
+
+    QAction *voicec=group4->addAction(tr("声音"));
+    ui->alarm->addAction(voicec);
+    connect(voicec,SIGNAL(triggered()),this,SLOT(voiceFunction()));
+
+    QAction *lightc=group4->addAction(tr("指示灯"));
+    ui->alarm->addAction(lightc);
+    connect(lightc,SIGNAL(triggered()),this,SLOT(lightFunction()));
+
     //创建状态栏
-     // addMyStatusBar();
-      ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
-      ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
-      ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
-      //右键
-      addAction(new QAction("目标列表",this));
-      addAction(new QAction("到主显示区",this));
-      addAction(new QAction("到凝视显示区",this));
-      addAction(new QAction("最大化",this));
-      addAction(new QAction("最佳显示效果",this));
-      setContextMenuPolicy(Qt::ActionsContextMenu);
+    // addMyStatusBar();
+    ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
+    ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
+    ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
+    //右键
+    addAction(new QAction("目标列表",this));
+    addAction(new QAction("到主显示区",this));
+    addAction(new QAction("到凝视显示区",this));
+    addAction(new QAction("最大化",this));
+    addAction(new QAction("最佳显示效果",this));
+    setContextMenuPolicy(Qt::ActionsContextMenu);
 
     //布局
     gridlayout = new QGridLayout;
