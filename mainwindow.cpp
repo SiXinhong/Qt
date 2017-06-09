@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "qjwidget.h"
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -31,8 +32,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);   
     QWidget* widget = new QWidget(this);
 
-    widget1 = new QWidget(this);
-    widget2 = new QWidget(this);
+    //widget10 = new QWidget(this);
+    widget1 = new QjWidget(new QWidget(this));
+    widget2 = new QjWidget(new QWidget(this));
     widget3 = new QWidget(this);
     widget4 = new QWidget(this);
     widget5 = new QWidget(this);
@@ -157,12 +159,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
     ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
     //右键
-    addAction(new QAction("目标列表",this));
-    addAction(new QAction("到主显示区",this));
-    addAction(new QAction("到凝视显示区",this));
-    addAction(new QAction("最大化",this));
-    addAction(new QAction("最佳显示效果",this));
-    setContextMenuPolicy(Qt::ActionsContextMenu);
+    //addAction(new QAction("目标列表",this));
+    //widget1->addAction(new QAction("到主显示区",widget1));
+    //widget1->addAction(new QAction("到凝视显示区",widget1));
+    //addAction(new QAction("最大化",this));
+    //addAction(new QAction("最佳显示效果",this));
+    //setContextMenuPolicy(Qt::ActionsContextMenu);
 
     //布局
     gridlayout = new QGridLayout;

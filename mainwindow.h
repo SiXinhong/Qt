@@ -7,8 +7,9 @@
 #include <QPixmap>
 #include <QLabel>
 #include "mylabel.h"
+#include "qjwidget.h"
 #include <QGridLayout>
-#include<cv.h>
+#include <cv.h>
 #include <phonon>
 #include <QToolButton>
 
@@ -74,8 +75,8 @@ public:
      QLabel *label5;
      QLabel *label6;
 
-     QWidget* widget1;
-     QWidget* widget2;
+     QjWidget* widget1;
+     QjWidget* widget2;
      QWidget* widget3;
      QWidget* widget4;
      QWidget* widget5;

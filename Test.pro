@@ -16,11 +16,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     mylabel.cpp \
-    rectan.cpp
+    rectan.cpp \
+    qjwidget.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
-    rectan.h
+    rectan.h \
+    qjwidget.h
 
 FORMS    += mainwindow.ui
 
