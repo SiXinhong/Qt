@@ -80,6 +80,8 @@ public:
 
      QjWidget* widget1;
      QjWidget* widget2;
+//     QWidget* widget1;
+//     QWidget* widget2;
      QWidget* widget3;
      QWidget* widget4;
      QWidget* widget5;

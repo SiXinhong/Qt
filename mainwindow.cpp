@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //widget10 = new QWidget(this);
     widget1 = new QjWidget(new QWidget(this));
     widget2 = new QjWidget(new QWidget(this));
+//    widget1 = new QWidget(this);
+//    widget2 = new QWidget(this);
     widget3 = new QWidget(this);
     widget4 = new QWidget(this);
     widget5 = new QWidget(this);
