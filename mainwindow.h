@@ -26,6 +26,9 @@
 //SLOG头文件
 
 #include <QFileDialog>
+//对话框所需要的头文件
+#include <QLineEdit>
+#include <QMessageBox>
 
 
 using namespace cv;
@@ -94,6 +97,8 @@ public:
      int index2;//读取第二栏第几张图片
      vector<QString> vc2;//存储第二栏的图片
 
+     //添加对话框所需要的变量
+
 protected:
      //工具条需要的变量
      void addMyToolBar();
@@ -142,8 +147,9 @@ protected:
      QToolButton *setUp;//设置
      QToolButton *voice;//声音
      QToolButton *light;//指示灯
-     //菜单栏需要的变量
-
+     //对话框需要的变量
+     //QLineEdit *fileLineEdit;
+     QLabel *dialogLabel;
 
 protected slots:
      void startStopFunction();
