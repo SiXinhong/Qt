@@ -65,11 +65,38 @@ MainWindow::MainWindow(QWidget *parent) :
     //图片4
     drawUiLabelByCopy(imageurl2,4);
     //图片5
-    string imageurl5="./0.png";;//第五个图片的
+    string imageurl5="./0.png";//第五个图片的
     drawUiLabel(imageurl5,5);
     //图片6
     string imageurl6= "./0.png";//第五个图片的
     drawUiLabel(imageurl6,6);
+
+//    string imageurl="./s1/1.bmp";
+//    String imageurl2="./s2/1.bmp";
+    imageurl="./s1/1.bmp";
+    imageurl2="./s2/1.bmp";
+
+
+    //存储第一栏
+    filename1 = "./s1/1.bmp";
+    filename2 = "./s1/2.bmp";
+    filename3 = "./s1/3.bmp";
+    filename4 = "./s1/4.bmp";
+    //存储第二栏
+    filename5 = "./s2/1.bmp";
+    filename6 = "./s2/2.bmp";
+    filename7 = "./s2/3.bmp";
+    filename8 = "./s2/4.bmp";
+    //将第一栏存储在vector中
+    vc1.push_back(filename1);
+    vc1.push_back(filename2);
+    vc1.push_back(filename3);
+    vc1.push_back(filename4);
+    //将第二栏存储在vector中
+    vc2.push_back(filename5);
+    vc2.push_back(filename6);
+    vc2.push_back(filename7);
+    vc2.push_back(filename8);
 
     //定时器
     timer=new QTimer();
@@ -376,9 +403,11 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
     dsize = Size(image.cols*scale,image.rows*scale);
     Mat image11 = Mat(dsize,CV_32S);
     cv::resize(image, image11,dsize);
-    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+    img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
     vector<Rectan> rectans;
-    QImage aa;
+    //QImage aa;
     if(index1 == 3){
         aa=(&img)->copy(1494,253,92,92);
         Mat image3 = QImageToMat(aa);
@@ -398,9 +427,10 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
             rectnew.setHeight(rectemp.getHeight());
             rectans1.push_back(rectnew);
         }
-        QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
+        //QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
+        imgLabel = drawScaleAndRecOnPic(image33,rectans1,index,-1);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
-        loadPictureToLabel(label3,imgLabe3);
+        loadPictureToLabel(label3,imgLabel);
         //release(&image3);
         //release(&image33);
     }
@@ -412,15 +442,17 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
         Rectan rec4(1650,250,400,100);
         rectans.clear();
         rectans.push_back(rec4);
-        QImage imgLabel4 = drawRecOnPic(image44,rectans);
+        //QImage imgLabel4 = drawRecOnPic(image44,rectans);
+        imgLabel = drawRecOnPic(image44,rectans);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
-        loadPictureToLabel(label4,imgLabel4);
+        loadPictureToLabel(label4,imgLabel);
         //cvReleaseMat(&image4);
         //cvReleaseMat(&image44);
     }
     //cvReleaseMat(&image);
     //cvReleaseMat(&image11);
-    //delete aa;
+    //delete & aa;
+    //delete & img;
 }
 
 
@@ -434,7 +466,8 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          Rectan rec2(1800,250,50,50);
          rectans.push_back(rec);
          rectans.push_back(rec2);
-         QImage imgLabel = drawRecOnPic(image,rectans);
+         //QImage imgLabel = drawRecOnPic(image,rectans);
+         imgLabel = drawRecOnPic(image,rectans);
          cv::cvtColor(image, image, CV_BGR2RGB);
          loadPictureToLabel(label,imgLabel);
      }
@@ -444,7 +477,8 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          Rectan rec3(2600,10,100,100);
          rectans.clear();
          rectans.push_back(rec3);
-         QImage imgLabel = drawRecOnPic(image,rectans);
+         //QImage imgLabel = drawRecOnPic(image,rectans);
+         imgLabel = drawRecOnPic(image,rectans);
          cv::cvtColor(image, image, CV_BGR2RGB);
          loadPictureToLabel(label2,imgLabel);
      }
@@ -468,9 +502,10 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          points.push_back(point6);
          points.push_back(point7);
          points.push_back(point8);
-         QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
+         //QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
+         imgLabel = drawCircleOnPic(image,points,120,100);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label5,imgLabel5);
+         loadPictureToLabel(label5,imgLabel);
          //delete imgLabel5;
      }
      if(index == 6){
@@ -488,9 +523,10 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          points1.push_back(point41);
          points1.push_back(point51);
          points1.push_back(point61);
-         QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
+         //QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
+         imgLabel = drawCircleOnPic(image,points1,120,100);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label6,imgLabel6);
+         loadPictureToLabel(label6,imgLabel);
          //delete imgLabel6;
      }
      //cvReleaseMat(&image);
@@ -500,9 +536,11 @@ void MainWindow::drawUiLabel(string imgurl, int index){
 
 //---xiaotian   加载图片到label上。
 void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
-    QPixmap pixmap = QPixmap::fromImage(image);
+    pixmap = QPixmap::fromImage(image);
     label->setPixmap(pixmap);
     label->setScaledContents(true);
+    //释放image
+    //delete & image;
 }
 
 //---xiaotian   图像上绘制矩形框
@@ -520,9 +558,9 @@ QImage MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
         cv::cvtColor(image, image, CV_BGR2RGB);
     }
     cv::cvtColor(image,image,CV_BGR2RGB);
-    QImage imglabel;
-    imglabel = MatToQImage(image);
-    return imglabel;
+    //QImage imglabel;
+    imgLabel = MatToQImage(image);
+    return imgLabel;
 
 }
 
@@ -545,9 +583,9 @@ QImage MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, doubl
     //在图像上画标尺
     paintScale(image,startw,starth);
     cv::cvtColor(image,image,CV_BGR2RGB);
-    QImage imglabel3;
-    imglabel3 = MatToQImage(image);
-    return imglabel3;
+    //QImage imglabel3;
+    imgLabel = MatToQImage(image);
+    return imgLabel;
 }
 
 //---xiaotian  图像上绘制多边形和圆
@@ -563,42 +601,42 @@ QImage MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, dou
     //在图像上画圆点
     paintCircle(image,x,y);
     cv::cvtColor(image,image,CV_BGR2RGB);
-    QImage imglabel;
-    imglabel = MatToQImage(image);
-    return imglabel;
+    //QImage imglabel;
+    imgLabel = MatToQImage(image);
+    return imgLabel;
 }
 
 
 //矩形
-QImage MainWindow:: paintRectangle(Mat image,double x,double y,double width,double height)
+void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double height)
 {
     Rect rect;
-    QImage img;
+    //QImage img;
     rect.x = x;
     rect.y = y;
     rect.width = width;
     rect.height = height;
     rectangle(image,rect,Scalar(0,0,255),4,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
-    img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
-    return img;
+    //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
+    //return img;
 }
 //圆
-QImage MainWindow::paintCircle(Mat image,double x,double y)
+void MainWindow::paintCircle(Mat image,double x,double y)
 {
-    QImage img;
+    //QImage img;
     Point pointInterest;//特征点，用以画在图像中,画圆形点的圆心
     pointInterest.x=x;//特征点在图像中横坐标
     pointInterest.y=y;//特征点在图像中纵坐标
     circle(image, pointInterest, 2, Scalar(255, 0,0 ),-1,8,2);//在图像中画出特征点，2是圆的半径
-    img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
-    return img;
+    //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
+    //return img;
 }
 
 //画标尺
-QImage MainWindow::paintScale(Mat image,double startw,double starth)
+void MainWindow::paintScale(Mat image,double startw,double starth)
 {
-    QImage img;
+    //QImage img;
     int c = image.cols/30;
     int r = image.rows/10;
     line(image,Point(0,0),Point(image.cols,0),Scalar(255,255,255),2,8,0);
@@ -630,60 +668,66 @@ QImage MainWindow::paintScale(Mat image,double startw,double starth)
             line(image,Point(0,i*r),Point(15,i*r),Scalar(255,255,255),2,8,0);
         }
     }
-    return img;
+    //return img;
 }
 
 //定时器任务
 void MainWindow::onTimerOut()
 {
     index=index+1;
-    string imageurl="./s1/1.bmp";
-    String imageurl2="./s2/1.bmp";
-    //存储第一栏
-    QString filename1("./s1/1.bmp");
-    QString filename2("./s1/2.bmp");
-    QString filename3("./s1/3.bmp");
-    QString filename4("./s1/4.bmp");
-    //存储第二栏
-    QString filename5("./s2/1.bmp");
-    QString filename6("./s2/2.bmp");
-    QString filename7("./s2/3.bmp");
-    QString filename8("./s2/4.bmp");
-    //将第一栏存储在vector中
-    vc1.push_back(filename1);
-    vc1.push_back(filename2);
-    vc1.push_back(filename3);
-    vc1.push_back(filename4);
-    //将第二栏存储在vector中
-    vc2.push_back(filename5);
-    vc2.push_back(filename6);
-    vc2.push_back(filename7);
-    vc2.push_back(filename8);
+//    string imageurl="./s1/1.bmp";
+//    string imageurl2="./s2/1.bmp";
+//    //存储第一栏
+//    QString filename1("./s1/1.bmp");
+//    QString filename2("./s1/2.bmp");
+//    QString filename3("./s1/3.bmp");
+//    QString filename4("./s1/4.bmp");
+//    //存储第二栏
+//    QString filename5("./s2/1.bmp");
+//    QString filename6("./s2/2.bmp");
+//    QString filename7("./s2/3.bmp");
+//    QString filename8("./s2/4.bmp");
+//    //将第一栏存储在vector中
+//    vc1.push_back(filename1);
+//    vc1.push_back(filename2);
+//    vc1.push_back(filename3);
+//    vc1.push_back(filename4);
+//    //将第二栏存储在vector中
+//    vc2.push_back(filename5);
+//    vc2.push_back(filename6);
+//    vc2.push_back(filename7);
+//    vc2.push_back(filename8);
     //更新第一栏的图片
     index1=index1+1;
-    QImage *image=new QImage(vc1[(index1)%4]);
+    //QImage *image=new QImage(vc1[(index1)%4]);
+    image= QImage(vc1[(index1)%4]);
     QString s1=vc1[(index1)%4];
     imageurl=s1.toStdString();
     qDebug()<<s1;
     drawUiLabel(imageurl,1);
     //更新第二栏的图片
     index2=index2+1;
-    QImage *image2=new QImage(vc2[(index2)%4]);
+    //QImage *image2=new QImage(vc2[(index2)%4]);
+    image2= QImage(vc2[(index2)%4]);
     QString s2=vc2[(index2)%4];
     imageurl2=s2.toStdString();
     qDebug()<<s2;
     drawUiLabel(imageurl2,2);
     //更新第三栏
-    Mat img=QImageToMat(*image);
+    Mat img=QImageToMat(image);
     paintRectangle(img,1490,250,100,100);
     drawUiLabelByCopy(imageurl,3);
     //更新第四栏
-    Mat img2=QImageToMat(*image2);
+    Mat img2=QImageToMat(image2);
     paintRectangle(img2,1650,250,400,100);
     drawUiLabelByCopy(imageurl2,4);
     qDebug()<<"tongguo 3!!!!!";
-    delete & image;
-    delete &image2;
+    //delete & image;
+    //delete & image2;
+    //delete & s1;
+    //delete & s2;
+    //delete & imageurl;
+    //delete & imageurl2;
 }
 void MainWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
@@ -725,22 +769,26 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if(mat.type() == CV_8UC1)
     {
-        QImage image(mat.cols, mat.rows, QImage::Format_Indexed8);
+        //QImage image(mat.cols, mat.rows, QImage::Format_Indexed8);
+        imgLabel = QImage(mat.cols, mat.rows, QImage::Format_Indexed8);
         // Set the color table (used to translate colour indexes to qRgb values)
-        image.setColorCount(256);
+        imgLabel.setColorCount(256);
         for(int i = 0; i < 256; i++)
         {
-            image.setColor(i, qRgb(i, i, i));
+            //image.setColor(i, qRgb(i, i, i));
+            imgLabel.setColor(i, qRgb(i, i, i));
         }
         // Copy input Mat
         uchar *pSrc = mat.data;
         for(int row = 0; row < mat.rows; row ++)
         {
-            uchar *pDest = image.scanLine(row);
+            //uchar *pDest = image.scanLine(row);
+            uchar *pDest = imgLabel.scanLine(row);
             memcpy(pDest, pSrc, mat.cols);
             pSrc += mat.step;
         }
-        return image;
+        //return image;
+        return imgLabel;
     }
     // 8-bits unsigned, NO. OF CHANNELS = 3
     else if(mat.type() == CV_8UC3)
@@ -748,8 +796,9 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
         // Copy input Mat
         const uchar *pSrc = (const uchar*)mat.data;
         // Create QImage with same dimensions as input Mat
-        QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
-        return image.rgbSwapped();
+        //QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+        imgLabel = QImage(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+        return imgLabel.rgbSwapped();
     }
     else if(mat.type() == CV_8UC4)
     {
@@ -757,13 +806,14 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
         // Copy input Mat
         const uchar *pSrc = (const uchar*)mat.data;
         // Create QImage with same dimensions as input Mat
-        QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_ARGB32);
-        return image.copy();
+        //QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_ARGB32);
+        imgLabel = QImage(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_ARGB32);
+        return imgLabel.copy();
     }
     else
     {
         qDebug() << "ERROR: Mat could not be converted to QImage.";
-        return QImage();
+        return imgLabel;
     }
 }
 //监控

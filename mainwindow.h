@@ -51,9 +51,14 @@ public:
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
     void update();
-    QImage paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
-    QImage paintCircle(Mat image,double x,double y);//画圆
-    QImage paintScale(Mat image,double startw,double starth);//画标尺
+//    QImage paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
+//    QImage paintCircle(Mat image,double x,double y);//画圆
+//    QImage paintScale(Mat image,double startw,double starth);//画标尺
+
+    void paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
+    void paintCircle(Mat image,double x,double y);//画圆
+    void paintScale(Mat image,double startw,double starth);//画标尺
+
     cv::Mat QImageToMat(QImage image);
     QImage MatToQImage(const cv::Mat& mat);
 
@@ -150,6 +155,30 @@ protected:
      //对话框需要的变量
      //QLineEdit *fileLineEdit;
      QLabel *dialogLabel;
+
+     string imageurl;
+     string imageurl2;
+
+
+     QString filename1;
+     QString filename2;
+     QString filename3;
+     QString filename4;
+     QString filename5;
+     QString filename6;
+     QString filename7;
+     QString filename8;
+
+     QPixmap pixmap;
+     QImage aa;
+     QImage img;
+//     QImage imgLabe3;
+//     QImage imgLabel4;
+//     QImage imgLabel5;
+//     QImage imgLabel6;
+     QImage imgLabel;
+    QImage image;
+    QImage image2;
 
 protected slots:
      void startStopFunction();
