@@ -401,8 +401,8 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
         QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label3,imgLabe3);
-        cvReleaseMat(&image3);
-        cvReleaseMat(&image33);
+        //release(&image3);
+        //release(&image33);
     }
     if(index1 == 4){
         aa=(&img)->copy(2604,13,92,92);
@@ -415,12 +415,12 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
         QImage imgLabel4 = drawRecOnPic(image44,rectans);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label4,imgLabel4);
-        cvReleaseMat(&image4);
-        cvReleaseMat(&image44);
+        //cvReleaseMat(&image4);
+        //cvReleaseMat(&image44);
     }
-    cvReleaseMat(&image);
-    cvReleaseMat(&image11);
-    delete aa;
+    //cvReleaseMat(&image);
+    //cvReleaseMat(&image11);
+    //delete aa;
 }
 
 
@@ -471,7 +471,7 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
          cv::cvtColor(image, image, CV_BGR2RGB);
          loadPictureToLabel(label5,imgLabel5);
-         delete imgLabel5;
+         //delete imgLabel5;
      }
      if(index == 6){
         //ͼƬ6
@@ -491,9 +491,9 @@ void MainWindow::drawUiLabel(string imgurl, int index){
          QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
          cv::cvtColor(image, image, CV_BGR2RGB);
          loadPictureToLabel(label6,imgLabel6);
-         delete imgLabel6;
+         //delete imgLabel6;
      }
-     cvReleaseMat(&image);
+     //cvReleaseMat(&image);
 }
 
 
