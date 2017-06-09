@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     index1=0;//用于取第一栏的图片
     index2=0;//用于取第二栏的图片
 
+    dialogLabel=new QLabel;
+
+
     //图片1
     string imageurl="./s1/1.bmp";
     drawUiLabel(imageurl,1);
@@ -755,12 +758,17 @@ void MainWindow::startStopFunction()
     {
         startStop->setIcon(QPixmap("./icon/1_1.png"));
         startStopSet="./icon/1_1.png";
+        dialogLabel->setText(tr("Information Message Box"));
+        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
     }
     else
     {
         startStop->setIcon(QPixmap("./icon/1_2.png"));
         startStopSet="./icon/1_2.png";
+        dialogLabel->setText(tr("Information Message Box"));
+        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
     }
+
 }
 void MainWindow::mstopFunction()
 {
@@ -768,12 +776,17 @@ void MainWindow::mstopFunction()
     {
         mstop->setIcon(QPixmap("./icon/2_1.png"));
         mstopSet="./icon/2_1.png";
+        dialogLabel->setText(tr("Information Message Box"));
+        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
     }
     else
     {
         mstop->setIcon(QPixmap("./icon/2_2.png"));
         mstopSet="./icon/2_2.png";
+        dialogLabel->setText(tr("Information Message Box"));
+        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
     }
+
 }
 //回放功能
 //打开
@@ -789,6 +802,9 @@ void MainWindow::openFunction()
         open->setIcon(QPixmap("./icon/3_2.png"));
         openSet="./icon/3_2.png";
     }
+//    QString s=QFileDialog::getOpenFileName(this,"opem file dialog","/",
+//                                           "C++ files(*.cpp)::C files(*.c)::Head files(*.h)");
+//    fileLineEdit->setText(s);
 }
 //播放
 void MainWindow::playFunction()
@@ -920,6 +936,7 @@ void MainWindow::timeFunction()
         timeSet="./icon/10_2.png";
     }
 }
+//告警
 //打开关闭
 void MainWindow::openCloseFunction()
 {
@@ -990,6 +1007,7 @@ void MainWindow::voiceFunction()
         voiceSet="./icon/15_2.png";
     }
 }
+//指示灯
 void MainWindow::lightFunction()
 {
     if(lightSet=="./icon/16_2.png")
