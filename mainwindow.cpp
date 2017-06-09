@@ -76,80 +76,80 @@ MainWindow::MainWindow(QWidget *parent) :
     addMyToolBar();
     //创建菜单栏
     //监控
-    QActionGroup *group=new QActionGroup(this);
-    QAction *startStopc=group->addAction(tr("启/停"));
-    ui->monitoring->addAction(startStopc);
-    connect(startStopc,SIGNAL(triggered()),this,SLOT(startStopFunction()));
+//    QActionGroup *group=new QActionGroup(this);
+//    QAction *startStopc=group->addAction(tr("启/停"));
+//    ui->monitoring->addAction(startStopc);
+//    connect(startStopc,SIGNAL(triggered()),this,SLOT(startStopFunction()));
 
-    QAction *mstopc=group->addAction(tr("暂停"));
-    ui->monitoring->addAction(mstopc);
-    connect(mstopc,SIGNAL(triggered()),this,SLOT(mstopFunction()));
+//    QAction *mstopc=group->addAction(tr("暂停"));
+//    ui->monitoring->addAction(mstopc);
+//    connect(mstopc,SIGNAL(triggered()),this,SLOT(mstopFunction()));
 
-    //回放
-    QActionGroup *group2=new QActionGroup(this);
-    QAction *openc=group2->addAction(tr("打开"));
-    ui->playback->addAction(openc);
-    connect(openc,SIGNAL(triggered()),this,SLOT(openFunction()));
+//    //回放
+//    QActionGroup *group2=new QActionGroup(this);
+//    QAction *openc=group2->addAction(tr("打开"));
+//    ui->playback->addAction(openc);
+//    connect(openc,SIGNAL(triggered()),this,SLOT(openFunction()));
 
-    QAction *playc=group2->addAction(tr("播放"));
-    ui->playback->addAction(playc);
-    connect(playc,SIGNAL(triggered()),this,SLOT(playFunction()));
+//    QAction *playc=group2->addAction(tr("播放"));
+//    ui->playback->addAction(playc);
+//    connect(playc,SIGNAL(triggered()),this,SLOT(playFunction()));
 
-    QAction *rstopc=group2->addAction(tr("暂停"));
-    ui->playback->addAction(rstopc);
-    connect(rstopc,SIGNAL(triggered()),this,SLOT(rstopFunction()));
+//    QAction *rstopc=group2->addAction(tr("暂停"));
+//    ui->playback->addAction(rstopc);
+//    connect(rstopc,SIGNAL(triggered()),this,SLOT(rstopFunction()));
 
-    QAction *timeLinec=group2->addAction(tr("时间线"));
-    ui->playback->addAction(timeLinec);
-    connect(timeLinec,SIGNAL(triggered()),this,SLOT(timeLineFunction()));
+//    QAction *timeLinec=group2->addAction(tr("时间线"));
+//    ui->playback->addAction(timeLinec);
+//    connect(timeLinec,SIGNAL(triggered()),this,SLOT(timeLineFunction()));
 
-    //图像
-    QActionGroup *group3=new QActionGroup(this);
-    QAction *automc=group3->addAction(tr("自动"));
-    ui->image->addAction(automc);
-    connect(automc,SIGNAL(triggered()),this,SLOT(automFunction()));
+//    //图像
+//    QActionGroup *group3=new QActionGroup(this);
+//    QAction *automc=group3->addAction(tr("自动"));
+//    ui->image->addAction(automc);
+//    connect(automc,SIGNAL(triggered()),this,SLOT(automFunction()));
 
-    QAction *brightnessc=group3->addAction(tr("亮度"));
-    ui->image->addAction(brightnessc);
-    connect(brightnessc,SIGNAL(triggered()),this,SLOT(brightnessFunction()));
+//    QAction *brightnessc=group3->addAction(tr("亮度"));
+//    ui->image->addAction(brightnessc);
+//    connect(brightnessc,SIGNAL(triggered()),this,SLOT(brightnessFunction()));
 
-    QAction *saturationc=group3->addAction(tr("饱和度"));
-    ui->image->addAction(saturationc);
-    connect(saturationc,SIGNAL(triggered()),this,SLOT(saturationFunction()));
+//    QAction *saturationc=group3->addAction(tr("饱和度"));
+//    ui->image->addAction(saturationc);
+//    connect(saturationc,SIGNAL(triggered()),this,SLOT(saturationFunction()));
 
-    QAction *pseudoColorc=group3->addAction(tr("伪彩色"));
-    ui->image->addAction(pseudoColorc);
-    connect(pseudoColorc,SIGNAL(triggered()),this,SLOT(pseudoColorFunction()));
+//    QAction *pseudoColorc=group3->addAction(tr("伪彩色"));
+//    ui->image->addAction(pseudoColorc);
+//    connect(pseudoColorc,SIGNAL(triggered()),this,SLOT(pseudoColorFunction()));
 
-    QAction *serialNumberc=group3->addAction(tr("编号"));
-    ui->image->addAction(serialNumberc);
-    connect(serialNumberc,SIGNAL(triggered()),this,SLOT(serialNumberFunction()));
+//    QAction *serialNumberc=group3->addAction(tr("编号"));
+//    ui->image->addAction(serialNumberc);
+//    connect(serialNumberc,SIGNAL(triggered()),this,SLOT(serialNumberFunction()));
 
-    //告警
-    QActionGroup *group4=new QActionGroup(this);
-    QAction *openClosec=group4->addAction(tr("开/关"));
-    ui->alarm->addAction(openClosec);
-    connect(openClosec,SIGNAL(triggered()),this,SLOT(openCloseFunction()));
+//    //告警
+//    QActionGroup *group4=new QActionGroup(this);
+//    QAction *openClosec=group4->addAction(tr("开/关"));
+//    ui->alarm->addAction(openClosec);
+//    connect(openClosec,SIGNAL(triggered()),this,SLOT(openCloseFunction()));
 
-    QAction *manualc=group4->addAction(tr("手动"));
-    ui->alarm->addAction(manualc);
-    connect(manualc,SIGNAL(triggered()),this,SLOT(manualFunction()));
+//    QAction *manualc=group4->addAction(tr("手动"));
+//    ui->alarm->addAction(manualc);
+//    connect(manualc,SIGNAL(triggered()),this,SLOT(manualFunction()));
 
-    QAction *attributec=group4->addAction(tr("属性"));
-    ui->alarm->addAction(attributec);
-    connect(attributec,SIGNAL(triggered()),this,SLOT(attributeFunction()));
+//    QAction *attributec=group4->addAction(tr("属性"));
+//    ui->alarm->addAction(attributec);
+//    connect(attributec,SIGNAL(triggered()),this,SLOT(attributeFunction()));
 
-    QAction *setUpc=group4->addAction(tr("设置"));
-    ui->alarm->addAction(setUpc);
-    connect(setUpc,SIGNAL(triggered()),this,SLOT(setUpFunction()));
+//    QAction *setUpc=group4->addAction(tr("设置"));
+//    ui->alarm->addAction(setUpc);
+//    connect(setUpc,SIGNAL(triggered()),this,SLOT(setUpFunction()));
 
-    QAction *voicec=group4->addAction(tr("声音"));
-    ui->alarm->addAction(voicec);
-    connect(voicec,SIGNAL(triggered()),this,SLOT(voiceFunction()));
+//    QAction *voicec=group4->addAction(tr("声音"));
+//    ui->alarm->addAction(voicec);
+//    connect(voicec,SIGNAL(triggered()),this,SLOT(voiceFunction()));
 
-    QAction *lightc=group4->addAction(tr("指示灯"));
-    ui->alarm->addAction(lightc);
-    connect(lightc,SIGNAL(triggered()),this,SLOT(lightFunction()));
+//    QAction *lightc=group4->addAction(tr("指示灯"));
+//    ui->alarm->addAction(lightc);
+//    connect(lightc,SIGNAL(triggered()),this,SLOT(lightFunction()));
 
     //创建状态栏
     // addMyStatusBar();
@@ -205,7 +205,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
     startStop->setToolTip(tr("启/停"));
-    startStopSet="./icon/1_2.png";
+    startStopSet="./icon/1_1.png";
     startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
     mainToolBar->addWidget(startStop);
@@ -213,7 +213,7 @@ void MainWindow::addMyToolBar()
 
     mstop = new QToolButton(this);
     mstop->setToolTip(tr("暂停"));
-    mstopSet="./icon/2_2.png";
+    mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
     mainToolBar->addWidget(mstop);
@@ -224,7 +224,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel2);
     open = new QToolButton(this);
     open->setToolTip(tr("打开"));
-    openSet="./icon/3_2.png";
+    openSet="./icon/3_1.png";
     open->setIcon(QPixmap(openSet));
     open->setMinimumHeight(35);
     mainToolBar->addWidget(open);
@@ -235,7 +235,7 @@ void MainWindow::addMyToolBar()
 
     play = new QToolButton(this);
     play->setToolTip(tr("播放"));
-    playSet="./icon/4_2.png";
+    playSet="./icon/4_1.png";
     play->setIcon(QPixmap(playSet));
     play->setMinimumHeight(35);
     mainToolBar->addWidget(play);
@@ -243,7 +243,7 @@ void MainWindow::addMyToolBar()
 
     rstop = new QToolButton(this);
     rstop->setToolTip(tr("暂停"));
-    rstopSet="./icon/2_2.png";
+    rstopSet="./icon/2_1.png";
     rstop->setIcon(QPixmap(rstopSet));
     rstop->setMinimumHeight(35);
     mainToolBar->addWidget(rstop);
@@ -252,7 +252,7 @@ void MainWindow::addMyToolBar()
 
     timeLine = new QToolButton(this);
     timeLine->setToolTip(tr("时间线"));
-    timeLineSet="./icon/5_2.png";
+    timeLineSet="./icon/5_1.png";
     timeLine->setIcon(QPixmap(timeLineSet));
     timeLine->setMinimumHeight(35);
     mainToolBar->addWidget(timeLine);
@@ -264,7 +264,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel3);
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
-    automSet="./icon/6_2.png";
+    automSet="./icon/6_1.png";
     autom->setIcon(QPixmap(automSet));
     autom->setMinimumHeight(35);
     mainToolBar->addWidget(autom);
@@ -272,7 +272,7 @@ void MainWindow::addMyToolBar()
 
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
-    brightnessSet="./icon/7_2.png";
+    brightnessSet="./icon/7_1.png";
     brightness->setIcon(QPixmap(brightnessSet));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(brightness);
@@ -280,7 +280,7 @@ void MainWindow::addMyToolBar()
 
     saturation = new QToolButton(this);
     saturation->setToolTip(tr("饱和度"));
-    saturationSet="./icon/8_2.png";
+    saturationSet="./icon/8_1.png";
     saturation->setIcon(QPixmap(saturationSet));
     saturation->setMinimumHeight(35);
     mainToolBar->addWidget(saturation);
@@ -288,7 +288,7 @@ void MainWindow::addMyToolBar()
 
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
-    pseudoColorSet="./icon/9_2.png";
+    pseudoColorSet="./icon/9_1.png";
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
     pseudoColor->setMinimumHeight(35);
     mainToolBar->addWidget(pseudoColor);
@@ -296,7 +296,7 @@ void MainWindow::addMyToolBar()
 
     serialNumber = new QToolButton(this);
     serialNumber->setToolTip(tr("编号"));
-    serialNumberSet="./icon/17_2.png";
+    serialNumberSet="./icon/17_1.png";
     serialNumber->setIcon(QPixmap(serialNumberSet));
     serialNumber->setMinimumHeight(35);
     mainToolBar->addWidget(serialNumber);
@@ -304,7 +304,7 @@ void MainWindow::addMyToolBar()
 
     time = new QToolButton(this);
     time->setToolTip(tr("时间"));
-    timeSet="./icon/10_2.png";
+    timeSet="./icon/10_1.png";
     time->setIcon(QPixmap(timeSet));
     time->setMinimumHeight(35);
     mainToolBar->addWidget(time);
@@ -316,7 +316,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(listLabel4);
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("开/关"));
-    openCloseSet="./icon/11_2.png";
+    openCloseSet="./icon/11_1.png";
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setMinimumHeight(35);
     mainToolBar->addWidget(openClose);
@@ -324,7 +324,7 @@ void MainWindow::addMyToolBar()
 
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
-    manualSet="./icon/12_2.png";
+    manualSet="./icon/12_1.png";
     manual->setIcon(QPixmap(manualSet));
     manual->setMinimumHeight(35);
     mainToolBar->addWidget(manual);
@@ -332,7 +332,7 @@ void MainWindow::addMyToolBar()
 
     attribute = new QToolButton(this);
     attribute->setToolTip(tr("属性"));
-    attributeSet="./icon/13_2.png";
+    attributeSet="./icon/13_1.png";
     attribute->setIcon(QPixmap(attributeSet));
     attribute->setMinimumHeight(35);
     mainToolBar->addWidget(attribute);
@@ -340,7 +340,7 @@ void MainWindow::addMyToolBar()
 
     setUp = new QToolButton(this);
     setUp->setToolTip(tr("设置"));
-    setUpSet="./icon/14_2.png";
+    setUpSet="./icon/14_1.png";
     setUp->setIcon(QPixmap(setUpSet));
     setUp->setMinimumHeight(35);
     mainToolBar->addWidget(setUp);
@@ -348,7 +348,7 @@ void MainWindow::addMyToolBar()
 
     voice = new QToolButton(this);
     voice->setToolTip(tr("声音"));
-    voiceSet="./icon/15_2.png";
+    voiceSet="./icon/15_1.png";
     voice->setIcon(QPixmap(voiceSet));
     voice->setMinimumHeight(35);
     mainToolBar->addWidget(voice);
@@ -356,7 +356,7 @@ void MainWindow::addMyToolBar()
 
     light = new QToolButton(this);
     light->setToolTip(tr("指示灯"));
-    lightSet="./icon/16_2.png";
+    lightSet="./icon/16_1.png";
     light->setIcon(QPixmap(lightSet));
     light->setMinimumHeight(35);
     mainToolBar->addWidget(light);

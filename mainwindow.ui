@@ -14,40 +14,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1400</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="monitoring">
-    <property name="title">
-     <string>监控</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="playback">
-    <property name="title">
-     <string>回放</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="image">
-    <property name="title">
-     <string>图像</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="alarm">
-    <property name="title">
-     <string>告警</string>
-    </property>
-   </widget>
-   <addaction name="monitoring"/>
-   <addaction name="playback"/>
-   <addaction name="image"/>
-   <addaction name="alarm"/>
-  </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
