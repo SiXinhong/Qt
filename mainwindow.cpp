@@ -682,6 +682,8 @@ void MainWindow::onTimerOut()
     paintRectangle(img2,1650,250,400,100);
     drawUiLabelByCopy(imageurl2,4);
     qDebug()<<"tongguo 3!!!!!";
+    delete & image;
+    delete &image2;
 }
 void MainWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
