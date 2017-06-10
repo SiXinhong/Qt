@@ -30,6 +30,10 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
+//图像所需要的头文件
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+
 
 using namespace cv;
 using namespace std;
@@ -80,8 +84,6 @@ public:
 
      QjWidget* widget1;
      QjWidget* widget2;
-//     QWidget* widget1;
-//     QWidget* widget2;
      QWidget* widget3;
      QWidget* widget4;
      QWidget* widget5;
@@ -175,6 +177,8 @@ protected slots:
      void setUpFunction();
      void voiceFunction();
      void lightFunction();
+
+  //   void on_trackbar(int, void*);
 
 private:
     Ui::MainWindow *ui;
