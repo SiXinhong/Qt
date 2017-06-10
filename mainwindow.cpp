@@ -732,7 +732,8 @@ void MainWindow::onTimerOut()
     //delete & s1;
     //delete & s2;
     //delete & imageurl;
-    //delete & imageurl2;}
+    //delete & imageurl2;
+}
 void MainWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
     label2->resize(widget2->size());
