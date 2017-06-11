@@ -30,6 +30,10 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
+//图像所需要的头文件
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+
 
 using namespace cv;
 using namespace std;
@@ -203,6 +207,8 @@ protected slots:
      void voiceFunction();
      void lightFunction();
      void adjustbrightness();
+
+  //   void on_trackbar(int, void*);
 
 private:
     Ui::MainWindow *ui;
