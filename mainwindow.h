@@ -202,6 +202,7 @@ protected slots:
      void setUpFunction();
      void voiceFunction();
      void lightFunction();
+     void adjustbrightness();
 
 private:
     Ui::MainWindow *ui;
