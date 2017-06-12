@@ -398,6 +398,8 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(light);
     connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
     mainToolBar->addSeparator();
+
+
 }
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
@@ -727,12 +729,6 @@ void MainWindow::onTimerOut()
     paintRectangle(img2,1650,250,400,100);
     drawUiLabelByCopy(imageurl2,4);
     qDebug()<<"tongguo 3!!!!!";
-//delete & image;
-    //delete & image2;
-    //delete & s1;
-    //delete & s2;
-    //delete & imageurl;
-    //delete & imageurl2;
 }
 void MainWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
@@ -946,10 +942,36 @@ void MainWindow::brightnessFunction()
         brightness->setIcon(QPixmap("./icon/7_2.png"));
         brightnessSet="./icon/7_2.png";
     }
+//    setPopupMode(QToolButton::InstantPopup);
+//    QjWidget *popup=new QWidget(this);
+
+//    slider=new QSlider(Qt::Horizontal);
+//    slider->setRange(0,100);
+//    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(setLineEditValue(int)));
+
+//    labelbrightness=new QLabel(popup);
+//    labelbrightness->setAlignment(Qt::AlignCenter);
+//    labelbrightness->setNum(100);
+//    labelbrightness->setMinimumWidth(labelbrightness->sizeHint().width());
+//    connect(slider,SIGNAL(valueChanged(int)),labelbrightness,SLOT(setNum(int)));
+
+//    QBoxLayout *popupLayout=new QBoxLayout(popup);
+//    popupLayout->setMargin(2);
+//    popupLayout->addWidget(slider);
+//    popupLayout->addWidget(labelbrightness);
+
+//    QWidgetAction *action=new QWidgetAction(this);
+//    action->setDefaultWidget(popup);
+
+//    menu=new QMenu(this);
+//    menu->addAction(action);
+//    SetMenu(menu);
+
 //    int g_nTrackbarValue;
 //    g_nTrackbarValue = 20;
 //    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
 }
+
 //void MainWindow::on_trackbar(int, void*)
 //{
 //    Mat bw = threshval < 128 ? (img < threshval) : (img > threshval);//如果threshval小于128，则当bw中相应元素小于threshval时赋255，大于threshval时赋0。如果threshval大于128，则当bw相应元素大于threshval时赋255，小于threshval时赋0
