@@ -1142,5 +1142,5 @@ void MainWindow::lightFunction()
 }
 void MainWindow::adjustbrightness()
 {
-    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
+//    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
 }
