@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qjwidget.h"
+#include "imagedeal.h"
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -1138,4 +1139,8 @@ void MainWindow::lightFunction()
         light->setIcon(QPixmap("./icon/16_2.png"));
         lightSet="./icon/16_2.png";
     }
+}
+void MainWindow::adjustbrightness()
+{
+    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
 }

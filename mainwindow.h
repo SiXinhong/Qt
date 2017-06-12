@@ -210,6 +210,7 @@ protected slots:
      void setUpFunction();
      void voiceFunction();
      void lightFunction();
+     void adjustbrightness();
 
   //   void on_trackbar(int, void*);
 //     void setLineEditValue(int);
