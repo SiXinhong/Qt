@@ -12,6 +12,7 @@
 #include <cv.h>
 #include <phonon>
 #include <QToolButton>
+#include <QApplication>
 
 //OpenCV头文件
 #include <vector>
@@ -46,8 +47,11 @@ public slots:
   void onTimerOut();
     
 public:
+    //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+    //QApplication getA();
+    //void setA(QApplication aa);
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
     void update();
@@ -108,24 +112,27 @@ protected:
      //工具条需要的变量
      void addMyToolBar();
      QToolBar *mainToolBar;
-     //监控
-     QLabel *listLabel1;
+     //第一组按钮：监控和后退，还有回放
+     //QLabel *listLabel1;
      QString startStopSet;
      QString mstopSet;
+     QString backSet;
+     //QString openSet;
      QToolButton *startStop;//打开/暂停
      QToolButton *mstop;//暂停
+     QToolButton *back;
      //回放
      QString openSet;
-     QString playSet;
-     QString rstopSet;
-     QString timeLineSet;
-     QLabel *listLabel2;
+     //QString playSet;
+     //QString rstopSet;
+     //QString timeLineSet;
+     //QLabel *listLabel2;
      QToolButton *open;//打开
-     QToolButton *play;//播放
-     QToolButton *rstop;//暂停
-     QToolButton *timeLine;//时间线
-     //图像
-     QLabel *listLabel3;
+     //QToolButton *play;//播放
+     //QToolButton *rstop;//暂停
+     //QToolButton *timeLine;//时间线
+     //第二组按钮，图像
+     //QLabel *listLabel3;
      QString automSet;
      QString brightnessSet;
      QString saturationSet;
@@ -136,22 +143,41 @@ protected:
      QToolButton *brightness;//亮度
      QToolButton *saturation;//饱和度
      QToolButton *pseudoColor;//伪彩色
-     QToolButton *serialNumber;//编号
-     QToolButton *time;//时间
+
+     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
+     QString light1Set;
+     QString light2Set;
+     QString light3Set;
+     QString light4Set;
+     QString light5Set;
+     QToolButton *light1;
+     QToolButton *light2;
+     QToolButton *light3;
+     QToolButton *light4;
+     QToolButton *light5;
+
+     //第四组，显示编号和系统当前时间
+     QLabel *serialNumber;//编号
+     QLabel *time;//时间
      //告警
-     QLabel *listLabel4;
+     //QLabel *listLabel4;
      QString openCloseSet;
+     QString objectAttributeSet;
      QString manualSet;
+     QString objectSet;
      QString attributeSet;
-     QString setUpSet;
      QString voiceSet;
-     QString lightSet;
+     QString exitSet;
+
      QToolButton *openClose;//开/关
+     QToolButton *objectAttribute;//对象属性
      QToolButton *manual;//手动
+     QToolButton *objects;//目标对象的属性是否跟随目标
      QToolButton *attribute;//属性
-     QToolButton *setUp;//设置
+     //QToolButton *setUp;//设置
      QToolButton *voice;//声音
-     QToolButton *light;//指示灯
+     QToolButton *exitButton;//退出按钮
+     //QToolButton *light;//指示灯
      //对话框需要的变量
      //QLineEdit *fileLineEdit;
      QLabel *dialogLabel;
@@ -182,27 +208,23 @@ protected:
 
 protected slots:
      void startStopFunction();
-	 void mstopFunction();
+     void mstopFunction();
 
+     void backFunction();
      void openFunction();
-     void playFunction();
-     void rstopFunction();
-     void timeLineFunction();
-
      void automFunction();
      void brightnessFunction();
+
      void saturationFunction();
      void pseudoColorFunction();
-     void serialNumberFunction();
-     void timeFunction();
-
      void openCloseFunction();
+     void objectAttributeFunction();
      void manualFunction();
-     void attributeFunction();
-     void setUpFunction();
-     void voiceFunction();
-     void lightFunction();
+     void objectsFunction();
 
+     void attributeFunction();
+     void voiceFunction();
+     void closeEvent(QCloseEvent *event);
 private:
     Ui::MainWindow *ui;
 

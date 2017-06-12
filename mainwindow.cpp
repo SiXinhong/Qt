@@ -8,7 +8,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
-
+#include <QApplication>
 #include <QToolBar>
 #include <QGridLayout>
 #include <QPainter>
@@ -18,6 +18,9 @@
 #include<QLabel>
 #include<QDebug>
 #include<QTimer>
+#include<QDateTime>
+#include<QMessageBox>
+
 
 #include <QtGui/QPainter>
 
@@ -231,31 +234,45 @@ MainWindow::~MainWindow()
 void MainWindow::addMyToolBar()
 {
     mainToolBar = addToolBar("monitoring");
-    //监控
+
+    //第一组按钮：监控和后退，还有回放
+    //启动/停止
     mainToolBar->addSeparator();
-    listLabel1=new QLabel(tr(" 监控 "));
-    mainToolBar->addWidget(listLabel1);
+    //listLabel1=new QLabel(tr(" 监控 "));
+    //mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
-    startStop->setToolTip(tr("启/停"));
+    startStop->setToolTip(tr("启动/停止"));
     startStopSet="./icon/1_1.png";
     startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
     mainToolBar->addWidget(startStop);
     connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
 
+    //暂停/继续
     mstop = new QToolButton(this);
-    mstop->setToolTip(tr("暂停"));
+    mstop->setToolTip(tr("暂停/继续"));
     mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
     mainToolBar->addWidget(mstop);
-    mainToolBar->addSeparator();
+    //mainToolBar->addSeparator();
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
+
+    //后退
+    back = new QToolButton(this);
+    back->setToolTip(tr("后退"));
+    backSet="./icon/4_1.png";
+    mstop->setIcon(QPixmap(mstopSet));
+    mstop->setMinimumHeight(35);
+    mainToolBar->addWidget(back);
+    //mainToolBar->addSeparator();
+    connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
+
     //回放
-    listLabel2=new QLabel(tr(" 回放 "));
-    mainToolBar->addWidget(listLabel2);
+    //listLabel2=new QLabel(tr(" 回放 "));
+    //mainToolBar->addWidget(listLabel2);
     open = new QToolButton(this);
-    open->setToolTip(tr("打开"));
+    open->setToolTip(tr("回放"));
     openSet="./icon/3_1.png";
     open->setIcon(QPixmap(openSet));
     open->setMinimumHeight(35);
@@ -265,35 +282,36 @@ void MainWindow::addMyToolBar()
 
 
 
-    play = new QToolButton(this);
-    play->setToolTip(tr("播放"));
-    playSet="./icon/4_1.png";
-    play->setIcon(QPixmap(playSet));
-    play->setMinimumHeight(35);
-    mainToolBar->addWidget(play);
-    connect(play,SIGNAL(clicked()),this,SLOT(playFunction()));
+//    play = new QToolButton(this);
+//    play->setToolTip(tr("播放"));
+//    playSet="./icon/4_1.png";
+//    play->setIcon(QPixmap(playSet));
+//    play->setMinimumHeight(35);
+//    mainToolBar->addWidget(play);
+//    connect(play,SIGNAL(clicked()),this,SLOT(playFunction()));
 
-    rstop = new QToolButton(this);
-    rstop->setToolTip(tr("暂停"));
-    rstopSet="./icon/2_1.png";
-    rstop->setIcon(QPixmap(rstopSet));
-    rstop->setMinimumHeight(35);
-    mainToolBar->addWidget(rstop);
-    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction()));
+//    rstop = new QToolButton(this);
+//    rstop->setToolTip(tr("暂停"));
+//    rstopSet="./icon/2_1.png";
+//    rstop->setIcon(QPixmap(rstopSet));
+//    rstop->setMinimumHeight(35);
+//    mainToolBar->addWidget(rstop);
+//    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction()));
 
 
-    timeLine = new QToolButton(this);
-    timeLine->setToolTip(tr("时间线"));
-    timeLineSet="./icon/5_1.png";
-    timeLine->setIcon(QPixmap(timeLineSet));
-    timeLine->setMinimumHeight(35);
-    mainToolBar->addWidget(timeLine);
-    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
+//    timeLine = new QToolButton(this);
+//    timeLine->setToolTip(tr("时间线"));
+//    timeLineSet="./icon/5_1.png";
+//    timeLine->setIcon(QPixmap(timeLineSet));
+//    timeLine->setMinimumHeight(35);
+//    mainToolBar->addWidget(timeLine);
+//    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
 
     mainToolBar->addSeparator();
-    //图像
-    listLabel3=new QLabel(tr(" 图像 "));
-    mainToolBar->addWidget(listLabel3);
+
+    //第二组按钮：图像
+    //listLabel3=new QLabel(tr(" 图像 "));
+    //mainToolBar->addWidget(listLabel3);
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
     automSet="./icon/6_1.png";
@@ -326,26 +344,69 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
 
-    serialNumber = new QToolButton(this);
-    serialNumber->setToolTip(tr("编号"));
-    serialNumberSet="./icon/17_1.png";
-    serialNumber->setIcon(QPixmap(serialNumberSet));
-    serialNumber->setMinimumHeight(35);
-    mainToolBar->addWidget(serialNumber);
-    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction()));
-
-    time = new QToolButton(this);
-    time->setToolTip(tr("时间"));
-    timeSet="./icon/10_1.png";
-    time->setIcon(QPixmap(timeSet));
-    time->setMinimumHeight(35);
-    mainToolBar->addWidget(time);
     mainToolBar->addSeparator();
-    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction()));
 
-    //告警
-    listLabel4=new QLabel(tr(" 告警 "));
-    mainToolBar->addWidget(listLabel4);
+    //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
+    light1=new QToolButton(this);
+    light1Set="./icon/16_1.png";
+    light1->setIcon(QPixmap(light1Set));
+    brightness->setMinimumHeight(35);
+    mainToolBar->addWidget(light1);
+
+    light2=new QToolButton(this);
+    light2Set="./icon/16_1.png";
+    light2->setIcon(QPixmap(light2Set));
+    brightness->setMinimumHeight(35);
+    mainToolBar->addWidget(light2);
+
+    light3=new QToolButton(this);
+    light3Set="./icon/16_1.png";
+    light3->setIcon(QPixmap(light3Set));
+    brightness->setMinimumHeight(35);
+    mainToolBar->addWidget(light3);
+
+    light4=new QToolButton(this);
+    light4Set="./icon/16_2.png";
+    light4->setIcon(QPixmap(light4Set));
+    brightness->setMinimumHeight(35);
+    mainToolBar->addWidget(light4);
+
+    light5=new QToolButton(this);
+    light5Set="./icon/16_2.png";
+    light5->setIcon(QPixmap(light5Set));
+    brightness->setMinimumHeight(35);
+    mainToolBar->addWidget(light5);
+
+    mainToolBar->addSeparator();
+
+    //第四组，显示编号和系统当前时间
+    serialNumber=new QLabel("系统编号：XXXXXX");//编号
+    mainToolBar->addWidget(serialNumber);
+    time=new QLabel(QDateTime::currentDateTime().toString());//时间
+    mainToolBar->addWidget(time);
+
+    mainToolBar->addSeparator();
+
+//    serialNumber = new QToolButton(this);
+//    serialNumber->setToolTip(tr("编号"));
+//    serialNumberSet="./icon/17_1.png";
+//    serialNumber->setIcon(QPixmap(serialNumberSet));
+//    serialNumber->setMinimumHeight(35);
+//    mainToolBar->addWidget(serialNumber);
+//    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction()));
+
+//    time = new QToolButton(this);
+//    time->setToolTip(tr("时间"));
+//    timeSet="./icon/10_1.png";
+//    time->setIcon(QPixmap(timeSet));
+//    time->setMinimumHeight(35);
+//    mainToolBar->addWidget(time);
+//    mainToolBar->addSeparator();
+//    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction()));
+
+    //第五组，告警
+    //listLabel4=new QLabel(tr(" 告警 "));
+    //mainToolBar->addWidget(listLabel4);
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("开/关"));
     openCloseSet="./icon/11_1.png";
@@ -353,6 +414,14 @@ void MainWindow::addMyToolBar()
     openClose->setMinimumHeight(35);
     mainToolBar->addWidget(openClose);
     connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
+
+    objectAttribute = new QToolButton(this);
+    objectAttribute->setToolTip(tr("对象属性"));
+    objectAttributeSet="./icon/17_1.png";
+    objectAttribute->setIcon(QPixmap(objectAttributeSet));
+    objectAttribute->setMinimumHeight(35);
+    mainToolBar->addWidget(objectAttribute);
+    connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
 
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
@@ -362,21 +431,21 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(manual);
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
 
+    objects = new QToolButton(this);
+    objects->setToolTip(tr("手动"));
+    objectSet="./icon/13_1.png";
+    objects->setIcon(QPixmap(objectSet));
+    objects->setMinimumHeight(35);
+    mainToolBar->addWidget(objects);
+    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
+
     attribute = new QToolButton(this);
-    attribute->setToolTip(tr("属性"));
-    attributeSet="./icon/13_1.png";
+    attribute->setToolTip(tr("设置"));
+    attributeSet="./icon/14_1.png";
     attribute->setIcon(QPixmap(attributeSet));
     attribute->setMinimumHeight(35);
     mainToolBar->addWidget(attribute);
     connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
-
-    setUp = new QToolButton(this);
-    setUp->setToolTip(tr("设置"));
-    setUpSet="./icon/14_1.png";
-    setUp->setIcon(QPixmap(setUpSet));
-    setUp->setMinimumHeight(35);
-    mainToolBar->addWidget(setUp);
-    connect(setUp,SIGNAL(clicked()),this,SLOT(setUpFunction()));
 
     voice = new QToolButton(this);
     voice->setToolTip(tr("声音"));
@@ -386,14 +455,15 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
-    light = new QToolButton(this);
-    light->setToolTip(tr("指示灯"));
-    lightSet="./icon/16_1.png";
-    light->setIcon(QPixmap(lightSet));
-    light->setMinimumHeight(35);
-    mainToolBar->addWidget(light);
-    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
     mainToolBar->addSeparator();
+
+    exitButton = new QToolButton(this);
+    exitButton->setToolTip(tr("退出"));
+    exitSet="./icon/16_1.png";
+    exitButton->setIcon(QPixmap(exitSet));
+    exitButton->setMinimumHeight(35);
+    mainToolBar->addWidget(exitButton);
+    connect(exitButton,SIGNAL(clicked()),this,SLOT(MainWindow::closeEvent(QCloseEvent *event)));
 }
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
@@ -816,191 +886,115 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
         return imgLabel;
     }
 }
-//监控
+
+//启动/停止
 void MainWindow::startStopFunction()
 {
     if(startStopSet=="./icon/1_2.png")
     {
         startStop->setIcon(QPixmap("./icon/1_1.png"));
-        startStopSet="./icon/1_1.png";
-        dialogLabel->setText(tr("Information Message Box"));
-        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
+        startStop->setToolTip("停止");
+        //startStopSet="./icon/1_1.png";
+        //dialogLabel->setText(tr("Information Message Box"));
+        //QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
     }
     else
     {
         startStop->setIcon(QPixmap("./icon/1_2.png"));
-        startStopSet="./icon/1_2.png";
-        dialogLabel->setText(tr("Information Message Box"));
-        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
+        startStop->setToolTip("启动");
+//        startStopSet="./icon/1_2.png";
+//        dialogLabel->setText(tr("Information Message Box"));
+//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
     }
 
 }
+//暂停/继续
 void MainWindow::mstopFunction()
 {
     if(mstopSet=="./icon/2_2.png")
     {
         mstop->setIcon(QPixmap("./icon/2_1.png"));
-        mstopSet="./icon/2_1.png";
-        dialogLabel->setText(tr("Information Message Box"));
-        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
+        mstop->setToolTip("暂停");
+//        mstopSet="./icon/2_1.png";
+//        dialogLabel->setText(tr("Information Message Box"));
+//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
     }
     else
     {
         mstop->setIcon(QPixmap("./icon/2_2.png"));
-        mstopSet="./icon/2_2.png";
-        dialogLabel->setText(tr("Information Message Box"));
-        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
+        mstop->setToolTip("继续");
+//        mstopSet="./icon/2_2.png";
+//        dialogLabel->setText(tr("Information Message Box"));
+//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
     }
 
 }
-//回放功能
-//打开
+//后退
+void MainWindow::backFunction()
+{
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("后退功能，有待实现。"),tr("继续努力。"));
+}
+//回放
 void MainWindow::openFunction()
 {
-    if(openSet=="./icon/3_2.png")
-    {
-        open->setIcon(QPixmap("./icon/3_1.png"));
-        openSet="./icon/3_1.png";
-    }
-    else
-    {
-        open->setIcon(QPixmap("./icon/3_2.png"));
-        openSet="./icon/3_2.png";
-    }
-//    QString s=QFileDialog::getOpenFileName(this,"opem file dialog","/",
-//                                           "C++ files(*.cpp)::C files(*.c)::Head files(*.h)");
-//    fileLineEdit->setText(s);
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("回放功能，有待实现。"),tr("继续努力。"));
 }
-//播放
-void MainWindow::playFunction()
-{
-    if(playSet=="./icon/4_2.png")
-    {
-        play->setIcon(QPixmap("./icon/4_1.png"));
-        playSet="./icon/4_1.png";
-    }
-    else
-    {
-        play->setIcon(QPixmap("./icon/4_2.png"));
-        playSet="./icon/4_2.png";
-    }
-}
-//暂停
-void MainWindow::rstopFunction()
-{
-    if(rstopSet=="./icon/2_2.png")
-    {
-        rstop->setIcon(QPixmap("./icon/2_1.png"));
-        rstopSet="./icon/2_1.png";
-    }
-    else
-    {
-        rstop->setIcon(QPixmap("./icon/2_2.png"));
-        rstopSet="./icon/2_2.png";
-    }
-}
-//时间线
-void MainWindow::timeLineFunction()
-{
-    if(timeLineSet=="./icon/5_2.png")
-    {
-        timeLine->setIcon(QPixmap("./icon/5_1.png"));
-        timeLineSet="./icon/5_1.png";
-    }
-    else
-    {
-        timeLine->setIcon(QPixmap("./icon/5_2.png"));
-        timeLineSet="./icon/5_2.png";
-    }
-}
+////暂停
+//void MainWindow::rstopFunction()
+//{
+//    if(rstopSet=="./icon/2_2.png")
+//    {
+//        rstop->setIcon(QPixmap("./icon/2_1.png"));
+//        rstopSet="./icon/2_1.png";
+//    }
+//    else
+//    {
+//        rstop->setIcon(QPixmap("./icon/2_2.png"));
+//        rstopSet="./icon/2_2.png";
+//    }
+//}
+////时间线
+//void MainWindow::timeLineFunction()
+//{
+//    if(timeLineSet=="./icon/5_2.png")
+//    {
+//        timeLine->setIcon(QPixmap("./icon/5_1.png"));
+//        timeLineSet="./icon/5_1.png";
+//    }
+//    else
+//    {
+//        timeLine->setIcon(QPixmap("./icon/5_2.png"));
+//        timeLineSet="./icon/5_2.png";
+//    }
+//}
 //图像
 //自动
 void MainWindow::automFunction()
 {
-    if(automSet=="./icon/6_2.png")
-    {
-        autom->setIcon(QPixmap("./icon/6_1.png"));
-        automSet="./icon/6_1.png";
-    }
-    else
-    {
-        autom->setIcon(QPixmap("./icon/6_2.png"));
-        automSet="./icon/6_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
 }
 //亮度
 void MainWindow::brightnessFunction()
 {
-    if(brightnessSet=="./icon/7_2.png")
-    {
-        brightness->setIcon(QPixmap("./icon/7_1.png"));
-        brightnessSet="./icon/7_1.png";
-    }
-    else
-    {
-        brightness->setIcon(QPixmap("./icon/7_2.png"));
-        brightnessSet="./icon/7_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
 }
 //饱和度
 void MainWindow::saturationFunction()
 {
-    if(saturationSet=="./icon/8_2.png")
-    {
-        saturation->setIcon(QPixmap("./icon/8_1.png"));
-        saturationSet="./icon/8_1.png";
-    }
-    else
-    {
-        saturation->setIcon(QPixmap("./icon/8_2.png"));
-        saturationSet="./icon/8_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
 }
-
-
-
 //伪彩色
 void MainWindow::pseudoColorFunction()
 {
-    if(pseudoColorSet=="./icon/9_2.png")
-    {
-        pseudoColor->setIcon(QPixmap("./icon/9_1.png"));
-        pseudoColorSet="./icon/9_1.png";
-    }
-    else
-    {
-        pseudoColor->setIcon(QPixmap("./icon/9_2.png"));
-        pseudoColorSet="./icon/9_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
 }
-//编号
-void MainWindow::serialNumberFunction()
-{
-    if(serialNumberSet=="./icon/17_2.png")
-    {
-        serialNumber->setIcon(QPixmap("./icon/17_1.png"));
-        serialNumberSet="./icon/17_1.png";
-    }
-    else
-    {
-        serialNumber->setIcon(QPixmap("./icon/17_2.png"));
-        serialNumberSet="./icon/17_2.png";
-    }
-}
-//时间
-void MainWindow::timeFunction()
-{
-    if(timeSet=="./icon/10_2.png")
-    {
-        time->setIcon(QPixmap("./icon/10_1.png"));
-        timeSet="./icon/10_1.png";
-    }
-    else
-    {
-        time->setIcon(QPixmap("./icon/10_2.png"));
-        timeSet="./icon/10_2.png";
-    }
-}
+
 //告警
 //打开关闭
 void MainWindow::openCloseFunction()
@@ -1009,54 +1003,48 @@ void MainWindow::openCloseFunction()
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));
         openCloseSet="./icon/11_1.png";
+        openClose->setToolTip("关闭告警");
     }
     else
     {
         openClose->setIcon(QPixmap("./icon/11_2.png"));
         openCloseSet="./icon/11_2.png";
+        openClose->setToolTip("打开告警");
     }
 }
 //手动
 void MainWindow::manualFunction()
 {
-    if(manualSet=="./icon/12_2.png")
-    {
-        manual->setIcon(QPixmap("./icon/12_1.png"));
-        manualSet="./icon/12_1.png";
-    }
-    else
-    {
-        manual->setIcon(QPixmap("./icon/12_2.png"));
-        manualSet="./icon/12_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 }
-//属性
-void MainWindow::attributeFunction()
+//目标属性列表
+void MainWindow::objectAttributeFunction()
 {
-    if(attributeSet=="./icon/13_2.png")
-    {
-        attribute->setIcon(QPixmap("./icon/13_1.png"));
-        attributeSet="./icon/13_1.png";
-    }
-    else
-    {
-        attribute->setIcon(QPixmap("./icon/13_2.png"));
-        attributeSet="./icon/13_2.png";
-    }
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("目标属性列表功能，有待实现。"),tr("继续努力。"));
 }
 //设置
-void MainWindow::setUpFunction()
+void MainWindow::objectsFunction()
 {
-    if(setUpSet=="./icon/14_2.png")
+    if(objectSet=="./icon/13_2.png")
     {
-        setUp->setIcon(QPixmap("./icon/14_1.png"));
-        setUpSet="./icon/14_1.png";
+        objects->setIcon(QPixmap("./icon/13_1.png"));
+        objectSet="./icon/13_1.png";
+        objects->setToolTip("关闭目标属性跟随");
     }
     else
     {
-        setUp->setIcon(QPixmap("./icon/14_2.png"));
-        setUpSet="./icon/14_2.png";
+        objects->setIcon(QPixmap("./icon/13_2.png"));
+        objectSet="./icon/13_2.png";
+        objects->setToolTip("开启目标属性跟随");
     }
+}
+//目标属性列表
+void MainWindow::attributeFunction()
+{
+    dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 //声音
 void MainWindow::voiceFunction()
@@ -1065,24 +1053,21 @@ void MainWindow::voiceFunction()
     {
         voice->setIcon(QPixmap("./icon/15_1.png"));
         voiceSet="./icon/15_1.png";
+        voice->setToolTip("关闭声音");
     }
     else
     {
         voice->setIcon(QPixmap("./icon/15_2.png"));
         voiceSet="./icon/15_2.png";
+        voice->setToolTip("开启声音");
+
     }
 }
-//指示灯
-void MainWindow::lightFunction()
+//退出系统
+void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if(lightSet=="./icon/16_2.png")
-    {
-        light->setIcon(QPixmap("./icon/16_1.png"));
-        lightSet="./icon/16_1.png";
-    }
-    else
-    {
-        light->setIcon(QPixmap("./icon/16_2.png"));
-        lightSet="./icon/16_2.png";
-    }
+
+
 }
+
+
