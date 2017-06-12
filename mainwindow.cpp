@@ -34,8 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);   
     QWidget* widget = new QWidget(this);
-    QWidget* widget99 = new QWidget(this);
-
+QWidget* widget101 = new QWidget(this);
+ QWidget* widget99 = new QWidget(this);
     //widget10 = new QWidget(this);
     widget1 = new QjWidget(new QWidget(this));
     widget2 = new QjWidget(new QWidget(this));
