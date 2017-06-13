@@ -476,7 +476,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
 
     objects = new QToolButton(this);
-    objects->setToolTip(tr("ÊÖ¶¯"));
+    objects->setToolTip(tr("¹Ø±ÕÄ¿±êÊôÐÔ¸úËæ"));
     objectSet="./icon/13_1.png";
     objects->setIcon(QPixmap(objectSet));
     objects->setMinimumHeight(35);
@@ -943,8 +943,8 @@ void MainWindow::startStopFunction()
     //if(startStopSet=="./icon/1_2.png")
     if (isQidong)
     {
-        startStop->setIcon(QPixmap("./icon/1_1.png"));
-        startStop->setToolTip("Í£Ö¹");
+        startStop->setIcon(QPixmap("./icon/4_1.png"));
+        startStop->setToolTip("Æô¶¯");
         //startStopSet="./icon/1_1.png";
         isQidong = false;
         //dialogLabel->setText(tr("Information Message Box"));
@@ -952,8 +952,8 @@ void MainWindow::startStopFunction()
     }
     else
     {
-        startStop->setIcon(QPixmap("./icon/1_2.png"));
-        startStop->setToolTip("Æô¶¯");
+        startStop->setIcon(QPixmap("./icon/1_1.png"));
+        startStop->setToolTip("Í£Ö¹");
         isQidong = true;
         //startStopSet="./icon/1_2.png";
 //        dialogLabel->setText(tr("Information Message Box"));
@@ -967,8 +967,8 @@ void MainWindow::mstopFunction()
     //if(mstopSet=="./icon/2_2.png")
     if(isJixu)
     {
-        mstop->setIcon(QPixmap("./icon/2_1.png"));
-        mstop->setToolTip("ÔÝÍ£");
+        mstop->setIcon(QPixmap("./icon/4_1.png"));
+        mstop->setToolTip("¼ÌÐø");
         isJixu = false;
         //mstopSet="./icon/2_1.png";
 //        dialogLabel->setText(tr("Information Message Box"));
@@ -976,8 +976,8 @@ void MainWindow::mstopFunction()
     }
     else
     {
-        mstop->setIcon(QPixmap("./icon/2_2.png"));
-        mstop->setToolTip("¼ÌÐø");
+        mstop->setIcon(QPixmap("./icon/2_1.png"));
+        mstop->setToolTip("ÔÝÍ£");
         isJixu = true;
         //mstopSet="./icon/2_2.png";
 //        dialogLabel->setText(tr("Information Message Box"));
