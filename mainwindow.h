@@ -115,7 +115,20 @@ public:
      int index2;//读取第二栏第几张图片
      vector<QString> vc2;//存储第二栏的图片
 
-     //添加对话框所需要的变量
+     //添加属性设置中的变量
+     //启动还是停止
+     boolean isQidong;
+     //暂停还是继续
+     boolean isJixu;
+     //告警启动还是关闭
+     boolean isGaojing;
+     //声音打开还是关闭
+     boolean isShengyin;
+     //目标属性是否跟随
+     boolean isMubiao;
+     //系统编号
+     QString xtbh;
+
 
 protected:
      //工具条需要的变量

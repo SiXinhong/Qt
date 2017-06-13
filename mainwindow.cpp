@@ -35,6 +35,21 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    //设置属性设置中的变量的默认值
+    //启动还是停止
+    isQidong = true;
+    //暂停还是继续
+    isJixu = true;
+    //告警启动还是关闭
+    isGaojing = true;
+    //声音打开还是关闭
+    isShengyin = true;
+    //目标属性是否跟随
+    isMubiao = true;
+    //系统编号
+    xtbh = QString("XXXXXXX");
+
+
     ui->setupUi(this);   
     QWidget* widget = new QWidget(this);
 
@@ -233,6 +248,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(widget);
 
     this->setWindowState(Qt::WindowMaximized);
+
 }
 
 MainWindow::~MainWindow()
@@ -251,7 +267,7 @@ void MainWindow::addMyToolBar()
     //listLabel1=new QLabel(tr(" 监控 "));
     //mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
-    startStop->setToolTip(tr("启动/停止"));
+    startStop->setToolTip(tr("停止"));
     startStopSet="./icon/1_1.png";
     startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
@@ -261,7 +277,7 @@ void MainWindow::addMyToolBar()
 
     //暂停/继续
     mstop = new QToolButton(this);
-    mstop->setToolTip(tr("暂停/继续"));
+    mstop->setToolTip(tr("暂停"));
     mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
@@ -402,7 +418,7 @@ void MainWindow::addMyToolBar()
 
     //第四组，显示编号和系统当前时间
     mainToolBar->addWidget(new QLabel("   "));
-    serialNumber=new QLabel("系统编号：XXXXXX");//编号
+    serialNumber=new QLabel("系统编号："+xtbh);//编号
     mainToolBar->addWidget(serialNumber);
     mainToolBar->addWidget(new QLabel("   "));
     time=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
@@ -433,7 +449,7 @@ void MainWindow::addMyToolBar()
     //mainToolBar->addWidget(listLabel4);
     mainToolBar->addWidget(new QLabel("   "));
     openClose = new QToolButton(this);
-    openClose->setToolTip(tr("开/关"));
+    openClose->setToolTip(tr("关闭告警"));
     openCloseSet="./icon/11_1.png";
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setMinimumHeight(35);
@@ -478,7 +494,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
 
     voice = new QToolButton(this);
-    voice->setToolTip(tr("声音"));
+    voice->setToolTip(tr("关闭声音"));
     voiceSet="./icon/15_1.png";
     voice->setIcon(QPixmap(voiceSet));
     voice->setMinimumHeight(35);
@@ -924,11 +940,13 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat)
 //启动/停止
 void MainWindow::startStopFunction()
 {
-    if(startStopSet=="./icon/1_2.png")
+    //if(startStopSet=="./icon/1_2.png")
+    if (isQidong)
     {
         startStop->setIcon(QPixmap("./icon/1_1.png"));
         startStop->setToolTip("停止");
         //startStopSet="./icon/1_1.png";
+        isQidong = false;
         //dialogLabel->setText(tr("Information Message Box"));
         //QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
     }
@@ -936,7 +954,8 @@ void MainWindow::startStopFunction()
     {
         startStop->setIcon(QPixmap("./icon/1_2.png"));
         startStop->setToolTip("启动");
-//        startStopSet="./icon/1_2.png";
+        isQidong = true;
+        //startStopSet="./icon/1_2.png";
 //        dialogLabel->setText(tr("Information Message Box"));
 //        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
     }
@@ -945,11 +964,13 @@ void MainWindow::startStopFunction()
 //暂停/继续
 void MainWindow::mstopFunction()
 {
-    if(mstopSet=="./icon/2_2.png")
+    //if(mstopSet=="./icon/2_2.png")
+    if(isJixu)
     {
         mstop->setIcon(QPixmap("./icon/2_1.png"));
         mstop->setToolTip("暂停");
-//        mstopSet="./icon/2_1.png";
+        isJixu = false;
+        //mstopSet="./icon/2_1.png";
 //        dialogLabel->setText(tr("Information Message Box"));
 //        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
     }
@@ -957,7 +978,8 @@ void MainWindow::mstopFunction()
     {
         mstop->setIcon(QPixmap("./icon/2_2.png"));
         mstop->setToolTip("继续");
-//        mstopSet="./icon/2_2.png";
+        isJixu = true;
+        //mstopSet="./icon/2_2.png";
 //        dialogLabel->setText(tr("Information Message Box"));
 //        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
     }
@@ -1106,16 +1128,19 @@ void MainWindow::pseudoColorFunction()
 //打开关闭
 void MainWindow::openCloseFunction()
 {
-    if(openCloseSet=="./icon/11_2.png")
+    //if(openCloseSet=="./icon/11_2.png")
+    if(!isGaojing)
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));
-        openCloseSet="./icon/11_1.png";
+        //openCloseSet="./icon/11_1.png";
+        isGaojing = true;
         openClose->setToolTip("关闭告警");
     }
     else
     {
         openClose->setIcon(QPixmap("./icon/11_2.png"));
-        openCloseSet="./icon/11_2.png";
+        //openCloseSet="./icon/11_2.png";
+        isGaojing = false;
         openClose->setToolTip("打开告警");
     }
 }
@@ -1134,17 +1159,20 @@ void MainWindow::objectAttributeFunction()
 //设置
 void MainWindow::objectsFunction()
 {
-    if(objectSet=="./icon/13_2.png")
+    //if(objectSet=="./icon/13_2.png")
+    if(isMubiao)
     {
-        objects->setIcon(QPixmap("./icon/13_1.png"));
-        objectSet="./icon/13_1.png";
-        objects->setToolTip("关闭目标属性跟随");
+        objects->setIcon(QPixmap("./icon/13_2.png"));
+        isMubiao = false;
+        //objectSet="./icon/13_1.png";
+        objects->setToolTip("开启目标属性跟随");
     }
     else
     {
-        objects->setIcon(QPixmap("./icon/13_2.png"));
-        objectSet="./icon/13_2.png";
-        objects->setToolTip("开启目标属性跟随");
+        objects->setIcon(QPixmap("./icon/13_1.png"));
+        isMubiao = true;
+        //objectSet="./icon/13_2.png";
+        objects->setToolTip("关闭目标属性跟随");
     }
 }
 //目标属性列表
@@ -1156,17 +1184,20 @@ void MainWindow::attributeFunction()
 //声音
 void MainWindow::voiceFunction()
 {
-    if(voiceSet=="./icon/15_2.png")
+    //if(voiceSet=="./icon/15_2.png")
+    if(isShengyin)
     {
-        voice->setIcon(QPixmap("./icon/15_1.png"));
-        voiceSet="./icon/15_1.png";
-        voice->setToolTip("关闭声音");
+        voice->setIcon(QPixmap("./icon/15_2.png"));
+        isShengyin = false;
+        //voiceSet="./icon/15_1.png";
+        voice->setToolTip("打开声音");
     }
     else
     {
-        voice->setIcon(QPixmap("./icon/15_2.png"));
-        voiceSet="./icon/15_2.png";
-        voice->setToolTip("开启声音");
+        voice->setIcon(QPixmap("./icon/15_1.png"));
+        isShengyin = true;
+        //voiceSet="./icon/15_2.png";
+        voice->setToolTip("关闭声音");
 
     }
 }
