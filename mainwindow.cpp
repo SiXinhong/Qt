@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qjwidget.h"
+#include "imagedeal.h"
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -24,10 +25,12 @@
 
 #include <QtGui/QPainter>
 
+
 using namespace cv;
 using namespace std;
 
-
+//int threshval = 160;
+//Mat img;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -457,6 +460,7 @@ void MainWindow::addMyToolBar()
 
     mainToolBar->addSeparator();
 
+<<<<<<< HEAD
     exitButton = new QToolButton(this);
     exitButton->setToolTip(tr("退出"));
     exitSet="./icon/16_1.png";
@@ -464,6 +468,9 @@ void MainWindow::addMyToolBar()
     exitButton->setMinimumHeight(35);
     mainToolBar->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(MainWindow::closeEvent(QCloseEvent *event)));
+=======
+
+>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
@@ -775,6 +782,7 @@ void MainWindow::onTimerOut()
     imageurl=s1.toStdString();
     qDebug()<<s1;
     drawUiLabel(imageurl,1);
+
     //更新第二栏的图片
     index2=index2+1;
     //QImage *image2=new QImage(vc2[(index2)%4]);
@@ -792,12 +800,6 @@ void MainWindow::onTimerOut()
     paintRectangle(img2,1650,250,400,100);
     drawUiLabelByCopy(imageurl2,4);
     qDebug()<<"tongguo 3!!!!!";
-    //delete & image;
-    //delete & image2;
-    //delete & s1;
-    //delete & s2;
-    //delete & imageurl;
-    //delete & imageurl2;
 }
 void MainWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
@@ -979,14 +981,92 @@ void MainWindow::automFunction()
 //亮度
 void MainWindow::brightnessFunction()
 {
+<<<<<<< HEAD
     dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
+=======
+    if(brightnessSet=="./icon/7_2.png")
+    {
+        brightness->setIcon(QPixmap("./icon/7_1.png"));
+        brightnessSet="./icon/7_1.png";
+    }
+    else
+    {
+        brightness->setIcon(QPixmap("./icon/7_2.png"));
+        brightnessSet="./icon/7_2.png";
+    }
+//    setPopupMode(QToolButton::InstantPopup);
+//    QjWidget *popup=new QWidget(this);
+
+//    slider=new QSlider(Qt::Horizontal);
+//    slider->setRange(0,100);
+//    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(setLineEditValue(int)));
+
+//    labelbrightness=new QLabel(popup);
+//    labelbrightness->setAlignment(Qt::AlignCenter);
+//    labelbrightness->setNum(100);
+//    labelbrightness->setMinimumWidth(labelbrightness->sizeHint().width());
+//    connect(slider,SIGNAL(valueChanged(int)),labelbrightness,SLOT(setNum(int)));
+
+//    QBoxLayout *popupLayout=new QBoxLayout(popup);
+//    popupLayout->setMargin(2);
+//    popupLayout->addWidget(slider);
+//    popupLayout->addWidget(labelbrightness);
+
+//    QWidgetAction *action=new QWidgetAction(this);
+//    action->setDefaultWidget(popup);
+
+//    menu=new QMenu(this);
+//    menu->addAction(action);
+//    SetMenu(menu);
+
+//    int g_nTrackbarValue;
+//    g_nTrackbarValue = 20;
+//    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
+>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
+
+//void MainWindow::on_trackbar(int, void*)
+//{
+//    Mat bw = threshval < 128 ? (img < threshval) : (img > threshval);//如果threshval小于128，则当bw中相应元素小于threshval时赋255，大于threshval时赋0。如果threshval大于128，则当bw相应元素大于threshval时赋255，小于threshval时赋0
+//    //定义点和向量
+//    vector<vector<Point> > contours;//存放轮廓，但是每个vector<Point>元素不一定只表示一个轮廓。
+//    vector<Vec4i> hierarchy;//存放轮廓之间的拓扑关系。hierarchy[idx][0]、 hierarchy[idx][1]、 hierarchy[idx][2]、 hierarchy[idx][3]分别表示索引为idx的轮廓的前一个、后一个、子、父轮廓对应的索引；当索引为0时，表示相应的轮廓不存在。
+//    findContours( bw, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );//查找轮廓
+//    Mat dst = Mat::zeros(img.size(), CV_8UC3);//初始化dst
+//    if( !contours.empty() && !hierarchy.empty() )//开始处理
+//    {
+//        //遍历所有顶层轮廓，随机生成颜色值绘制给各连接组成部分
+//        int idx = 0;
+//        for( ; idx >= 0; idx = hierarchy[idx][0] )
+//        {
+//            Scalar color( (rand()&255), (rand()&255), (rand()&255) );
+//            drawContours( dst, contours, idx, color, CV_FILLED, 8, hierarchy );//绘制填充轮廓
+//        }
+//    }
+//    imshow("Connected Components", dst);//显示窗口
+//}
 //饱和度
 void MainWindow::saturationFunction()
 {
+<<<<<<< HEAD
     dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
+=======
+    if(saturationSet=="./icon/8_2.png")
+    {
+        saturation->setIcon(QPixmap("./icon/8_1.png"));
+        saturationSet="./icon/8_1.png";
+    }
+    else
+    {
+        saturation->setIcon(QPixmap("./icon/8_2.png"));
+        saturationSet="./icon/8_2.png";
+
+
+
+    }
+>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
 //伪彩色
 void MainWindow::pseudoColorFunction()
@@ -1069,5 +1149,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 
 }
+<<<<<<< HEAD
 
 
+=======
+void MainWindow::adjustbrightness()
+{
+//    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
+}
+>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f

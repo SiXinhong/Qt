@@ -31,6 +31,13 @@
 #include <QLineEdit>
 #include <QMessageBox>
 
+//图像所需要的头文件
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include <QSlider>
+#include<QLineEdit>
+#include<QWidgetAction>
+
 
 using namespace cv;
 using namespace std;
@@ -198,13 +205,14 @@ protected:
      QPixmap pixmap;
      QImage aa;
      QImage img;
-//     QImage imgLabe3;
-//     QImage imgLabel4;
-//     QImage imgLabel5;
-//     QImage imgLabel6;
      QImage imgLabel;
-    QImage image;
-    QImage image2;
+     QImage image;
+     QImage image2;
+     //调节图像所需要的参数
+//     QSlider *slider;
+//     QLineEdit *lineEdit;
+//     QLabel *labelbrightness;
+//     QMenu menu;
 
 protected slots:
      void startStopFunction();
@@ -224,7 +232,17 @@ protected slots:
 
      void attributeFunction();
      void voiceFunction();
+<<<<<<< HEAD
      void closeEvent(QCloseEvent *event);
+=======
+     void lightFunction();
+     void adjustbrightness();
+
+  //   void on_trackbar(int, void*);
+//     void setLineEditValue(int);
+
+
+>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 private:
     Ui::MainWindow *ui;
 
