@@ -460,7 +460,6 @@ void MainWindow::addMyToolBar()
 
     mainToolBar->addSeparator();
 
-<<<<<<< HEAD
     exitButton = new QToolButton(this);
     exitButton->setToolTip(tr("退出"));
     exitSet="./icon/16_1.png";
@@ -468,9 +467,6 @@ void MainWindow::addMyToolBar()
     exitButton->setMinimumHeight(35);
     mainToolBar->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(MainWindow::closeEvent(QCloseEvent *event)));
-=======
-
->>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
@@ -981,10 +977,9 @@ void MainWindow::automFunction()
 //亮度
 void MainWindow::brightnessFunction()
 {
-<<<<<<< HEAD
     dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
-=======
+
     if(brightnessSet=="./icon/7_2.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -1023,7 +1018,6 @@ void MainWindow::brightnessFunction()
 //    int g_nTrackbarValue;
 //    g_nTrackbarValue = 20;
 //    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
->>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
 
 //void MainWindow::on_trackbar(int, void*)
@@ -1049,10 +1043,8 @@ void MainWindow::brightnessFunction()
 //饱和度
 void MainWindow::saturationFunction()
 {
-<<<<<<< HEAD
     dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
-=======
     if(saturationSet=="./icon/8_2.png")
     {
         saturation->setIcon(QPixmap("./icon/8_1.png"));
@@ -1066,7 +1058,6 @@ void MainWindow::saturationFunction()
 
 
     }
->>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 }
 //伪彩色
 void MainWindow::pseudoColorFunction()
@@ -1149,12 +1140,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 
 }
-<<<<<<< HEAD
 
-
-=======
 void MainWindow::adjustbrightness()
 {
 //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
 }
->>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f

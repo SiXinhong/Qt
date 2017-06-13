@@ -232,17 +232,16 @@ protected slots:
 
      void attributeFunction();
      void voiceFunction();
-<<<<<<< HEAD
      void closeEvent(QCloseEvent *event);
-=======
-     void lightFunction();
+
+     //void lightFunction();
      void adjustbrightness();
 
   //   void on_trackbar(int, void*);
 //     void setLineEditValue(int);
 
 
->>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
+//>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 private:
     Ui::MainWindow *ui;
 
