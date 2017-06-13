@@ -23,19 +23,11 @@ signals:
 
 public slots:
     //到主显示区显示菜单处理事件
-    void ToZhu()
-    {
-        qDebug()<<"到主显示区。";
-    }
+    void ToZhu();
     //到凝视显示区显示菜单处理事件
-    void ToNingshi()
-    {
-        qDebug()<<"到凝视显示区。";
-    }
+    void ToNingshi();
     //到弹出窗口显示菜单处理事件
-    void ToTanchu(){
-        qDebug()<<"到弹出窗口。";
-    }
+    //void ToTanchu();
 };
 
 #endif // QJWIDGET_H

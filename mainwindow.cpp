@@ -109,6 +109,12 @@ MainWindow::MainWindow(QWidget *parent) :
     timer->setInterval(3000);
     timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
+    //定时器，获取系统时间
+
+    timerSysTime=new QTimer();
+    timerSysTime->setInterval(1000);
+    timerSysTime->start();
+    connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
     // 创建工具栏
     addMyToolBar();
@@ -191,9 +197,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //创建状态栏
     // addMyStatusBar();
-    ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
-    ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
-    ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
+    //ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
+    //ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
+    //ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
     //右键
     //addAction(new QAction("目标列表",this));
     //widget1->addAction(new QAction("到主显示区",widget1));
@@ -241,6 +247,7 @@ void MainWindow::addMyToolBar()
     //第一组按钮：监控和后退，还有回放
     //启动/停止
     mainToolBar->addSeparator();
+    mainToolBar->addWidget(new QLabel("   "));
     //listLabel1=new QLabel(tr(" 监控 "));
     //mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
@@ -250,6 +257,7 @@ void MainWindow::addMyToolBar()
     startStop->setMinimumHeight(35);
     mainToolBar->addWidget(startStop);
     connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     //暂停/继续
     mstop = new QToolButton(this);
@@ -260,17 +268,17 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(mstop);
     //mainToolBar->addSeparator();
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
-
+    mainToolBar->addWidget(new QLabel("   "));
     //后退
     back = new QToolButton(this);
     back->setToolTip(tr("后退"));
     backSet="./icon/4_1.png";
-    mstop->setIcon(QPixmap(mstopSet));
-    mstop->setMinimumHeight(35);
+    back->setIcon(QPixmap(backSet));
+    back->setMinimumHeight(35);
     mainToolBar->addWidget(back);
     //mainToolBar->addSeparator();
     connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
-
+    mainToolBar->addWidget(new QLabel("   "));
     //回放
     //listLabel2=new QLabel(tr(" 回放 "));
     //mainToolBar->addWidget(listLabel2);
@@ -280,9 +288,8 @@ void MainWindow::addMyToolBar()
     open->setIcon(QPixmap(openSet));
     open->setMinimumHeight(35);
     mainToolBar->addWidget(open);
-
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
-
+    mainToolBar->addWidget(new QLabel("   "));
 
 
 //    play = new QToolButton(this);
@@ -315,6 +322,7 @@ void MainWindow::addMyToolBar()
     //第二组按钮：图像
     //listLabel3=new QLabel(tr(" 图像 "));
     //mainToolBar->addWidget(listLabel3);
+    mainToolBar->addWidget(new QLabel("   "));
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
     automSet="./icon/6_1.png";
@@ -322,6 +330,7 @@ void MainWindow::addMyToolBar()
     autom->setMinimumHeight(35);
     mainToolBar->addWidget(autom);
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
@@ -330,6 +339,7 @@ void MainWindow::addMyToolBar()
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(brightness);
     connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     saturation = new QToolButton(this);
     saturation->setToolTip(tr("饱和度"));
@@ -338,6 +348,7 @@ void MainWindow::addMyToolBar()
     saturation->setMinimumHeight(35);
     mainToolBar->addWidget(saturation);
     connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
@@ -346,47 +357,57 @@ void MainWindow::addMyToolBar()
     pseudoColor->setMinimumHeight(35);
     mainToolBar->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     mainToolBar->addSeparator();
 
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
+    mainToolBar->addWidget(new QLabel("   "));
     light1=new QToolButton(this);
     light1Set="./icon/16_1.png";
     light1->setIcon(QPixmap(light1Set));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(light1);
+    mainToolBar->addWidget(new QLabel("   "));
 
     light2=new QToolButton(this);
     light2Set="./icon/16_1.png";
     light2->setIcon(QPixmap(light2Set));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(light2);
+    mainToolBar->addWidget(new QLabel("   "));
 
     light3=new QToolButton(this);
     light3Set="./icon/16_1.png";
     light3->setIcon(QPixmap(light3Set));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(light3);
+    mainToolBar->addWidget(new QLabel("   "));
 
     light4=new QToolButton(this);
     light4Set="./icon/16_2.png";
     light4->setIcon(QPixmap(light4Set));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(light4);
+    mainToolBar->addWidget(new QLabel("   "));
 
     light5=new QToolButton(this);
     light5Set="./icon/16_2.png";
     light5->setIcon(QPixmap(light5Set));
     brightness->setMinimumHeight(35);
     mainToolBar->addWidget(light5);
+    mainToolBar->addWidget(new QLabel("   "));
 
     mainToolBar->addSeparator();
 
     //第四组，显示编号和系统当前时间
+    mainToolBar->addWidget(new QLabel("   "));
     serialNumber=new QLabel("系统编号：XXXXXX");//编号
     mainToolBar->addWidget(serialNumber);
-    time=new QLabel(QDateTime::currentDateTime().toString());//时间
+    mainToolBar->addWidget(new QLabel("   "));
+    time=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
     mainToolBar->addWidget(time);
+    mainToolBar->addWidget(new QLabel("   "));
 
     mainToolBar->addSeparator();
 
@@ -410,6 +431,7 @@ void MainWindow::addMyToolBar()
     //第五组，告警
     //listLabel4=new QLabel(tr(" 告警 "));
     //mainToolBar->addWidget(listLabel4);
+    mainToolBar->addWidget(new QLabel("   "));
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("开/关"));
     openCloseSet="./icon/11_1.png";
@@ -417,6 +439,7 @@ void MainWindow::addMyToolBar()
     openClose->setMinimumHeight(35);
     mainToolBar->addWidget(openClose);
     connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     objectAttribute = new QToolButton(this);
     objectAttribute->setToolTip(tr("对象属性"));
@@ -425,6 +448,7 @@ void MainWindow::addMyToolBar()
     objectAttribute->setMinimumHeight(35);
     mainToolBar->addWidget(objectAttribute);
     connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
@@ -433,6 +457,7 @@ void MainWindow::addMyToolBar()
     manual->setMinimumHeight(35);
     mainToolBar->addWidget(manual);
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     objects = new QToolButton(this);
     objects->setToolTip(tr("手动"));
@@ -441,6 +466,7 @@ void MainWindow::addMyToolBar()
     objects->setMinimumHeight(35);
     mainToolBar->addWidget(objects);
     connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     attribute = new QToolButton(this);
     attribute->setToolTip(tr("设置"));
@@ -449,6 +475,7 @@ void MainWindow::addMyToolBar()
     attribute->setMinimumHeight(35);
     mainToolBar->addWidget(attribute);
     connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     voice = new QToolButton(this);
     voice->setToolTip(tr("声音"));
@@ -457,16 +484,20 @@ void MainWindow::addMyToolBar()
     voice->setMinimumHeight(35);
     mainToolBar->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
 
     mainToolBar->addSeparator();
 
+    mainToolBar->addWidget(new QLabel("   "));
     exitButton = new QToolButton(this);
     exitButton->setToolTip(tr("退出"));
     exitSet="./icon/16_1.png";
     exitButton->setIcon(QPixmap(exitSet));
     exitButton->setMinimumHeight(35);
     mainToolBar->addWidget(exitButton);
-    connect(exitButton,SIGNAL(clicked()),this,SLOT(MainWindow::closeEvent(QCloseEvent *event)));
+    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
+    mainToolBar->addSeparator();
 }
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
@@ -742,6 +773,11 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
         }
     }
     //return img;
+}
+
+//获取系统当前时间定时器
+void MainWindow::onTimerOut2(){
+    time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 }
 
 //定时器任务
@@ -1134,7 +1170,12 @@ void MainWindow::voiceFunction()
 
     }
 }
-//退出系统
+
+void MainWindow::exitFunction(){
+    QApplication::closeAllWindows();
+}
+
+//退出系统事件
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 

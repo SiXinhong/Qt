@@ -52,6 +52,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public slots:
   void onTimerOut();
+  void onTimerOut2();
     
 public:
     //QApplication a;
@@ -105,6 +106,7 @@ public:
      Mat image11;
      //动图需要的变量
      QTimer *timer;
+     QTimer *timerSysTime;
      vector<Rectan> rectans1;
      int index;//用于标尺动
      //存储文件的图片需要的变量
@@ -232,6 +234,7 @@ protected slots:
 
      void attributeFunction();
      void voiceFunction();
+     void exitFunction();
      void closeEvent(QCloseEvent *event);
 
      //void lightFunction();
@@ -241,7 +244,6 @@ protected slots:
 //     void setLineEditValue(int);
 
 
-//>>>>>>> 1ab6e46fb26066a072d742ca9d4babbe3f67fc3f
 private:
     Ui::MainWindow *ui;
 
