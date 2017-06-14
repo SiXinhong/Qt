@@ -1,7 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qjwidget.h"
+#include "zwidget.h"
+#include "nwidget.h"
+#include "hwidget.h"
+#include "lwidget.h"
+
 #include "imagedeal.h"
+
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -35,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    //设置属性设置中的变量的默认值
+    //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
     //暂停还是继续
@@ -48,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
     isMubiao = true;
     //系统编号
     xtbh = QString("XXXXXXX");
+    //-------------------------------------------------------
 
 
     ui->setupUi(this);   
@@ -56,10 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //widget10 = new QWidget(this);
     widget1 = new QjWidget(new QWidget(this));
     widget2 = new QjWidget(new QWidget(this));
-    widget3 = new QWidget(this);
-    widget4 = new QWidget(this);
-    widget5 = new QWidget(this);
-    widget6 = new QWidget(this);
+    widget3 = new ZWidget(new QWidget(this));
+    widget4 = new NWidget(new QWidget(this));
+    widget5 = new HWidget(new QWidget(this));
+    widget6 = new LWidget(new QWidget(this));
 
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
@@ -68,57 +75,10 @@ MainWindow::MainWindow(QWidget *parent) :
     label5=new QLabel(widget5);
     label6=new QLabel(widget6);
 
-    index=0;//用于计算标尺的起始位置
-    index1=0;//用于取第一栏的图片
-    index2=0;//用于取第二栏的图片
 
-    dialogLabel=new QLabel;
-
-
-    //图片1
-    string imageurl="./s1/1.bmp";
-    drawUiLabel(imageurl,1);
-    //图片2
-    string imageurl2 = "./s2/1.bmp";
-    drawUiLabel(imageurl2,2);
-    //图片3
-    drawUiLabelByCopy(imageurl,3);
-    //图片4
-    drawUiLabelByCopy(imageurl2,4);
-    //图片5
-    string imageurl5="./0.png";//第五个图片的
-    drawUiLabel(imageurl5,5);
-    //图片6
-    string imageurl6= "./0.png";//第五个图片的
-    drawUiLabel(imageurl6,6);
-
-//    string imageurl="./s1/1.bmp";
-//    String imageurl2="./s2/1.bmp";
-    imageurl="./s1/1.bmp";
-    imageurl2="./s2/1.bmp";
-
-
-    //存储第一栏
-    filename1 = "./s1/1.bmp";
-    filename2 = "./s1/2.bmp";
-    filename3 = "./s1/3.bmp";
-    filename4 = "./s1/4.bmp";
-    //存储第二栏
-    filename5 = "./s2/1.bmp";
-    filename6 = "./s2/2.bmp";
-    filename7 = "./s2/3.bmp";
-    filename8 = "./s2/4.bmp";
-    //将第一栏存储在vector中
-    vc1.push_back(filename1);
-    vc1.push_back(filename2);
-    vc1.push_back(filename3);
-    vc1.push_back(filename4);
-    //将第二栏存储在vector中
-    vc2.push_back(filename5);
-    vc2.push_back(filename6);
-    vc2.push_back(filename7);
-    vc2.push_back(filename8);
-
+    //临时性处理，将来被金老师SDK替换--------------------------------
+    tempProcessing();
+    //---------------------------------------------------------
     //定时器
     timer=new QTimer();
     timer->setInterval(3000);
@@ -255,6 +215,65 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+//临时性处理函数，将来被金老师SDK替换------------------------------
+void MainWindow::tempProcessing(){
+    index=0;//用于计算标尺的起始位置
+    index1=0;//用于取第一栏的图片
+    index2=0;//用于取第二栏的图片
+
+    //图片1
+    string imageurl="./s1/1.bmp";
+    Mat mat1 =imread(imageurl);
+    drawUiLabel(mat1,1);
+    //图片2
+    string imageurl2 = "./s2/1.bmp";
+    Mat mat2 =imread(imageurl2);
+    drawUiLabel(mat2,2);
+    //图片3
+    Mat mat3 =imread(imageurl);
+    drawUiLabelByCopy(mat3,3);
+    //图片4
+    Mat mat4 =imread(imageurl2);
+    drawUiLabelByCopy(mat4,4);
+    //图片5
+    string imageurl5="./0.png";//第五个图片的
+    Mat mat5 =imread(imageurl5);
+
+    drawUiLabel(mat5,5);
+    //图片6
+    string imageurl6= "./0.png";//第五个图片的
+    Mat mat6 =imread(imageurl6);
+
+    drawUiLabel(mat6,6);
+
+    imageurl="./s1/1.bmp";
+    imageurl2="./s2/1.bmp";
+
+    //存储第一栏
+    filename1 = "./s1/1.bmp";
+    filename2 = "./s1/2.bmp";
+    filename3 = "./s1/3.bmp";
+    filename4 = "./s1/4.bmp";
+    //存储第二栏
+    filename5 = "./s2/1.bmp";
+    filename6 = "./s2/2.bmp";
+    filename7 = "./s2/3.bmp";
+    filename8 = "./s2/4.bmp";
+    //将第一栏存储在vector中
+    vc1.push_back(filename1);
+    vc1.push_back(filename2);
+    vc1.push_back(filename3);
+    vc1.push_back(filename4);
+    //将第二栏存储在vector中
+    vc2.push_back(filename5);
+    vc2.push_back(filename6);
+    vc2.push_back(filename7);
+    vc2.push_back(filename8);
+}
+
+//----------------------------------------------------------
+
 //绘制工具栏
 void MainWindow::addMyToolBar()
 {
@@ -516,8 +535,8 @@ void MainWindow::addMyToolBar()
     mainToolBar->addSeparator();
 }
 //---xiaotian 绘制界面上的图片3  图片4
-void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
-    Mat image =imread(imgurl);
+void MainWindow::drawUiLabelByCopy(Mat image, int index1){
+    //Mat image =imread(imgurl);
     Size dsize ;
     double scale = 1;
     dsize = Size(image.cols*scale,image.rows*scale);
@@ -577,8 +596,8 @@ void MainWindow::drawUiLabelByCopy(string imgurl, int index1){
 
 
 //---xiaotian 绘制界面上的图片1 图片2 图片5 图片6
-void MainWindow::drawUiLabel(string imgurl, int index){
-     Mat image =imread(imgurl);
+void MainWindow::drawUiLabel(Mat image, int index){
+     //Mat image =imread(imgurl);
      vector<Rectan> rectans;
      if(index == 1){
          //图片1
@@ -800,53 +819,34 @@ void MainWindow::onTimerOut2(){
 void MainWindow::onTimerOut()
 {
     index=index+1;
-//    string imageurl="./s1/1.bmp";
-//    string imageurl2="./s2/1.bmp";
-//    //存储第一栏
-//    QString filename1("./s1/1.bmp");
-//    QString filename2("./s1/2.bmp");
-//    QString filename3("./s1/3.bmp");
-//    QString filename4("./s1/4.bmp");
-//    //存储第二栏
-//    QString filename5("./s2/1.bmp");
-//    QString filename6("./s2/2.bmp");
-//    QString filename7("./s2/3.bmp");
-//    QString filename8("./s2/4.bmp");
-//    //将第一栏存储在vector中
-//    vc1.push_back(filename1);
-//    vc1.push_back(filename2);
-//    vc1.push_back(filename3);
-//    vc1.push_back(filename4);
-//    //将第二栏存储在vector中
-//    vc2.push_back(filename5);
-//    vc2.push_back(filename6);
-//    vc2.push_back(filename7);
-//    vc2.push_back(filename8);
     //更新第一栏的图片
     index1=index1+1;
     //QImage *image=new QImage(vc1[(index1)%4]);
     image= QImage(vc1[(index1)%4]);
     QString s1=vc1[(index1)%4];
     imageurl=s1.toStdString();
+    Mat mat1 =imread(imageurl);
     qDebug()<<s1;
-    drawUiLabel(imageurl,1);
-
+    drawUiLabel(mat1,1);
     //更新第二栏的图片
     index2=index2+1;
     //QImage *image2=new QImage(vc2[(index2)%4]);
     image2= QImage(vc2[(index2)%4]);
     QString s2=vc2[(index2)%4];
     imageurl2=s2.toStdString();
+    Mat mat2 =imread(imageurl2);
     qDebug()<<s2;
-    drawUiLabel(imageurl2,2);
+    drawUiLabel(mat2,2);
     //更新第三栏
     Mat img=QImageToMat(image);
     paintRectangle(img,1490,250,100,100);
-    drawUiLabelByCopy(imageurl,3);
+    Mat mat3 =imread(imageurl);
+    drawUiLabelByCopy(mat3,3);
     //更新第四栏
     Mat img2=QImageToMat(image2);
     paintRectangle(img2,1650,250,400,100);
-    drawUiLabelByCopy(imageurl2,4);
+    Mat mat4 =imread(imageurl2);
+    drawUiLabelByCopy(mat4,4);
     qDebug()<<"tongguo 3!!!!!";
 }
 void MainWindow::resizeEvent(QResizeEvent *){
@@ -988,54 +988,27 @@ void MainWindow::mstopFunction()
 //后退
 void MainWindow::backFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("后退功能，有待实现。"),tr("继续努力。"));
 }
 //回放
 void MainWindow::openFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("回放功能，有待实现。"),tr("继续努力。"));
 }
-////暂停
-//void MainWindow::rstopFunction()
-//{
-//    if(rstopSet=="./icon/2_2.png")
-//    {
-//        rstop->setIcon(QPixmap("./icon/2_1.png"));
-//        rstopSet="./icon/2_1.png";
-//    }
-//    else
-//    {
-//        rstop->setIcon(QPixmap("./icon/2_2.png"));
-//        rstopSet="./icon/2_2.png";
-//    }
-//}
-////时间线
-//void MainWindow::timeLineFunction()
-//{
-//    if(timeLineSet=="./icon/5_2.png")
-//    {
-//        timeLine->setIcon(QPixmap("./icon/5_1.png"));
-//        timeLineSet="./icon/5_1.png";
-//    }
-//    else
-//    {
-//        timeLine->setIcon(QPixmap("./icon/5_2.png"));
-//        timeLineSet="./icon/5_2.png";
-//    }
-//}
+
 //图像
 //自动
 void MainWindow::automFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+   // dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
 }
 //亮度
 void MainWindow::brightnessFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
 
     if(brightnessSet=="./icon/7_2.png")
@@ -1101,7 +1074,7 @@ void MainWindow::brightnessFunction()
 //饱和度
 void MainWindow::saturationFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
     if(saturationSet=="./icon/8_2.png")
     {
@@ -1120,7 +1093,7 @@ void MainWindow::saturationFunction()
 //伪彩色
 void MainWindow::pseudoColorFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
 }
 
@@ -1147,13 +1120,13 @@ void MainWindow::openCloseFunction()
 //手动
 void MainWindow::manualFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 }
 //目标属性列表
 void MainWindow::objectAttributeFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("目标属性列表功能，有待实现。"),tr("继续努力。"));
 }
 //设置
@@ -1178,7 +1151,7 @@ void MainWindow::objectsFunction()
 //目标属性列表
 void MainWindow::attributeFunction()
 {
-    dialogLabel->setText(tr("Information Message Box"));
+    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 //声音

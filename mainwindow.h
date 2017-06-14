@@ -8,6 +8,10 @@
 #include <QLabel>
 #include "mylabel.h"
 #include "qjwidget.h"
+#include "zwidget.h"
+#include "nwidget.h"
+#include "hwidget.h"
+#include "lwidget.h"
 #include <QGridLayout>
 #include <cv.h>
 #include <phonon>
@@ -84,9 +88,23 @@ public:
     QImage drawCircleOnPic(Mat image11,vector<Point> point,double x,double y);
 
     //---xiaotian  在界面上画label  图片1 图片2  图片5 图片6
-    void drawUiLabel(string imgurl,int index);
+    void drawUiLabel(Mat image,int index);
     //---xiaotian  在界面上画label  图片3 图片4.（这两张图片需要截取，所以属于一类方法）
-    void drawUiLabelByCopy(string imgurl,int index1);
+    void drawUiLabelByCopy(Mat iamge,int index1);
+
+    //添加属性设置中的变量
+    //启动还是停止
+    boolean isQidong;
+    //暂停还是继续
+    boolean isJixu;
+    //告警启动还是关闭
+    boolean isGaojing;
+    //声音打开还是关闭
+    boolean isShengyin;
+    //目标属性是否跟随
+    boolean isMubiao;
+    //系统编号
+    QString xtbh;
 
      QLabel *label;
      QLabel *label2;
@@ -97,16 +115,19 @@ public:
 
      QjWidget* widget1;
      QjWidget* widget2;
-     QWidget* widget3;
-     QWidget* widget4;
-     QWidget* widget5;
-     QWidget* widget6;
-     QGridLayout *gridlayout;
+     ZWidget* widget3;
+     NWidget* widget4;
+     HWidget* widget5;
+     LWidget* widget6;
 
-     Mat image11;
-     //动图需要的变量
      QTimer *timer;
      QTimer *timerSysTime;
+
+     QGridLayout *gridlayout;
+
+     //----------------以下为临时性变量-----------------
+     Mat image11;
+     //动图需要的变量
      vector<Rectan> rectans1;
      int index;//用于标尺动
      //存储文件的图片需要的变量
@@ -115,24 +136,33 @@ public:
      int index2;//读取第二栏第几张图片
      vector<QString> vc2;//存储第二栏的图片
 
-     //添加属性设置中的变量
-     //启动还是停止
-     boolean isQidong;
-     //暂停还是继续
-     boolean isJixu;
-     //告警启动还是关闭
-     boolean isGaojing;
-     //声音打开还是关闭
-     boolean isShengyin;
-     //目标属性是否跟随
-     boolean isMubiao;
-     //系统编号
-     QString xtbh;
+     string imageurl;
+     string imageurl2;
+
+
+     QString filename1;
+     QString filename2;
+     QString filename3;
+     QString filename4;
+     QString filename5;
+     QString filename6;
+     QString filename7;
+     QString filename8;
+
+     QPixmap pixmap;
+     QImage aa;
+     QImage img;
+     QImage imgLabel;
+     QImage image;
+     QImage image2;
+     //-----------------------------------------------
 
 
 protected:
      //工具条需要的变量
      void addMyToolBar();
+     //临时性处理
+     void tempProcessing();
      QToolBar *mainToolBar;
      //第一组按钮：监控和后退，还有回放
      //QLabel *listLabel1;
@@ -202,27 +232,8 @@ protected:
      //QToolButton *light;//指示灯
      //对话框需要的变量
      //QLineEdit *fileLineEdit;
-     QLabel *dialogLabel;
+     //QLabel *dialogLabel;
 
-     string imageurl;
-     string imageurl2;
-
-
-     QString filename1;
-     QString filename2;
-     QString filename3;
-     QString filename4;
-     QString filename5;
-     QString filename6;
-     QString filename7;
-     QString filename8;
-
-     QPixmap pixmap;
-     QImage aa;
-     QImage img;
-     QImage imgLabel;
-     QImage image;
-     QImage image2;
      //调节图像所需要的参数
 //     QSlider *slider;
 //     QLineEdit *lineEdit;
