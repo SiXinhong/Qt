@@ -17,20 +17,22 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     mylabel.cpp \
     rectan.cpp \
-    qjwidget.cpp \
     zwidget.cpp \
     nwidget.cpp \
     hwidget.cpp \
-    lwidget.cpp
+    lwidget.cpp \
+    qj1widget.cpp \
+    qj2widget.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
     rectan.h \
-    qjwidget.h \
     zwidget.h \
     nwidget.h \
     hwidget.h \
-    lwidget.h
+    lwidget.h \
+    qj1widget.h \
+    qj2widget.h
 
 FORMS    += mainwindow.ui
 

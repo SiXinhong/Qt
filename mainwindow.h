@@ -7,7 +7,8 @@
 #include <QPixmap>
 #include <QLabel>
 #include "mylabel.h"
-#include "qjwidget.h"
+#include "qj1widget.h"
+#include "qj2widget.h"
 #include "zwidget.h"
 #include "nwidget.h"
 #include "hwidget.h"
@@ -62,14 +63,14 @@ public:
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    //QApplication getA();
-    //void setA(QApplication aa);
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
     void update();
 //    QImage paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
 //    QImage paintCircle(Mat image,double x,double y);//画圆
 //    QImage paintScale(Mat image,double startw,double starth);//画标尺
+
+    void test();
 
     void paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
     void paintCircle(Mat image,double x,double y);//画圆
@@ -80,8 +81,22 @@ public:
 
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
+    //加载图片到Label1上
+    void loadPictureToLabel1();
+    //加载图片到Label2上
+    void loadPictureToLabel2();
+    //加载图片到Label3上
+    void loadPictureToLabel3();
+    //加载图片到Label4上
+    void loadPictureToLabel4();
+    //加载图片到Label5上
+    void loadPictureToLabel5();
+    //加载图片到Label6上
+    void loadPictureToLabel6();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
     QImage drawRecOnPic(Mat image,vector<Rectan> rectan);
+    //绘制鼠标选取的矩形
+    void drawRecOnPic2(Mat image, Rect rect);
     //---xiaotian   在图像是绘制标尺和矩形框
     QImage drawScaleAndRecOnPic(Mat image11,vector<Rectan> rectan,double startw,double starth);
     //---xiaotian  在图像上画圆和多边形
@@ -113,8 +128,8 @@ public:
      QLabel *label5;
      QLabel *label6;
 
-     QjWidget* widget1;
-     QjWidget* widget2;
+     Qj1Widget* widget1;
+     Qj2Widget* widget2;
      ZWidget* widget3;
      NWidget* widget4;
      HWidget* widget5;

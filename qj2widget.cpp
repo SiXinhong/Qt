@@ -1,10 +1,11 @@
 
-#include "qjwidget.h"
+
+#include "qj2widget.h"
 
 using namespace cv;
 using namespace std;
 
-QjWidget::QjWidget(QWidget *parent) :
+Qj2Widget::Qj2Widget(QWidget *parent) :
     QWidget(parent){
 
         isDrag = false;
@@ -17,7 +18,7 @@ QjWidget::QjWidget(QWidget *parent) :
         //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
     }
 
-void QjWidget::contextMenuEvent(QContextMenuEvent *){
+void Qj2Widget::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
     menu->addAction(To_Zhu); //添加菜单项1
@@ -25,12 +26,12 @@ void QjWidget::contextMenuEvent(QContextMenuEvent *){
     //menu->addAction(To_Tanchu);//添加菜单项3
     menu->exec(cur.pos()); //关联到光标
 }
-void QjWidget::ToZhu()
+void Qj2Widget::ToZhu()
 {
     qDebug()<<"到主显示区。";
 }
 //到凝视显示区显示菜单处理事件
-void QjWidget::ToNingshi()
+void Qj2Widget::ToNingshi()
 {
     qDebug()<<"到凝视显示区。";
 }
@@ -43,7 +44,7 @@ void QjWidget::ToNingshi()
 
 //}
 
-void QjWidget::mousePressEvent(QMouseEvent *e)
+void Qj2Widget::mousePressEvent(QMouseEvent *e)
 {
     if(e->button() == Qt::LeftButton)
     {
@@ -54,7 +55,7 @@ void QjWidget::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void QjWidget::mouseMoveEvent(QMouseEvent *e)
+void Qj2Widget::mouseMoveEvent(QMouseEvent *e)
 {
     if(isDrag && (e->buttons() && Qt::LeftButton)){
         //move(e->globalPos() - position1);
@@ -62,7 +63,7 @@ void QjWidget::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-void QjWidget::mouseReleaseEvent(QMouseEvent *e)
+void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
 {
     isDrag = false;
     position2 = e->globalPos() - this->pos();

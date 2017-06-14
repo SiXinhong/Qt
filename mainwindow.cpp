@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "qjwidget.h"
+#include "qj1widget.h"
+#include "qj2widget.h"
 #include "zwidget.h"
 #include "nwidget.h"
 #include "hwidget.h"
@@ -35,8 +36,7 @@
 using namespace cv;
 using namespace std;
 
-//int threshval = 160;
-//Mat img;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -61,8 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QWidget* widget = new QWidget(this);
 
     //widget10 = new QWidget(this);
-    widget1 = new QjWidget(new QWidget(this));
-    widget2 = new QjWidget(new QWidget(this));
+    widget1 = new Qj1Widget(new QWidget(this));
+    widget2 = new Qj2Widget(new QWidget(this));
     widget3 = new ZWidget(new QWidget(this));
     widget4 = new NWidget(new QWidget(this));
     widget5 = new HWidget(new QWidget(this));
@@ -211,10 +211,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow(){
     delete ui;
 }
+
 
 //临时性处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::tempProcessing(){
@@ -225,6 +225,7 @@ void MainWindow::tempProcessing(){
     //图片1
     string imageurl="./s1/1.bmp";
     Mat mat1 =imread(imageurl);
+    widget1->setMat(mat1);
     drawUiLabel(mat1,1);
     //图片2
     string imageurl2 = "./s2/1.bmp";
@@ -534,6 +535,61 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
     mainToolBar->addSeparator();
 }
+
+//获取系统当前时间定时器
+void MainWindow::onTimerOut2(){
+    time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+}
+
+//定时器任务
+void MainWindow::onTimerOut()
+{
+    index=index+1;
+    //更新第一栏的图片
+    index1=index1+1;
+    //QImage *image=new QImage(vc1[(index1)%4]);
+    image= QImage(vc1[(index1)%4]);
+    QString s1=vc1[(index1)%4];
+    imageurl=s1.toStdString();
+    Mat mat1 =imread(imageurl);
+    widget1->setMat(mat1);
+    qDebug()<<s1;
+    drawUiLabel(mat1,1);
+    //更新第二栏的图片
+    index2=index2+1;
+    //QImage *image2=new QImage(vc2[(index2)%4]);
+    image2= QImage(vc2[(index2)%4]);
+    QString s2=vc2[(index2)%4];
+    imageurl2=s2.toStdString();
+    Mat mat2 =imread(imageurl2);
+    qDebug()<<s2;
+    drawUiLabel(mat2,2);
+    //更新第三栏
+    Mat img=QImageToMat(image);
+    paintRectangle(img,1490,250,100,100);
+    Mat mat3 =imread(imageurl);
+    drawUiLabelByCopy(mat3,3);
+    //更新第四栏
+    Mat img2=QImageToMat(image2);
+    paintRectangle(img2,1650,250,400,100);
+    Mat mat4 =imread(imageurl2);
+    drawUiLabelByCopy(mat4,4);
+    qDebug()<<"tongguo 3!!!!!";
+}
+
+void MainWindow::resizeEvent(QResizeEvent *){
+    label->resize(widget1->size());
+    label2->resize(widget2->size());
+    label3->resize(widget3->size());
+    label4->resize(widget4->size());
+    label5->resize(widget5->size());
+    label6->resize(widget6->size());
+}
+
+void MainWindow::paintEvent(QPaintEvent *){
+    //重新绘制图片。
+}
+
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){
     //Mat image =imread(imgurl);
@@ -682,6 +738,36 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
     //delete & image;
 }
 
+//加载图片到Label1上
+void MainWindow::loadPictureToLabel1(){
+    loadPictureToLabel(label,imgLabel);
+}
+
+//加载图片到Label2上
+void MainWindow::loadPictureToLabel2(){
+    loadPictureToLabel(label2,imgLabel);
+}
+
+//加载图片到Label3上
+void MainWindow::loadPictureToLabel3(){
+    loadPictureToLabel(label3,imgLabel);
+}
+
+//加载图片到Label4上
+void MainWindow::loadPictureToLabel4(){
+    loadPictureToLabel(label4,imgLabel);
+}
+
+//加载图片到Label5上
+void MainWindow::loadPictureToLabel5(){
+    loadPictureToLabel(label5,imgLabel);
+}
+
+//加载图片到Label6上
+void MainWindow::loadPictureToLabel6(){
+    loadPictureToLabel(label,imgLabel);
+}
+
 //---xiaotian   图像上绘制矩形框
 QImage MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。
@@ -703,7 +789,15 @@ QImage MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
 
 }
 
-
+//绘制鼠标选取的矩形
+void MainWindow::drawRecOnPic2(Mat image, Rect rect){
+    //在图像上画矩形。
+    rectangle(image,rect,Scalar(0,0,255),4,1,0);
+    cv::cvtColor(image, image, CV_BGR2RGB);
+    //QImage imglabel;
+    imgLabel = MatToQImage(image);
+    //return imgLabel;
+}
 
 //---xiaotian  图像上绘制标尺和矩形框
 QImage MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
@@ -810,57 +904,7 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
     //return img;
 }
 
-//获取系统当前时间定时器
-void MainWindow::onTimerOut2(){
-    time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
-}
 
-//定时器任务
-void MainWindow::onTimerOut()
-{
-    index=index+1;
-    //更新第一栏的图片
-    index1=index1+1;
-    //QImage *image=new QImage(vc1[(index1)%4]);
-    image= QImage(vc1[(index1)%4]);
-    QString s1=vc1[(index1)%4];
-    imageurl=s1.toStdString();
-    Mat mat1 =imread(imageurl);
-    qDebug()<<s1;
-    drawUiLabel(mat1,1);
-    //更新第二栏的图片
-    index2=index2+1;
-    //QImage *image2=new QImage(vc2[(index2)%4]);
-    image2= QImage(vc2[(index2)%4]);
-    QString s2=vc2[(index2)%4];
-    imageurl2=s2.toStdString();
-    Mat mat2 =imread(imageurl2);
-    qDebug()<<s2;
-    drawUiLabel(mat2,2);
-    //更新第三栏
-    Mat img=QImageToMat(image);
-    paintRectangle(img,1490,250,100,100);
-    Mat mat3 =imread(imageurl);
-    drawUiLabelByCopy(mat3,3);
-    //更新第四栏
-    Mat img2=QImageToMat(image2);
-    paintRectangle(img2,1650,250,400,100);
-    Mat mat4 =imread(imageurl2);
-    drawUiLabelByCopy(mat4,4);
-    qDebug()<<"tongguo 3!!!!!";
-}
-void MainWindow::resizeEvent(QResizeEvent *){
-    label->resize(widget1->size());
-    label2->resize(widget2->size());
-    label3->resize(widget3->size());
-    label4->resize(widget4->size());
-    label5->resize(widget5->size());
-    label6->resize(widget6->size());
-}
-
-void MainWindow::paintEvent(QPaintEvent *){
-    //重新绘制图片。
-}
 cv::Mat MainWindow::QImageToMat(QImage image)
 {
     cv::Mat mat;
@@ -884,6 +928,7 @@ cv::Mat MainWindow::QImageToMat(QImage image)
 
     return mat;
 }
+
 QImage MainWindow::MatToQImage(const cv::Mat& mat)
 {
     // 8-bits unsigned, NO. OF CHANNELS = 1
@@ -1122,6 +1167,21 @@ void MainWindow::manualFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
+
+    string imageurl="./s1/1.bmp";
+    Mat mat1 =imread(imageurl);
+    Rect rectan;
+    rectan.x=1690;// = Rect(1490,250,100,100);
+    rectan.y=350;
+    rectan.width=200;
+    rectan.height=200;
+
+    //MainWindow *mw = (MainWindow*)parentWidget();
+    //mw->test();
+
+    drawRecOnPic2(mat1,rectan);
+    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
+    loadPictureToLabel1();
 }
 //目标属性列表
 void MainWindow::objectAttributeFunction()
@@ -1189,4 +1249,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::adjustbrightness()
 {
 //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
+}
+
+void MainWindow::test()
+{
+    //dialogLabel->setText(tr("Information Message Box"));
+    QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }

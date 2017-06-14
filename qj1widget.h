@@ -21,27 +21,33 @@
 using namespace cv;
 using namespace std;
 
-class QjWidget : public QWidget
+class Qj1Widget : public QWidget
 {
     Q_OBJECT
 
 private:
-//Ui::Widget *ui;
 QAction* To_Zhu;
 QAction* To_Ningshi;
 QAction* To_Tanchu;
 
 public:
+
+    Mat mat;
+
     QPoint position1;
     QPoint position2;
     boolean isDrag;
-    Rectan rectan;
+    Rect rectan;
 
-    explicit QjWidget(QWidget *parent = 0);
+
+    explicit Qj1Widget(QWidget *parent = 0);
     void contextMenuEvent(QContextMenuEvent *);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+
+    void setMat(Mat m);
+    Mat getMat();
 
 signals:
 
