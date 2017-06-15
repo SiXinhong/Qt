@@ -77,7 +77,7 @@ public:
     void paintScale(Mat image,double startw,double starth);//画标尺
 
     cv::Mat QImageToMat(QImage image);
-    QImage MatToQImage(const cv::Mat& mat);
+    QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
@@ -94,13 +94,13 @@ public:
     //加载图片到Label6上
     void loadPictureToLabel6();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
-    QImage drawRecOnPic(Mat image,vector<Rectan> rectan);
+    void drawRecOnPic(Mat image,vector<Rectan> rectan);
     //绘制鼠标选取的矩形
     void drawRecOnPic2(Mat image, Rect rect);
     //---xiaotian   在图像是绘制标尺和矩形框
-    QImage drawScaleAndRecOnPic(Mat image11,vector<Rectan> rectan,double startw,double starth);
+    void drawScaleAndRecOnPic(Mat image11,vector<Rectan> rectan,double startw,double starth);
     //---xiaotian  在图像上画圆和多边形
-    QImage drawCircleOnPic(Mat image11,vector<Point> point,double x,double y);
+    void drawCircleOnPic(Mat image11,vector<Point> point,double x,double y);
 
     //---xiaotian  在界面上画label  图片1 图片2  图片5 图片6
     void drawUiLabel(Mat image,int index);
@@ -127,6 +127,15 @@ public:
      QLabel *label4;
      QLabel *label5;
      QLabel *label6;
+
+     //加载到6个QLabel上的6个QImage
+     QImage imgLabel1;
+     QImage imgLabel2;
+     QImage imgLabel3;
+     QImage imgLabel4;
+     QImage imgLabel5;
+     QImage imgLabel6;
+
 
      Qj1Widget* widget1;
      Qj2Widget* widget2;
@@ -167,7 +176,7 @@ public:
      QPixmap pixmap;
      QImage aa;
      QImage img;
-     QImage imgLabel;
+
      QImage image;
      QImage image2;
      //-----------------------------------------------

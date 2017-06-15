@@ -230,6 +230,7 @@ void MainWindow::tempProcessing(){
     //图片2
     string imageurl2 = "./s2/1.bmp";
     Mat mat2 =imread(imageurl2);
+    widget2->setMat(mat2);
     drawUiLabel(mat2,2);
     //图片3
     Mat mat3 =imread(imageurl);
@@ -562,6 +563,7 @@ void MainWindow::onTimerOut()
     QString s2=vc2[(index2)%4];
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
+    widget2->setMat(mat2);
     qDebug()<<s2;
     drawUiLabel(mat2,2);
     //更新第三栏
@@ -623,9 +625,10 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
             rectans1.push_back(rectnew);
         }
         //QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
-        imgLabel = drawScaleAndRecOnPic(image33,rectans1,index,-1);
+        drawScaleAndRecOnPic(image33,rectans1,index,-1);
+        imgLabel3 = MatToQImage(image33,imgLabel3);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
-        loadPictureToLabel(label3,imgLabel);
+        loadPictureToLabel(label3,imgLabel3);
         //release(&image3);
         //release(&image33);
     }
@@ -638,9 +641,10 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
         rectans.clear();
         rectans.push_back(rec4);
         //QImage imgLabel4 = drawRecOnPic(image44,rectans);
-        imgLabel = drawRecOnPic(image44,rectans);
+        drawRecOnPic(image44,rectans);
+        imgLabel4 = MatToQImage(image44,imgLabel4);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
-        loadPictureToLabel(label4,imgLabel);
+        loadPictureToLabel(label4,imgLabel4);
         //cvReleaseMat(&image4);
         //cvReleaseMat(&image44);
     }
@@ -662,9 +666,10 @@ void MainWindow::drawUiLabel(Mat image, int index){
          rectans.push_back(rec);
          rectans.push_back(rec2);
          //QImage imgLabel = drawRecOnPic(image,rectans);
-         imgLabel = drawRecOnPic(image,rectans);
+         drawRecOnPic(image,rectans);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label,imgLabel);
+         imgLabel1 = MatToQImage(image,imgLabel1);
+         loadPictureToLabel(label,imgLabel1);
      }
 
      if(index == 2){
@@ -673,9 +678,10 @@ void MainWindow::drawUiLabel(Mat image, int index){
          rectans.clear();
          rectans.push_back(rec3);
          //QImage imgLabel = drawRecOnPic(image,rectans);
-         imgLabel = drawRecOnPic(image,rectans);
+         drawRecOnPic(image,rectans);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label2,imgLabel);
+         imgLabel2 = MatToQImage(image,imgLabel2);
+         loadPictureToLabel(label2,imgLabel2);
      }
 
      if(index == 5){
@@ -698,9 +704,10 @@ void MainWindow::drawUiLabel(Mat image, int index){
          points.push_back(point7);
          points.push_back(point8);
          //QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
-         imgLabel = drawCircleOnPic(image,points,120,100);
+         drawCircleOnPic(image,points,120,100);
+         imgLabel5 = MatToQImage(image, imgLabel5);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label5,imgLabel);
+         loadPictureToLabel(label5,imgLabel5);
          //delete imgLabel5;
      }
      if(index == 6){
@@ -719,9 +726,10 @@ void MainWindow::drawUiLabel(Mat image, int index){
          points1.push_back(point51);
          points1.push_back(point61);
          //QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
-         imgLabel = drawCircleOnPic(image,points1,120,100);
+         drawCircleOnPic(image,points1,120,100);
+         imgLabel6 = MatToQImage(image, imgLabel6);
          cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label6,imgLabel);
+         loadPictureToLabel(label6,imgLabel6);
          //delete imgLabel6;
      }
      //cvReleaseMat(&image);
@@ -731,8 +739,8 @@ void MainWindow::drawUiLabel(Mat image, int index){
 
 //---xiaotian   加载图片到label上。
 void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
-    pixmap = QPixmap::fromImage(image);
-    label->setPixmap(pixmap);
+    QPixmap pixmap1 = QPixmap::fromImage(image);
+    label->setPixmap(pixmap1);
     label->setScaledContents(true);
     //释放image
     //delete & image;
@@ -740,36 +748,36 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 
 //加载图片到Label1上
 void MainWindow::loadPictureToLabel1(){
-    loadPictureToLabel(label,imgLabel);
+    loadPictureToLabel(label,imgLabel1);
 }
 
 //加载图片到Label2上
 void MainWindow::loadPictureToLabel2(){
-    loadPictureToLabel(label2,imgLabel);
+    loadPictureToLabel(label2,imgLabel2);
 }
 
 //加载图片到Label3上
 void MainWindow::loadPictureToLabel3(){
-    loadPictureToLabel(label3,imgLabel);
+    loadPictureToLabel(label3,imgLabel3);
 }
 
 //加载图片到Label4上
 void MainWindow::loadPictureToLabel4(){
-    loadPictureToLabel(label4,imgLabel);
+    loadPictureToLabel(label4,imgLabel4);
 }
 
 //加载图片到Label5上
 void MainWindow::loadPictureToLabel5(){
-    loadPictureToLabel(label5,imgLabel);
+    loadPictureToLabel(label5,imgLabel5);
 }
 
 //加载图片到Label6上
 void MainWindow::loadPictureToLabel6(){
-    loadPictureToLabel(label,imgLabel);
+    loadPictureToLabel(label6,imgLabel6);
 }
 
 //---xiaotian   图像上绘制矩形框
-QImage MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
+void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。
     int count = rectans.size();
     for (int i = 0; i < count;i++)
@@ -784,8 +792,8 @@ QImage MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     }
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
-    imgLabel = MatToQImage(image);
-    return imgLabel;
+//    imgLabel = MatToQImage(image);
+//    return imgLabel;
 
 }
 
@@ -795,12 +803,12 @@ void MainWindow::drawRecOnPic2(Mat image, Rect rect){
     rectangle(image,rect,Scalar(0,0,255),4,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
     //QImage imglabel;
-    imgLabel = MatToQImage(image);
-    //return imgLabel;
+//    imgLabel = MatToQImage(image);
+//    //return imgLabel;
 }
 
 //---xiaotian  图像上绘制标尺和矩形框
-QImage MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
+void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
     //在图像上画矩形。
     int count = rectans.size();
     for (int i = 0; i < count;i++)
@@ -817,12 +825,12 @@ QImage MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, doubl
     paintScale(image,startw,starth);
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel3;
-    imgLabel = MatToQImage(image);
-    return imgLabel;
+//    imgLabel = MatToQImage(image);
+//    return imgLabel;
 }
 
 //---xiaotian  图像上绘制多边形和圆
-QImage MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
+void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
     //在图像上画多边形
     int count = point.size();
     for (int i = 0; i <count;i+=2)
@@ -835,8 +843,8 @@ QImage MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, dou
     paintCircle(image,x,y);
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
-    imgLabel = MatToQImage(image);
-    return imgLabel;
+//    imgLabel = MatToQImage(image);
+//    return imgLabel;
 }
 
 
@@ -929,7 +937,7 @@ cv::Mat MainWindow::QImageToMat(QImage image)
     return mat;
 }
 
-QImage MainWindow::MatToQImage(const cv::Mat& mat)
+QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
 {
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if(mat.type() == CV_8UC1)

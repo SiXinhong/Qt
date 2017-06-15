@@ -26,16 +26,22 @@ class Qj2Widget : public QWidget
     Q_OBJECT
 
 private:
-//Ui::Widget *ui;
+QAction* Cancel_Select;
 QAction* To_Zhu;
 QAction* To_Ningshi;
-QAction* To_Tanchu;
+//QAction* To_Tanchu;
 
 public:
+
+    Mat mat;
+
     QPoint position1;
     QPoint position2;
     boolean isDrag;
-    Rectan rectan;
+    boolean isMove;
+    boolean isRect;
+    Rect rectan;
+
 
     explicit Qj2Widget(QWidget *parent = 0);
     void contextMenuEvent(QContextMenuEvent *);
@@ -43,9 +49,24 @@ public:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
 
+    void setMat(Mat m);
+    Mat getMat();
+
+    //void cancelSelect();
+
+    double getMatX(double x);
+
+    double getMatY(double y);
+
+    double getWidgetX(double x);
+
+    double getWidgetY(double y);
+
 signals:
 
 public slots:
+    //取消选择
+    void CancelSelect();
     //到主显示区显示菜单处理事件
     void ToZhu();
     //到凝视显示区显示菜单处理事件
@@ -53,6 +74,5 @@ public slots:
     //到弹出窗口显示菜单处理事件
     //void ToTanchu();
 };
-
 
 #endif // QJ2WIDGET_H

@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     hwidget.cpp \
     lwidget.cpp \
     qj1widget.cpp \
-    qj2widget.cpp
+    qj2widget.cpp \
+    cvutil.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -32,7 +33,8 @@ HEADERS  += mainwindow.h \
     hwidget.h \
     lwidget.h \
     qj1widget.h \
-    qj2widget.h
+    qj2widget.h \
+    cvutil.h
 
 FORMS    += mainwindow.ui
 
