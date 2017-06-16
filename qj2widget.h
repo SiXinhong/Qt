@@ -41,6 +41,7 @@ public:
     boolean isMove;
     boolean isRect;
     Rect rectan;
+    //QRect qrectan;
 
 
     explicit Qj2Widget(QWidget *parent = 0);
@@ -51,8 +52,10 @@ public:
 
     void setMat(Mat m);
     Mat getMat();
-
     //void cancelSelect();
+
+    Rect getRectan();
+    QRect getQRectan();
 
     double getMatX(double x);
 
@@ -75,4 +78,4 @@ public slots:
     //void ToTanchu();
 };
 
-#endif // QJ2WIDGET_H
+#endif // QJ1WIDGET_H

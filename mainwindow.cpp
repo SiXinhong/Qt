@@ -29,7 +29,8 @@
 #include<QDateTime>
 #include<QMessageBox>
 
-
+#include <QPoint>
+#include <QMouseEvent>
 #include <QtGui/QPainter>
 
 
@@ -75,6 +76,10 @@ MainWindow::MainWindow(QWidget *parent) :
     label5=new QLabel(widget5);
     label6=new QLabel(widget6);
 
+    //鼠标拖拽控制变量赋初值
+    isDrag1 = false;
+    isDrag2 = false;
+    isMove = false;
 
     //临时性处理，将来被金老师SDK替换--------------------------------
     tempProcessing();
@@ -567,16 +572,182 @@ void MainWindow::onTimerOut()
     qDebug()<<s2;
     drawUiLabel(mat2,2);
     //更新第三栏
-    Mat img=QImageToMat(image);
-    paintRectangle(img,1490,250,100,100);
-    Mat mat3 =imread(imageurl);
-    drawUiLabelByCopy(mat3,3);
-    //更新第四栏
-    Mat img2=QImageToMat(image2);
-    paintRectangle(img2,1650,250,400,100);
-    Mat mat4 =imread(imageurl2);
-    drawUiLabelByCopy(mat4,4);
+    Mat mat3 = widget1->getMat();
+    Size dsize ;
+    double scale = 1;
+    dsize = Size(mat3.cols*scale,mat3.rows*scale);
+    Mat image11 = Mat(dsize,CV_32S);
+    cv::resize(mat3, image11,dsize);
+    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+    //vector<Rectan> rectans;
+    aa=(&img)->copy(widget1->getQRectan());
+    Mat image3 = QImageToMat(aa);
+    Mat image33 = Mat(dsize,CV_32S);
+    cv::resize(image3, image33,dsize);
+    widget3->setMat(image33);
+    widget3->draw();
+
+//    //更新第四栏
+//    Mat img2=QImageToMat(image2);
+//    paintRectangle(img2,1650,250,400,100);
+//    Mat mat4 =imread(imageurl2);
+//    drawUiLabelByCopy(mat4,4);
+    Mat mat4 = widget2->getMat();
+    //Size dsize ;
+    //double scale = 1;
+    dsize = Size(mat4.cols*scale,mat4.rows*scale);
+    image11 = Mat(dsize,CV_32S);
+    cv::resize(mat4, image11,dsize);
+    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+    //vector<Rectan> rectans;
+    aa=(&img)->copy(widget2->getQRectan());
+    Mat image4 = QImageToMat(aa);
+    Mat image44 = Mat(dsize,CV_32S);
+    cv::resize(image4, image44,dsize);
+    widget4->setMat(image44);
+    widget4->draw();
     qDebug()<<"tongguo 3!!!!!";
+}
+
+//以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
+void MainWindow::mousePressEvent(QMouseEvent *e)
+{
+    qDebug()<<"鼠标压下事件来自mainframe";
+    if(e->button() == Qt::LeftButton)
+    {
+        //isRect = false;
+        //判断是否是拖拽出发点
+        QPoint position1 = e->pos();//e->globalPos() - this->pos();
+        //起始点是落在全景显示区1中的情况
+        if((position1.x() <= this->widget1->pos().x()+this->widget1->width()) &&(position1.x() >= this->widget1->pos().x()) && (position1.y() <= this->widget1->pos().y()+this->widget1->height()) &&(position1.y() >= this->widget1->pos().y())){
+            isDrag1 = true;
+            isDrag2 = false;
+        }
+        //起始点是落在全景显示区2中的情况
+        if((position1.x() <= this->widget2->pos().x()+this->widget2->width()) &&(position1.x() >= this->widget2->pos().x()) && (position1.y() <= this->widget2->pos().y()+this->widget2->height()) &&(position1.y() >= this->widget2->pos().y())){
+            isDrag2 = true;
+            isDrag1 = false;
+        }
+
+        //e->accept();
+        //qDebug()<<position1;
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *e)
+{
+    if(isDrag1 && (e->buttons() && Qt::LeftButton)){
+        //move(e->globalPos() - position1);
+        isMove = true;
+        //e->accept();
+    }
+    if(isDrag2 && (e->buttons() && Qt::LeftButton)){
+        //move(e->globalPos() - position1);
+        isMove = true;
+        //e->accept();
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+{
+    //判断目的点落在主显示区的标志变量
+    boolean target3 = false;
+    boolean target4 = false;
+    QPoint position2 = e->pos();//e->globalPos() - this->pos();
+
+    //判断目的点落在主显示区的情况
+    if((position2.x() <= this->widget3->pos().x()+this->widget3->width()) &&(position2.x() >= this->widget3->pos().x()) && (position2.y() <= this->widget3->pos().y()+this->widget3->height()) &&(position2.y() >= this->widget3->pos().y())){
+        target3 = true;
+        target4 = false;
+    }
+    //判断目的点落在凝视显示区的情况
+    else if((position2.x() <= this->widget4->pos().x()+this->widget4->width()) &&(position2.x() >= this->widget4->pos().x()) && (position2.y() <= this->widget4->pos().y()+this->widget4->height()) &&(position2.y() >= this->widget4->pos().y())){
+        target4 = true;
+        target3 = false;
+    }
+    else{
+        isDrag1 = false;
+        isDrag2 = false;
+        isMove = false;
+    }
+    //4种组合
+    //1. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是主显示区，则拷贝全景显示区1选择框内的图像到主显示区
+    if(isDrag1 && isMove && target3){
+        Mat mat = widget1->getMat();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        Mat image11 = Mat(dsize,CV_32S);
+        cv::resize(mat, image11,dsize);
+        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //vector<Rectan> rectans;
+        aa=(&img)->copy(widget1->getQRectan());
+        Mat image3 = QImageToMat(aa);
+        Mat image33 = Mat(dsize,CV_32S);
+        cv::resize(image3, image33,dsize);
+        widget3->setMat(image33);
+        widget3->draw();
+    }
+    //2. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是主显示区，则拷贝全景显示区2选择框内的图像到主显示区
+    if(isDrag2 && isMove && target3){
+        Mat mat = widget2->getMat();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        Mat image11 = Mat(dsize,CV_32S);
+        cv::resize(mat, image11,dsize);
+        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //vector<Rectan> rectans;
+        aa=(&img)->copy(widget2->getQRectan());
+        Mat image3 = QImageToMat(aa);
+        Mat image33 = Mat(dsize,CV_32S);
+        cv::resize(image3, image33,dsize);
+        widget3->setMat(image33);
+        widget3->draw();
+    }
+    //3. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是凝视显示区，则拷贝全景显示区1选择框内的图像到凝视显示区
+    if(isDrag1 && isMove && target4){
+        Mat mat = widget1->getMat();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        Mat image11 = Mat(dsize,CV_32S);
+        cv::resize(mat, image11,dsize);
+        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //vector<Rectan> rectans;
+        aa=(&img)->copy(widget1->getQRectan());
+        Mat image4 = QImageToMat(aa);
+        Mat image44 = Mat(dsize,CV_32S);
+        cv::resize(image4, image44,dsize);
+        widget4->setMat(image44);
+        widget4->draw();
+    }
+    //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
+    if(isDrag2 && isMove && target4){
+        Mat mat = widget2->getMat();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        Mat image11 = Mat(dsize,CV_32S);
+        cv::resize(mat, image11,dsize);
+        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //vector<Rectan> rectans;
+        aa=(&img)->copy(widget2->getQRectan());
+        Mat image4 = QImageToMat(aa);
+        Mat image44 = Mat(dsize,CV_32S);
+        cv::resize(image4, image44,dsize);
+        widget4->setMat(image44);
+        widget4->draw();
+    }
+    isDrag1 = false;
+    isDrag2 = false;
+    isMove = false;
 }
 
 void MainWindow::resizeEvent(QResizeEvent *){
@@ -800,7 +971,7 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
 //绘制鼠标选取的矩形
 void MainWindow::drawRecOnPic2(Mat image, Rect rect){
     //在图像上画矩形。
-    rectangle(image,rect,Scalar(0,0,255),4,1,0);
+    rectangle(image,rect,Scalar(0,0,255),1,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
     //QImage imglabel;
 //    imgLabel = MatToQImage(image);
@@ -1264,3 +1435,4 @@ void MainWindow::test()
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
+

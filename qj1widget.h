@@ -41,6 +41,7 @@ public:
     boolean isMove;
     boolean isRect;
     Rect rectan;
+    //QRect qrectan;
 
 
     explicit Qj1Widget(QWidget *parent = 0);
@@ -52,6 +53,9 @@ public:
     void setMat(Mat m);
     Mat getMat();
     //void cancelSelect();
+
+    Rect getRectan();
+    QRect getQRectan();
 
     double getMatX(double x);
 

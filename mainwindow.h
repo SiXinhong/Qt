@@ -106,6 +106,10 @@ public:
     void drawUiLabel(Mat image,int index);
     //---xiaotian  在界面上画label  图片3 图片4.（这两张图片需要截取，所以属于一类方法）
     void drawUiLabelByCopy(Mat iamge,int index1);
+    //处理鼠标拖拽事件，重载JMainFrame的鼠标事件处理函数
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
     //添加属性设置中的变量
     //启动还是停止
@@ -146,6 +150,11 @@ public:
 
      QTimer *timer;
      QTimer *timerSysTime;
+
+     //处理鼠标拖拽事件的变量
+     boolean isDrag1;
+     boolean isDrag2;
+     boolean isMove;
 
      QGridLayout *gridlayout;
 
