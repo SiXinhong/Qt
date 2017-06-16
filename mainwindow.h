@@ -13,6 +13,8 @@
 #include "nwidget.h"
 #include "hwidget.h"
 #include "lwidget.h"
+#include "myinterface.h"
+#include "myobject.h"
 #include <QGridLayout>
 #include <cv.h>
 #include <phonon>
@@ -160,6 +162,7 @@ public:
      QGridLayout *gridlayout;
 
      //----------------以下为临时性变量-----------------
+     MyInterface in;
      Mat image11;
      //动图需要的变量
      vector<Rectan> rectans1;
@@ -197,6 +200,8 @@ protected:
      void addMyToolBar();
      //临时性处理
      void tempProcessing();
+     //自定义接口处理
+     void selfProcessing();
      QToolBar *mainToolBar;
      //第一组按钮：监控和后退，还有回放
      //QLabel *listLabel1;

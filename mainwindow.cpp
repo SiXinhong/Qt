@@ -6,6 +6,8 @@
 #include "nwidget.h"
 #include "hwidget.h"
 #include "lwidget.h"
+#include "myinterface.h"
+#include "myobject.h"
 
 #include "imagedeal.h"
 
@@ -81,8 +83,13 @@ MainWindow::MainWindow(QWidget *parent) :
     isDrag2 = false;
     isMove = false;
 
+    //自定义接口处理，将来被金老师SDK替换--------------------------------
+    MyInterface in = MyInterface();
+    selfProcessing();
+    //---------------------------------------------------------
+
     //临时性处理，将来被金老师SDK替换--------------------------------
-    tempProcessing();
+    //tempProcessing();
     //---------------------------------------------------------
     //定时器
     timer=new QTimer();
@@ -221,6 +228,67 @@ MainWindow::~MainWindow(){
     delete ui;
 }
 
+//自定义接口处理函数，将来被金老师SDK替换------------------------------
+void MainWindow::selfProcessing(){
+    index=0;//用于计算标尺的起始位置
+//    index1=0;//用于取第一栏的图片
+//    index2=0;//用于取第二栏的图片
+
+    //图片1
+    QString imageurl=in.getQJ1();
+    qDebug()<<imageurl;
+    Mat mat1 =imread(imageurl.toStdString());
+    widget1->setMat(mat1);
+    drawUiLabel(mat1,1);
+    //图片2
+    QString imageurl2 = in.getQJ2();
+    qDebug()<<imageurl2;
+    Mat mat2 =imread(imageurl2.toStdString());
+    widget2->setMat(mat2);
+    drawUiLabel(mat2,2);
+    //图片3
+    Mat mat3 =imread(imageurl.toStdString());
+    drawUiLabelByCopy(mat3,3);
+    //图片4
+    Mat mat4 =imread(imageurl2.toStdString());
+    drawUiLabelByCopy(mat4,4);
+    //图片5
+    QString imageurl5=in.getHD();
+    Mat mat5 =imread(imageurl5.toStdString());
+
+    drawUiLabel(mat5,5);
+    //图片6
+    QString imageurl6= in.getLD();
+    Mat mat6 =imread(imageurl6.toStdString());
+
+    drawUiLabel(mat6,6);
+
+//    imageurl="./s1/1.bmp";
+//    imageurl2="./s2/1.bmp";
+
+//    //存储第一栏
+//    filename1 = "./s1/1.bmp";
+//    filename2 = "./s1/2.bmp";
+//    filename3 = "./s1/3.bmp";
+//    filename4 = "./s1/4.bmp";
+//    //存储第二栏
+//    filename5 = "./s2/1.bmp";
+//    filename6 = "./s2/2.bmp";
+//    filename7 = "./s2/3.bmp";
+//    filename8 = "./s2/4.bmp";
+//    //将第一栏存储在vector中
+//    vc1.push_back(filename1);
+//    vc1.push_back(filename2);
+//    vc1.push_back(filename3);
+//    vc1.push_back(filename4);
+//    //将第二栏存储在vector中
+//    vc2.push_back(filename5);
+//    vc2.push_back(filename6);
+//    vc2.push_back(filename7);
+//    vc2.push_back(filename8);
+}
+
+//----------------------------------------------------------
 
 //临时性处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::tempProcessing(){
@@ -553,20 +621,36 @@ void MainWindow::onTimerOut()
 {
     index=index+1;
     //更新第一栏的图片
-    index1=index1+1;
+    //index1=index1+1;
     //QImage *image=new QImage(vc1[(index1)%4]);
-    image= QImage(vc1[(index1)%4]);
-    QString s1=vc1[(index1)%4];
+//    image= QImage(vc1[(index1)%4]);
+//    QString s1=vc1[(index1)%4];
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+//    widget1->setMat(mat1);
+//    qDebug()<<s1;
+//    drawUiLabel(mat1,1);
+    image= QImage(in.getQJ1());
+    QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
     widget1->setMat(mat1);
     qDebug()<<s1;
     drawUiLabel(mat1,1);
     //更新第二栏的图片
-    index2=index2+1;
+//    index2=index2+1;
+//    //QImage *image2=new QImage(vc2[(index2)%4]);
+//    image2= QImage(vc2[(index2)%4]);
+//    QString s2=vc2[(index2)%4];
+//    imageurl2=s2.toStdString();
+//    Mat mat2 =imread(imageurl2);
+//    widget2->setMat(mat2);
+//    qDebug()<<s2;
+//    drawUiLabel(mat2,2);
+    //index2=index2+1;
     //QImage *image2=new QImage(vc2[(index2)%4]);
-    image2= QImage(vc2[(index2)%4]);
-    QString s2=vc2[(index2)%4];
+    image2= QImage(in.getQJ2());
+    QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
     widget2->setMat(mat2);
@@ -581,7 +665,6 @@ void MainWindow::onTimerOut()
     cv::resize(mat3, image11,dsize);
     img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-    //vector<Rectan> rectans;
     aa=(&img)->copy(widget1->getQRectan());
     Mat image3 = QImageToMat(aa);
     Mat image33 = Mat(dsize,CV_32S);
@@ -602,7 +685,6 @@ void MainWindow::onTimerOut()
     cv::resize(mat4, image11,dsize);
     img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-    //vector<Rectan> rectans;
     aa=(&img)->copy(widget2->getQRectan());
     Mat image4 = QImageToMat(aa);
     Mat image44 = Mat(dsize,CV_32S);
