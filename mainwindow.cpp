@@ -31,7 +31,7 @@
 
 
 #include <QtGui/QPainter>
-
+#include "trackbar.h"
 
 using namespace cv;
 using namespace std;
@@ -208,7 +208,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(widget);
 
     this->setWindowState(Qt::WindowMaximized);
-
+    this->trackBar=new TrackBar(this);
+    bright_TrackbarValue=0;
 }
 
 MainWindow::~MainWindow(){
@@ -594,6 +595,23 @@ void MainWindow::paintEvent(QPaintEvent *){
 
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){
+
+    for (int y = 0; y < image.rows; y++)
+            {
+                for (int x = 0; x < image.cols; x++)
+                {
+                    for (int c = 0; c < 3; c++)
+                    {
+                        //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                     image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                        if (image.at<Vec3b>(y, x)[c] > 255)
+                        {
+                            image.at<Vec3b>(y, x)[c] = 255;
+                        }
+                    }
+                }
+            }
+
     //Mat image =imread(imgurl);
     Size dsize ;
     double scale = 1;
@@ -657,6 +675,23 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
 
 //---xiaotian 绘制界面上的图片1 图片2 图片5 图片6
 void MainWindow::drawUiLabel(Mat image, int index){
+    if(index == 1 || index==2){
+        for (int y = 0; y < image.rows; y++)
+                {
+                    for (int x = 0; x < image.cols; x++)
+                    {
+                        for (int c = 0; c < 3; c++)
+                        {
+                            //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                         image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                            if (image.at<Vec3b>(y, x)[c] > 255)
+                            {
+                                image.at<Vec3b>(y, x)[c] = 255;
+                            }
+                        }
+                    }
+                }
+    }
      //Mat image =imread(imgurl);
      vector<Rectan> rectans;
      if(index == 1){
@@ -1062,8 +1097,9 @@ void MainWindow::automFunction()
 void MainWindow::brightnessFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
-
+    //QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
+    trackBar->setWindowTitle("亮度");
+    trackBar->show();
     if(brightnessSet=="./icon/7_2.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));

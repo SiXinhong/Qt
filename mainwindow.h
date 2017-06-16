@@ -42,7 +42,7 @@
 #include <QSlider>
 #include<QLineEdit>
 #include<QWidgetAction>
-
+#include "trackbar.h"
 
 using namespace cv;
 using namespace std;
@@ -60,6 +60,7 @@ public slots:
   void onTimerOut2();
     
 public:
+  int bright_TrackbarValue;
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -294,8 +295,7 @@ protected slots:
 
 private:
     Ui::MainWindow *ui;
-
-
+class TrackBar* trackBar;
 
 };
 

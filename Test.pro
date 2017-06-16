@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     lwidget.cpp \
     qj1widget.cpp \
     qj2widget.cpp \
-    cvutil.cpp
+    cvutil.cpp \
+    trackbar.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     lwidget.h \
     qj1widget.h \
     qj2widget.h \
-    cvutil.h
+    cvutil.h \
+    trackbar.h
 
 FORMS    += mainwindow.ui
 
