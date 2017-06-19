@@ -62,7 +62,9 @@ public slots:
   void onTimerOut2();
     
 public:
-  int bright_TrackbarValue;
+   void adjustment();
+   int bright_TrackbarValue;
+   bool isPseudo;
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -310,6 +312,7 @@ protected slots:
 private:
     Ui::MainWindow *ui;
 class TrackBar* trackBar;
+Mat setPseudocolor(Mat& image);
 
 };
 
