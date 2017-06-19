@@ -2,6 +2,7 @@
 #define QJ1WIDGET_H
 
 #include "rectan.h"
+#include "myobject.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -35,6 +36,9 @@ public:
 
     Mat mat;
 
+    //全景1所包含的运动目标
+    vector<MyObject> objs;
+
     QPoint position1;
     QPoint position2;
     boolean isDrag;
@@ -52,7 +56,9 @@ public:
 
     void setMat(Mat m);
     Mat getMat();
-    //void cancelSelect();
+
+    void setObjects(vector<MyObject> os);
+    vector<MyObject> getObjects();
 
     Rect getRectan();
     QRect getQRectan();
@@ -64,6 +70,14 @@ public:
     double getWidgetX(double x);
 
     double getWidgetY(double y);
+
+    double getDirectionX();
+
+    double getDirectionY();
+
+    void draw();
+
+    boolean isObjSelected(MyObject obj);
 
 signals:
 

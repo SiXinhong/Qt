@@ -2,6 +2,7 @@
 #define HWIDGET_H
 
 #include "rectan.h"
+#include "myobject.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -29,26 +30,29 @@ private:
 
 
 public:
-//    QPoint position1;
-//    QPoint position2;
-//    boolean isDrag;
-//    Rectan rectan;
+
+    Mat mat;
+    //vector<Rect> rects;//包含的目标的box
+    vector<MyObject> objs;
+
+    void setObjects(vector<MyObject> os);
+
+    vector<MyObject> getObjects();
+
 
     explicit HWidget(QWidget *parent = 0);
-//    void contextMenuEvent(QContextMenuEvent *);
-//    void mousePressEvent(QMouseEvent *e);
-//    void mouseMoveEvent(QMouseEvent *e);
-//    void mouseReleaseEvent(QMouseEvent *e);
+
+    void setMat(Mat m);
+
+    Mat getMat();
+
+    void draw();
 
 signals:
 
 public slots:
-//    //到主显示区显示菜单处理事件
-//    void ToZhu();
-//    //到凝视显示区显示菜单处理事件
-//    void ToNingshi();
-//    //到弹出窗口显示菜单处理事件
-//    //void ToTanchu();
+
+
 };
 
 #endif // HWIDGET_H

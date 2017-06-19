@@ -2,6 +2,7 @@
 #define ZWIDGET_H
 
 #include "rectan.h"
+#include "myobject.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -31,13 +32,26 @@ private:
 public:
 
     Mat mat;
-    vector<Rect> rects;//包含的目标的box
+    //vector<Rect> rects;//包含的目标的box
+    vector<MyObject> objs;
+
+    int from;
 
     explicit ZWidget(QWidget *parent = 0);
+
+    void setFrom(int f);
+
+    int getFrom();
+
+    Rect getRectFromObjs(Rect r);
 
     void setMat(Mat m);
 
     Mat getMat();
+
+    void setObjects(vector<MyObject> os);
+
+    vector<MyObject> getObjects();
 
     void draw();
 

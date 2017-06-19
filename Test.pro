@@ -40,7 +40,8 @@ HEADERS  += mainwindow.h \
     cvutil.h \
     trackbar.h \
     myobject.h \
-    myinterface.h
+    myinterface.h \
+    show_sdk.h
 
 FORMS    += mainwindow.ui
 

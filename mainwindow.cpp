@@ -84,7 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
     isMove = false;
 
     //自定义接口处理，将来被金老师SDK替换--------------------------------
-    MyInterface in = MyInterface();
+    in = MyInterface();
     selfProcessing();
     //---------------------------------------------------------
 
@@ -235,22 +235,36 @@ void MainWindow::selfProcessing(){
 //    index2=0;//用于取第二栏的图片
 
     //图片1
-    QString imageurl=in.getQJ1();
-    qDebug()<<imageurl;
-    Mat mat1 =imread(imageurl.toStdString());
+//    QString imageurl=in.getQJ1();
+//    qDebug()<<imageurl;
+//    Mat mat1 =imread(imageurl.toStdString());
+//    widget1->setMat(mat1);
+//    drawUiLabel(mat1,1);
+    image= QImage(in.getQJ1());
+    QString s1=in.getQJ1();
+    imageurl=s1.toStdString();
+    Mat mat1 =imread(imageurl);
     widget1->setMat(mat1);
+    qDebug()<<s1;
     drawUiLabel(mat1,1);
     //图片2
-    QString imageurl2 = in.getQJ2();
-    qDebug()<<imageurl2;
-    Mat mat2 =imread(imageurl2.toStdString());
+//    QString imageurl2 = in.getQJ2();
+//    qDebug()<<imageurl2;
+//    Mat mat2 =imread(imageurl2.toStdString());
+//    widget2->setMat(mat2);
+//    drawUiLabel(mat2,2);
+    image2= QImage(in.getQJ2());
+    QString s2=in.getQJ2();
+    imageurl2=s2.toStdString();
+    Mat mat2 =imread(imageurl2);
     widget2->setMat(mat2);
+    qDebug()<<s2;
     drawUiLabel(mat2,2);
     //图片3
-    Mat mat3 =imread(imageurl.toStdString());
+    Mat mat3 =imread(imageurl);
     drawUiLabelByCopy(mat3,3);
     //图片4
-    Mat mat4 =imread(imageurl2.toStdString());
+    Mat mat4 =imread(imageurl2);
     drawUiLabelByCopy(mat4,4);
     //图片5
     QString imageurl5=in.getHD();
@@ -301,6 +315,7 @@ void MainWindow::tempProcessing(){
     Mat mat1 =imread(imageurl);
     widget1->setMat(mat1);
     drawUiLabel(mat1,1);
+
     //图片2
     string imageurl2 = "./s2/1.bmp";
     Mat mat2 =imread(imageurl2);
@@ -758,6 +773,22 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //4种组合
     //1. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是主显示区，则拷贝全景显示区1选择框内的图像到主显示区
     if(isDrag1 && isMove && target3){
+
+        //更新主显示区所包含的目标
+        vector<MyObject> objs3;
+        int count = widget1->objs.size();
+        for(int i = 0; i < count; i++){
+            MyObject obj = widget1->objs[i];
+            if(widget1->isObjSelected(obj)){
+                objs3.push_back(obj);
+            }
+        }
+
+        widget3->setObjects(objs3);
+
+        widget3->setFrom(1);
+
+
         Mat mat = widget1->getMat();
         Size dsize ;
         double scale = 1;
@@ -776,6 +807,20 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //2. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是主显示区，则拷贝全景显示区2选择框内的图像到主显示区
     if(isDrag2 && isMove && target3){
+        //更新主显示区所包含的目标
+        vector<MyObject> objs3;
+        int count = widget2->objs.size();
+        for(int i = 0; i < count; i++){
+            MyObject obj = widget2->objs[i];
+            if(widget2->isObjSelected(obj)){
+                objs3.push_back(obj);
+            }
+        }
+
+        widget3->setObjects(objs3);
+
+        widget3->setFrom(2);
+
         Mat mat = widget2->getMat();
         Size dsize ;
         double scale = 1;
@@ -794,6 +839,20 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //3. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是凝视显示区，则拷贝全景显示区1选择框内的图像到凝视显示区
     if(isDrag1 && isMove && target4){
+        //更新主显示区所包含的目标
+        vector<MyObject> objs4;
+        int count = widget1->objs.size();
+        for(int i = 0; i < count; i++){
+            MyObject obj = widget1->objs[i];
+            if(widget1->isObjSelected(obj)){
+                objs4.push_back(obj);
+            }
+        }
+
+        widget4->setObjects(objs4);
+
+        widget4->setFrom(1);
+
         Mat mat = widget1->getMat();
         Size dsize ;
         double scale = 1;
@@ -812,6 +871,20 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
     if(isDrag2 && isMove && target4){
+        //更新主显示区所包含的目标
+        vector<MyObject> objs4;
+        int count = widget2->objs.size();
+        for(int i = 0; i < count; i++){
+            MyObject obj = widget2->objs[i];
+            if(widget2->isObjSelected(obj)){
+                objs4.push_back(obj);
+            }
+        }
+
+        widget4->setObjects(objs4);
+
+        widget4->setFrom(2);
+
         Mat mat = widget2->getMat();
         Size dsize ;
         double scale = 1;
