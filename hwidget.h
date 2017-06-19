@@ -48,6 +48,14 @@ public:
 
     void draw();
 
+    double getDirectionX(double x);
+
+    double getDirectionY(double y);
+
+    Point getDirectionPoint(Point p);
+
+    vector<Point> getPoints(vector<MyObject> objs);
+
 signals:
 
 public slots:
