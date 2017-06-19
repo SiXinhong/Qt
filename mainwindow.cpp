@@ -631,6 +631,56 @@ void MainWindow::onTimerOut2(){
     time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 }
 
+void MainWindow::adjustment()
+{
+    Mat mat1 =imread(imageurl);
+    if(this->isPseudo==true)
+            mat1=setPseudocolor(mat1);
+    widget1->setMat(mat1);
+    drawUiLabel(mat1,1);
+
+    Mat mat2 =imread(imageurl2);
+    if(this->isPseudo==true)
+            mat2=setPseudocolor(mat2);
+    widget2->setMat(mat2);
+    drawUiLabel(mat2,2);
+    //更新第三栏
+    Mat mat3 = widget1->getMat();
+    Size dsize ;
+    double scale = 1;
+    dsize = Size(mat3.cols*scale,mat3.rows*scale);
+    Mat image11 = Mat(dsize,CV_32S);
+    cv::resize(mat3, image11,dsize);
+    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+    aa=(&img)->copy(widget1->getQRectan());
+    Mat image3 = QImageToMat(aa);
+    Mat image33 = Mat(dsize,CV_32S);
+    cv::resize(image3, image33,dsize);
+    widget3->setMat(image33);
+    widget3->draw();
+
+//    //更新第四栏
+//    Mat img2=QImageToMat(image2);
+//    paintRectangle(img2,1650,250,400,100);
+//    Mat mat4 =imread(imageurl2);
+//    drawUiLabelByCopy(mat4,4);
+    Mat mat4 = widget2->getMat();
+    //Size dsize ;
+    //double scale = 1;
+    dsize = Size(mat4.cols*scale,mat4.rows*scale);
+    image11 = Mat(dsize,CV_32S);
+    cv::resize(mat4, image11,dsize);
+    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+    aa=(&img)->copy(widget2->getQRectan());
+    Mat image4 = QImageToMat(aa);
+    Mat image44 = Mat(dsize,CV_32S);
+    cv::resize(image4, image44,dsize);
+    widget4->setMat(image44);
+    widget4->draw();
+}
+
 //定时器任务
 void MainWindow::onTimerOut()
 {
@@ -649,6 +699,8 @@ void MainWindow::onTimerOut()
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+    if(this->isPseudo==true)
+            mat1=setPseudocolor(mat1);
     widget1->setMat(mat1);
     qDebug()<<s1;
     drawUiLabel(mat1,1);
@@ -668,6 +720,8 @@ void MainWindow::onTimerOut()
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
+    if(this->isPseudo==true)
+            mat2=setPseudocolor(mat2);
     widget2->setMat(mat2);
     qDebug()<<s2;
     drawUiLabel(mat2,2);
@@ -919,9 +973,25 @@ void MainWindow::paintEvent(QPaintEvent *){
     //重新绘制图片。
 }
 
+Mat MainWindow::setPseudocolor(Mat& image){
+        Mat img_pseudocolor(image.rows, image.cols, CV_8UC3);
+        for (int y = 0; y < image.rows; y++)//转为伪彩色图像的具体算法
+            {
+                for (int x = 0; x < image.cols; x++)
+                {
+                    int tmp = image.at<unsigned char>(y, x);
+                    img_pseudocolor.at<Vec3b>(y, x)[0] = abs(255 - tmp); //blue
+                    img_pseudocolor.at<Vec3b>(y, x)[1] = abs(127 - tmp); //green
+                    img_pseudocolor.at<Vec3b>(y, x)[2] = abs(0 - tmp); //red
+                }
+            }
+        return img_pseudocolor;
+}
+
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){
-
+    if(this->isPseudo==true)
+                image=setPseudocolor(image);
     for (int y = 0; y < image.rows; y++)
             {
                 for (int x = 0; x < image.cols; x++)
@@ -1417,7 +1487,11 @@ void MainWindow::openFunction()
 void MainWindow::automFunction()
 {
    // dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
+    //QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
+    bright_TrackbarValue = 0;
+    trackBar->setPosition(0);
+    isPseudo = false;
+    adjustment();
 }
 //亮度
 void MainWindow::brightnessFunction()
@@ -1426,6 +1500,8 @@ void MainWindow::brightnessFunction()
     //QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
     trackBar->setWindowTitle("亮度");
     trackBar->show();
+    trackBar->activateWindow();
+    trackBar->move(trackBar->x(),trackBar->y());
     if(brightnessSet=="./icon/7_2.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -1508,8 +1584,10 @@ void MainWindow::saturationFunction()
 //伪彩色
 void MainWindow::pseudoColorFunction()
 {
+    isPseudo=!isPseudo;
+    adjustment();
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
+    //QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
 }
 
 //告警

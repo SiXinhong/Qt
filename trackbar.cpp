@@ -22,7 +22,7 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
         position=pos-5;//减5是因为显示的时候为了好看左边从5的位置开始显示，当作亮度0
     update();//触发重绘操作，生成paintEvent事件
     mainWindow->bright_TrackbarValue=position;
-    mainWindow->onTimerOut();
+    mainWindow->adjustment();
 
 }
 
@@ -52,4 +52,8 @@ void TrackBar::mouseMoveEvent(QMouseEvent *event){//鼠标移动事件，是否是拖动需要
     else
         position=pos-5;
     update();
+}
+
+void TrackBar::setPosition(int position){
+    this->position = position;
 }
