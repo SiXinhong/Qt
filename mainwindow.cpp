@@ -700,7 +700,7 @@ void MainWindow::onTimerOut()
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
     if(this->isPseudo==true)
-            mat1=setPseudocolor(mat1);
+            //mat1=setPseudocolor(mat1);
     widget1->setMat(mat1);
     qDebug()<<s1;
     drawUiLabel(mat1,1);
@@ -721,24 +721,24 @@ void MainWindow::onTimerOut()
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
     if(this->isPseudo==true)
-            mat2=setPseudocolor(mat2);
+            //mat2=setPseudocolor(mat2);
     widget2->setMat(mat2);
     qDebug()<<s2;
     drawUiLabel(mat2,2);
     //更新第三栏
-    Mat mat3 = widget1->getMat();
-    Size dsize ;
-    double scale = 1;
-    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-    Mat image11 = Mat(dsize,CV_32S);
-    cv::resize(mat3, image11,dsize);
-    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    Mat mat3 = widget1->getMat();
+//    Size dsize ;
+//    double scale = 1;
+//    dsize = Size(mat3.cols*scale,mat3.rows*scale);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat3, image11,dsize);
+//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-    aa=(&img)->copy(widget1->getQRectan());
-    Mat image3 = QImageToMat(aa);
-    Mat image33 = Mat(dsize,CV_32S);
-    cv::resize(image3, image33,dsize);
-    widget3->setMat(image33);
+//    aa=(&img)->copy(widget1->getQRectan());
+//    Mat image3 = QImageToMat(aa);
+//    Mat image33 = Mat(dsize,CV_32S);
+//    cv::resize(image3, image33,dsize);
+//    widget3->setMat(image33);
     widget3->draw();
 
 //    //更新第四栏
@@ -746,19 +746,19 @@ void MainWindow::onTimerOut()
 //    paintRectangle(img2,1650,250,400,100);
 //    Mat mat4 =imread(imageurl2);
 //    drawUiLabelByCopy(mat4,4);
-    Mat mat4 = widget2->getMat();
-    //Size dsize ;
-    //double scale = 1;
-    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-    image11 = Mat(dsize,CV_32S);
-    cv::resize(mat4, image11,dsize);
-    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    Mat mat4 = widget2->getMat();
+//    //Size dsize ;
+//    //double scale = 1;
+//    dsize = Size(mat4.cols*scale,mat4.rows*scale);
+//    image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat4, image11,dsize);
+//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-    aa=(&img)->copy(widget2->getQRectan());
-    Mat image4 = QImageToMat(aa);
-    Mat image44 = Mat(dsize,CV_32S);
-    cv::resize(image4, image44,dsize);
-    widget4->setMat(image44);
+//    aa=(&img)->copy(widget2->getQRectan());
+//    Mat image4 = QImageToMat(aa);
+//    Mat image44 = Mat(dsize,CV_32S);
+//    cv::resize(image4, image44,dsize);
+//    widget4->setMat(image44);
     widget4->draw();
     qDebug()<<"tongguo 3!!!!!";
 }
@@ -841,6 +841,12 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget3->setObjects(objs3);
 
         widget3->setFrom(1);
+        //widget1->rectan = widget1->newrect;
+        widget1->rectan.x = widget1->newrect.x;
+        widget1->rectan.y = widget1->newrect.y;
+        widget1->rectan.width = widget1->newrect.width;
+        widget1->rectan.height = widget1->newrect.height;
+        widget1->isRect = false;
 
 
         Mat mat = widget1->getMat();
@@ -875,6 +881,15 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget3->setFrom(2);
 
+        //widget2->rectan = widget2->newrect;
+        widget2->rectan.x = widget2->newrect.x;
+        widget2->rectan.y = widget2->newrect.y;
+        widget2->rectan.width = widget2->newrect.width;
+        widget2->rectan.height = widget2->newrect.height;
+
+        widget2->isRect = false;
+
+
         Mat mat = widget2->getMat();
         Size dsize ;
         double scale = 1;
@@ -907,6 +922,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget4->setFrom(1);
 
+        //widget1->rectan = widget1->newrect;
+        widget1->rectan.x = widget1->newrect.x;
+        widget1->rectan.y = widget1->newrect.y;
+        widget1->rectan.width = widget1->newrect.width;
+        widget1->rectan.height = widget1->newrect.height;
+        widget1->isRect = false;
+
         Mat mat = widget1->getMat();
         Size dsize ;
         double scale = 1;
@@ -938,6 +960,13 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setObjects(objs4);
 
         widget4->setFrom(2);
+
+        //widget2->rectan = widget2->newrect;
+        widget2->rectan.x = widget2->newrect.x;
+        widget2->rectan.y = widget2->newrect.y;
+        widget2->rectan.width = widget2->newrect.width;
+        widget2->rectan.height = widget2->newrect.height;
+        widget2->isRect = false;
 
         Mat mat = widget2->getMat();
         Size dsize ;

@@ -20,7 +20,7 @@
 using namespace cv;
 using namespace std;
 
-//#pragma comment(lib,"DisplaySDK.lib")
+#pragma comment(lib,"DisplaySDK.lib")
 
 MyInterface::MyInterface(){
     //¥Ê¥¢µ⁄“ª¿∏
@@ -52,6 +52,17 @@ MyInterface::MyInterface(){
 
 }
 
+vector<MyObjectTrack> MyInterface::getTracks(){
+    return this->tracks;
+}
+
+vector<MyObjectTrack> MyInterface::getTracks1(){
+    return this->tracks1;
+}
+
+vector<MyObjectTrack> MyInterface::getTracks2(){
+    return this->tracks2;
+}
 
 QString MyInterface::getQJ1(){
     index1++;
@@ -156,7 +167,6 @@ void MyInterface::getIntegratedData(){
 //                cv::resize(mat, image11,dsize);
 //                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//                //vector<Rectan> rectans;
 //                QImage aa=(&img)->copy(QRect(1,1,mat.cols/2,mat.rows));
 //                Mat image4 = CVUtil::QImageToMat(aa);
 //                Mat image44 = Mat(dsize,CV_32S);
@@ -171,7 +181,6 @@ void MyInterface::getIntegratedData(){
 //                cv::resize(mat, image11,dsize);
 //                img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//                //vector<Rectan> rectans;
 //                aa=(&img)->copy(QRect(mat.cols/2,1,mat.cols,mat.rows));
 //                Mat image5 = CVUtil::QImageToMat(aa);
 //                Mat image55 = Mat(dsize,CV_32S);
@@ -210,13 +219,75 @@ void MyInterface::getIntegratedData(){
 //                    obj.setRect(Rect(obj.getCenPoint().x-obj.getBlockSize().width/2,obj.getCenPoint().y-obj.getBlockSize().height/2,obj.getCenPoint().x+obj.getBlockSize().width/2,obj.getCenPoint().y+obj.getBlockSize().height/2));
 
 //                    this->objs.push_back(obj);
+
+//                    //…Ë÷√πÏº£
+//                    boolean isExisted = false;
+//                    for(int i = 0; i < this->tracks.size(); i++){
+//                        MyObjectTrack track = tracks[i];
+//                        if(obj.getID() == track.getId()){
+//                            vector<Point> ps = track.getTrack();
+//                            ps.push_back(obj.getCenPoint());
+//                            track.setTrack(ps);
+//                            isExisted = true;
+//                        }
+//                    }
+
+//                    if(!isExisted){
+//                        MyObjectTrack track1 = MyObejectTrack();
+//                        track1.setId(obj.getID());
+//                        vector<Point> ps = track1.getTrack();
+//                        ps.push_back(obj.getCenPoint());
+//                        track1.setTrack(ps);
+//                        tracks.push_back(track1);
+//                    }
+
 //                    if(obj.getCenPoint().y<this->panoImage.cols/2){
 //                        this->objs1.push_back(obj);
+//                        //…Ë÷√πÏº£
+//                        boolean isExisted1 = false;
+//                        for(int i = 0; i < this->tracks1.size(); i++){
+//                            MyObjectTrack track2 = tracks1[i];
+//                            if(obj.getID() == track2.getId()){
+//                                vector<Point> ps = track2.getTrack();
+//                                ps.push_back(obj.getCenPoint());
+//                                track2.setTrack(ps);
+//                                isExisted1 = true;
+//                            }
+//                        }
+
+//                        if(!isExisted1){
+//                            MyObjectTrack track3 = MyObejectTrack();
+//                            track3.setId(obj.getID());
+//                            vector<Point> ps = track3.getTrack();
+//                            ps.push_back(obj.getCenPoint());
+//                            track3.setTrack(ps);
+//                            tracks1.push_back(track3);
+//                        }
 //                    }
 //                    else{
 //                        this->objs2.push_back(obj);
+//                        //…Ë÷√πÏº£
+//                        boolean isExisted2 = false;
+//                        for(int i = 0; i < this->tracks2.size(); i++){
+//                            MyObjectTrack track4 = tracks2[i];
+//                            if(obj.getID() == track4.getId()){
+//                                vector<Point> ps = track4.getTrack();
+//                                ps.push_back(obj.getCenPoint());
+//                                track4.setTrack(ps);
+//                                isExisted2 = true;
+//                            }
+//                        }
+
+//                        if(!isExisted2){
+//                            MyObjectTrack track5 = MyObejectTrack();
+//                            track5.setId(obj.getID());
+//                            vector<Point> ps = track5.getTrack();
+//                            ps.push_back(obj.getCenPoint());
+//                            track5.setTrack(ps);
+//                            tracks2.push_back(track5);
+//                        }
 //                    }
-//                }
+//                 }
 
 //                cv::waitKey(0);
 //            }

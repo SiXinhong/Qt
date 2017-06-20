@@ -27,11 +27,20 @@ class LWidget : public QWidget
     Q_OBJECT
 
 private:
+    double r0;
 
+    double r;
 
+    double x0;
+
+    double y0;
 public:
 
     Mat mat;
+
+    //全景图像
+    Mat pano;
+
     //vector<Rect> rects;//包含的目标的box
     vector<MyObject> objs;
 
@@ -46,11 +55,15 @@ public:
 
     Mat getMat();
 
+    void setPano(Mat p);
+
+    Mat getPano();
+
     void draw();
 
-    double getDirectionX(double x);
+    double getDirectionX(double x, double y);
 
-    double getDirectionY(double y);
+    double getDirectionY(double x, double y);
 
     Point getDirectionPoint(Point p);
 

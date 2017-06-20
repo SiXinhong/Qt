@@ -2,6 +2,7 @@
 #include "qj2widget.h"
 #include "mainwindow.h"
 #include "myobject.h"
+#include "myobjecttrack.h"
 
 
 using namespace cv;
@@ -23,6 +24,7 @@ Qj2Widget::Qj2Widget(QWidget *parent) :
         //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
 
         rectan = Rect(1490,250,100,100);
+        newrect = Rect(1490,250,100,100);
     }
 
 void Qj2Widget::setMat(Mat m){
@@ -31,7 +33,7 @@ void Qj2Widget::setMat(Mat m){
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         //mw->test();
 
-        mw->drawRecOnPic2(mat,rectan);
+        rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
         cv::cvtColor(mat, mat, CV_BGR2RGB);
         mw->loadPictureToLabel2();
         isRect = true;
@@ -48,6 +50,14 @@ void Qj2Widget::setObjects(vector<MyObject> os){
 
 vector<MyObject> Qj2Widget::getObjects(){
     return this->objs;
+}
+
+void Qj2Widget::setTracks(vector<MyObjectTrack> ts){
+    this->tracks =ts;
+}
+
+vector<MyObjectTrack> Qj2Widget::getTracks(){
+    return this->tracks;
 }
 
 void Qj2Widget::contextMenuEvent(QContextMenuEvent *){
@@ -71,12 +81,28 @@ void Qj2Widget::draw(){
     int count = this->objs.size();
     for (int i = 0; i < count;i++)
     {
-        rectangle(mat,objs[i].getRect(),objs[i].getColor(),2,1,0);
+        //画对象的box
+        MyObject obj = objs[i];
+        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+        //画轨迹
+        for(int ii = 0; ii < this->tracks.size(); ii++){
+            MyObjectTrack track = this->tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                }
+            }
+        }
+
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
     cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->imgLabel2 = mw->MatToQImage(mat,mw->imgLabel2);
     mw->loadPictureToLabel2();
+
 }
 
 boolean Qj2Widget::isObjSelected(MyObject obj){
@@ -122,6 +148,10 @@ void Qj2Widget::ToZhu()
     mw->widget3->setObjects(objs3);
 
     mw->widget3->setFrom(2);
+    this->rectan.x = this->newrect.x;
+    this->rectan.y = this->newrect.y;
+    this->rectan.width = this->newrect.width;
+    this->rectan.height = this->newrect.height;
 
     Mat mat = getMat();
     Size dsize ;
@@ -160,6 +190,10 @@ void Qj2Widget::ToNingshi()
     mw->widget4->setObjects(objs4);
 
     mw->widget4->setFrom(2);
+    this->rectan.x = this->newrect.x;
+    this->rectan.y = this->newrect.y;
+    this->rectan.width = this->newrect.width;
+    this->rectan.height = this->newrect.height;
 
     Mat mat = getMat();
     Size dsize ;
@@ -225,15 +259,15 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
         if(position2.x()<=this->width() && position2.y()<=this->height()){
             //qrectan = QRect(position1.x(),position1.y(),position2.x()-position1.x(),position2.y()-position1.y());
 
-            rectan.x=getMatX(position1.x());// = Rect(1490,250,100,100);
-            rectan.y=getMatY(position1.y());
-            rectan.width=getMatX(position2.x())-getMatX(position1.x());
-            rectan.height=getMatY(position2.y())-getMatY(position1.y());
+            newrect.x=getMatX(position1.x());// = Rect(1490,250,100,100);
+            newrect.y=getMatY(position1.y());
+            newrect.width=getMatX(position2.x())-getMatX(position1.x());
+            newrect.height=getMatY(position2.y())-getMatY(position1.y());
 
             MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
             //mw->test();
 
-            mw->drawRecOnPic2(mat,rectan);
+            rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
             cv::cvtColor(mat, mat, CV_BGR2RGB);
             mw->loadPictureToLabel2();
             isRect = true;

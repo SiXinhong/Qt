@@ -2,6 +2,7 @@
 #define MYINTERFACE_H
 
 #include "myobject.h"
+#include "myobjecttrack.h"
 
 #include "show_sdk.h"
 
@@ -61,6 +62,20 @@ public:
 
     //位于全景显示区2中的对象
     vector<MyObject> objs2;
+
+    //对象的轨迹集合
+
+    vector<MyObjectTrack> tracks;
+
+    vector<MyObjectTrack> tracks1;
+
+    vector<MyObjectTrack> tracks2;
+
+    vector<MyObjectTrack> getTracks();
+
+    vector<MyObjectTrack> getTracks1();
+
+    vector<MyObjectTrack> getTracks2();
 
     Time timett;
     cv::Mat panoImage;//

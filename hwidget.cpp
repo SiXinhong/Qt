@@ -2,6 +2,8 @@
 #include "mainwindow.h"
 #include "myobject.h"
 
+
+#include <QtCore/qmath.h>
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -15,7 +17,10 @@ using namespace std;
 HWidget::HWidget(QWidget *parent) :
     QWidget(parent){
 
-
+    r = 120;
+    r1 = 20;
+    x0 = 150;
+    y0 = 150;
 }
 
 void HWidget::setMat(Mat m){
@@ -24,6 +29,14 @@ void HWidget::setMat(Mat m){
 
 Mat HWidget::getMat(){
     return mat;
+}
+
+void HWidget::setPano(Mat p){
+    this->pano = p;
+}
+
+Mat HWidget::getPano(){
+    return this->pano;
 }
 
 void HWidget::setObjects(vector<MyObject> os){
@@ -35,19 +48,20 @@ vector<MyObject> HWidget::getObjects(){
 }
 
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
-double HWidget::getDirectionX(double x){
-    return x;
-}
+double HWidget::getDirectionX(double x, double y){
+    double x2 = x0 + (r/r0)*((r1+y) * qCos(x/r0));
+    return x2;}
 
-double HWidget::getDirectionY(double y){
-    return y;
+double HWidget::getDirectionY(double x, double y){
+    double y2 = y0 + (r/r0)*((r1+y) * qSin(x/r0));
+    return y2;
 }
 
 Point HWidget::getDirectionPoint(Point p){
     double x1 = p.x;
     double y1 = p.y;
-    double x2 = this->getDirectionX(x1);
-    double y2 = this->getDirectionY(y1);
+    double x2 = this->getDirectionX(x1, y1);
+    double y2 = this->getDirectionY(x1, y1);
     return Point(x2,y2);
 }
 

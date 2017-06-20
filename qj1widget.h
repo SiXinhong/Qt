@@ -3,6 +3,7 @@
 
 #include "rectan.h"
 #include "myobject.h"
+#include "myobjecttrack.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -39,12 +40,16 @@ public:
     //全景1所包含的运动目标
     vector<MyObject> objs;
 
+    //全景1所包含的运动目标轨迹
+    vector<MyObjectTrack> tracks;
+
     QPoint position1;
     QPoint position2;
     boolean isDrag;
     boolean isMove;
     boolean isRect;
     Rect rectan;
+    Rect newrect;
     //QRect qrectan;
 
 
@@ -59,6 +64,9 @@ public:
 
     void setObjects(vector<MyObject> os);
     vector<MyObject> getObjects();
+
+    void setTracks(vector<MyObjectTrack> ts);
+    vector<MyObjectTrack> getTracks();
 
     Rect getRectan();
     QRect getQRectan();
