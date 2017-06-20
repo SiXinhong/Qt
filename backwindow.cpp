@@ -1,5 +1,20 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+//#include "backwindow.h"
+//#include "ui_backwindow.h"
+
+//BackWindow::BackWindow(QWidget *parent) :
+//    QMainWindow(parent),
+//    ui(new Ui::BackWindow)
+//{
+//    ui->setupUi(this);
+//}
+
+//BackWindow::~BackWindow()
+//{
+//    delete ui;
+//}
+#include "backwindow.h"
+#include "ui_backwindow.h"
+
 #include "qj1widget.h"
 #include "qj2widget.h"
 #include "zwidget.h"
@@ -40,10 +55,12 @@ using namespace cv;
 using namespace std;
 
 
-MainWindow::MainWindow(QWidget *parent) :
+BackWindow::BackWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::BackWindow)
 {
+
+    ui->setupUi(this);
     //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
@@ -60,8 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //-------------------------------------------------------
 
 
-    ui->setupUi(this);   
+    ui->setupUi(this);
     QWidget* widget = new QWidget(this);
+
 
     //widget10 = new QWidget(this);
     widget1 = new Qj1Widget(new QWidget(this));
@@ -89,7 +107,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //---------------------------------------------------------
 
     //临时性处理，将来被金老师SDK替换--------------------------------
-    //tempProcessing();
     //---------------------------------------------------------
     //定时器
     timer=new QTimer();
@@ -105,95 +122,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 创建工具栏
     addMyToolBar();
-    //创建菜单栏
-    //监控
-//    QActionGroup *group=new QActionGroup(this);
-//    QAction *startStopc=group->addAction(tr("启/停"));
-//    ui->monitoring->addAction(startStopc);
-//    connect(startStopc,SIGNAL(triggered()),this,SLOT(startStopFunction()));
-
-//    QAction *mstopc=group->addAction(tr("暂停"));
-//    ui->monitoring->addAction(mstopc);
-//    connect(mstopc,SIGNAL(triggered()),this,SLOT(mstopFunction()));
-
-//    //回放
-//    QActionGroup *group2=new QActionGroup(this);
-//    QAction *openc=group2->addAction(tr("打开"));
-//    ui->playback->addAction(openc);
-//    connect(openc,SIGNAL(triggered()),this,SLOT(openFunction()));
-
-//    QAction *playc=group2->addAction(tr("播放"));
-//    ui->playback->addAction(playc);
-//    connect(playc,SIGNAL(triggered()),this,SLOT(playFunction()));
-
-//    QAction *rstopc=group2->addAction(tr("暂停"));
-//    ui->playback->addAction(rstopc);
-//    connect(rstopc,SIGNAL(triggered()),this,SLOT(rstopFunction()));
-
-//    QAction *timeLinec=group2->addAction(tr("时间线"));
-//    ui->playback->addAction(timeLinec);
-//    connect(timeLinec,SIGNAL(triggered()),this,SLOT(timeLineFunction()));
-
-//    //图像
-//    QActionGroup *group3=new QActionGroup(this);
-//    QAction *automc=group3->addAction(tr("自动"));
-//    ui->image->addAction(automc);
-//    connect(automc,SIGNAL(triggered()),this,SLOT(automFunction()));
-
-//    QAction *brightnessc=group3->addAction(tr("亮度"));
-//    ui->image->addAction(brightnessc);
-//    connect(brightnessc,SIGNAL(triggered()),this,SLOT(brightnessFunction()));
-
-//    QAction *saturationc=group3->addAction(tr("饱和度"));
-//    ui->image->addAction(saturationc);
-//    connect(saturationc,SIGNAL(triggered()),this,SLOT(saturationFunction()));
-
-//    QAction *pseudoColorc=group3->addAction(tr("伪彩色"));
-//    ui->image->addAction(pseudoColorc);
-//    connect(pseudoColorc,SIGNAL(triggered()),this,SLOT(pseudoColorFunction()));
-
-//    QAction *serialNumberc=group3->addAction(tr("编号"));
-//    ui->image->addAction(serialNumberc);
-//    connect(serialNumberc,SIGNAL(triggered()),this,SLOT(serialNumberFunction()));
-
-//    //告警
-//    QActionGroup *group4=new QActionGroup(this);
-//    QAction *openClosec=group4->addAction(tr("开/关"));
-//    ui->alarm->addAction(openClosec);
-//    connect(openClosec,SIGNAL(triggered()),this,SLOT(openCloseFunction()));
-
-//    QAction *manualc=group4->addAction(tr("手动"));
-//    ui->alarm->addAction(manualc);
-//    connect(manualc,SIGNAL(triggered()),this,SLOT(manualFunction()));
-
-//    QAction *attributec=group4->addAction(tr("属性"));
-//    ui->alarm->addAction(attributec);
-//    connect(attributec,SIGNAL(triggered()),this,SLOT(attributeFunction()));
-
-//    QAction *setUpc=group4->addAction(tr("设置"));
-//    ui->alarm->addAction(setUpc);
-//    connect(setUpc,SIGNAL(triggered()),this,SLOT(setUpFunction()));
-
-//    QAction *voicec=group4->addAction(tr("声音"));
-//    ui->alarm->addAction(voicec);
-//    connect(voicec,SIGNAL(triggered()),this,SLOT(voiceFunction()));
-
-//    QAction *lightc=group4->addAction(tr("指示灯"));
-//    ui->alarm->addAction(lightc);
-//    connect(lightc,SIGNAL(triggered()),this,SLOT(lightFunction()));
-
-    //创建状态栏
-    // addMyStatusBar();
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
-    //右键
-    //addAction(new QAction("目标列表",this));
-    //widget1->addAction(new QAction("到主显示区",widget1));
-    //widget1->addAction(new QAction("到凝视显示区",widget1));
-    //addAction(new QAction("最大化",this));
-    //addAction(new QAction("最佳显示效果",this));
-    //setContextMenuPolicy(Qt::ActionsContextMenu);
 
     //布局
     gridlayout = new QGridLayout;
@@ -220,16 +148,18 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(widget);
 
     this->setWindowState(Qt::WindowMaximized);
-    this->trackBar=new TrackBar(this);
+  //  this->trackBar=new TrackBar(this);
+
     bright_TrackbarValue=0;
+
 }
 
-MainWindow::~MainWindow(){
+BackWindow::~BackWindow()
+{
     delete ui;
 }
-
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
-void MainWindow::selfProcessing(){
+void BackWindow::selfProcessing(){
     index=0;//用于计算标尺的起始位置
 //    index1=0;//用于取第一栏的图片
 //    index2=0;//用于取第二栏的图片
@@ -262,36 +192,11 @@ void MainWindow::selfProcessing(){
     Mat mat6 =imread(imageurl6.toStdString());
 
     drawUiLabel(mat6,6);
-
-//    imageurl="./s1/1.bmp";
-//    imageurl2="./s2/1.bmp";
-
-//    //存储第一栏
-//    filename1 = "./s1/1.bmp";
-//    filename2 = "./s1/2.bmp";
-//    filename3 = "./s1/3.bmp";
-//    filename4 = "./s1/4.bmp";
-//    //存储第二栏
-//    filename5 = "./s2/1.bmp";
-//    filename6 = "./s2/2.bmp";
-//    filename7 = "./s2/3.bmp";
-//    filename8 = "./s2/4.bmp";
-//    //将第一栏存储在vector中
-//    vc1.push_back(filename1);
-//    vc1.push_back(filename2);
-//    vc1.push_back(filename3);
-//    vc1.push_back(filename4);
-//    //将第二栏存储在vector中
-//    vc2.push_back(filename5);
-//    vc2.push_back(filename6);
-//    vc2.push_back(filename7);
-//    vc2.push_back(filename8);
 }
-
 //----------------------------------------------------------
 
 //临时性处理函数，将来被金老师SDK替换------------------------------
-void MainWindow::tempProcessing(){
+void BackWindow::tempProcessing(){
     index=0;//用于计算标尺的起始位置
     index1=0;//用于取第一栏的图片
     index2=0;//用于取第二栏的图片
@@ -351,7 +256,7 @@ void MainWindow::tempProcessing(){
 //----------------------------------------------------------
 
 //绘制工具栏
-void MainWindow::addMyToolBar()
+void BackWindow::addMyToolBar()
 {
     mainToolBar = addToolBar("monitoring");
 
@@ -401,32 +306,6 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(open);
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
     mainToolBar->addWidget(new QLabel("   "));
-
-
-//    play = new QToolButton(this);
-//    play->setToolTip(tr("播放"));
-//    playSet="./icon/4_1.png";
-//    play->setIcon(QPixmap(playSet));
-//    play->setMinimumHeight(35);
-//    mainToolBar->addWidget(play);
-//    connect(play,SIGNAL(clicked()),this,SLOT(playFunction()));
-
-//    rstop = new QToolButton(this);
-//    rstop->setToolTip(tr("暂停"));
-//    rstopSet="./icon/2_1.png";
-//    rstop->setIcon(QPixmap(rstopSet));
-//    rstop->setMinimumHeight(35);
-//    mainToolBar->addWidget(rstop);
-//    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction()));
-
-
-//    timeLine = new QToolButton(this);
-//    timeLine->setToolTip(tr("时间线"));
-//    timeLineSet="./icon/5_1.png";
-//    timeLine->setIcon(QPixmap(timeLineSet));
-//    timeLine->setMinimumHeight(35);
-//    mainToolBar->addWidget(timeLine);
-//    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
 
     mainToolBar->addSeparator();
 
@@ -522,22 +401,6 @@ void MainWindow::addMyToolBar()
 
     mainToolBar->addSeparator();
 
-//    serialNumber = new QToolButton(this);
-//    serialNumber->setToolTip(tr("编号"));
-//    serialNumberSet="./icon/17_1.png";
-//    serialNumber->setIcon(QPixmap(serialNumberSet));
-//    serialNumber->setMinimumHeight(35);
-//    mainToolBar->addWidget(serialNumber);
-//    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction()));
-
-//    time = new QToolButton(this);
-//    time->setToolTip(tr("时间"));
-//    timeSet="./icon/10_1.png";
-//    time->setIcon(QPixmap(timeSet));
-//    time->setMinimumHeight(35);
-//    mainToolBar->addWidget(time);
-//    mainToolBar->addSeparator();
-//    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction()));
 
     //第五组，告警
     //listLabel4=new QLabel(tr(" 告警 "));
@@ -612,24 +475,16 @@ void MainWindow::addMyToolBar()
 }
 
 //获取系统当前时间定时器
-void MainWindow::onTimerOut2(){
+void BackWindow::onTimerOut2(){
     time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 }
 
 //定时器任务
-void MainWindow::onTimerOut()
+void BackWindow::onTimerOut()
 {
     index=index+1;
     //更新第一栏的图片
-    //index1=index1+1;
-    //QImage *image=new QImage(vc1[(index1)%4]);
-//    image= QImage(vc1[(index1)%4]);
-//    QString s1=vc1[(index1)%4];
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
-//    widget1->setMat(mat1);
-//    qDebug()<<s1;
-//    drawUiLabel(mat1,1);
+
     image= QImage(in.getQJ1());
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
@@ -695,7 +550,7 @@ void MainWindow::onTimerOut()
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
-void MainWindow::mousePressEvent(QMouseEvent *e)
+void BackWindow::mousePressEvent(QMouseEvent *e)
 {
     qDebug()<<"鼠标压下事件来自mainframe";
     if(e->button() == Qt::LeftButton)
@@ -719,7 +574,7 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *e)
+void BackWindow::mouseMoveEvent(QMouseEvent *e)
 {
     if(isDrag1 && (e->buttons() && Qt::LeftButton)){
         //move(e->globalPos() - position1);
@@ -733,7 +588,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-void MainWindow::mouseReleaseEvent(QMouseEvent *e)
+void BackWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     //判断目的点落在主显示区的标志变量
     boolean target3 = false;
@@ -833,7 +688,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     isMove = false;
 }
 
-void MainWindow::resizeEvent(QResizeEvent *){
+void BackWindow::resizeEvent(QResizeEvent *){
     label->resize(widget1->size());
     label2->resize(widget2->size());
     label3->resize(widget3->size());
@@ -842,12 +697,12 @@ void MainWindow::resizeEvent(QResizeEvent *){
     label6->resize(widget6->size());
 }
 
-void MainWindow::paintEvent(QPaintEvent *){
+void BackWindow::paintEvent(QPaintEvent *){
     //重新绘制图片。
 }
 
 //---xiaotian 绘制界面上的图片3  图片4
-void MainWindow::drawUiLabelByCopy(Mat image, int index1){
+void BackWindow::drawUiLabelByCopy(Mat image, int index1){
 
     for (int y = 0; y < image.rows; y++)
             {
@@ -927,7 +782,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
 
 
 //---xiaotian 绘制界面上的图片1 图片2 图片5 图片6
-void MainWindow::drawUiLabel(Mat image, int index){
+void BackWindow::drawUiLabel(Mat image, int index){
     if(index == 1 || index==2){
         for (int y = 0; y < image.rows; y++)
                 {
@@ -1026,7 +881,7 @@ void MainWindow::drawUiLabel(Mat image, int index){
 
 
 //---xiaotian   加载图片到label上。
-void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
+void BackWindow::loadPictureToLabel(QLabel *label, QImage image){
     QPixmap pixmap1 = QPixmap::fromImage(image);
     label->setPixmap(pixmap1);
     label->setScaledContents(true);
@@ -1035,37 +890,37 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 }
 
 //加载图片到Label1上
-void MainWindow::loadPictureToLabel1(){
+void BackWindow::loadPictureToLabel1(){
     loadPictureToLabel(label,imgLabel1);
 }
 
 //加载图片到Label2上
-void MainWindow::loadPictureToLabel2(){
+void BackWindow::loadPictureToLabel2(){
     loadPictureToLabel(label2,imgLabel2);
 }
 
 //加载图片到Label3上
-void MainWindow::loadPictureToLabel3(){
+void BackWindow::loadPictureToLabel3(){
     loadPictureToLabel(label3,imgLabel3);
 }
 
 //加载图片到Label4上
-void MainWindow::loadPictureToLabel4(){
+void BackWindow::loadPictureToLabel4(){
     loadPictureToLabel(label4,imgLabel4);
 }
 
 //加载图片到Label5上
-void MainWindow::loadPictureToLabel5(){
+void BackWindow::loadPictureToLabel5(){
     loadPictureToLabel(label5,imgLabel5);
 }
 
 //加载图片到Label6上
-void MainWindow::loadPictureToLabel6(){
+void BackWindow::loadPictureToLabel6(){
     loadPictureToLabel(label6,imgLabel6);
 }
 
 //---xiaotian   图像上绘制矩形框
-void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
+void BackWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。
     int count = rectans.size();
     for (int i = 0; i < count;i++)
@@ -1086,7 +941,7 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
 }
 
 //绘制鼠标选取的矩形
-void MainWindow::drawRecOnPic2(Mat image, Rect rect){
+void BackWindow::drawRecOnPic2(Mat image, Rect rect){
     //在图像上画矩形。
     rectangle(image,rect,Scalar(0,0,255),1,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
@@ -1096,7 +951,7 @@ void MainWindow::drawRecOnPic2(Mat image, Rect rect){
 }
 
 //---xiaotian  图像上绘制标尺和矩形框
-void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
+void BackWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
     //在图像上画矩形。
     int count = rectans.size();
     for (int i = 0; i < count;i++)
@@ -1118,7 +973,7 @@ void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
 }
 
 //---xiaotian  图像上绘制多边形和圆
-void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
+void BackWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
     //在图像上画多边形
     int count = point.size();
     for (int i = 0; i <count;i+=2)
@@ -1137,7 +992,7 @@ void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, doubl
 
 
 //矩形
-void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double height)
+void BackWindow:: paintRectangle(Mat image,double x,double y,double width,double height)
 {
     Rect rect;
     //QImage img;
@@ -1151,7 +1006,7 @@ void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double
     //return img;
 }
 //圆
-void MainWindow::paintCircle(Mat image,double x,double y)
+void BackWindow::paintCircle(Mat image,double x,double y)
 {
     //QImage img;
     Point pointInterest;//特征点，用以画在图像中,画圆形点的圆心
@@ -1163,7 +1018,7 @@ void MainWindow::paintCircle(Mat image,double x,double y)
 }
 
 //画标尺
-void MainWindow::paintScale(Mat image,double startw,double starth)
+void BackWindow::paintScale(Mat image,double startw,double starth)
 {
     //QImage img;
     int c = image.cols/30;
@@ -1201,7 +1056,7 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
 }
 
 
-cv::Mat MainWindow::QImageToMat(QImage image)
+cv::Mat BackWindow::QImageToMat(QImage image)
 {
     cv::Mat mat;
     switch (image.format())
@@ -1225,7 +1080,7 @@ cv::Mat MainWindow::QImageToMat(QImage image)
     return mat;
 }
 
-QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
+QImage BackWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
 {
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if(mat.type() == CV_8UC1)
@@ -1279,7 +1134,7 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
 }
 
 //启动/停止
-void MainWindow::startStopFunction()
+void BackWindow::startStopFunction()
 {
     //if(startStopSet=="./icon/1_2.png")
     if (isQidong)
@@ -1303,7 +1158,7 @@ void MainWindow::startStopFunction()
 
 }
 //暂停/继续
-void MainWindow::mstopFunction()
+void BackWindow::mstopFunction()
 {
     //if(mstopSet=="./icon/2_2.png")
     if(isJixu)
@@ -1327,13 +1182,13 @@ void MainWindow::mstopFunction()
 
 }
 //后退
-void MainWindow::backFunction()
+void BackWindow::backFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("后退功能，有待实现。"),tr("继续努力。"));
 }
 //回放
-void MainWindow::openFunction()
+void BackWindow::openFunction()
 {
     startTime=new QLabel(QWidget::tr("起始时间"));
     //开始时间选择框
@@ -1368,7 +1223,7 @@ void MainWindow::openFunction()
               (QApplication::desktop()->height() - widgetNew->height())/2);
     widgetNew->show();
 }
-void MainWindow::queDingFunction()
+void BackWindow::queDingFunction()
 {
     QDateTime datetimes;
     datetimes=startTimeSet->dateTime();
@@ -1377,25 +1232,23 @@ void MainWindow::queDingFunction()
     backwindow=new BackWindow(this);
     backwindow->show();
 }
-void MainWindow::quXiaoFunction()
+void BackWindow::quXiaoFunction()
 {
     widgetNew->close();
 }
 //图像
 //自动
-void MainWindow::automFunction()
+void BackWindow::automFunction()
 {
    // dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
 }
 //亮度
-void MainWindow::brightnessFunction()
+void BackWindow::brightnessFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    //QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
-//    trackBar=new LTrackBar(this);
-    trackBar->setWindowTitle("亮度");
-    trackBar->show();
+//    trackBar1=new TrackBar(this);
+//    trackBar1->setWindowTitle("亮度");
+//    trackBar1->show();
     if(brightnessSet=="./icon/7_2.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -1406,58 +1259,9 @@ void MainWindow::brightnessFunction()
         brightness->setIcon(QPixmap("./icon/7_2.png"));
         brightnessSet="./icon/7_2.png";
     }
-//    setPopupMode(QToolButton::InstantPopup);
-//    QjWidget *popup=new QWidget(this);
-
-//    slider=new QSlider(Qt::Horizontal);
-//    slider->setRange(0,100);
-//    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(setLineEditValue(int)));
-
-//    labelbrightness=new QLabel(popup);
-//    labelbrightness->setAlignment(Qt::AlignCenter);
-//    labelbrightness->setNum(100);
-//    labelbrightness->setMinimumWidth(labelbrightness->sizeHint().width());
-//    connect(slider,SIGNAL(valueChanged(int)),labelbrightness,SLOT(setNum(int)));
-
-//    QBoxLayout *popupLayout=new QBoxLayout(popup);
-//    popupLayout->setMargin(2);
-//    popupLayout->addWidget(slider);
-//    popupLayout->addWidget(labelbrightness);
-
-//    QWidgetAction *action=new QWidgetAction(this);
-//    action->setDefaultWidget(popup);
-
-//    menu=new QMenu(this);
-//    menu->addAction(action);
-//    SetMenu(menu);
-
-//    int g_nTrackbarValue;
-//    g_nTrackbarValue = 20;
-//    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
 }
-
-//void MainWindow::on_trackbar(int, void*)
-//{
-//    Mat bw = threshval < 128 ? (img < threshval) : (img > threshval);//如果threshval小于128，则当bw中相应元素小于threshval时赋255，大于threshval时赋0。如果threshval大于128，则当bw相应元素大于threshval时赋255，小于threshval时赋0
-//    //定义点和向量
-//    vector<vector<Point> > contours;//存放轮廓，但是每个vector<Point>元素不一定只表示一个轮廓。
-//    vector<Vec4i> hierarchy;//存放轮廓之间的拓扑关系。hierarchy[idx][0]、 hierarchy[idx][1]、 hierarchy[idx][2]、 hierarchy[idx][3]分别表示索引为idx的轮廓的前一个、后一个、子、父轮廓对应的索引；当索引为0时，表示相应的轮廓不存在。
-//    findContours( bw, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );//查找轮廓
-//    Mat dst = Mat::zeros(img.size(), CV_8UC3);//初始化dst
-//    if( !contours.empty() && !hierarchy.empty() )//开始处理
-//    {
-//        //遍历所有顶层轮廓，随机生成颜色值绘制给各连接组成部分
-//        int idx = 0;
-//        for( ; idx >= 0; idx = hierarchy[idx][0] )
-//        {
-//            Scalar color( (rand()&255), (rand()&255), (rand()&255) );
-//            drawContours( dst, contours, idx, color, CV_FILLED, 8, hierarchy );//绘制填充轮廓
-//        }
-//    }
-//    imshow("Connected Components", dst);//显示窗口
-//}
 //饱和度
-void MainWindow::saturationFunction()
+void BackWindow::saturationFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
@@ -1476,7 +1280,7 @@ void MainWindow::saturationFunction()
     }
 }
 //伪彩色
-void MainWindow::pseudoColorFunction()
+void BackWindow::pseudoColorFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
@@ -1484,7 +1288,7 @@ void MainWindow::pseudoColorFunction()
 
 //告警
 //打开关闭
-void MainWindow::openCloseFunction()
+void BackWindow::openCloseFunction()
 {
     //if(openCloseSet=="./icon/11_2.png")
     if(!isGaojing)
@@ -1503,7 +1307,7 @@ void MainWindow::openCloseFunction()
     }
 }
 //手动
-void MainWindow::manualFunction()
+void BackWindow::manualFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
@@ -1524,13 +1328,13 @@ void MainWindow::manualFunction()
     loadPictureToLabel1();
 }
 //目标属性列表
-void MainWindow::objectAttributeFunction()
+void BackWindow::objectAttributeFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("目标属性列表功能，有待实现。"),tr("继续努力。"));
 }
 //设置
-void MainWindow::objectsFunction()
+void BackWindow::objectsFunction()
 {
     //if(objectSet=="./icon/13_2.png")
     if(isMubiao)
@@ -1549,13 +1353,13 @@ void MainWindow::objectsFunction()
     }
 }
 //目标属性列表
-void MainWindow::attributeFunction()
+void BackWindow::attributeFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 //声音
-void MainWindow::voiceFunction()
+void BackWindow::voiceFunction()
 {
     //if(voiceSet=="./icon/15_2.png")
     if(isShengyin)
@@ -1575,25 +1379,24 @@ void MainWindow::voiceFunction()
     }
 }
 
-void MainWindow::exitFunction(){
+void BackWindow::exitFunction(){
     QApplication::closeAllWindows();
 }
 
 //退出系统事件
-void MainWindow::closeEvent(QCloseEvent *event)
+void BackWindow::closeEvent(QCloseEvent *event)
 {
 
 
 }
 
-void MainWindow::adjustbrightness()
+void BackWindow::adjustbrightness()
 {
 //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
 }
 
-void MainWindow::test()
+void BackWindow::test()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
-

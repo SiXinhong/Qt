@@ -26,7 +26,9 @@ SOURCES += main.cpp\
     cvutil.cpp \
     trackbar.cpp \
     myobject.cpp \
-    myinterface.cpp
+    myinterface.cpp \
+    backwindow.cpp \
+    ltrackbar.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -40,9 +42,13 @@ HEADERS  += mainwindow.h \
     cvutil.h \
     trackbar.h \
     myobject.h \
-    myinterface.h
+    myinterface.h \
+    backwindow.h \
+    ltrackbar.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    backwindow.ui \
+    ltrackbar.ui
 
 INCLUDEPATH+=E:\QTsource\OpenCV\include\opencv\
 

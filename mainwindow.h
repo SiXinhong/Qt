@@ -45,6 +45,13 @@
 #include<QLineEdit>
 #include<QWidgetAction>
 #include "trackbar.h"
+#include"ltrackbar.h"
+//回放所需要的头文件
+#include"backwindow.h"
+#include<QDateEdit>
+#include<QDateTimeEdit>
+#include<QPushButton>
+#include <QDesktopWidget>
 
 using namespace cv;
 using namespace std;
@@ -193,7 +200,8 @@ public:
      QImage image;
      QImage image2;
      //-----------------------------------------------
-
+    //亮度需要的变量
+//     class LTrackBar *ltrackBar;
 
 protected:
      //工具条需要的变量
@@ -268,16 +276,18 @@ protected:
      //QToolButton *setUp;//设置
      QToolButton *voice;//声音
      QToolButton *exitButton;//退出按钮
-     //QToolButton *light;//指示灯
-     //对话框需要的变量
-     //QLineEdit *fileLineEdit;
-     //QLabel *dialogLabel;
 
-     //调节图像所需要的参数
-//     QSlider *slider;
-//     QLineEdit *lineEdit;
-//     QLabel *labelbrightness;
-//     QMenu menu;
+     //回放按钮所需要的参数
+     class BackWindow *backwindow;
+     QWidget *widgetNew;
+//     QPushButton *inputBtn;
+     QPushButton *queDing;
+     QPushButton *quXiao;
+     QLabel *startTime;
+     QLabel *stopTime;
+     QDateTimeEdit *startTimeSet;
+     QDateTimeEdit *stopTimeSet;
+     QGridLayout *gridLayout;
 
 protected slots:
      void startStopFunction();
@@ -302,13 +312,15 @@ protected slots:
 
      //void lightFunction();
      void adjustbrightness();
-
-  //   void on_trackbar(int, void*);
-//     void setLineEditValue(int);
+     //回放所需函数
+     void queDingFunction();
+     void quXiaoFunction();
 
 
 private:
     Ui::MainWindow *ui;
+
+
 class TrackBar* trackBar;
 
 };
