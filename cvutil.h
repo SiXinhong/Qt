@@ -1,6 +1,8 @@
 #ifndef CVUTIL_H
 #define CVUTIL_H
 
+#include <QImage>
+
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
 #include <highgui.h>
@@ -17,6 +19,8 @@ public:
     CVUtil();
 
     static Scalar getRandomColor();
+    static cv::Mat QImageToMat(QImage image);
+    static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
 };
 

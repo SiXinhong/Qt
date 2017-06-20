@@ -2,6 +2,8 @@
 #define QJ2WIDGET_H
 
 #include "rectan.h"
+#include "myobject.h"
+#include "myobjecttrack.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -35,12 +37,20 @@ public:
 
     Mat mat;
 
+    //全景2所包含的运动目标
+    vector<MyObject> objs;
+
+    //全景2所包含的运动目标轨迹
+    vector<MyObjectTrack> tracks;
+
     QPoint position1;
     QPoint position2;
     boolean isDrag;
     boolean isMove;
     boolean isRect;
     Rect rectan;
+    Rect newrect;
+
     //QRect qrectan;
 
 
@@ -52,7 +62,12 @@ public:
 
     void setMat(Mat m);
     Mat getMat();
-    //void cancelSelect();
+
+    void setObjects(vector<MyObject> os);
+    vector<MyObject> getObjects();
+
+    void setTracks(vector<MyObjectTrack> ts);
+    vector<MyObjectTrack> getTracks();
 
     Rect getRectan();
     QRect getQRectan();
@@ -64,6 +79,14 @@ public:
     double getWidgetX(double x);
 
     double getWidgetY(double y);
+
+    double getDirectionX();
+
+    double getDirectionY();
+
+    void draw();
+
+    boolean isObjSelected(MyObject obj);
 
 signals:
 
@@ -78,4 +101,4 @@ public slots:
     //void ToTanchu();
 };
 
-#endif // QJ1WIDGET_H
+#endif // QJ2WIDGET_H

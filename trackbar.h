@@ -6,6 +6,7 @@ class TrackBar: public QWidget
 {
 public:
     TrackBar(class MainWindow*);
+    void setPosition(int position);
     void mouseReleaseEvent(QMouseEvent *);
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);

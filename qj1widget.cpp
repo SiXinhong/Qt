@@ -1,6 +1,9 @@
 
 #include "qj1widget.h"
 #include "mainwindow.h"
+#include "myobject.h"
+#include "myobjecttrack.h"
+
 
 using namespace cv;
 using namespace std;
@@ -21,6 +24,7 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
         //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
 
         rectan = Rect(1490,250,100,100);
+        newrect = Rect(1490,250,100,100);
     }
 
 void Qj1Widget::setMat(Mat m){
@@ -29,7 +33,7 @@ void Qj1Widget::setMat(Mat m){
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         //mw->test();
 
-        mw->drawRecOnPic2(mat,rectan);
+        rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
         cv::cvtColor(mat, mat, CV_BGR2RGB);
         mw->loadPictureToLabel1();
         isRect = true;
@@ -38,6 +42,22 @@ void Qj1Widget::setMat(Mat m){
 
 Mat Qj1Widget::getMat(){
     return mat;
+}
+
+void Qj1Widget::setObjects(vector<MyObject> os){
+    this->objs = os;
+}
+
+vector<MyObject> Qj1Widget::getObjects(){
+    return this->objs;
+}
+
+void Qj1Widget::setTracks(vector<MyObjectTrack> ts){
+    this->tracks =ts;
+}
+
+vector<MyObjectTrack> Qj1Widget::getTracks(){
+    return this->tracks;
 }
 
 void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
@@ -54,10 +74,84 @@ void Qj1Widget::CancelSelect(){
     isRect = false;
 }
 
+void Qj1Widget::draw(){
+
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    int count = this->objs.size();
+    for (int i = 0; i < count;i++)
+    {
+        //画对象的box
+        MyObject obj = objs[i];
+        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+        //画轨迹
+        for(int ii = 0; ii < this->tracks.size(); ii++){
+            MyObjectTrack track = this->tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                }
+            }
+        }
+
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+    }
+    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
+    mw->loadPictureToLabel1();
+}
+
+boolean Qj1Widget::isObjSelected(MyObject obj){
+    boolean isSelected = false;
+    if((obj.getCenPoint().x>this->rectan.x) && (obj.getCenPoint().y>this->rectan.y) && (obj.getCenPoint().x<this->rectan.x+this->rectan.width) && (obj.getCenPoint().y<this->rectan.y+this->rectan.height)){
+        //调整选择框以使得目标的box在选择框之内
+        if(obj.getRect().x<this->rectan.x){
+            this->rectan.width = this->rectan.width + this->rectan.x - obj.getRect().x + 5;
+            this->rectan.x = obj.getRect().x - 5;
+        }
+        if(obj.getRect().y<this->rectan.y){
+            this->rectan.height = this->rectan.height + this->rectan.y - obj.getRect().y + 5;
+            this->rectan.y = obj.getRect().y - 5;
+        }
+        if(obj.getRect().x+obj.getRect().width>this->rectan.x){
+            this->rectan.width = this->rectan.width + obj.getRect().x + obj.getRect().width - this->rectan.x + 5;
+            this->rectan.x = obj.getRect().x +obj.getRect().width + 5;
+        }
+        if(obj.getRect().y+obj.getRect().height>this->rectan.y){
+            this->rectan.height = this->rectan.height + obj.getRect().y + obj.getRect().height- this->rectan.y+ 5;
+            this->rectan.y = obj.getRect().y +obj.getRect().height+ 5;
+        }
+        isSelected = true;
+    }
+    return isSelected;
+}
+
 void Qj1Widget::ToZhu()
 {
     //qDebug()<<"到主显示区。";
+    //更新主显示区所包含的目标
+    vector<MyObject> objs3;
+    int count = this->objs.size();
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(isObjSelected(obj)){
+            objs3.push_back(obj);
+        }
+    }
+
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    mw->widget3->setObjects(objs3);
+
+    mw->widget3->setFrom(1);
+    this->rectan.x = this->newrect.x;
+    this->rectan.y = this->newrect.y;
+    this->rectan.width = this->newrect.width;
+    this->rectan.height = this->newrect.height;
+
     Mat mat = getMat();
     Size dsize ;
     double scale = 1;
@@ -73,12 +167,33 @@ void Qj1Widget::ToZhu()
     cv::resize(image3, image33,dsize);
     mw->widget3->setMat(image33);
     mw->widget3->draw();
+
     isRect = false;
 }
 //到凝视显示区显示菜单处理事件
 void Qj1Widget::ToNingshi()
 {
+    //qDebug()<<"到主显示区。";
+    //更新凝视显示区所包含的目标
+    vector<MyObject> objs4;
+    int count = this->objs.size();
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(isObjSelected(obj)){
+            objs4.push_back(obj);
+        }
+    }
+
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    mw->widget4->setObjects(objs4);
+
+    mw->widget4->setFrom(1);
+    this->rectan.x = this->newrect.x;
+    this->rectan.y = this->newrect.y;
+    this->rectan.width = this->newrect.width;
+    this->rectan.height = this->newrect.height;
+
     Mat mat = getMat();
     Size dsize ;
     double scale = 1;
@@ -143,15 +258,16 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
         if(position2.x()<=this->width() && position2.y()<=this->height()){
             //qrectan = QRect(position1.x(),position1.y(),position2.x()-position1.x(),position2.y()-position1.y());
 
-            rectan.x=getMatX(position1.x());// = Rect(1490,250,100,100);
-            rectan.y=getMatY(position1.y());
-            rectan.width=getMatX(position2.x())-getMatX(position1.x());
-            rectan.height=getMatY(position2.y())-getMatY(position1.y());
+            newrect.x=getMatX(position1.x());// = Rect(1490,250,100,100);
+            newrect.y=getMatY(position1.y());
+            newrect.width=getMatX(position2.x())-getMatX(position1.x());
+            newrect.height=getMatY(position2.y())-getMatY(position1.y());
 
             MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
             //mw->test();
 
-            mw->drawRecOnPic2(mat,rectan);
+            //mw->drawRecOnPic2(mat,newrect);
+            rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
             cv::cvtColor(mat, mat, CV_BGR2RGB);
             mw->loadPictureToLabel1();
             isRect = true;
@@ -195,4 +311,17 @@ double Qj1Widget::getWidgetX(double x){
 //由图像中的Y获得Widget中的Y
 double Qj1Widget::getWidgetY(double y){
     return y*this->height()/mat.rows;
+}
+
+double Qj1Widget::getDirectionX(){
+    double x = this->rectan.x;
+    return 180*x/mat.cols -90;
+}
+
+double Qj1Widget::getDirectionY(){
+
+    double yy = 10;
+    double y = this->rectan.y;
+    return yy*y/mat.rows;
+
 }

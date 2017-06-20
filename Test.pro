@@ -27,7 +27,7 @@ SOURCES += main.cpp\
     trackbar.cpp \
     myobject.cpp \
     myinterface.cpp \
-    backwindow.cpp
+    myobjecttrack.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -42,10 +42,10 @@ HEADERS  += mainwindow.h \
     trackbar.h \
     myobject.h \
     myinterface.h \
-    backwindow.h
+    show_sdk.h \
+    myobjecttrack.h
 
-FORMS    += mainwindow.ui \
-    backwindow.ui
+FORMS    += mainwindow.ui
 
 INCLUDEPATH+=E:\QTsource\OpenCV\include\opencv\
 
@@ -77,4 +77,4 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
-
+LIBS+=-LE:\github\Qt -lDisplaySDK

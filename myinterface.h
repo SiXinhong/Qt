@@ -2,6 +2,9 @@
 #define MYINTERFACE_H
 
 #include "myobject.h"
+#include "myobjecttrack.h"
+
+#include "show_sdk.h"
 
 #include <QString>
 
@@ -46,8 +49,37 @@ public:
     //雷达显示区的图片的URL
     QString ld;
 
+    //从金老师传过来的panoImage切成两幅图像,全景1和全景2
+    Mat qj1mat;
+
+    Mat qj2mat;
+
     //对象集合
     vector<MyObject> objs;
+
+    //位于全景显示区1中的对象
+    vector<MyObject> objs1;
+
+    //位于全景显示区2中的对象
+    vector<MyObject> objs2;
+
+    //对象的轨迹集合
+
+    vector<MyObjectTrack> tracks;
+
+    vector<MyObjectTrack> tracks1;
+
+    vector<MyObjectTrack> tracks2;
+
+    vector<MyObjectTrack> getTracks();
+
+    vector<MyObjectTrack> getTracks1();
+
+    vector<MyObjectTrack> getTracks2();
+
+    Time timett;
+    cv::Mat panoImage;//
+    vector< SmallTarget> targets;
 
     QString getQJ1();
     void setQJ1(QString q1);
@@ -61,8 +93,34 @@ public:
 
     void setLD(QString l);
 
+    void SetTime(Time t);
+    Time getTime();
+
+    void setPano(Mat pano);
+    Mat getPano();
+
+    void setQJ1Mat(Mat qj1);
+    Mat getQJ1Mat();
+
+    void setQJ2Mat(Mat qj2);
+    Mat getQJ2Mat();
+
     vector<MyObject> getObjs();
     void setObjs(vector<MyObject> os);
+    //获得自定义的实验数据
+    vector<MyObject> getObjs2();
+
+    //获得全景显示区1中的对象
+    vector<MyObject> getQj1Objs();
+    //获得全景显示区2中的对象
+    vector<MyObject> getQj2Objs();
+    //获得综合数据
+    void getIntegratedData();
+    //设置系统参数
+//    int SetSysPara(int mode, const char *para_string, int id = 0);
+//    //获得系统参数
+//    int GetSysPara(int mode, char *para_string, int id = 0);
+
 };
 
 #endif // MYINTERFACE_H
