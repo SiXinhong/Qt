@@ -45,7 +45,7 @@
 #include<QLineEdit>
 #include<QWidgetAction>
 #include "trackbar.h"
-#include"ltrackbar.h"
+//#include"ltrackbar.h"
 //回放所需要的头文件
 #include"backwindow.h"
 #include<QDateEdit>

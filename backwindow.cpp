@@ -1,17 +1,3 @@
-//#include "backwindow.h"
-//#include "ui_backwindow.h"
-
-//BackWindow::BackWindow(QWidget *parent) :
-//    QMainWindow(parent),
-//    ui(new Ui::BackWindow)
-//{
-//    ui->setupUi(this);
-//}
-
-//BackWindow::~BackWindow()
-//{
-//    delete ui;
-//}
 #include "backwindow.h"
 #include "ui_backwindow.h"
 
@@ -148,7 +134,6 @@ BackWindow::BackWindow(QWidget *parent) :
     this->setCentralWidget(widget);
 
     this->setWindowState(Qt::WindowMaximized);
-  //  this->trackBar=new TrackBar(this);
 
     bright_TrackbarValue=0;
 
@@ -493,17 +478,6 @@ void BackWindow::onTimerOut()
     qDebug()<<s1;
     drawUiLabel(mat1,1);
     //更新第二栏的图片
-//    index2=index2+1;
-//    //QImage *image2=new QImage(vc2[(index2)%4]);
-//    image2= QImage(vc2[(index2)%4]);
-//    QString s2=vc2[(index2)%4];
-//    imageurl2=s2.toStdString();
-//    Mat mat2 =imread(imageurl2);
-//    widget2->setMat(mat2);
-//    qDebug()<<s2;
-//    drawUiLabel(mat2,2);
-    //index2=index2+1;
-    //QImage *image2=new QImage(vc2[(index2)%4]);
     image2= QImage(in.getQJ2());
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
@@ -528,10 +502,6 @@ void BackWindow::onTimerOut()
     widget3->draw();
 
 //    //更新第四栏
-//    Mat img2=QImageToMat(image2);
-//    paintRectangle(img2,1650,250,400,100);
-//    Mat mat4 =imread(imageurl2);
-//    drawUiLabelByCopy(mat4,4);
     Mat mat4 = widget2->getMat();
     //Size dsize ;
     //double scale = 1;
@@ -755,8 +725,6 @@ void BackWindow::drawUiLabelByCopy(Mat image, int index1){
         imgLabel3 = MatToQImage(image33,imgLabel3);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label3,imgLabel3);
-        //release(&image3);
-        //release(&image33);
     }
     if(index1 == 4){
         aa=(&img)->copy(2604,13,92,92);
@@ -771,13 +739,7 @@ void BackWindow::drawUiLabelByCopy(Mat image, int index1){
         imgLabel4 = MatToQImage(image44,imgLabel4);
         cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label4,imgLabel4);
-        //cvReleaseMat(&image4);
-        //cvReleaseMat(&image44);
     }
-    //cvReleaseMat(&image);
-    //cvReleaseMat(&image11);
-    //delete & aa;
-    //delete & img;
 }
 
 
@@ -873,9 +835,7 @@ void BackWindow::drawUiLabel(Mat image, int index){
          imgLabel6 = MatToQImage(image, imgLabel6);
          cv::cvtColor(image, image, CV_BGR2RGB);
          loadPictureToLabel(label6,imgLabel6);
-         //delete imgLabel6;
      }
-     //cvReleaseMat(&image);
 }
 
 
@@ -885,8 +845,6 @@ void BackWindow::loadPictureToLabel(QLabel *label, QImage image){
     QPixmap pixmap1 = QPixmap::fromImage(image);
     label->setPixmap(pixmap1);
     label->setScaledContents(true);
-    //释放image
-    //delete & image;
 }
 
 //加载图片到Label1上
@@ -934,9 +892,6 @@ void BackWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
         cv::cvtColor(image, image, CV_BGR2RGB);
     }
     cv::cvtColor(image,image,CV_BGR2RGB);
-    //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
 
 }
 
@@ -945,9 +900,6 @@ void BackWindow::drawRecOnPic2(Mat image, Rect rect){
     //在图像上画矩形。
     rectangle(image,rect,Scalar(0,0,255),1,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
-    //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    //return imgLabel;
 }
 
 //---xiaotian  图像上绘制标尺和矩形框
@@ -967,9 +919,6 @@ void BackWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
     //在图像上画标尺
     paintScale(image,startw,starth);
     cv::cvtColor(image,image,CV_BGR2RGB);
-    //QImage imglabel3;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
 }
 
 //---xiaotian  图像上绘制多边形和圆
@@ -985,9 +934,6 @@ void BackWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, doubl
     //在图像上画圆点
     paintCircle(image,x,y);
     cv::cvtColor(image,image,CV_BGR2RGB);
-    //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
 }
 
 
@@ -1143,17 +1089,12 @@ void BackWindow::startStopFunction()
         startStop->setToolTip("启动");
         //startStopSet="./icon/1_1.png";
         isQidong = false;
-        //dialogLabel->setText(tr("Information Message Box"));
-        //QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
     }
     else
     {
         startStop->setIcon(QPixmap("./icon/1_1.png"));
         startStop->setToolTip("停止");
         isQidong = true;
-        //startStopSet="./icon/1_2.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
     }
 
 }
@@ -1166,25 +1107,18 @@ void BackWindow::mstopFunction()
         mstop->setIcon(QPixmap("./icon/4_1.png"));
         mstop->setToolTip("继续");
         isJixu = false;
-        //mstopSet="./icon/2_1.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
     }
     else
     {
         mstop->setIcon(QPixmap("./icon/2_1.png"));
         mstop->setToolTip("暂停");
         isJixu = true;
-        //mstopSet="./icon/2_2.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
     }
 
 }
 //后退
 void BackWindow::backFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("后退功能，有待实现。"),tr("继续努力。"));
 }
 //回放
@@ -1240,15 +1174,11 @@ void BackWindow::quXiaoFunction()
 //自动
 void BackWindow::automFunction()
 {
-   // dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
 }
 //亮度
 void BackWindow::brightnessFunction()
 {
-//    trackBar1=new TrackBar(this);
-//    trackBar1->setWindowTitle("亮度");
-//    trackBar1->show();
     if(brightnessSet=="./icon/7_2.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -1263,7 +1193,6 @@ void BackWindow::brightnessFunction()
 //饱和度
 void BackWindow::saturationFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
     if(saturationSet=="./icon/8_2.png")
     {
@@ -1282,7 +1211,6 @@ void BackWindow::saturationFunction()
 //伪彩色
 void BackWindow::pseudoColorFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
 }
 
@@ -1290,7 +1218,6 @@ void BackWindow::pseudoColorFunction()
 //打开关闭
 void BackWindow::openCloseFunction()
 {
-    //if(openCloseSet=="./icon/11_2.png")
     if(!isGaojing)
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));
@@ -1309,7 +1236,6 @@ void BackWindow::openCloseFunction()
 //手动
 void BackWindow::manualFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 
     string imageurl="./s1/1.bmp";
@@ -1320,8 +1246,6 @@ void BackWindow::manualFunction()
     rectan.width=200;
     rectan.height=200;
 
-    //MainWindow *mw = (MainWindow*)parentWidget();
-    //mw->test();
 
     drawRecOnPic2(mat1,rectan);
     cv::cvtColor(mat1, mat1, CV_BGR2RGB);
