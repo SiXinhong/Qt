@@ -49,12 +49,12 @@ vector<MyObject> LWidget::getObjects(){
 
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double LWidget::getDirectionX(double x, double y){
-    double x2 = x0 + (r/r0)*(y * qCos(x/r0));
+    double x2 = x0 + (r/r0)*(((y*(this->pano.cols)/(2*M_PI*pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
     return x2;
 }
 
 double LWidget::getDirectionY(double x, double y){
-    double y2 = y0 + (r/r0)*(y * qSin(x/r0));
+    double y2 = y0 + (r/r0)*((r0-(y*(this->pano.cols)/(2*M_PI*pano.rows))) * qCos(2*M_PI*x/pano.cols));
     return y2;
 }
 
@@ -66,6 +66,18 @@ Point LWidget::getDirectionPoint(Point p){
     return Point(x2,y2);
 }
 
+Point LWidget::getPoint(Point p){
+    double xa = p.x;
+    double ya = p.y;
+
+    double ra = qSqrt((xa-x0)*(xa-x0)+(ya-y0)*(ya-y0));
+
+    double xaa = x0 + (r/ra)*(xa - x0);
+
+    double yaa = y0 + (r/ra)*(ya - y0);
+
+    return Point(xaa,yaa);
+}
 
 //获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
 vector<Point> LWidget::getPoints(vector<MyObject> objs){
@@ -93,21 +105,26 @@ vector<Point> LWidget::getPoints(vector<MyObject> objs){
     //再向右靠靠
     xtemp2 += 5;
 
+    Point p1 = Point(xtemp1, ytemp1);
+    Point p2 = Point(xtemp2, ytemp2);
+    Point p3 = Point(x0, y0);
 
+    Point p11 = this->getPoint(p1);
+    Point p22 = this->getPoint(p2);
 
     vector<Point> ps;
-    Point point1(75,60);
-    Point point2(110,39);
-    Point point3(75,60);
-    Point point4(150,150);
-    Point point5(110,40);
-    Point point6(150,150);
-    ps.push_back(point1);
-    ps.push_back(point2);
-    ps.push_back(point3);
-    ps.push_back(point4);
-    ps.push_back(point5);
-    ps.push_back(point6);
+//    Point point1(75,60);
+//    Point point2(110,39);
+//    Point point3(75,60);
+//    Point point4(150,150);
+//    Point point5(110,40);
+//    Point point6(150,150);
+    ps.push_back(p11);
+    ps.push_back(p22);
+    ps.push_back(p11);
+    ps.push_back(p3);
+    ps.push_back(p22);
+    ps.push_back(p3);
     return ps;
 }
 
@@ -115,6 +132,7 @@ void LWidget::draw(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
+    //画三角形
     vector<Point> points = this->getPoints(mw->widget3->getObjects());
     int count = points.size();
     for (int i = 0; i <count;i+=2)

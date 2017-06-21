@@ -1372,7 +1372,6 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
     //return img;
 }
 
-
 cv::Mat MainWindow::QImageToMat(QImage image)
 {
     cv::Mat mat;

@@ -67,6 +67,8 @@ public:
 
     Point getDirectionPoint(Point p);
 
+    Point getPoint(Point p);
+
     vector<Point> getPoints(vector<MyObject> objs);
 
 signals:

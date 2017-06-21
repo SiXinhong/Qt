@@ -1,6 +1,7 @@
 #include "zwidget.h"
 #include "mainwindow.h"
 #include "myobject.h"
+#include "cvutil.h"
 
 using namespace cv;
 using namespace std;
@@ -159,13 +160,13 @@ void ZWidget::draw(){
 //    }
 //    mw->paintScale(mat, 1.0, 1.0);
     if(this->from == 1){
-        mw->paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY());
+        CVUtil::paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY(), mw->widget1->getDirectionX2(), mw->widget1->getDirectionY2());
     }
     else if(this->from == 2){
-        mw->paintScale(mat, mw->widget2->getDirectionX(), mw->widget2->getDirectionY());
+        CVUtil::paintScale(mat, mw->widget2->getDirectionX(), mw->widget2->getDirectionY(), mw->widget2->getDirectionX2(), mw->widget2->getDirectionY2());
     }
     else{
-        mw->paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY());
+        CVUtil::paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY(), mw->widget1->getDirectionX2(), mw->widget1->getDirectionY2());
     }
 
     cv::cvtColor(mat,mat,CV_BGR2RGB);

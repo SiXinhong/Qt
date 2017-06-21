@@ -21,6 +21,7 @@ public:
     static Scalar getRandomColor();
     static cv::Mat QImageToMat(QImage image);
     static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
+    static void paintScale(Mat image,double startw,double starth, double endw, double endy);
 
 };
 

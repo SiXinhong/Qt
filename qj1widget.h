@@ -83,6 +83,10 @@ public:
 
     double getDirectionY();
 
+    double getDirectionX2();
+
+    double getDirectionY2();
+
     void draw();
 
     boolean isObjSelected(MyObject obj);
