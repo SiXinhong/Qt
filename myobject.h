@@ -24,7 +24,7 @@ public:
     //box和轨迹线的颜色
     Scalar color;
 
-    int id;// = -1;
+    int oid;// = -1;
     cv::Point cenPoint;// = cv::Point(-1, -1);         // 目标中心坐标
     cv::Size blocksize;// = cv::Size(0, 0);            // 检测框大小
     double Velocity;// = 0;                    // 运动速率
@@ -44,7 +44,7 @@ public:
     double SCRValue;// = 0;                    // 目标背景信杂比
     vector<double> theFeatures;             // 13维的小目标特征向量
 
-    void setID(int id);
+    void setID(int id1);
     int getID();
 
     void setCenPoint(Point p);

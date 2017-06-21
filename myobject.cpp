@@ -4,7 +4,7 @@
 MyObject::MyObject(){
     this->color = CVUtil::getRandomColor();
 
-    id = -1;
+    oid = -1;
     cenPoint = cv::Point(-1, -1);         // 目标中心坐标
     blocksize = cv::Size(0, 0);            // 检测框大小
     Velocity = 0;                    // 运动速率
@@ -25,12 +25,12 @@ MyObject::MyObject(){
     //vector<double> theFeatures;             // 13维的小目标特征向量
 }
 
-void MyObject::setID(int id){
-    this->id = id;
+void MyObject::setID(int id1){
+    this->oid = id1;
 }
 
 int MyObject::getID(){
-    return this->id;
+    return this->oid;
 }
 
 void MyObject::setCenPoint(Point p){

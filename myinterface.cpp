@@ -20,7 +20,7 @@
 using namespace cv;
 using namespace std;
 
-#pragma comment(lib,"DisplaySDK.lib")
+//#pragma comment(lib,"DisplaySDK.lib")
 
 MyInterface::MyInterface(){
     //存储第一栏
@@ -233,7 +233,7 @@ void MyInterface::getIntegratedData(){
 //                    }
 
 //                    if(!isExisted){
-//                        MyObjectTrack track1 = MyObejectTrack();
+//                        MyObjectTrack track1 = MyObjectTrack();
 //                        track1.setId(obj.getID());
 //                        vector<Point> ps = track1.getTrack();
 //                        ps.push_back(obj.getCenPoint());
@@ -256,7 +256,7 @@ void MyInterface::getIntegratedData(){
 //                        }
 
 //                        if(!isExisted1){
-//                            MyObjectTrack track3 = MyObejectTrack();
+//                            MyObjectTrack track3 = MyObjectTrack();
 //                            track3.setId(obj.getID());
 //                            vector<Point> ps = track3.getTrack();
 //                            ps.push_back(obj.getCenPoint());
@@ -279,7 +279,7 @@ void MyInterface::getIntegratedData(){
 //                        }
 
 //                        if(!isExisted2){
-//                            MyObjectTrack track5 = MyObejectTrack();
+//                            MyObjectTrack track5 = MyObjectTrack();
 //                            track5.setId(obj.getID());
 //                            vector<Point> ps = track5.getTrack();
 //                            ps.push_back(obj.getCenPoint());
@@ -312,29 +312,130 @@ void MyInterface::getIntegratedData(){
 
 //随机生成3个对象
 vector<MyObject> MyInterface::getObjs2(){
+    MyObject mo1;
+    MyObject mo2;
+    MyObject mo3;
+    if(this->objs.empty()){
+        mo1 = MyObject();
+        mo1.setID((unsigned) RNG((int)time(0)));
+        mo2 = MyObject();
+        mo2.setID((unsigned) RNG((int)time(0)));
+        mo3 = MyObject();
+        mo3.setID((unsigned) RNG((int)time(0)));
+    }
+    else{
+        mo1 = objs[0];
+        mo2 = objs[1];
+        mo3 = objs[2];
+    }
     int x1 = (unsigned) RNG((int)time(0))&1800;
     int y1 = (unsigned) RNG((int)time(0))&500;
     int w = 100;
     int h = 100;
-    MyObject mo1 = MyObject();
-    mo1.setRect(Rect(x1,y1,w,h));
+
+//    mo1.setRect(Rect(x1,y1,w,h));
+//    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
+    mo1.getRect().x = (double) x1;
+    mo1.getRect().y =  (double)y1;
+    mo1.getRect().width =  (double)w;
+    mo1.getRect().height =  (double)h;
+    mo1.getCenPoint().x =  (double)(x1+w/2);
+    mo1.getCenPoint().y =  (double)(y1+h/2);
+
 
     int x2 = (unsigned) RNG((int)time(0))&1800;
     int y2 = (unsigned) RNG((int)time(0))&500;
-    MyObject mo2 = MyObject();
-    mo2.setRect(Rect(x2,y2,w,h));
+
+    mo2.getRect().x = x2;
+    mo2.getRect().y = y2;
+    mo2.getRect().width = w;
+    mo2.getRect().height =h;
+    mo2.getCenPoint().x = x2+w/2;
+    mo2.getCenPoint().y = y2+h/2;
+
 
     int x3 = (unsigned) RNG((int)time(0))&1800;
     int y3 = (unsigned) RNG((int)time(0))&500;
-    MyObject mo3 = MyObject();
-    mo3.setRect(Rect(x3,y3,w,h));
 
-    vector<MyObject> vc;
-    vc.push_back(mo1);
-    vc.push_back(mo2);
-    vc.push_back(mo3);
+    mo3.getRect().x = x3;
+    mo3.getRect().y = y3;
+    mo3.getRect().width = w;
+    mo3.getRect().height =h;
+    mo3.getCenPoint().x = x3+w/2;
+    mo3.getCenPoint().y = y3+h/2;
 
-    return vc;
+
+    //设置轨迹
+    boolean isExisted = false;
+    for(int i = 0; i < this->tracks.size(); i++){
+        MyObjectTrack track = tracks[i];
+        if(mo1.getID() == track.getId()){
+            vector<Point> ps = track.getTrack();
+            ps.push_back(mo1.getCenPoint());
+            track.setTrack(ps);
+            isExisted = true;
+        }
+    }
+
+    if(!isExisted){
+        MyObjectTrack track1 = MyObjectTrack();
+        track1.setId(mo1.getID());
+        vector<Point> ps = track1.getTrack();
+        ps.push_back(mo1.getCenPoint());
+        track1.setTrack(ps);
+        tracks.push_back(track1);
+    }
+
+
+
+    isExisted = false;
+    for(int i = 0; i < this->tracks.size(); i++){
+        MyObjectTrack track = tracks[i];
+        if(mo2.getID() == track.getId()){
+            vector<Point> ps = track.getTrack();
+            ps.push_back(mo2.getCenPoint());
+            track.setTrack(ps);
+            isExisted = true;
+        }
+    }
+
+    if(!isExisted){
+        MyObjectTrack track1 = MyObjectTrack();
+        track1.setId(mo2.getID());
+        vector<Point> ps = track1.getTrack();
+        ps.push_back(mo2.getCenPoint());
+        track1.setTrack(ps);
+        tracks.push_back(track1);
+    }
+
+
+
+    isExisted = false;
+    for(int i = 0; i < this->tracks.size(); i++){
+        MyObjectTrack track = tracks[i];
+        if(mo3.getID() == track.getId()){
+            vector<Point> ps = track.getTrack();
+            ps.push_back(mo3.getCenPoint());
+            track.setTrack(ps);
+            isExisted = true;
+        }
+    }
+
+    if(!isExisted){
+        MyObjectTrack track1 = MyObjectTrack();
+        track1.setId(mo3.getID());
+        vector<Point> ps = track1.getTrack();
+        ps.push_back(mo3.getCenPoint());
+        track1.setTrack(ps);
+        tracks.push_back(track1);
+    }
+
+    //vector<MyObject> vc;
+    objs.clear();
+    this->objs.push_back(mo1);
+    objs.push_back(mo2);
+    objs.push_back(mo3);
+    return objs;
 }
 
 void MyInterface::setObjs(vector<MyObject> os){

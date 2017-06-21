@@ -233,6 +233,7 @@ void MainWindow::selfProcessing(){
     index=0;//用于计算标尺的起始位置
 //    index1=0;//用于取第一栏的图片
 //    index2=0;//用于取第二栏的图片
+    vector<MyObject> objs = in.getObjs2();
 
     //图片1
 //    QString imageurl=in.getQJ1();
@@ -240,42 +241,56 @@ void MainWindow::selfProcessing(){
 //    Mat mat1 =imread(imageurl.toStdString());
 //    widget1->setMat(mat1);
 //    drawUiLabel(mat1,1);
-    image= QImage(in.getQJ1());
+    //image= QImage(in.getQJ1());
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
     widget1->setMat(mat1);
+    widget1->setObjects(objs);
+    widget1->setTracks(in.getTracks());
+    widget1->draw();
     qDebug()<<s1;
-    drawUiLabel(mat1,1);
+    //drawUiLabel(mat1,1);
     //图片2
 //    QString imageurl2 = in.getQJ2();
 //    qDebug()<<imageurl2;
 //    Mat mat2 =imread(imageurl2.toStdString());
 //    widget2->setMat(mat2);
 //    drawUiLabel(mat2,2);
-    image2= QImage(in.getQJ2());
+    //image2= QImage(in.getQJ2());
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
     widget2->setMat(mat2);
+    widget2->setObjects(objs);
+    widget2->setTracks(in.getTracks());
+    widget2->draw();
     qDebug()<<s2;
-    drawUiLabel(mat2,2);
+    //drawUiLabel(mat2,2);
     //图片3
-    Mat mat3 =imread(imageurl);
-    drawUiLabelByCopy(mat3,3);
+    //Mat mat3 =imread(imageurl);
+    widget3->draw();
+    //drawUiLabelByCopy(mat3,3);
     //图片4
-    Mat mat4 =imread(imageurl2);
-    drawUiLabelByCopy(mat4,4);
+    //Mat mat4 =imread(imageurl2);
+    //drawUiLabelByCopy(mat4,4);
+    widget4->draw();
     //图片5
     QString imageurl5=in.getHD();
     Mat mat5 =imread(imageurl5.toStdString());
-
-    drawUiLabel(mat5,5);
+    widget5->setMat(mat5);
+    widget5->setPano(mat1);
+    widget5->setObjects(objs);
+    widget5->draw();
+    //drawUiLabel(mat5,5);
     //图片6
     QString imageurl6= in.getLD();
     Mat mat6 =imread(imageurl6.toStdString());
-
-    drawUiLabel(mat6,6);
+    widget6->setMat(mat6);
+    widget6->setPano(mat1);
+    widget6->setObjects(objs);
+    widget6->draw();
+    //drawUiLabel(mat6,6);
 
 //    imageurl="./s1/1.bmp";
 //    imageurl2="./s2/1.bmp";
@@ -531,8 +546,8 @@ void MainWindow::addMyToolBar()
     serialNumber=new QLabel("系统编号："+xtbh);//编号
     mainToolBar->addWidget(serialNumber);
     mainToolBar->addWidget(new QLabel("   "));
-    time=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
-    mainToolBar->addWidget(time);
+    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+    mainToolBar->addWidget(systime);
     mainToolBar->addWidget(new QLabel("   "));
 
     mainToolBar->addSeparator();
@@ -628,104 +643,23 @@ void MainWindow::addMyToolBar()
 
 //获取系统当前时间定时器
 void MainWindow::onTimerOut2(){
-    time->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 }
 
 void MainWindow::adjustment()
 {
-    Mat mat1 =imread(imageurl);
-    if(this->isPseudo==true)
-            mat1=setPseudocolor(mat1);
-    widget1->setMat(mat1);
-    drawUiLabel(mat1,1);
-
-    Mat mat2 =imread(imageurl2);
-    if(this->isPseudo==true)
-            mat2=setPseudocolor(mat2);
-    widget2->setMat(mat2);
-    drawUiLabel(mat2,2);
-    //更新第三栏
-    Mat mat3 = widget1->getMat();
-    Size dsize ;
-    double scale = 1;
-    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-    Mat image11 = Mat(dsize,CV_32S);
-    cv::resize(mat3, image11,dsize);
-    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-    aa=(&img)->copy(widget1->getQRectan());
-    Mat image3 = QImageToMat(aa);
-    Mat image33 = Mat(dsize,CV_32S);
-    cv::resize(image3, image33,dsize);
-    widget3->setMat(image33);
-    widget3->draw();
-
-//    //更新第四栏
-//    Mat img2=QImageToMat(image2);
-//    paintRectangle(img2,1650,250,400,100);
-//    Mat mat4 =imread(imageurl2);
-//    drawUiLabelByCopy(mat4,4);
-    Mat mat4 = widget2->getMat();
-    //Size dsize ;
-    //double scale = 1;
-    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-    image11 = Mat(dsize,CV_32S);
-    cv::resize(mat4, image11,dsize);
-    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-    aa=(&img)->copy(widget2->getQRectan());
-    Mat image4 = QImageToMat(aa);
-    Mat image44 = Mat(dsize,CV_32S);
-    cv::resize(image4, image44,dsize);
-    widget4->setMat(image44);
-    widget4->draw();
-}
-
-//定时器任务
-void MainWindow::onTimerOut()
-{
-    index=index+1;
-    //更新第一栏的图片
-    //index1=index1+1;
-    //QImage *image=new QImage(vc1[(index1)%4]);
-//    image= QImage(vc1[(index1)%4]);
-//    QString s1=vc1[(index1)%4];
-//    imageurl=s1.toStdString();
 //    Mat mat1 =imread(imageurl);
+//    if(this->isPseudo==true)
+//            mat1=setPseudocolor(mat1);
 //    widget1->setMat(mat1);
-//    qDebug()<<s1;
 //    drawUiLabel(mat1,1);
-    image= QImage(in.getQJ1());
-    QString s1=in.getQJ1();
-    imageurl=s1.toStdString();
-    Mat mat1 =imread(imageurl);
-    if(this->isPseudo==true)
-            //mat1=setPseudocolor(mat1);
-    widget1->setMat(mat1);
-    qDebug()<<s1;
-    drawUiLabel(mat1,1);
-    //更新第二栏的图片
-//    index2=index2+1;
-//    //QImage *image2=new QImage(vc2[(index2)%4]);
-//    image2= QImage(vc2[(index2)%4]);
-//    QString s2=vc2[(index2)%4];
-//    imageurl2=s2.toStdString();
+
 //    Mat mat2 =imread(imageurl2);
+//    if(this->isPseudo==true)
+//            mat2=setPseudocolor(mat2);
 //    widget2->setMat(mat2);
-//    qDebug()<<s2;
 //    drawUiLabel(mat2,2);
-    //index2=index2+1;
-    //QImage *image2=new QImage(vc2[(index2)%4]);
-    image2= QImage(in.getQJ2());
-    QString s2=in.getQJ2();
-    imageurl2=s2.toStdString();
-    Mat mat2 =imread(imageurl2);
-    if(this->isPseudo==true)
-            //mat2=setPseudocolor(mat2);
-    widget2->setMat(mat2);
-    qDebug()<<s2;
-    drawUiLabel(mat2,2);
-    //更新第三栏
+//    //更新第三栏
 //    Mat mat3 = widget1->getMat();
 //    Size dsize ;
 //    double scale = 1;
@@ -739,13 +673,13 @@ void MainWindow::onTimerOut()
 //    Mat image33 = Mat(dsize,CV_32S);
 //    cv::resize(image3, image33,dsize);
 //    widget3->setMat(image33);
-    widget3->draw();
+//    widget3->draw();
 
-//    //更新第四栏
-//    Mat img2=QImageToMat(image2);
-//    paintRectangle(img2,1650,250,400,100);
-//    Mat mat4 =imread(imageurl2);
-//    drawUiLabelByCopy(mat4,4);
+////    //更新第四栏
+////    Mat img2=QImageToMat(image2);
+////    paintRectangle(img2,1650,250,400,100);
+////    Mat mat4 =imread(imageurl2);
+////    drawUiLabelByCopy(mat4,4);
 //    Mat mat4 = widget2->getMat();
 //    //Size dsize ;
 //    //double scale = 1;
@@ -759,8 +693,147 @@ void MainWindow::onTimerOut()
 //    Mat image44 = Mat(dsize,CV_32S);
 //    cv::resize(image4, image44,dsize);
 //    widget4->setMat(image44);
+//    widget4->draw();
+
+}
+
+//定时器任务
+void MainWindow::onTimerOut()
+{
+    //index=index+1;
+    vector<MyObject> objs = in.getObjs2();
+
+    for(int i = 0; i < objs.size(); i++){
+        MyObject obj = objs[i];
+        qDebug()<<i;
+        qDebug()<<obj.getID();
+        qDebug()<<obj.getCenPoint().x;
+        qDebug()<<obj.getCenPoint().y;
+        qDebug()<<obj.getRect().x;
+        qDebug()<<obj.getRect().y;
+        qDebug()<<obj.getRect().width;
+        qDebug()<<obj.getRect().height;
+    }
+
+    //图片1
+    QString s1=in.getQJ1();
+    imageurl=s1.toStdString();
+    Mat mat1 =imread(imageurl);
+    widget1->setMat(mat1);
+    widget1->setObjects(objs);
+    widget1->setTracks(in.getTracks());
+    widget1->draw();
+    //qDebug()<<s1;
+    //图片2
+    QString s2=in.getQJ2();
+    imageurl2=s2.toStdString();
+    Mat mat2 =imread(imageurl2);
+    widget2->setMat(mat2);
+    widget2->setObjects(objs);
+    widget2->setTracks(in.getTracks());
+    widget2->draw();
+    //qDebug()<<s2;
+    //drawUiLabel(mat2,2);
+    //图片3
+    //Mat mat3 =imread(imageurl);
+    widget3->draw();
+    //drawUiLabelByCopy(mat3,3);
+    //图片4
+    //Mat mat4 =imread(imageurl2);
+    //drawUiLabelByCopy(mat4,4);
     widget4->draw();
-    qDebug()<<"tongguo 3!!!!!";
+    //图片5
+    //QString imageurl5=in.getHD();
+    //Mat mat5 =imread(imageurl5.toStdString());
+    //widget5->setMat(mat5);
+    widget5->setPano(mat1);
+    widget5->setObjects(objs);
+    widget5->draw();
+    //drawUiLabel(mat5,5);
+    //图片6
+    //QString imageurl6= in.getLD();
+    //Mat mat6 =imread(imageurl6.toStdString());
+    //widget6->setMat(mat6);
+    widget6->setPano(mat1);
+    widget6->setObjects(objs);
+    widget6->draw();
+
+    //更新第一栏的图片
+    //index1=index1+1;
+    //QImage *image=new QImage(vc1[(index1)%4]);
+//    image= QImage(vc1[(index1)%4]);
+//    QString s1=vc1[(index1)%4];
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+//    widget1->setMat(mat1);
+//    qDebug()<<s1;
+//    drawUiLabel(mat1,1);
+//    image= QImage(in.getQJ1());
+//    QString s1=in.getQJ1();
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+//    if(this->isPseudo==true)
+//            //mat1=setPseudocolor(mat1);
+//    widget1->setMat(mat1);
+//    qDebug()<<s1;
+//    drawUiLabel(mat1,1);
+//    //更新第二栏的图片
+////    index2=index2+1;
+////    //QImage *image2=new QImage(vc2[(index2)%4]);
+////    image2= QImage(vc2[(index2)%4]);
+////    QString s2=vc2[(index2)%4];
+////    imageurl2=s2.toStdString();
+////    Mat mat2 =imread(imageurl2);
+////    widget2->setMat(mat2);
+////    qDebug()<<s2;
+////    drawUiLabel(mat2,2);
+//    //index2=index2+1;
+//    //QImage *image2=new QImage(vc2[(index2)%4]);
+//    image2= QImage(in.getQJ2());
+//    QString s2=in.getQJ2();
+//    imageurl2=s2.toStdString();
+//    Mat mat2 =imread(imageurl2);
+//    if(this->isPseudo==true)
+//            //mat2=setPseudocolor(mat2);
+//    widget2->setMat(mat2);
+//    qDebug()<<s2;
+//    drawUiLabel(mat2,2);
+//    //更新第三栏
+////    Mat mat3 = widget1->getMat();
+////    Size dsize ;
+////    double scale = 1;
+////    dsize = Size(mat3.cols*scale,mat3.rows*scale);
+////    Mat image11 = Mat(dsize,CV_32S);
+////    cv::resize(mat3, image11,dsize);
+////    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+////    aa=(&img)->copy(widget1->getQRectan());
+////    Mat image3 = QImageToMat(aa);
+////    Mat image33 = Mat(dsize,CV_32S);
+////    cv::resize(image3, image33,dsize);
+////    widget3->setMat(image33);
+//    widget3->draw();
+
+////    //更新第四栏
+////    Mat img2=QImageToMat(image2);
+////    paintRectangle(img2,1650,250,400,100);
+////    Mat mat4 =imread(imageurl2);
+////    drawUiLabelByCopy(mat4,4);
+////    Mat mat4 = widget2->getMat();
+////    //Size dsize ;
+////    //double scale = 1;
+////    dsize = Size(mat4.cols*scale,mat4.rows*scale);
+////    image11 = Mat(dsize,CV_32S);
+////    cv::resize(mat4, image11,dsize);
+////    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+////    aa=(&img)->copy(widget2->getQRectan());
+////    Mat image4 = QImageToMat(aa);
+////    Mat image44 = Mat(dsize,CV_32S);
+////    cv::resize(image4, image44,dsize);
+////    widget4->setMat(image44);
+//    widget4->draw();
+//    qDebug()<<"tongguo 3!!!!!";
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。

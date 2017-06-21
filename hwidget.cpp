@@ -18,7 +18,7 @@ HWidget::HWidget(QWidget *parent) :
     QWidget(parent){
 
     r = 120;
-    r1 = 20;
+    r1 = 60;
     x0 = 150;
     y0 = 150;
 }
@@ -93,7 +93,7 @@ Point HWidget::getPoint2(Point p){
 }
 
 //获得画多边形的八个点，需要计算主显示区所关注的对象集合的坐标来确定。
-vector<Point> HWidget::getPoints(vector<MyObject> objs){
+void HWidget::drawArc(vector<MyObject> objs){
     //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
     //先找最小点
     double xtemp1 = this->pano.cols;
@@ -120,6 +120,7 @@ vector<Point> HWidget::getPoints(vector<MyObject> objs){
 
     Point p1 = Point(xtemp1, ytemp1);
     Point p2 = Point(xtemp2, ytemp2);
+    Point p3 = Point(x0, y0);
 
     Point p11 = this->getPoint1(p1);
     Point p12 = this->getPoint2(p1);
@@ -127,7 +128,24 @@ vector<Point> HWidget::getPoints(vector<MyObject> objs){
     Point p21 = this->getPoint1(p2);
     Point p22 = this->getPoint2(p2);
 
-    vector<Point> ps;
+    line(mat,p11,p12,Scalar(255,255,0),1,8,0);
+    line(mat,p21,p22,Scalar(255,255,0),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+    if(angle1 < 0){
+        angle1 += 360;
+    }
+    if(angle2 < 0){
+        angle2 += 360;
+    }
+
+    ellipse(mat,p3,Size(r1, r1),0,360+angle2,180+angle1,Scalar(255,255,0));
+
+    ellipse(mat,p3,Size(r, r),0,360+angle2,180+angle1,Scalar(255,255,0));
+
+//    vector<Point> ps;
 //    cv::Point point1(75,60);
 //    cv::Point point2(110,40);
 //    cv::Point point3(75,60);
@@ -136,31 +154,32 @@ vector<Point> HWidget::getPoints(vector<MyObject> objs){
 //    cv::Point point6(130,114);
 //    cv::Point point7(130,114);
 //    cv::Point point8(110,40);
-    ps.push_back(p11);
-    ps.push_back(p21);
-    ps.push_back(p11);
-    ps.push_back(p12);
-    ps.push_back(p12);
-    ps.push_back(p22);
-    ps.push_back(p22);
-    ps.push_back(p21);
-    return ps;
+//    ps.push_back(p11);
+//    ps.push_back(p21);
+//    ps.push_back(p11);
+//    ps.push_back(p12);
+//    ps.push_back(p12);
+//    ps.push_back(p22);
+//    ps.push_back(p22);
+//    ps.push_back(p21);
+    //return ps;
 }
 
 void HWidget::draw(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
     //画多边形
-    vector<Point> points = this->getPoints(mw->widget3->getObjects());
-    int count = points.size();
-    for (int i = 0; i <count;i+=2)
-    {
-        cv::Point point1 = points[i];
-        cv::Point point2 = points[i+1];
-        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
-    }
+//    vector<Point> points = this->getPoints(mw->widget3->getObjects());
+//    int count = points.size();
+//    for (int i = 0; i <count;i+=2)
+//    {
+//        cv::Point point1 = points[i];
+//        cv::Point point2 = points[i+1];
+//        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
+//    }
+    this->drawArc(mw->widget3->getObjects());
     //在图像上画圆点
-    count = objs.size();
+    int count = objs.size();
     for (int i = 0; i < count; i++){
         cv::Point p = objs[i].getCenPoint();
         Scalar color = objs[i].getColor();

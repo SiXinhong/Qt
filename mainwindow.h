@@ -251,7 +251,7 @@ protected:
 
      //第四组，显示编号和系统当前时间
      QLabel *serialNumber;//编号
-     QLabel *time;//时间
+     QLabel *systime;//时间
      //告警
      //QLabel *listLabel4;
      QString openCloseSet;

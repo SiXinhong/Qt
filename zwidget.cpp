@@ -69,7 +69,7 @@ vector<MyObject> ZWidget::getObjects(){
 
 void ZWidget::draw(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    qDebug()<<this->getFrom();
+    //qDebug()<<this->getFrom();
     //根据矩形框的变化，重新从全景显示区1或者全景显示区2拷贝获得mat。
     if(this->getFrom() == 1){
         Rect r1;

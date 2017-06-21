@@ -69,8 +69,7 @@ public:
 
     Point getPoint(Point p);
 
-    vector<Point> getPoints(vector<MyObject> objs);
-
+    void drawArc(vector<MyObject> objs);
 signals:
 
 public slots:
