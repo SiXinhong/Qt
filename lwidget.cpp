@@ -69,13 +69,9 @@ Point LWidget::getDirectionPoint(Point p){
 Point LWidget::getPoint(Point p){
     double xa = p.x;
     double ya = p.y;
-
     double ra = qSqrt((xa-x0)*(xa-x0)+(ya-y0)*(ya-y0));
-
     double xaa = x0 + (r/ra)*(xa - x0);
-
     double yaa = y0 + (r/ra)*(ya - y0);
-
     return Point(xaa,yaa);
 }
 
@@ -107,9 +103,9 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     xtemp2 += 5;
     ytemp2 += 5;
 
-    Point p1 = Point(xtemp1, ytemp1);
-    Point p2 = Point(xtemp2, ytemp2);
-
+    Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
+    Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
+    qDebug()<<"p1 & p2"<<p1.x<<p1.y<<p2.x<<p2.y;
     Point p3 = Point(x0, y0);
 
     Point p11 = this->getPoint(p1);
@@ -128,7 +124,7 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 //        angle2 += 360;
 //    }
 
-    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,255,0));
 
 //    vector<Point> ps;
 ////    Point point1(75,60);

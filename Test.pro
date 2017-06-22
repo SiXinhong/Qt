@@ -77,4 +77,4 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
-LIBS+=-LE:\github\Qt -lDisplaySDK
+        #LIBS+=-LE:\github\Qt -lDisplaySDK

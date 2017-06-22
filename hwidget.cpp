@@ -49,12 +49,14 @@ vector<MyObject> HWidget::getObjects(){
 
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double HWidget::getDirectionX(double x, double y){
-    double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
+    //double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
+    double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x/pano.cols);
     return x2;
 }
 
 double HWidget::getDirectionY(double x, double y){
-    double y2 = y0 + (r/r0)*((r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols));
+    //double y2 = y0 + (r/r0)*((r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols));
+    double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols);
     return y2;
 }
 
@@ -120,8 +122,8 @@ void HWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     xtemp2 += 5;
     ytemp2 += 5;
 
-    Point p1 = Point(xtemp1, ytemp1);
-    Point p2 = Point(xtemp2, ytemp2);
+    Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
+    Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
     Point p3 = Point(x0, y0);
 
     Point p11 = this->getPoint1(p1);
@@ -143,9 +145,9 @@ void HWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 //        angle2 += 360;
 //    }
 
-    ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r1, r1),0,angle1+180,angle2+180,Scalar(255,255,0));
 
-    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,255,0));
 
 //    vector<Point> ps;
 //    cv::Point point1(75,60);
