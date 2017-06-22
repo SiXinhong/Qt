@@ -17,7 +17,6 @@ using namespace std;
 
 LWidget::LWidget(QWidget *parent) :
     QWidget(parent){
-    r0 = this->pano.cols/(2*M_PI);
     r = 120;
     x0 = 150;
     y0 = 150;
@@ -33,6 +32,7 @@ Mat LWidget::getMat(){
 
 void LWidget::setPano(Mat p){
     this->pano = p;
+    r0 = this->pano.cols/(2*M_PI);
 }
 
 Mat LWidget::getPano(){
@@ -80,7 +80,7 @@ Point LWidget::getPoint(Point p){
 }
 
 //获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
-void LWidget::drawArc(vector<MyObject> objs){
+void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
     //先找最小点
     double xtemp1 = this->pano.cols;
@@ -89,8 +89,8 @@ void LWidget::drawArc(vector<MyObject> objs){
     double xtemp2 = 0;
     double ytemp2 = 0;
 
-    for(int i = 0; i < objs.size(); i++){
-        MyObject obj = objs[i];
+    for(int i = 0; i < sobjs.size(); i++){
+        MyObject obj = sobjs[i];
         if(xtemp1 > obj.getCenPoint().x){
             xtemp1 = obj.getCenPoint().x;
             ytemp1 = obj.getCenPoint().y;
@@ -100,10 +100,12 @@ void LWidget::drawArc(vector<MyObject> objs){
             ytemp2 = obj.getCenPoint().y;
         }
     }
-    //再向左靠靠
+    //再向左上靠靠
     xtemp1 -= 5;
-    //再向右靠靠
+    ytemp1 -= 5;
+    //再向右下靠靠
     xtemp2 += 5;
+    ytemp2 += 5;
 
     Point p1 = Point(xtemp1, ytemp1);
     Point p2 = Point(xtemp2, ytemp2);
@@ -113,20 +115,20 @@ void LWidget::drawArc(vector<MyObject> objs){
     Point p11 = this->getPoint(p1);
     Point p22 = this->getPoint(p2);
 
-    line(mat,p11,p3,Scalar(255,255,0),1,8,0);
-    line(mat,p22,p3,Scalar(255,255,0),1,8,0);
+    line(tmat,p11,p3,Scalar(255,255,0),1,8,0);
+    line(tmat,p22,p3,Scalar(255,255,0),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
-    if(angle1 < 0){
-        angle1 += 360;
-    }
-    if(angle2 < 0){
-        angle2 += 360;
-    }
+//    if(angle1 < 0){
+//        angle1 += 360;
+//    }
+//    if(angle2 < 0){
+//        angle2 += 360;
+//    }
 
-    ellipse(mat,p3,Size(r, r),0,360+angle2,180+angle1,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
 
 //    vector<Point> ps;
 ////    Point point1(75,60);
@@ -148,6 +150,8 @@ void LWidget::draw(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
+    Mat tmat = this->mat.clone();//一定要在克隆上画
+
     //画三角形
 //    vector<Point> points = this->getPoints(mw->widget3->getObjects());
 //    int count = points.size();
@@ -157,17 +161,17 @@ void LWidget::draw(){
 //        cv::Point point2 = points[i+1];
 //        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
 //    }
-    this->drawArc(mw->widget3->getObjects());
+    this->drawArc(objs,tmat);//mw->widget3->getObjects(),tmat);
     //在图像上画圆点
     int count = objs.size();
     for (int i = 0; i < count; i++){
         cv::Point p = objs[i].getCenPoint();
         Scalar color = objs[i].getColor();
-        circle(mat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
+        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
     }
-    cv::cvtColor(mat,mat,CV_BGR2RGB);
-    mw->imgLabel6 = mw->MatToQImage(mat, mw->imgLabel6);
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+    mw->imgLabel6 = mw->MatToQImage(tmat, mw->imgLabel6);
+    cv::cvtColor(tmat, tmat, CV_BGR2RGB);
     mw->loadPictureToLabel6();
 
 }

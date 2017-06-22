@@ -15,7 +15,7 @@ CVUtil::CVUtil(){
 }
 
 Scalar CVUtil::getRandomColor(){
-    int icolor = (unsigned) RNG((int)time(0));
+    int icolor = (unsigned) RNG((int)time(NULL));
     return Scalar(icolor&255, (icolor>>8)&255, (icolor>>16)&255);
 }
 

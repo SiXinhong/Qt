@@ -31,7 +31,10 @@ private:
     QString filename7;
     QString filename8;
 
+    int index;
+
     int index1;//读取第几张图片
+
     vector<QString> vc1;//存储第一栏的图片
     int index2;//读取第二栏第几张图片
     vector<QString> vc2;//存储第二栏的图片

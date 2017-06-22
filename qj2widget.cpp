@@ -102,9 +102,11 @@ void Qj2Widget::draw(){
             int y = (int)(obj.getCenPoint().y);
             QString tx = QString::number(x,10);
             QString ty = QString::number(y,10);
-            string str = "x="+tx.toStdString()+",y="+ty.toStdString();
+            QString tstr = "x="+tx+",y="+ty;
+            string str = tstr.toStdString();
+            //qDebug()<<tstr;
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-            putText(mat,str,Point(),3,1,Scalar(255,255,255));
+            putText(mat,str,p,3,1,obj.getColor());
         }
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }

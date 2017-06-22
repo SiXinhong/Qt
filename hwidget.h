@@ -72,7 +72,7 @@ public:
 
     Point getPoint2(Point p);
 
-    void drawArc(vector<MyObject> objs);
+    void drawArc(vector<MyObject> sobjs, Mat tmat);
 
 signals:
 

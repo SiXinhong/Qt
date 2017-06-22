@@ -703,17 +703,17 @@ void MainWindow::onTimerOut()
     //index=index+1;
     vector<MyObject> objs = in.getObjs2();
 
-    for(int i = 0; i < objs.size(); i++){
-        MyObject obj = objs[i];
-        qDebug()<<i;
-        qDebug()<<obj.getID();
-        qDebug()<<obj.getCenPoint().x;
-        qDebug()<<obj.getCenPoint().y;
-        qDebug()<<obj.getRect().x;
-        qDebug()<<obj.getRect().y;
-        qDebug()<<obj.getRect().width;
-        qDebug()<<obj.getRect().height;
-    }
+//    for(int i = 0; i < objs.size(); i++){
+//        MyObject obj = objs[i];
+//        qDebug()<<i;
+//        qDebug()<<obj.getID();
+//        qDebug()<<obj.getCenPoint().x;
+//        qDebug()<<obj.getCenPoint().y;
+//        qDebug()<<obj.getRect().x;
+//        qDebug()<<obj.getRect().y;
+//        qDebug()<<obj.getRect().width;
+//        qDebug()<<obj.getRect().height;
+//    }
 
     //ͼƬ1
     QString s1=in.getQJ1();

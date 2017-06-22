@@ -47,8 +47,20 @@ MyInterface::MyInterface(){
     index1=0;//用于取第一栏的图片
     index2=0;//用于取第二栏的图片
 
+    index = 0;
+
     this->hd = "./0.png";
     this->ld = "./0.png";
+
+    MyObject mo1 = MyObject();
+    mo1.setID(12345);
+    MyObject mo2 = MyObject();
+    mo2.setID(12346);
+    MyObject mo3 = MyObject();
+    mo3.setID(12348);
+    objs.push_back(mo1);
+    objs.push_back(mo2);
+    objs.push_back(mo3);
 
 }
 
@@ -312,58 +324,49 @@ void MyInterface::getIntegratedData(){
 
 //随机生成3个对象
 vector<MyObject> MyInterface::getObjs2(){
-    MyObject mo1;
-    MyObject mo2;
-    MyObject mo3;
-    if(this->objs.empty()){
-        mo1 = MyObject();
-        mo1.setID((unsigned) RNG((int)time(0)));
-        mo2 = MyObject();
-        mo2.setID((unsigned) RNG((int)time(0)));
-        mo3 = MyObject();
-        mo3.setID((unsigned) RNG((int)time(0)));
-    }
-    else{
-        mo1 = objs[0];
-        mo2 = objs[1];
-        mo3 = objs[2];
-    }
-    int x1 = (unsigned) RNG((int)time(0))&1800;
-    int y1 = (unsigned) RNG((int)time(0))&500;
-    int w = 100;
-    int h = 100;
+    index++;
 
-//    mo1.setRect(Rect(x1,y1,w,h));
-//    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
-    mo1.getRect().x = (double) x1;
-    mo1.getRect().y =  (double)y1;
-    mo1.getRect().width =  (double)w;
-    mo1.getRect().height =  (double)h;
-    mo1.getCenPoint().x =  (double)(x1+w/2);
-    mo1.getCenPoint().y =  (double)(y1+h/2);
+    MyObject mo1 = (MyObject)objs[0];
+    MyObject mo2 = (MyObject)objs[1];
+    MyObject mo3 = (MyObject)objs[2];
+    int x1 = 10+index*5;
+    int y1 = 10+index*2;
+    int w = 50;
+    int h = 50;
+
+    mo1.setRect(Rect(x1,y1,w,h));
+    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
+//    mo1.getRect().x = x1;
+//    mo1.getRect().y =  y1;
+//    mo1.getRect().width =  w;
+//    mo1.getRect().height = h;
+//    mo1.getCenPoint().x = (x1+w/2);
+//    mo1.getCenPoint().y = (y1+h/2);
 
 
-    int x2 = (unsigned) RNG((int)time(0))&1800;
-    int y2 = (unsigned) RNG((int)time(0))&500;
+    int x2 = 50+index*5;
+    int y2 = 30+index*2;
 
-    mo2.getRect().x = x2;
-    mo2.getRect().y = y2;
-    mo2.getRect().width = w;
-    mo2.getRect().height =h;
-    mo2.getCenPoint().x = x2+w/2;
-    mo2.getCenPoint().y = y2+h/2;
+//    mo2.getRect().x = x2;
+//    mo2.getRect().y = y2;
+//    mo2.getRect().width = w;
+//    mo2.getRect().height =h;
+//    mo2.getCenPoint().x = x2+w/2;
+//    mo2.getCenPoint().y = y2+h/2;
+    mo2.setRect(Rect(x2,y2,w,h));
+    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
 
+    int x3 = 100+index*5;
+    int y3 = 100+index*2;
 
-    int x3 = (unsigned) RNG((int)time(0))&1800;
-    int y3 = (unsigned) RNG((int)time(0))&500;
-
-    mo3.getRect().x = x3;
-    mo3.getRect().y = y3;
-    mo3.getRect().width = w;
-    mo3.getRect().height =h;
-    mo3.getCenPoint().x = x3+w/2;
-    mo3.getCenPoint().y = y3+h/2;
-
+//    mo3.getRect().x = x3;
+//    mo3.getRect().y = y3;
+//    mo3.getRect().width = w;
+//    mo3.getRect().height =h;
+//    mo3.getCenPoint().x = x3+w/2;
+//    mo3.getCenPoint().y = y3+h/2;
+    mo3.setRect(Rect(x3,y3,w,h));
+    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
 
     //设置轨迹
     boolean isExisted = false;
@@ -432,9 +435,10 @@ vector<MyObject> MyInterface::getObjs2(){
 
     //vector<MyObject> vc;
     objs.clear();
-    this->objs.push_back(mo1);
+    objs.push_back(mo1);
     objs.push_back(mo2);
     objs.push_back(mo3);
+
     return objs;
 }
 
