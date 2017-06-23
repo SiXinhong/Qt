@@ -105,7 +105,7 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 
     Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
     Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
-    qDebug()<<"p1 & p2"<<p1.x<<p1.y<<p2.x<<p2.y;
+    //qDebug()<<"p1 & p2"<<p1.x<<p1.y<<p2.x<<p2.y;
     Point p3 = Point(x0, y0);
 
     Point p11 = this->getPoint(p1);
@@ -157,7 +157,9 @@ void LWidget::draw(){
 //        cv::Point point2 = points[i+1];
 //        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
 //    }
-    this->drawArc(objs,tmat);//mw->widget3->getObjects(),tmat);
+    if(mw->widget3->getObjects().size() > 0){
+       this->drawArc(mw->widget3->getObjects(),tmat);
+    }
     //‘⁄ÕºœÒ…œª≠‘≤µ„
     int count = objs.size();
     for (int i = 0; i < count; i++){

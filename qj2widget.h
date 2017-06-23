@@ -92,6 +92,9 @@ public:
 
     boolean isObjSelected(MyObject obj);
 
+    vector<MyObject> getSelectedObjects();
+
+
 signals:
 
 public slots:

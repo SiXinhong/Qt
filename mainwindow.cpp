@@ -249,7 +249,7 @@ void MainWindow::selfProcessing(){
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
     widget1->draw();
-    qDebug()<<s1;
+    //qDebug()<<s1;
     //drawUiLabel(mat1,1);
     //图片2
 //    QString imageurl2 = in.getQJ2();
@@ -265,7 +265,7 @@ void MainWindow::selfProcessing(){
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
     widget2->draw();
-    qDebug()<<s2;
+    //qDebug()<<s2;
     //drawUiLabel(mat2,2);
     //图片3
     //Mat mat3 =imread(imageurl);
@@ -839,7 +839,7 @@ void MainWindow::onTimerOut()
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    qDebug()<<"鼠标压下事件来自mainframe";
+    //qDebug()<<"鼠标压下事件来自mainframe";
     if(e->button() == Qt::LeftButton)
     {
         //isRect = false;
@@ -901,6 +901,31 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //1. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是主显示区，则拷贝全景显示区1选择框内的图像到主显示区
     if(isDrag1 && isMove && target3){
 
+//        widget1->rectan.x = widget1->newrect.x;
+//        widget1->rectan.y = widget1->newrect.y;
+//        widget1->rectan.width = widget1->newrect.width;
+//        widget1->rectan.height = widget1->newrect.height;
+
+        if(widget1->newrect.width<0){
+            widget1->rectan.width = -widget1->newrect.width;
+            widget1->rectan.height= -widget1->newrect.height;
+            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else if(widget1->newrect.height<0){
+            widget1->rectan.width = -widget1->newrect.width;
+            widget1->rectan.height= -widget1->newrect.height;
+            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else{
+            widget1->rectan.x = widget1->newrect.x;
+            widget1->rectan.y = widget1->newrect.y;
+            widget1->rectan.width = widget1->newrect.width;
+            widget1->rectan.height = widget1->newrect.height;
+        }
+        widget1->isRect = false;
+
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
         int count = widget1->objs.size();
@@ -915,12 +940,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget3->setFrom(1);
         //widget1->rectan = widget1->newrect;
-        widget1->rectan.x = widget1->newrect.x;
-        widget1->rectan.y = widget1->newrect.y;
-        widget1->rectan.width = widget1->newrect.width;
-        widget1->rectan.height = widget1->newrect.height;
-        widget1->isRect = false;
-
 
         Mat mat = widget1->getMat();
         Size dsize ;
@@ -940,6 +959,33 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //2. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是主显示区，则拷贝全景显示区2选择框内的图像到主显示区
     if(isDrag2 && isMove && target3){
+        //widget2->rectan = widget2->newrect;
+//        widget2->rectan.x = widget2->newrect.x;
+//        widget2->rectan.y = widget2->newrect.y;
+//        widget2->rectan.width = widget2->newrect.width;
+//        widget2->rectan.height = widget2->newrect.height;
+        if(widget2->newrect.width<0){
+            widget2->rectan.width = -widget2->newrect.width;
+            widget2->rectan.height= -widget2->newrect.height;
+            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else if(widget1->newrect.height<0){
+            widget2->rectan.width = -widget2->newrect.width;
+            widget2->rectan.height= -widget2->newrect.height;
+            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else{
+            widget2->rectan.x = widget2->newrect.x;
+            widget2->rectan.y = widget2->newrect.y;
+            widget2->rectan.width = widget2->newrect.width;
+            widget2->rectan.height = widget2->newrect.height;
+        }
+
+        widget2->isRect = false;
+
+
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
         int count = widget2->objs.size();
@@ -953,15 +999,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget3->setObjects(objs3);
 
         widget3->setFrom(2);
-
-        //widget2->rectan = widget2->newrect;
-        widget2->rectan.x = widget2->newrect.x;
-        widget2->rectan.y = widget2->newrect.y;
-        widget2->rectan.width = widget2->newrect.width;
-        widget2->rectan.height = widget2->newrect.height;
-
-        widget2->isRect = false;
-
 
         Mat mat = widget2->getMat();
         Size dsize ;
@@ -981,6 +1018,27 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //3. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是凝视显示区，则拷贝全景显示区1选择框内的图像到凝视显示区
     if(isDrag1 && isMove && target4){
+        //widget1->rectan = widget1->newrect;
+        if(widget1->newrect.width<0){
+            widget1->rectan.width = -widget1->newrect.width;
+            widget1->rectan.height= -widget1->newrect.height;
+            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else if(widget1->newrect.height<0){
+            widget1->rectan.width = -widget1->newrect.width;
+            widget1->rectan.height= -widget1->newrect.height;
+            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else{
+            widget1->rectan.x = widget1->newrect.x;
+            widget1->rectan.y = widget1->newrect.y;
+            widget1->rectan.width = widget1->newrect.width;
+            widget1->rectan.height = widget1->newrect.height;
+        }
+        widget1->isRect = false;
+
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
         int count = widget1->objs.size();
@@ -994,13 +1052,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setObjects(objs4);
 
         widget4->setFrom(1);
-
-        //widget1->rectan = widget1->newrect;
-        widget1->rectan.x = widget1->newrect.x;
-        widget1->rectan.y = widget1->newrect.y;
-        widget1->rectan.width = widget1->newrect.width;
-        widget1->rectan.height = widget1->newrect.height;
-        widget1->isRect = false;
 
         Mat mat = widget1->getMat();
         Size dsize ;
@@ -1020,6 +1071,27 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
     if(isDrag2 && isMove && target4){
+        //widget2->rectan = widget2->newrect;
+        if(widget2->newrect.width<0){
+            widget2->rectan.width = -widget2->newrect.width;
+            widget2->rectan.height= -widget2->newrect.height;
+            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else if(widget1->newrect.height<0){
+            widget2->rectan.width = -widget2->newrect.width;
+            widget2->rectan.height= -widget2->newrect.height;
+            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else{
+            widget2->rectan.x = widget2->newrect.x;
+            widget2->rectan.y = widget2->newrect.y;
+            widget2->rectan.width = widget2->newrect.width;
+            widget2->rectan.height = widget2->newrect.height;
+        }
+        widget2->isRect = false;
+
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
         int count = widget2->objs.size();
@@ -1033,13 +1105,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setObjects(objs4);
 
         widget4->setFrom(2);
-
-        //widget2->rectan = widget2->newrect;
-        widget2->rectan.x = widget2->newrect.x;
-        widget2->rectan.y = widget2->newrect.y;
-        widget2->rectan.width = widget2->newrect.width;
-        widget2->rectan.height = widget2->newrect.height;
-        widget2->isRect = false;
 
         Mat mat = widget2->getMat();
         Size dsize ;

@@ -118,24 +118,26 @@ void Qj2Widget::draw(){
 
 boolean Qj2Widget::isObjSelected(MyObject obj){
     boolean isSelected = false;
-    if((obj.getCenPoint().x>this->rectan.x) && (obj.getCenPoint().y>this->rectan.y) && (obj.getCenPoint().x<this->rectan.x+this->rectan.width) && (obj.getCenPoint().y<this->rectan.y+this->rectan.height)){
+    if(this->rectan.contains(obj.getCenPoint())){
         //调整选择框以使得目标的box在选择框之内
         if(obj.getRect().x<this->rectan.x){
-            this->rectan.width = this->rectan.width + this->rectan.x - obj.getRect().x + 5;
             this->rectan.x = obj.getRect().x - 5;
+            this->rectan.width += this->rectan.x - obj.getRect().x + 5;
         }
         if(obj.getRect().y<this->rectan.y){
-            this->rectan.height = this->rectan.height + this->rectan.y - obj.getRect().y + 5;
             this->rectan.y = obj.getRect().y - 5;
+            this->rectan.height += this->rectan.y - obj.getRect().y + 5;
         }
-        if(obj.getRect().x+obj.getRect().width>this->rectan.x){
-            this->rectan.width = this->rectan.width + obj.getRect().x + obj.getRect().width - this->rectan.x + 5;
-            this->rectan.x = obj.getRect().x +obj.getRect().width + 5;
+        if((obj.getRect().x+obj.getRect().width)>(this->rectan.x+this->rectan.width)){
+            //this->rectan.x = obj.getRect().x +obj.getRect().width + 5;
+
+            this->rectan.width = obj.getRect().x + obj.getRect().width - this->rectan.x + 5;
         }
-        if(obj.getRect().y+obj.getRect().height>this->rectan.y){
+        if((obj.getRect().y+obj.getRect().height)>(this->rectan.y+this->rectan.height)){
             this->rectan.height = this->rectan.height + obj.getRect().y + obj.getRect().height- this->rectan.y+ 5;
-            this->rectan.y = obj.getRect().y +obj.getRect().height+ 5;
+            //this->rectan.y = obj.getRect().y +obj.getRect().height+ 5;
         }
+
         isSelected = true;
     }
     return isSelected;
@@ -144,7 +146,25 @@ boolean Qj2Widget::isObjSelected(MyObject obj){
 void Qj2Widget::ToZhu()
 {
     //qDebug()<<"到主显示区。";
-    //更新主显示区所包含的目标
+    if(this->newrect.width<0){
+        this->rectan.width = -this->newrect.width;
+        this->rectan.height= -this->newrect.height;
+        this->rectan.x = this->newrect.x+this->newrect.width;
+        this->rectan.y = this->newrect.y+this->newrect.height;
+    }
+    else if(this->newrect.height<0){
+        this->rectan.width = -this->newrect.width;
+        this->rectan.height= -this->newrect.height;
+        this->rectan.x = this->newrect.x+this->newrect.width;
+        this->rectan.y = this->newrect.y+this->newrect.height;
+    }
+    else{
+        this->rectan.x = this->newrect.x;
+        this->rectan.y = this->newrect.y;
+        this->rectan.width = this->newrect.width;
+        this->rectan.height = this->newrect.height;
+    }
+
     vector<MyObject> objs3;
     int count = this->objs.size();
     for(int i = 0; i < count; i++){
@@ -159,10 +179,7 @@ void Qj2Widget::ToZhu()
     mw->widget3->setObjects(objs3);
 
     mw->widget3->setFrom(2);
-    this->rectan.x = this->newrect.x;
-    this->rectan.y = this->newrect.y;
-    this->rectan.width = this->newrect.width;
-    this->rectan.height = this->newrect.height;
+
 
     Mat mat = getMat();
     Size dsize ;
@@ -186,7 +203,25 @@ void Qj2Widget::ToZhu()
 void Qj2Widget::ToNingshi()
 {
     //qDebug()<<"到主显示区。";
-    //更新凝视显示区所包含的目标
+    if(this->newrect.width<0){
+        this->rectan.width = -this->newrect.width;
+        this->rectan.height= -this->newrect.height;
+        this->rectan.x = this->newrect.x+this->newrect.width;
+        this->rectan.y = this->newrect.y+this->newrect.height;
+    }
+    else if(this->newrect.height<0){
+        this->rectan.width = -this->newrect.width;
+        this->rectan.height= -this->newrect.height;
+        this->rectan.x = this->newrect.x+this->newrect.width;
+        this->rectan.y = this->newrect.y+this->newrect.height;
+    }
+    else{
+        this->rectan.x = this->newrect.x;
+        this->rectan.y = this->newrect.y;
+        this->rectan.width = this->newrect.width;
+        this->rectan.height = this->newrect.height;
+    }
+
     vector<MyObject> objs4;
     int count = this->objs.size();
     for(int i = 0; i < count; i++){
@@ -201,10 +236,7 @@ void Qj2Widget::ToNingshi()
     mw->widget4->setObjects(objs4);
 
     mw->widget4->setFrom(2);
-    this->rectan.x = this->newrect.x;
-    this->rectan.y = this->newrect.y;
-    this->rectan.width = this->newrect.width;
-    this->rectan.height = this->newrect.height;
+
 
     Mat mat = getMat();
     Size dsize ;
@@ -234,7 +266,7 @@ void Qj2Widget::ToNingshi()
 
 void Qj2Widget::mousePressEvent(QMouseEvent *e)
 {
-    qDebug()<<"鼠标压下事件来自qj1widget";
+    //qDebug()<<"鼠标压下事件来自qj1widget";
     if(e->button() == Qt::LeftButton)
     {
         isDrag = true;
@@ -348,4 +380,17 @@ double Qj2Widget::getDirectionY2(){
     double y = this->rectan.y+this->rectan.height;
     return yy*y/mat.rows;
 
+}
+
+vector<MyObject> Qj2Widget::getSelectedObjects(){
+    vector<MyObject> os;
+    int count = this->objs.size();
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(isObjSelected(obj)){
+            os.push_back(obj);
+        }
+    }
+
+    return os;
 }

@@ -36,28 +36,115 @@ Rect ZWidget::getRectFromObjs(Rect r){
     rr.y = r.y;
     rr.width = r.width;
     rr.height = r.height;
-    for(int i = 0; i < this->objs.size(); i++){
-        MyObject obj = this->objs[i];
-        if(obj.getRect().x<r.x){
-            rr.width = r.width + r.x - obj.getRect().x + 5;
-            rr.x = obj.getRect().x - 5;
+//    for(int i = 0; i < this->objs.size(); i++){
+//        MyObject obj = this->objs[i];
+//        if(obj.getRect().x<r.x){
+//            rr.x = obj.getRect().x - 5;
+//            rr.width += r.x - obj.getRect().x + 5;
+//        }
+//        if(obj.getRect().y<r.y){
+//            rr.y = obj.getRect().y - 5;
+//            rr.height += r.y - obj.getRect().y + 5;
+//        }
+//        if((obj.getRect().x+obj.getRect().width)>(r.x+r.width)){
+//            rr.width = obj.getRect().x + obj.getRect().width - r.x + 5;
+//            //rr.x = obj.getRect().x +obj.getRect().width + 5;
+//        }
+//        if((obj.getRect().y+obj.getRect().height)>(r.y+r.height)){
+//            rr.height = obj.getRect().y + obj.getRect().height- r.y+ 5;
+//            //rr.y = obj.getRect().y +obj.getRect().height+ 5;
+//        }
+//    }
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
+    //先找最小点
+    double xtemp1;
+    double ytemp1;
+    if(this->getFrom() == 1){
+       xtemp1 = mw->widget1->getMat().cols;
+       ytemp1 = mw->widget1->getMat().rows;
+    }
+    else if(this->getFrom() == 2){
+        xtemp1 = mw->widget1->getMat().cols;
+        ytemp1 = mw->widget1->getMat().rows;
+    }
+    //初始的时候不做处理
+    else{
+
+        return rr;
+    }
+    //再找最大点
+    double xtemp2 = 0;
+    double ytemp2 = 0;
+
+    int count = objs.size();
+
+    qDebug()<<count;
+
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(xtemp1 > obj.getRect().x){
+            xtemp1 = obj.getRect().x;
+            ytemp1 = obj.getRect().y;
         }
-        if(obj.getRect().y<r.y){
-            rr.height = r.height + r.y - obj.getRect().y + 5;
-            rr.y = obj.getRect().y - 5;
-        }
-        if(obj.getRect().x+obj.getRect().width>r.x){
-            rr.width = r.width + obj.getRect().x + obj.getRect().width - r.x + 5;
-            rr.x = obj.getRect().x +obj.getRect().width + 5;
-        }
-        if(obj.getRect().y+obj.getRect().height>r.y){
-            rr.height = r.height + obj.getRect().y + obj.getRect().height- r.y+ 5;
-            rr.y = obj.getRect().y +obj.getRect().height+ 5;
+        if(xtemp2 < (obj.getRect().x + obj.getRect().width)){
+            xtemp2 = obj.getRect().x + obj.getRect().width;
+            ytemp2 = obj.getRect().y + obj.getRect().height;
         }
     }
-    return rr;
-}
+    if (count > 0){
+//    if(rr.x < xtemp1-50){
 
+//    }
+//    else{
+        if(xtemp1-50>0){
+            rr.x = xtemp1-50;
+        }
+        else{
+            rr.x = xtemp1;
+        }
+//    }
+//    if(rr.y < ytemp1-50){
+
+//    }
+//    else{
+        if(ytemp1-20 > 0){
+            rr.y = ytemp1-20;
+        }
+        else{
+            rr.y = ytemp1;
+        }
+//    }
+//    if(rr.width > (xtemp2-rr.x+100)){
+
+//    }
+//    else{
+        if(xtemp1-50 > 0){
+            rr.width = xtemp2-rr.x+100;
+        }
+        else{
+            rr.width = xtemp2-rr.x;
+        }
+//    }
+//    if(rr.height > (ytemp2-rr.y+100)){
+
+//    }
+//    else{
+        if(ytemp1-20 > 0){
+            rr.height = ytemp2-rr.y+40;
+        }
+        else{
+            rr.height = ytemp2-rr.y;
+        }
+//    }
+//        qDebug()<<xtemp1;
+//        qDebug()<<ytemp1;
+//        qDebug()<<xtemp2;
+//        qDebug()<<ytemp2;
+   }
+   return rr;
+}
 
 void ZWidget::setObjects(vector<MyObject> os){
     this->objs = os;
@@ -77,6 +164,7 @@ void ZWidget::draw(){
         r1.y = mw->widget1->rectan.y;
         r1.width = mw->widget1->rectan.width;
         r1.height = mw->widget1->rectan.height;
+        this->objs = mw->widget1->getSelectedObjects();
         Rect r2 = this->getRectFromObjs(r1);
         mw->widget1->rectan.x = r2.x;
         mw->widget1->rectan.y = r2.y;
@@ -103,6 +191,8 @@ void ZWidget::draw(){
         r1.y = mw->widget2->rectan.y;
         r1.width = mw->widget2->rectan.width;
         r1.height = mw->widget2->rectan.height;
+        this->objs = mw->widget2->getSelectedObjects();
+
         Rect r2 = this->getRectFromObjs(r1);
         mw->widget2->rectan.x = r2.x;
         mw->widget2->rectan.y = r2.y;

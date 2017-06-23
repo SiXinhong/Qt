@@ -182,7 +182,9 @@ void HWidget::draw(){
 //        cv::Point point2 = points[i+1];
 //        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
 //    }
-    this->drawArc(objs,tmat);//mw->widget3->getObjects(),tmat);
+    if(mw->widget3->getObjects().size() > 0){
+        this->drawArc(mw->widget3->getObjects(),tmat);
+    }
     //ÔÚÍ¼ÏñÉÏ»­Ô²µã
     int count = objs.size();
     for (int i = 0; i < count; i++){
