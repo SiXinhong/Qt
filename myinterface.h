@@ -4,8 +4,6 @@
 #include "myobject.h"
 #include "myobjecttrack.h"
 
-#include "show_sdk.h"
-
 #include <QString>
 
 //OpenCVÍ·ÎÄ¼þ
@@ -80,9 +78,9 @@ public:
 
     vector<MyObjectTrack> getTracks2();
 
-    Time timett;
+    //Time timett;
     cv::Mat panoImage;//
-    vector< SmallTarget> targets;
+    //vector< SmallTarget> targets;
 
     QString getQJ1();
     void setQJ1(QString q1);
@@ -96,8 +94,8 @@ public:
 
     void setLD(QString l);
 
-    void SetTime(Time t);
-    Time getTime();
+    //void SetTime(Time t);
+    //Time getTime();
 
     void setPano(Mat pano);
     Mat getPano();

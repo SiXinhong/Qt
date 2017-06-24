@@ -1,6 +1,5 @@
 #include "myobject.h"
 #include "myinterface.h";
-#include "show_sdk.h"
 #include "cvutil.h"
 
 
@@ -112,13 +111,13 @@ void MyInterface::setLD(QString l){
     this->ld = l;
 }
 
-void MyInterface::SetTime(Time t){
-    this->timett = t;
-}
+//void MyInterface::SetTime(Time t){
+//    this->timett = t;
+//}
 
-Time MyInterface::getTime(){
-    return this->timett;
-}
+//Time MyInterface::getTime(){
+//    return this->timett;
+//}
 
 void MyInterface::setPano(Mat pano){
     this->panoImage = pano;

@@ -168,7 +168,13 @@ void ZWidget::draw(){
         r1.width = mw->widget1->rectan.width;
         r1.height = mw->widget1->rectan.height;
         this->objs = mw->widget1->getSelectedObjects();
-        Rect r2 = this->getRectFromObjs(r1);
+        Rect r2;
+        if(!objs.empty()){
+            r2 = this->getRectFromObjs(r1);
+        }
+        else{
+            r2 = r1;
+        }
         mw->widget1->rectan.x = r2.x;
         mw->widget1->rectan.y = r2.y;
         mw->widget1->rectan.width = r2.width;
@@ -196,7 +202,13 @@ void ZWidget::draw(){
         r1.height = mw->widget2->rectan.height;
         this->objs = mw->widget2->getSelectedObjects();
 
-        Rect r2 = this->getRectFromObjs(r1);
+        Rect r2;
+        if(!objs.empty()){
+            r2 = this->getRectFromObjs(r1);
+        }
+        else{
+            r2 = r1;
+        }
         mw->widget2->rectan.x = r2.x;
         mw->widget2->rectan.y = r2.y;
         mw->widget2->rectan.width = r2.width;

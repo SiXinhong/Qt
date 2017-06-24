@@ -42,7 +42,6 @@ HEADERS  += mainwindow.h \
     trackbar.h \
     myobject.h \
     myinterface.h \
-    show_sdk.h \
     myobjecttrack.h
 
 FORMS    += mainwindow.ui
@@ -77,4 +76,3 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
-        #LIBS+=-LE:\github\Qt -lDisplaySDK

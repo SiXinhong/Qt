@@ -1,8 +1,6 @@
 #ifndef MYOBJECT_H
 #define MYOBJECT_H
 
-#include "show_sdk.h"
-
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
 #include <highgui.h>
