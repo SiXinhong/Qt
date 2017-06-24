@@ -905,24 +905,26 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 //        widget1->rectan.y = widget1->newrect.y;
 //        widget1->rectan.width = widget1->newrect.width;
 //        widget1->rectan.height = widget1->newrect.height;
+        widget1->isTo3 = true;
+        widget2->isTo3 = false;
 
         if(widget1->newrect.width<0){
-            widget1->rectan.width = -widget1->newrect.width;
-            widget1->rectan.height= -widget1->newrect.height;
-            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
-            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+            widget1->rectan3.width = -widget1->newrect.width;
+            widget1->rectan3.height= -widget1->newrect.height;
+            widget1->rectan3.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan3.y = widget1->newrect.y+widget1->newrect.height;
         }
         else if(widget1->newrect.height<0){
-            widget1->rectan.width = -widget1->newrect.width;
-            widget1->rectan.height= -widget1->newrect.height;
-            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
-            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+            widget1->rectan3.width = -widget1->newrect.width;
+            widget1->rectan3.height= -widget1->newrect.height;
+            widget1->rectan3.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan3.y = widget1->newrect.y+widget1->newrect.height;
         }
         else{
-            widget1->rectan.x = widget1->newrect.x;
-            widget1->rectan.y = widget1->newrect.y;
-            widget1->rectan.width = widget1->newrect.width;
-            widget1->rectan.height = widget1->newrect.height;
+            widget1->rectan3.x = widget1->newrect.x;
+            widget1->rectan3.y = widget1->newrect.y;
+            widget1->rectan3.width = widget1->newrect.width;
+            widget1->rectan3.height = widget1->newrect.height;
         }
         widget1->isRect = false;
 
@@ -931,7 +933,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         int count = widget1->objs.size();
         for(int i = 0; i < count; i++){
             MyObject obj = widget1->objs[i];
-            if(widget1->isObjSelected(obj)){
+            if(widget1->isObjSelected3(obj)){
                 objs3.push_back(obj);
             }
         }
@@ -950,7 +952,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        aa=(&img)->copy(widget1->getQRectan());
+        aa=(&img)->copy(widget1->getQRectan3());
         Mat image3 = QImageToMat(aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
@@ -964,23 +966,27 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 //        widget2->rectan.y = widget2->newrect.y;
 //        widget2->rectan.width = widget2->newrect.width;
 //        widget2->rectan.height = widget2->newrect.height;
+
+        widget1->isTo3 = false;
+        widget2->isTo3 = true;
+
         if(widget2->newrect.width<0){
-            widget2->rectan.width = -widget2->newrect.width;
-            widget2->rectan.height= -widget2->newrect.height;
-            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
-            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+            widget2->rectan3.width = -widget2->newrect.width;
+            widget2->rectan3.height= -widget2->newrect.height;
+            widget2->rectan3.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan3.y = widget2->newrect.y+widget2->newrect.height;
         }
         else if(widget2->newrect.height<0){
-            widget2->rectan.width = -widget2->newrect.width;
-            widget2->rectan.height= -widget2->newrect.height;
-            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
-            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+            widget2->rectan3.width = -widget2->newrect.width;
+            widget2->rectan3.height= -widget2->newrect.height;
+            widget2->rectan3.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan3.y = widget2->newrect.y+widget2->newrect.height;
         }
         else{
-            widget2->rectan.x = widget2->newrect.x;
-            widget2->rectan.y = widget2->newrect.y;
-            widget2->rectan.width = widget2->newrect.width;
-            widget2->rectan.height = widget2->newrect.height;
+            widget2->rectan3.x = widget2->newrect.x;
+            widget2->rectan3.y = widget2->newrect.y;
+            widget2->rectan3.width = widget2->newrect.width;
+            widget2->rectan3.height = widget2->newrect.height;
         }
 
         widget2->isRect = false;
@@ -991,7 +997,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         int count = widget2->objs.size();
         for(int i = 0; i < count; i++){
             MyObject obj = widget2->objs[i];
-            if(widget2->isObjSelected(obj)){
+            if(widget2->isObjSelected3(obj)){
                 objs3.push_back(obj);
             }
         }
@@ -1009,7 +1015,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        aa=(&img)->copy(widget2->getQRectan());
+        aa=(&img)->copy(widget2->getQRectan3());
         Mat image3 = QImageToMat(aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
@@ -1019,23 +1025,26 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //3. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是凝视显示区，则拷贝全景显示区1选择框内的图像到凝视显示区
     if(isDrag1 && isMove && target4){
         //widget1->rectan = widget1->newrect;
+        widget1->isTo4 = true;
+        widget2->isTo4 = false;
+
         if(widget1->newrect.width<0){
-            widget1->rectan.width = -widget1->newrect.width;
-            widget1->rectan.height= -widget1->newrect.height;
-            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
-            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+            widget1->rectan4.width = -widget1->newrect.width;
+            widget1->rectan4.height= -widget1->newrect.height;
+            widget1->rectan4.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan4.y = widget1->newrect.y+widget1->newrect.height;
         }
         else if(widget1->newrect.height<0){
-            widget1->rectan.width = -widget1->newrect.width;
-            widget1->rectan.height= -widget1->newrect.height;
-            widget1->rectan.x = widget1->newrect.x+widget1->newrect.width;
-            widget1->rectan.y = widget1->newrect.y+widget1->newrect.height;
+            widget1->rectan4.width = -widget1->newrect.width;
+            widget1->rectan4.height= -widget1->newrect.height;
+            widget1->rectan4.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan4.y = widget1->newrect.y+widget1->newrect.height;
         }
         else{
-            widget1->rectan.x = widget1->newrect.x;
-            widget1->rectan.y = widget1->newrect.y;
-            widget1->rectan.width = widget1->newrect.width;
-            widget1->rectan.height = widget1->newrect.height;
+            widget1->rectan4.x = widget1->newrect.x;
+            widget1->rectan4.y = widget1->newrect.y;
+            widget1->rectan4.width = widget1->newrect.width;
+            widget1->rectan4.height = widget1->newrect.height;
         }
         widget1->isRect = false;
 
@@ -1044,7 +1053,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         int count = widget1->objs.size();
         for(int i = 0; i < count; i++){
             MyObject obj = widget1->objs[i];
-            if(widget1->isObjSelected(obj)){
+            if(widget1->isObjSelected4(obj)){
                 objs4.push_back(obj);
             }
         }
@@ -1062,7 +1071,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        aa=(&img)->copy(widget1->getQRectan());
+        aa=(&img)->copy(widget1->getQRectan4());
         Mat image4 = QImageToMat(aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);
@@ -1072,24 +1081,27 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
     if(isDrag2 && isMove && target4){
 
+        widget1->isTo4 = false;
+        widget2->isTo4 = true;
+
         //widget2->rectan = widget2->newrect;
         if(widget2->newrect.width<0){
-            widget2->rectan.width = -widget2->newrect.width;
-            widget2->rectan.height= -widget2->newrect.height;
-            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
-            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+            widget2->rectan4.width = -widget2->newrect.width;
+            widget2->rectan4.height= -widget2->newrect.height;
+            widget2->rectan4.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan4.y = widget2->newrect.y+widget2->newrect.height;
         }
         else if(widget2->newrect.height<0){
-            widget2->rectan.width = -widget2->newrect.width;
-            widget2->rectan.height= -widget2->newrect.height;
-            widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
-            widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
+            widget2->rectan4.width = -widget2->newrect.width;
+            widget2->rectan4.height= -widget2->newrect.height;
+            widget2->rectan4.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan4.y = widget2->newrect.y+widget2->newrect.height;
         }
         else{
-            widget2->rectan.x = widget2->newrect.x;
-            widget2->rectan.y = widget2->newrect.y;
-            widget2->rectan.width = widget2->newrect.width;
-            widget2->rectan.height = widget2->newrect.height;
+            widget2->rectan4.x = widget2->newrect.x;
+            widget2->rectan4.y = widget2->newrect.y;
+            widget2->rectan4.width = widget2->newrect.width;
+            widget2->rectan4.height = widget2->newrect.height;
         }
         widget2->isRect = false;
 
@@ -1098,7 +1110,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         int count = widget2->objs.size();
         for(int i = 0; i < count; i++){
             MyObject obj = widget2->objs[i];
-            if(widget2->isObjSelected(obj)){
+            if(widget2->isObjSelected4(obj)){
                 objs4.push_back(obj);
             }
         }
@@ -1116,7 +1128,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        aa=(&img)->copy(widget2->getQRectan());
+        aa=(&img)->copy(widget2->getQRectan4());
         Mat image4 = QImageToMat(aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);

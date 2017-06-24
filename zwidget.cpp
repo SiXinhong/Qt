@@ -163,11 +163,11 @@ void ZWidget::draw(){
     //根据矩形框的变化，重新从全景显示区1或者全景显示区2拷贝获得mat。
     if(this->getFrom() == 1){
         Rect r1;
-        r1.x = mw->widget1->rectan.x;
-        r1.y = mw->widget1->rectan.y;
-        r1.width = mw->widget1->rectan.width;
-        r1.height = mw->widget1->rectan.height;
-        this->objs = mw->widget1->getSelectedObjects();
+        r1.x = mw->widget1->rectan3.x;
+        r1.y = mw->widget1->rectan3.y;
+        r1.width = mw->widget1->rectan3.width;
+        r1.height = mw->widget1->rectan3.height;
+        this->objs = mw->widget1->getSelectedObjects3();
         Rect r2;
         if(!objs.empty()){
             r2 = this->getRectFromObjs(r1);
@@ -175,10 +175,10 @@ void ZWidget::draw(){
         else{
             r2 = r1;
         }
-        mw->widget1->rectan.x = r2.x;
-        mw->widget1->rectan.y = r2.y;
-        mw->widget1->rectan.width = r2.width;
-        mw->widget1->rectan.height = r2.height;
+        mw->widget1->rectan3.x = r2.x;
+        mw->widget1->rectan3.y = r2.y;
+        mw->widget1->rectan3.width = r2.width;
+        mw->widget1->rectan3.height = r2.height;
         Mat mat1 = mw->widget1->getMat();
         Size dsize ;
         double scale = 1;
@@ -188,7 +188,7 @@ void ZWidget::draw(){
         mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat1.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        mw->aa=(&(mw->img))->copy(mw->widget1->getQRectan());
+        mw->aa=(&(mw->img))->copy(mw->widget1->getQRectan3());
         Mat image3 = mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
@@ -196,11 +196,11 @@ void ZWidget::draw(){
     }
     else if(this->getFrom() == 2){
         Rect r1;
-        r1.x = mw->widget2->rectan.x;
-        r1.y = mw->widget2->rectan.y;
-        r1.width = mw->widget2->rectan.width;
-        r1.height = mw->widget2->rectan.height;
-        this->objs = mw->widget2->getSelectedObjects();
+        r1.x = mw->widget2->rectan3.x;
+        r1.y = mw->widget2->rectan3.y;
+        r1.width = mw->widget2->rectan3.width;
+        r1.height = mw->widget2->rectan3.height;
+        this->objs = mw->widget2->getSelectedObjects3();
 
         Rect r2;
         if(!objs.empty()){
@@ -209,10 +209,10 @@ void ZWidget::draw(){
         else{
             r2 = r1;
         }
-        mw->widget2->rectan.x = r2.x;
-        mw->widget2->rectan.y = r2.y;
-        mw->widget2->rectan.width = r2.width;
-        mw->widget2->rectan.height = r2.height;
+        mw->widget2->rectan3.x = r2.x;
+        mw->widget2->rectan3.y = r2.y;
+        mw->widget2->rectan3.width = r2.width;
+        mw->widget2->rectan3.height = r2.height;
         Mat mat2 = mw->widget2->getMat();
         Size dsize ;
         double scale = 1;
@@ -222,7 +222,7 @@ void ZWidget::draw(){
         mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat2.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        mw->aa=(&(mw->img))->copy(mw->widget2->getQRectan());
+        mw->aa=(&(mw->img))->copy(mw->widget2->getQRectan3());
         Mat image3 = mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
@@ -265,13 +265,13 @@ void ZWidget::draw(){
 //    }
 //    mw->paintScale(mat, 1.0, 1.0);
     if(this->from == 1){
-        CVUtil::paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY(), mw->widget1->getDirectionX2(), mw->widget1->getDirectionY2());
+        CVUtil::paintScale(mat, mw->widget1->getDirectionX3(), mw->widget1->getDirectionY3(), mw->widget1->getDirectionX32(), mw->widget1->getDirectionY32());
     }
     else if(this->from == 2){
-        CVUtil::paintScale(mat, mw->widget2->getDirectionX(), mw->widget2->getDirectionY(), mw->widget2->getDirectionX2(), mw->widget2->getDirectionY2());
+        CVUtil::paintScale(mat, mw->widget2->getDirectionX3(), mw->widget2->getDirectionY3(), mw->widget2->getDirectionX32(), mw->widget2->getDirectionY32());
     }
     else{
-        CVUtil::paintScale(mat, mw->widget1->getDirectionX(), mw->widget1->getDirectionY(), mw->widget1->getDirectionX2(), mw->widget1->getDirectionY2());
+        CVUtil::paintScale(mat, mw->widget1->getDirectionX3(), mw->widget1->getDirectionY3(), mw->widget1->getDirectionX32(), mw->widget1->getDirectionY32());
     }
 
     cv::cvtColor(mat,mat,CV_BGR2RGB);

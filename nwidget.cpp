@@ -155,11 +155,11 @@ void NWidget::draw(){
     //根据矩形框的变化，重新从全景显示区1或者全景显示区2拷贝获得mat。
     if(this->getFrom() == 1){
         Rect r1;
-        r1.x = mw->widget1->rectan.x;
-        r1.y = mw->widget1->rectan.y;
-        r1.width = mw->widget1->rectan.width;
-        r1.height = mw->widget1->rectan.height;
-        this->objs = mw->widget1->getSelectedObjects();
+        r1.x = mw->widget1->rectan4.x;
+        r1.y = mw->widget1->rectan4.y;
+        r1.width = mw->widget1->rectan4.width;
+        r1.height = mw->widget1->rectan4.height;
+        this->objs = mw->widget1->getSelectedObjects4();
 
         Rect r2;
         if(!objs.empty()){
@@ -168,10 +168,10 @@ void NWidget::draw(){
         else{
             r2 = r1;
         }
-        mw->widget1->rectan.x = r2.x;
-        mw->widget1->rectan.y = r2.y;
-        mw->widget1->rectan.width = r2.width;
-        mw->widget1->rectan.height = r2.height;
+        mw->widget1->rectan4.x = r2.x;
+        mw->widget1->rectan4.y = r2.y;
+        mw->widget1->rectan4.width = r2.width;
+        mw->widget1->rectan4.height = r2.height;
         Mat mat1 = mw->widget1->getMat();
         Size dsize ;
         double scale = 1;
@@ -181,7 +181,7 @@ void NWidget::draw(){
         mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat1.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        mw->aa=(&(mw->img))->copy(mw->widget1->getQRectan());
+        mw->aa=(&(mw->img))->copy(mw->widget1->getQRectan4());
         Mat image4 = mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);
@@ -192,11 +192,11 @@ void NWidget::draw(){
 //        Rect r2 = this->getRectFromObjs(r1);
 //        mw->widget2->rectan = r2;
         Rect r1;
-        r1.x = mw->widget2->rectan.x;
-        r1.y = mw->widget2->rectan.y;
-        r1.width = mw->widget2->rectan.width;
-        r1.height = mw->widget2->rectan.height;
-        this->objs = mw->widget2->getSelectedObjects();
+        r1.x = mw->widget2->rectan4.x;
+        r1.y = mw->widget2->rectan4.y;
+        r1.width = mw->widget2->rectan4.width;
+        r1.height = mw->widget2->rectan4.height;
+        this->objs = mw->widget2->getSelectedObjects4();
 
         Rect r2;
         if(!objs.empty()){
@@ -205,10 +205,10 @@ void NWidget::draw(){
         else{
             r2 = r1;
         }
-        mw->widget2->rectan.x = r2.x;
-        mw->widget2->rectan.y = r2.y;
-        mw->widget2->rectan.width = r2.width;
-        mw->widget2->rectan.height = r2.height;
+        mw->widget2->rectan4.x = r2.x;
+        mw->widget2->rectan4.y = r2.y;
+        mw->widget2->rectan4.width = r2.width;
+        mw->widget2->rectan4.height = r2.height;
 
         Mat mat2 = mw->widget2->getMat();
         Size dsize ;
@@ -219,7 +219,7 @@ void NWidget::draw(){
         mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat2.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
         //vector<Rectan> rectans;
-        mw->aa=(&(mw->img))->copy(mw->widget2->getQRectan());
+        mw->aa=(&(mw->img))->copy(mw->widget2->getQRectan4());
         Mat image4 = mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);

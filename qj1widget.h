@@ -48,7 +48,12 @@ public:
     boolean isDrag;
     boolean isMove;
     boolean isRect;
-    Rect rectan;
+    Rect rectan3;
+    Rect rectan4;
+
+    boolean isTo3;
+    boolean isTo4;
+
     Rect newrect;
     //QRect qrectan;
 
@@ -68,8 +73,11 @@ public:
     void setTracks(vector<MyObjectTrack> ts);
     vector<MyObjectTrack> getTracks();
 
-    Rect getRectan();
-    QRect getQRectan();
+    Rect getRectan3();
+    QRect getQRectan3();
+
+    Rect getRectan4();
+    QRect getQRectan4();
 
     double getMatX(double x);
 
@@ -79,23 +87,35 @@ public:
 
     double getWidgetY(double y);
 
-    double getDirectionX();
+    double getDirectionX3();
 
-    double getDirectionY();
+    double getDirectionY3();
+
+    double getDirectionX4();
+
+    double getDirectionY4();
 
     double getDirectionX(double x);
 
     double getDirectionY(double y);
 
-    double getDirectionX2();
+    double getDirectionX32();
 
-    double getDirectionY2();
+    double getDirectionY32();
+
+    double getDirectionX42();
+
+    double getDirectionY42();
 
     void draw();
 
-    boolean isObjSelected(MyObject obj);
+    boolean isObjSelected3(MyObject obj);
 
-    vector<MyObject> getSelectedObjects();
+    boolean isObjSelected4(MyObject obj);
+
+    vector<MyObject> getSelectedObjects3();
+
+    vector<MyObject> getSelectedObjects4();
 
 signals:
 
