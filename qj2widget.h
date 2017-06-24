@@ -80,6 +80,10 @@ public:
 
     double getWidgetY(double y);
 
+    double getDirectionX(double x);
+
+    double getDirectionY(double y);
+
     double getDirectionX();
 
     double getDirectionY();

@@ -970,7 +970,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
             widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
             widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
         }
-        else if(widget1->newrect.height<0){
+        else if(widget2->newrect.height<0){
             widget2->rectan.width = -widget2->newrect.width;
             widget2->rectan.height= -widget2->newrect.height;
             widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
@@ -1071,6 +1071,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     }
     //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
     if(isDrag2 && isMove && target4){
+
         //widget2->rectan = widget2->newrect;
         if(widget2->newrect.width<0){
             widget2->rectan.width = -widget2->newrect.width;
@@ -1078,7 +1079,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
             widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;
             widget2->rectan.y = widget2->newrect.y+widget2->newrect.height;
         }
-        else if(widget1->newrect.height<0){
+        else if(widget2->newrect.height<0){
             widget2->rectan.width = -widget2->newrect.width;
             widget2->rectan.height= -widget2->newrect.height;
             widget2->rectan.x = widget2->newrect.x+widget2->newrect.width;

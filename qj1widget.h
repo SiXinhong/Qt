@@ -83,6 +83,10 @@ public:
 
     double getDirectionY();
 
+    double getDirectionX(double x);
+
+    double getDirectionY(double y);
+
     double getDirectionX2();
 
     double getDirectionY2();

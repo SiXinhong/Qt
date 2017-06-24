@@ -98,8 +98,8 @@ void Qj1Widget::draw(){
         }
         //画对象中心点的位置
         if(mw->isMubiao){
-            int x = (int)(obj.getCenPoint().x);
-            int y = (int)(obj.getCenPoint().y);
+            int x = (int)(this->getDirectionX(obj.getCenPoint().x));
+            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
             QString tx = QString::number(x,10);
             QString ty = QString::number(y,10);
             QString tstr = "x="+tx+",y="+ty;
@@ -367,6 +367,19 @@ double Qj1Widget::getWidgetX(double x){
 //由图像中的Y获得Widget中的Y
 double Qj1Widget::getWidgetY(double y){
     return y*this->height()/mat.rows;
+}
+
+double Qj1Widget::getDirectionX(double x){
+    //double x = this->rectan.x;
+    return 180*x/mat.cols -90;
+}
+
+double Qj1Widget::getDirectionY(double y){
+
+    double yy = 20;
+    //double y = this->rectan.y;
+    return yy*y/mat.rows;
+
 }
 
 double Qj1Widget::getDirectionX(){

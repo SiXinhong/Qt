@@ -66,8 +66,8 @@ Rect ZWidget::getRectFromObjs(Rect r){
        ytemp1 = mw->widget1->getMat().rows;
     }
     else if(this->getFrom() == 2){
-        xtemp1 = mw->widget1->getMat().cols;
-        ytemp1 = mw->widget1->getMat().rows;
+        xtemp1 = mw->widget2->getMat().cols;
+        ytemp1 = mw->widget2->getMat().rows;
     }
     //初始的时候不做处理
     else{
@@ -143,6 +143,9 @@ Rect ZWidget::getRectFromObjs(Rect r){
 //        qDebug()<<xtemp2;
 //        qDebug()<<ytemp2;
    }
+    if(mw->isMubiao){
+        rr.width += 100;
+    }
    return rr;
 }
 

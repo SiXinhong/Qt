@@ -72,8 +72,8 @@ Rect NWidget::getRectFromObjs(Rect r){
        ytemp1 = mw->widget1->getMat().rows;
     }
     else if(this->getFrom() == 2){
-        xtemp1 = mw->widget1->getMat().cols;
-        ytemp1 = mw->widget1->getMat().rows;
+        xtemp1 = mw->widget2->getMat().cols;
+        ytemp1 = mw->widget2->getMat().rows;
     }
     //初始的时候不做处理
     else{
@@ -143,6 +143,9 @@ Rect NWidget::getRectFromObjs(Rect r){
         }
 //    }
    }
+    if(mw->isMubiao){
+        rr.width += 100;
+    }
    return rr;
 }
 
@@ -187,7 +190,7 @@ void NWidget::draw(){
         r1.y = mw->widget2->rectan.y;
         r1.width = mw->widget2->rectan.width;
         r1.height = mw->widget2->rectan.height;
-        this->objs = mw->widget1->getSelectedObjects();
+        this->objs = mw->widget2->getSelectedObjects();
 
         Rect r2 = this->getRectFromObjs(r1);
         mw->widget2->rectan.x = r2.x;

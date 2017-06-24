@@ -112,6 +112,7 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     Point p22 = this->getPoint(p2);
 
     line(tmat,p11,p3,Scalar(255,255,0),1,8,0);
+
     line(tmat,p22,p3,Scalar(255,255,0),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
@@ -125,6 +126,7 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 //    }
 
     ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,255,0));
+    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
 ////    Point point1(75,60);
@@ -166,6 +168,7 @@ void LWidget::draw(){
         cv::Point p = objs[i].getCenPoint();
         Scalar color = objs[i].getColor();
         circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
+        cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
     cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     mw->imgLabel6 = mw->MatToQImage(tmat, mw->imgLabel6);

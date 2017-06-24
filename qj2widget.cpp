@@ -98,15 +98,15 @@ void Qj2Widget::draw(){
         }
         //画对象中心点的位置
         if(mw->isMubiao){
-            int x = (int)(obj.getCenPoint().x);
-            int y = (int)(obj.getCenPoint().y);
+            int x = (int)(this->getDirectionX(obj.getCenPoint().x));
+            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
             QString tx = QString::number(x,10);
             QString ty = QString::number(y,10);
             QString tstr = "x="+tx+",y="+ty;
             string str = tstr.toStdString();
             //qDebug()<<tstr;
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-            putText(mat,str,p,3,1,obj.getColor());
+            putText(mat,str,p,1,1,obj.getColor());
         }
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
@@ -359,6 +359,19 @@ double Qj2Widget::getWidgetY(double y){
 double Qj2Widget::getDirectionX(){
     double x = this->rectan.x;
     return 180*x/mat.cols +90;
+}
+
+double Qj2Widget::getDirectionX(double x){
+    //double x = this->rectan.x;
+    return 180*x/mat.cols +90;
+}
+
+double Qj2Widget::getDirectionY(double y){
+
+    double yy = 20;
+    //double y = this->rectan.y;
+    return yy*y/mat.rows;
+
 }
 
 double Qj2Widget::getDirectionY(){

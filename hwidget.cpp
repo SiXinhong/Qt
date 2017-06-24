@@ -133,6 +133,7 @@ void HWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     Point p22 = this->getPoint2(p2);
 
     line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
+
     line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
@@ -148,6 +149,7 @@ void HWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
     ellipse(tmat,p3,Size(r1, r1),0,angle1+180,angle2+180,Scalar(255,255,0));
 
     ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,255,0));
+    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
 //    cv::Point point1(75,60);
@@ -195,6 +197,7 @@ void HWidget::draw(){
 //        qDebug()<<this->getDirectionPoint(p).y;
         Scalar color = objs[i].getColor();
         circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
+        cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
     cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     mw->imgLabel5 = mw->MatToQImage(tmat, mw->imgLabel5);
