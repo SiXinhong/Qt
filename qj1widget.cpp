@@ -97,9 +97,11 @@ void Qj1Widget::draw(){
             if(id == obj.getID()){
                 for(int iii = 0; iii < points.size(); iii++){
                     Point point = points[iii];
-                    Point point2 = points[iii+1];
                     circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    line(mat,point,point2,obj.getColor(),1,8,0);
+                    if(iii >= 1){
+                        Point point2 = points[iii-1];
+                        line(mat,point,point2,obj.getColor(),1,8,0);
+                    }
                 }
             }
         }
