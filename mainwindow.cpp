@@ -86,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
     selfProcessing();
+    //this->jinProcessing();
     //---------------------------------------------------------
 
     //临时性处理，将来被金老师SDK替换--------------------------------
@@ -226,6 +227,50 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow(){
     delete ui;
+}
+
+//与金老师的接口处理
+void MainWindow::jinProcessing(){
+    //vector<MyObject> objs = in.getObjs2();
+    if(in.getIntegratedData() == 0){
+        //图片1
+        //QString s1=in.getQJ1();
+        //imageurl=s1.toStdString();
+        Mat mat1 = in.getQJ1Mat();
+        widget1->setMat(mat1);
+        widget1->setObjects(in.getQj1Objs());
+        widget1->setTracks(in.getTracks());
+        widget1->draw();
+        //图片2
+        //QString s2=in.getQJ2();
+        //imageurl2=s2.toStdString();
+        Mat mat2 = in.getQJ2Mat();
+        widget2->setMat(mat2);
+        widget2->setObjects(in.getQj2Objs());
+        widget2->setTracks(in.getTracks());
+        widget2->draw();
+        //图片3
+        widget3->draw();
+        //图片4
+        widget4->draw();
+        //图片5
+        QString imageurl5=in.getHD();
+        Mat mat5 =imread(imageurl5.toStdString());
+        widget5->setMat(mat5);
+        widget5->setPano(in.getPano());
+        widget5->setObjects(in.getObjs());
+        widget5->draw();
+        //图片6
+        QString imageurl6= in.getLD();
+        Mat mat6 =imread(imageurl6.toStdString());
+        widget6->setMat(mat6);
+        widget6->setPano(in.getPano());
+        widget6->setObjects(in.getObjs());
+        widget6->draw();
+    }
+    else{
+        this->selfProcessing();
+    }
 }
 
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
@@ -379,6 +424,8 @@ void MainWindow::tempProcessing(){
 }
 
 //----------------------------------------------------------
+
+
 
 //绘制工具栏
 void MainWindow::addMyToolBar()
@@ -700,6 +747,12 @@ void MainWindow::adjustment()
 //定时器任务
 void MainWindow::onTimerOut()
 {
+    this->selfTimerout();
+    //this->jinTimerout();
+}
+
+//自定义接口定时器
+void MainWindow::selfTimerout(){
     //index=index+1;
     vector<MyObject> objs = in.getObjs2();
 
@@ -834,6 +887,51 @@ void MainWindow::onTimerOut()
 ////    widget4->setMat(image44);
 //    widget4->draw();
 //    qDebug()<<"tongguo 3!!!!!";
+}
+
+//与金老师接口的定时器处理
+void MainWindow::jinTimerout(){
+    //vector<MyObject> objs = in.getObjs2();
+    if(in.getIntegratedData() == 0){
+        //图片1
+        //QString s1=in.getQJ1();
+        //imageurl=s1.toStdString();
+        //qDebug()<<in.getObjs().size();
+        Mat mat1 = in.getQJ1Mat();
+        widget1->setMat(mat1);
+        widget1->setObjects(in.getQj1Objs());
+        widget1->setTracks(in.getTracks());
+        widget1->draw();
+        //图片2
+        //QString s2=in.getQJ2();
+        //imageurl2=s2.toStdString();
+        Mat mat2 = in.getQJ2Mat();
+        widget2->setMat(mat2);
+        widget2->setObjects(in.getQj2Objs());
+        widget2->setTracks(in.getTracks());
+        widget2->draw();
+        //图片3
+        widget3->draw();
+        //图片4
+        widget4->draw();
+        //图片5
+        //QString imageurl5=in.getHD();
+        //Mat mat5 =imread(imageurl5.toStdString());
+        //widget5->setMat(mat5);
+        widget5->setPano(in.getPano());
+        widget5->setObjects(in.getObjs());
+        widget5->draw();
+        //图片6
+        //QString imageurl6= in.getLD();
+        //Mat mat6 =imread(imageurl6.toStdString());
+        //widget6->setMat(mat6);
+        widget6->setPano(in.getPano());
+        widget6->setObjects(in.getObjs());
+        widget6->draw();
+    }
+    else{
+        this->selfTimerout();
+    }
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。

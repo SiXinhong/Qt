@@ -3,6 +3,7 @@
 
 #include "myobject.h"
 #include "myobjecttrack.h"
+#include "show_sdk.h"
 
 #include <QString>
 
@@ -78,9 +79,9 @@ public:
 
     vector<MyObjectTrack> getTracks2();
 
-    //Time timett;
+    Time timett;
     cv::Mat panoImage;//
-    //vector< SmallTarget> targets;
+    vector< SmallTarget> targets;
 
     QString getQJ1();
     void setQJ1(QString q1);
@@ -94,8 +95,8 @@ public:
 
     void setLD(QString l);
 
-    //void SetTime(Time t);
-    //Time getTime();
+    void SetTime(Time t);
+    Time getTime();
 
     void setPano(Mat pano);
     Mat getPano();
@@ -116,8 +117,8 @@ public:
     //获得全景显示区2中的对象
     vector<MyObject> getQj2Objs();
     //获得综合数据
-    void getIntegratedData();
-    //设置系统参数
+    int getIntegratedData();
+//    //设置系统参数
 //    int SetSysPara(int mode, const char *para_string, int id = 0);
 //    //获得系统参数
 //    int GetSysPara(int mode, char *para_string, int id = 0);

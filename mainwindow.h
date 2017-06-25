@@ -204,6 +204,15 @@ protected:
      void tempProcessing();
      //自定义接口处理
      void selfProcessing();
+     //与金老师的接口处理
+     void jinProcessing();
+
+     //自定义接口定时器
+     void selfTimerout();
+
+     //与金老师接口的定时器处理
+     void jinTimerout();
+
      QToolBar *mainToolBar;
      //第一组按钮：监控和后退，还有回放
      //QLabel *listLabel1;

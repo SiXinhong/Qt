@@ -1,13 +1,14 @@
 #include "myobject.h"
 #include "myinterface.h";
 #include "cvutil.h"
+#include "show_sdk.h"
 
 
 #include <QString>
 #include <QImage>
 #include <QRect>
 #include <iostream>
-
+#include<QDebug>
 
 //OpenCV头文件
 #include <vector>
@@ -111,13 +112,13 @@ void MyInterface::setLD(QString l){
     this->ld = l;
 }
 
-//void MyInterface::SetTime(Time t){
-//    this->timett = t;
-//}
+void MyInterface::SetTime(Time t){
+    this->timett = t;
+}
 
-//Time MyInterface::getTime(){
-//    return this->timett;
-//}
+Time MyInterface::getTime(){
+    return this->timett;
+}
 
 void MyInterface::setPano(Mat pano){
     this->panoImage = pano;
@@ -158,160 +159,164 @@ vector<MyObject> MyInterface::getQj2Objs(){
 
 
 //获得综合数据
-void MyInterface::getIntegratedData(){
-//    IntegratedData  *data = new IntegratedData;
-//        int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
-//        if (isfail_getdata == 0)
-//        {
-//            if (!data->panoImage.empty())
-//            {
-//                //cv::imshow("pano", data->panoImage);
-//                this->timett = data->time;
-//                this->panoImage = data->panoImage;
-//                //下面将整个的图像切成两幅
-//                //全景1Mat
-//                Mat mat = this->panoImage;
-//                Size dsize ;
-//                double scale = 1;
-//                dsize = Size(mat.cols*scale/2,mat.rows*scale);
-//                Mat image11 = Mat(dsize,CV_32S);
-//                cv::resize(mat, image11,dsize);
-//                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+int MyInterface::getIntegratedData(){
+    IntegratedData  *data = new IntegratedData;
+        int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
+        if (isfail_getdata == 0)
+        {
+            if (!data->panoImage.empty())
+            {
+                //cv::imshow("pano", data->panoImage);
+                this->timett = data->time;
+                this->panoImage = data->panoImage;
+                //下面将整个的图像切成两幅
+                //全景1Mat
+                Mat mat = this->panoImage;
+                Size dsize ;
+                double scale = 1;
+                dsize = Size(mat.cols*scale,mat.rows*scale);
+                Mat image11 = Mat(dsize,CV_32S);
+                cv::resize(mat, image11,dsize);
+                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//                QImage aa=(&img)->copy(QRect(1,1,mat.cols/2,mat.rows));
-//                Mat image4 = CVUtil::QImageToMat(aa);
-//                Mat image44 = Mat(dsize,CV_32S);
-//                cv::resize(image4, image44,dsize);
-//                this->qj1mat = image44;
-//                //全景2Mat
-//                mat = this->panoImage;
-//                //dsize ;
-//                //double scale = 1;
-//                dsize = Size(mat.cols*scale/2,mat.rows*scale);
-//                image11 = Mat(dsize,CV_32S);
-//                cv::resize(mat, image11,dsize);
-//                img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+                QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+                Mat image4 = CVUtil::QImageToMat(aa);
+                Mat image44 = Mat(dsize,CV_32S);
+                cv::resize(image4, image44,dsize);
+                this->qj1mat = image44;
+                //全景2Mat
+                //mat = this->panoImage;
+                //dsize ;
+                //double scale = 1;
+                //dsize = Size(mat.cols*scale,mat.rows*scale);
+                //Mat image12 = Mat(dsize,CV_32S);
+                //cv::resize(mat, image12,dsize);
+                //QImage img2 = QImage((const unsigned char*)(image12.data),image12.cols,mat.rows, image12.cols*image12.channels(),  QImage::Format_RGB888);
 
-//                aa=(&img)->copy(QRect(mat.cols/2,1,mat.cols,mat.rows));
-//                Mat image5 = CVUtil::QImageToMat(aa);
-//                Mat image55 = Mat(dsize,CV_32S);
-//                cv::resize(image5, image55,dsize);
-//                this->qj1mat = image55;
+                QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+                Mat image5 = CVUtil::QImageToMat(aa2);
+                Mat image55 = Mat(dsize,CV_32S);
+                cv::resize(image5, image55,dsize);
+                this->qj2mat = image55;
 
 
-//                //下面完成每个目标的构造
-//                this->objs.clear();
-//                this->objs1.clear();
-//                this->objs2.clear();
-//                this->targets = data->targets;
-//                int count = this->targets.size();
-//                for (int i = 0; i < count;i++)
-//                {
-//                    MyObject obj = MyObject();
-//                    SmallTarget tar = targets[i];
-//                    obj.setID(tar.id);
-//                    obj.setCenPoint(tar.cenPoint);
-//                    obj.setBlockSize(tar.blocksize);
-//                    obj.setVelocity(tar.Velocity);
-//                    obj.setMotionDerection(tar.MotionDerection);
-//                    obj.setAbsoluteIntensity(tar.area);
-//                    obj.setHorizontalAxisLength(tar.horizontalAxisLength);
-//                    obj.setVerticalAxisLength(tar.verticalAxisLength);
-//                    obj.setAbsoluteIntensity(tar.absoluteIntensity);
-//                    obj.setRelativeIntensity(tar.relativeIntensity);
-//                    obj.setContours(tar.contours);
-//                    obj.setSnapshoot(tar.Snapshoot);
-//                    obj.setSihouette(tar.sihouette);
-//                    obj.setTargetScale(tar.targetScale);
-//                    obj.setCenSueEintensity(tar.CenSueEintensity);
-//                    obj.setSCRValue(tar.SCRValue);
-//                    obj.setTheFeatures(tar.theFeatures);
-//                    //设置矩形框
-//                    obj.setRect(Rect(obj.getCenPoint().x-obj.getBlockSize().width/2,obj.getCenPoint().y-obj.getBlockSize().height/2,obj.getCenPoint().x+obj.getBlockSize().width/2,obj.getCenPoint().y+obj.getBlockSize().height/2));
+                //下面完成每个目标的构造
+                this->objs.clear();
+                this->objs1.clear();
+                this->objs2.clear();
+                this->targets = data->targets;
+                //qDebug()<<QString("target:");
+                //qDebug()<<data->targets.size();
+                int count = this->targets.size();
+                for (int i = 0; i < count;i++)
+                {
+                    MyObject obj = MyObject();
+                    SmallTarget tar = targets[i];
+                    obj.setID(tar.id);
+                    obj.setCenPoint(tar.cenPoint);
+                    obj.setBlockSize(tar.blocksize);
+                    obj.setVelocity(tar.Velocity);
+                    obj.setMotionDerection(tar.MotionDerection);
+                    obj.setAbsoluteIntensity(tar.area);
+                    obj.setHorizontalAxisLength(tar.horizontalAxisLength);
+                    obj.setVerticalAxisLength(tar.verticalAxisLength);
+                    obj.setAbsoluteIntensity(tar.absoluteIntensity);
+                    obj.setRelativeIntensity(tar.relativeIntensity);
+                    obj.setContours(tar.contours);
+                    obj.setSnapshoot(tar.Snapshoot);
+                    obj.setSihouette(tar.sihouette);
+                    obj.setTargetScale(tar.targetScale);
+                    obj.setCenSueEintensity(tar.CenSueEintensity);
+                    obj.setSCRValue(tar.SCRValue);
+                    obj.setTheFeatures(tar.theFeatures);
+                    //设置矩形框
+                    obj.setRect(Rect(obj.getCenPoint().x-obj.getBlockSize().width/2,obj.getCenPoint().y-obj.getBlockSize().height/2,obj.getBlockSize().width,obj.getBlockSize().height));
 
-//                    this->objs.push_back(obj);
+                    this->objs.push_back(obj);
 
-//                    //设置轨迹
-//                    boolean isExisted = false;
-//                    for(int i = 0; i < this->tracks.size(); i++){
-//                        MyObjectTrack track = tracks[i];
-//                        if(obj.getID() == track.getId()){
-//                            vector<Point> ps = track.getTrack();
-//                            ps.push_back(obj.getCenPoint());
-//                            track.setTrack(ps);
-//                            isExisted = true;
-//                        }
-//                    }
+                    //设置轨迹
+                    boolean isExisted = false;
+                    for(int i = 0; i < this->tracks.size(); i++){
+                        MyObjectTrack track = tracks[i];
+                        if(obj.getID() == track.getId()){
+                            vector<Point> ps = track.getTrack();
+                            ps.push_back(obj.getCenPoint());
+                            track.setTrack(ps);
+                            isExisted = true;
+                        }
+                    }
 
-//                    if(!isExisted){
-//                        MyObjectTrack track1 = MyObjectTrack();
-//                        track1.setId(obj.getID());
-//                        vector<Point> ps = track1.getTrack();
-//                        ps.push_back(obj.getCenPoint());
-//                        track1.setTrack(ps);
-//                        tracks.push_back(track1);
-//                    }
+                    if(!isExisted){
+                        MyObjectTrack track1 = MyObjectTrack();
+                        track1.setId(obj.getID());
+                        vector<Point> ps = track1.getTrack();
+                        ps.push_back(obj.getCenPoint());
+                        track1.setTrack(ps);
+                        tracks.push_back(track1);
+                    }
 
-//                    if(obj.getCenPoint().y<this->panoImage.cols/2){
-//                        this->objs1.push_back(obj);
-//                        //设置轨迹
-//                        boolean isExisted1 = false;
-//                        for(int i = 0; i < this->tracks1.size(); i++){
-//                            MyObjectTrack track2 = tracks1[i];
-//                            if(obj.getID() == track2.getId()){
-//                                vector<Point> ps = track2.getTrack();
-//                                ps.push_back(obj.getCenPoint());
-//                                track2.setTrack(ps);
-//                                isExisted1 = true;
-//                            }
-//                        }
+                    if(obj.getCenPoint().y<this->panoImage.cols/2){
+                        this->objs1.push_back(obj);
+                        //设置轨迹
+                        boolean isExisted1 = false;
+                        for(int i = 0; i < this->tracks1.size(); i++){
+                            MyObjectTrack track2 = tracks1[i];
+                            if(obj.getID() == track2.getId()){
+                                vector<Point> ps = track2.getTrack();
+                                ps.push_back(obj.getCenPoint());
+                                track2.setTrack(ps);
+                                isExisted1 = true;
+                            }
+                        }
 
-//                        if(!isExisted1){
-//                            MyObjectTrack track3 = MyObjectTrack();
-//                            track3.setId(obj.getID());
-//                            vector<Point> ps = track3.getTrack();
-//                            ps.push_back(obj.getCenPoint());
-//                            track3.setTrack(ps);
-//                            tracks1.push_back(track3);
-//                        }
-//                    }
-//                    else{
-//                        this->objs2.push_back(obj);
-//                        //设置轨迹
-//                        boolean isExisted2 = false;
-//                        for(int i = 0; i < this->tracks2.size(); i++){
-//                            MyObjectTrack track4 = tracks2[i];
-//                            if(obj.getID() == track4.getId()){
-//                                vector<Point> ps = track4.getTrack();
-//                                ps.push_back(obj.getCenPoint());
-//                                track4.setTrack(ps);
-//                                isExisted2 = true;
-//                            }
-//                        }
+                        if(!isExisted1){
+                            MyObjectTrack track3 = MyObjectTrack();
+                            track3.setId(obj.getID());
+                            vector<Point> ps = track3.getTrack();
+                            ps.push_back(obj.getCenPoint());
+                            track3.setTrack(ps);
+                            tracks1.push_back(track3);
+                        }
+                    }
+                    else{
+                        this->objs2.push_back(obj);
+                        //设置轨迹
+                        boolean isExisted2 = false;
+                        for(int i = 0; i < this->tracks2.size(); i++){
+                            MyObjectTrack track4 = tracks2[i];
+                            if(obj.getID() == track4.getId()){
+                                vector<Point> ps = track4.getTrack();
+                                ps.push_back(obj.getCenPoint());
+                                track4.setTrack(ps);
+                                isExisted2 = true;
+                            }
+                        }
 
-//                        if(!isExisted2){
-//                            MyObjectTrack track5 = MyObjectTrack();
-//                            track5.setId(obj.getID());
-//                            vector<Point> ps = track5.getTrack();
-//                            ps.push_back(obj.getCenPoint());
-//                            track5.setTrack(ps);
-//                            tracks2.push_back(track5);
-//                        }
-//                    }
-//                 }
+                        if(!isExisted2){
+                            MyObjectTrack track5 = MyObjectTrack();
+                            track5.setId(obj.getID());
+                            vector<Point> ps = track5.getTrack();
+                            ps.push_back(obj.getCenPoint());
+                            track5.setTrack(ps);
+                            tracks2.push_back(track5);
+                        }
+                    }
+                 }
 
-//                cv::waitKey(0);
-//            }
-//            //qDebug() << "Success to get data" << endl;
+                cv::waitKey(0);
+            }
+            //qDebug() << "Success to get data" << endl;
 
-//        }
-//        else
-//        {
-//            //qDebug()<< "fail to get data" << endl;
-//        }
+        }
+        else
+        {
+            //qDebug()<< "fail to get data" << endl;
+        }
+        delete data;
+        return isfail_getdata;
 }
 
-//设置系统参数
+////设置系统参数
 //int MyInterface::SetSysPara(int mode, const char *para_string, int id){
 //    //return SetSystemPara(mode,para_string,id);
 //}

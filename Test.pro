@@ -27,7 +27,8 @@ SOURCES += main.cpp\
     trackbar.cpp \
     myobject.cpp \
     myinterface.cpp \
-    myobjecttrack.cpp
+    myobjecttrack.cpp \
+    show_sdk.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -42,7 +43,8 @@ HEADERS  += mainwindow.h \
     trackbar.h \
     myobject.h \
     myinterface.h \
-    myobjecttrack.h
+    myobjecttrack.h \
+    show_sdk.h
 
 FORMS    += mainwindow.ui
 

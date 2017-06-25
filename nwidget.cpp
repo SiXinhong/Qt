@@ -262,7 +262,7 @@ void NWidget::draw(){
 //        cv::cvtColor(mat, mat, CV_BGR2RGB);
 //    }
 //    //mw->paintScale(mat, 1.0, 1.0);
-//    cv::cvtColor(mat,mat,CV_BGR2RGB);
+    cv::cvtColor(mat,mat,CV_BGR2RGB);
 
     mw->imgLabel4 = mw->MatToQImage(mat,mw->imgLabel4);
 
