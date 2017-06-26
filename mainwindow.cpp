@@ -39,7 +39,8 @@
 using namespace cv;
 using namespace std;
 
-
+QDateTime dateTimeStart;
+QDateTime dateTimeStop;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -1755,10 +1756,72 @@ void MainWindow::backFunction()
 //回放
 void MainWindow::openFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("回放功能，有待实现。"),tr("继续努力。"));
-}
+    startTime=new QLabel(QWidget::tr("起始时间"));
+    //开始时间选择框
+    startTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
+    startTimeSet->setCalendarPopup(true);
+    startTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    //结束时间选择框
+    stopTime=new QLabel(QWidget::tr("结束时间"));
+    stopTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
+    stopTimeSet->setCalendarPopup(true);
+    stopTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    queDing=new QPushButton("确定",this);
+    connect(queDing,SIGNAL(clicked()),this,SLOT(queDingFunction()));
+    quXiao=new QPushButton("取消",this);
+    connect(quXiao,SIGNAL(clicked()),this,SLOT(quXiaoFunction()));
+    //采用网格布局
+    gridLayout=new QGridLayout(this);
+    gridLayout->addWidget(startTime,0,0);
+    gridLayout->addWidget(startTimeSet,0,2);
+    gridLayout->addWidget(stopTime,0,3);
+    gridLayout->addWidget(stopTimeSet,0,5);
 
+    gridLayout->addWidget(queDing,3,2);
+    gridLayout->addWidget(quXiao,3,3);
+    gridLayout->setAlignment(Qt::AlignCenter);
+    widgetNew=new QWidget;
+    widgetNew->setWindowTitle("时间选择框");
+    widgetNew->setLayout(gridLayout);
+    widgetNew->setMinimumSize(QSize(600,150));
+    widgetNew->setMaximumSize(QSize(600,150));
+    widgetNew->move((QApplication::desktop()->width() - widgetNew->width())/2,
+              (QApplication::desktop()->height() - widgetNew->height())/2);
+    //widgetNew->setWindowFlags(Qt::WindowStaysOnTopHint);
+    widgetNew->show();
+
+}
+void MainWindow::queDingFunction()
+{
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
+
+}
+void MainWindow::quXiaoFunction()
+{
+    widgetNew->close();
+}
 //图像
 //自动
 void MainWindow::automFunction()
