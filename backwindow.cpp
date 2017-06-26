@@ -1,3 +1,4 @@
+
 #include "backwindow.h"
 #include "ui_backwindow.h"
 
@@ -40,7 +41,8 @@
 using namespace cv;
 using namespace std;
 
-
+extern QDateTime dateTimeStart;
+extern QDateTime dateTimeStop;
 BackWindow::BackWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::BackWindow)
@@ -455,6 +457,17 @@ void BackWindow::addMyToolBar()
     exitButton->setMinimumHeight(35);
     mainToolBar->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+    mainToolBar->addWidget(new QLabel("   "));
+    mainToolBar->addSeparator();
+
+    mainToolBar->addWidget(new QLabel("   "));
+    timeLine = new QToolButton(this);
+    timeLine->setToolTip(tr("时间线"));
+    timeLineSet="./icon/5_1.png";
+    timeLine->setIcon(QPixmap(timeLineSet));
+    timeLine->setMinimumHeight(35);
+    mainToolBar->addWidget(timeLine);
+    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
     mainToolBar->addWidget(new QLabel("   "));
     mainToolBar->addSeparator();
 }
@@ -1159,12 +1172,35 @@ void BackWindow::openFunction()
 }
 void BackWindow::queDingFunction()
 {
-    QDateTime datetimes;
-    datetimes=startTimeSet->dateTime();
-    qDebug()<<datetimes;
-    widgetNew->close();
-    backwindow=new BackWindow(this);
-    backwindow->show();
+//    QDateTime datetimes;
+//    datetimes=startTimeSet->dateTime();
+//    qDebug()<<datetimes;
+//    widgetNew->close();
+//    backwindow=new BackWindow(this);
+//    backwindow->show();
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
 }
 void BackWindow::quXiaoFunction()
 {
@@ -1323,4 +1359,9 @@ void BackWindow::test()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
+}
+void BackWindow::timeLineFunction()
+{
+    ttbar=new timeTrackBar(this);
+    ttbar->show();
 }

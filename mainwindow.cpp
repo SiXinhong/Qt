@@ -39,7 +39,8 @@
 using namespace cv;
 using namespace std;
 
-
+QDateTime dateTimeStart;
+QDateTime dateTimeStop;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -1366,16 +1367,36 @@ void MainWindow::openFunction()
     widgetNew->setMaximumSize(QSize(600,150));
     widgetNew->move((QApplication::desktop()->width() - widgetNew->width())/2,
               (QApplication::desktop()->height() - widgetNew->height())/2);
+    //widgetNew->setWindowFlags(Qt::WindowStaysOnTopHint);
     widgetNew->show();
+
 }
 void MainWindow::queDingFunction()
 {
-    QDateTime datetimes;
-    datetimes=startTimeSet->dateTime();
-    qDebug()<<datetimes;
-    widgetNew->close();
-    backwindow=new BackWindow(this);
-    backwindow->show();
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
+
 }
 void MainWindow::quXiaoFunction()
 {

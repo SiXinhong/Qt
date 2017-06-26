@@ -2,6 +2,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+
+
 TrackBar::TrackBar(MainWindow* mainWindow):QWidget()
 {
     this->mainWindow=mainWindow;
@@ -16,6 +18,7 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
     int pos=event->x();
     if(pos<5)
         position=0;
+
     else if(pos>260)
         position=255;
     else

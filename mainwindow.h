@@ -277,6 +277,7 @@ protected:
      QToolButton *voice;//声音
      QToolButton *exitButton;//退出按钮
 
+
      //回放按钮所需要的参数
      class BackWindow *backwindow;
      QWidget *widgetNew;
@@ -315,6 +316,7 @@ protected slots:
      //回放所需函数
      void queDingFunction();
      void quXiaoFunction();
+
 
 
 private:

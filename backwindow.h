@@ -50,6 +50,8 @@
 #include<QDateTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
+//时间线需要的头文件
+#include"timetrackbar.h"
 
 using namespace cv;
 using namespace std;
@@ -193,6 +195,8 @@ public:
    QImage image;
    QImage image2;
 
+   timeTrackBar *ttbar;
+
 protected:
      //工具条需要的变量
      void addMyToolBar();
@@ -249,6 +253,7 @@ protected:
      QString attributeSet;
      QString voiceSet;
      QString exitSet;
+     QString timeLineSet;
 
      QToolButton *openClose;//开/关
      QToolButton *objectAttribute;//对象属性
@@ -257,6 +262,9 @@ protected:
      QToolButton *attribute;//属性
      QToolButton *voice;//声音
      QToolButton *exitButton;//退出按钮
+
+     //第五组 时间线
+     QToolButton *timeLine;
 
      //回放按钮所需要的参数
      BackWindow *backwindow;
@@ -297,6 +305,9 @@ protected slots:
      //回放所需函数
      void queDingFunction();
      void quXiaoFunction();
+
+     //时间线
+     void timeLineFunction();
 private:
     Ui::BackWindow *ui;
 
