@@ -45,7 +45,8 @@
 #include<QLineEdit>
 #include<QWidgetAction>
 #include "trackbar.h"
-
+#include "s_trackbar.h"
+#include "HSL.hpp"
 using namespace cv;
 using namespace std;
 
@@ -65,6 +66,10 @@ public:
    void adjustment();
    int bright_TrackbarValue;
    bool isPseudo;
+   HSL *hsl;
+     int color ;
+     int saturation1;
+   void updateBright(Mat &mat1);
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -321,6 +326,7 @@ protected slots:
 private:
     Ui::MainWindow *ui;
 class TrackBar* trackBar;
+class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
 
 };
