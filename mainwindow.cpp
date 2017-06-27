@@ -45,10 +45,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    color = 0;
+	color = 0;
     saturation1 = 100;
     hsl=new HSL();
-    //设置属性设置中的变量的默认值-------------------------------
+    bright_TrackbarValue=0;    //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
     //暂停还是继续
@@ -137,9 +137,8 @@ MainWindow::MainWindow(QWidget *parent) :
     isPseudo = false;
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
-    this->strackBar=new STrackBar(this);
-    bright_TrackbarValue=0;
-}
+ this->strackBar=new STrackBar(this);
+    isPseudo = false;}
 
 MainWindow::~MainWindow(){
     delete ui;
@@ -209,6 +208,13 @@ void MainWindow::selfProcessing(){
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+    if(this->isPseudo==true)
+                        mat1=setPseudocolor(mat1);
+        updateBright(mat1);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -225,6 +231,13 @@ void MainWindow::selfProcessing(){
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
+    if(this->isPseudo==true)
+                       mat2=setPseudocolor(mat2);
+       updateBright(mat2);
+       if(saturation1!=100){
+              hsl->channels[color].saturation1 = saturation1 - 100;
+              hsl->adjust(mat2, mat2);
+          }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -545,26 +558,25 @@ void MainWindow::onTimerOut2(){
 
 void MainWindow::adjustment()
 {
-    Mat mat1 =imread(imageurl);
-    Mat mat2 =imread(imageurl2);
-    if(this->isPseudo==true){
-                    mat1=setPseudocolor(mat1);
-                    mat2=setPseudocolor(mat2);
-    }
-    updateBright(mat1);
-    updateBright(mat2);
-    if(saturation1!=100){
-           hsl->channels[color].saturation1 = saturation1 - 100;
-           hsl->adjust(mat1, mat1);
-           hsl->adjust(mat2, mat2);
-       }
-    widget1->setMat(mat1);
-    widget1->draw();
-    widget3->draw();
-    widget2->setMat(mat2);
-    widget2->draw();
-    widget4->draw();
-}
+        Mat mat1 =imread(imageurl);
+        Mat mat2 =imread(imageurl2);
+        if(this->isPseudo==true){
+                        mat1=setPseudocolor(mat1);
+                        mat2=setPseudocolor(mat2);
+        }
+        updateBright(mat1);
+        updateBright(mat2);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+               hsl->adjust(mat2, mat2);
+           }
+        widget1->setMat(mat1);
+        widget1->draw();
+        widget3->draw();
+        widget2->setMat(mat2);
+        widget2->draw();
+        widget4->draw();}
 
 //定时器任务
 void MainWindow::onTimerOut()
@@ -594,6 +606,7 @@ void MainWindow::selfTimerout(){
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+<<<<<<< .mine
     if(this->isPseudo==true)
                     mat1=setPseudocolor(mat1);
     updateBright(mat1);
@@ -601,6 +614,15 @@ void MainWindow::selfTimerout(){
            hsl->channels[color].saturation1 = saturation1 - 100;
            hsl->adjust(mat1, mat1);
        }
+=======
+    if(this->isPseudo==true)
+                        mat1=setPseudocolor(mat1);
+        updateBright(mat1);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+           }
+>>>>>>> .theirs
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -610,14 +632,13 @@ void MainWindow::selfTimerout(){
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
-    if(this->isPseudo==true)
-                    mat2=setPseudocolor(mat2);
-    updateBright(mat2);
-    if(saturation1!=100){
-           hsl->channels[color].saturation1 = saturation1 - 100;
-           hsl->adjust(mat2, mat2);
-       }
-    widget2->setMat(mat2);
+ if(this->isPseudo==true)
+                        mat2=setPseudocolor(mat2);
+        updateBright(mat2);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat2, mat2);
+           }    widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
     widget2->draw();
@@ -1543,8 +1564,32 @@ void MainWindow::openFunction()
     widgetNew->show();
 
 }
-
-
+void MainWindow::queDingFunction()
+{
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
+}
 void MainWindow::queDingFunction()
 {
     dateTimeStart=startTimeSet->dateTime();
@@ -1575,18 +1620,17 @@ void MainWindow::queDingFunction()
 void MainWindow::quXiaoFunction()
 {
     widgetNew->close();
-}
-//图像
+}//图像
 //自动
 void MainWindow::automFunction()
 {
     bright_TrackbarValue = 0;
     trackBar->setPosition(0);
+    saturation1 = 100;
     isPseudo = false;
     saturation1 = 100;
     adjustment();
 }
-
 void MainWindow::updateBright(Mat &mat1 )
 {
     for (int y = 0; y <mat1.rows; y++)
@@ -1604,9 +1648,7 @@ void MainWindow::updateBright(Mat &mat1 )
                        }
                    }
                }
-}
-
-//亮度
+}//亮度
 void MainWindow::brightnessFunction()
 {
     trackBar->setWindowTitle("亮度");
@@ -1629,7 +1671,7 @@ void MainWindow::brightnessFunction()
 //饱和度
 void MainWindow::saturationFunction()
 {
-    strackBar->setWindowTitle("饱和度");
+strackBar->setWindowTitle("饱和度");
       strackBar->show();
       strackBar->activateWindow();
       strackBar->move(strackBar->x(),strackBar->y());
@@ -1642,9 +1684,6 @@ void MainWindow::saturationFunction()
     {
         saturation->setIcon(QPixmap("./icon/8_2.png"));
         saturationSet="./icon/8_2.png";
-
-
-
     }
 }
 //伪彩色
@@ -1723,7 +1762,6 @@ void MainWindow::objectsFunction()
 //目标属性列表
 void MainWindow::attributeFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 //声音
