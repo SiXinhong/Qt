@@ -39,7 +39,8 @@
 using namespace cv;
 using namespace std;
 
-
+QDateTime dateTimeStart;
+QDateTime dateTimeStop;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -109,96 +110,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // 创建工具栏
     addMyToolBar();
-    //创建菜单栏
-    //监控
-//    QActionGroup *group=new QActionGroup(this);
-//    QAction *startStopc=group->addAction(tr("启/停"));
-//    ui->monitoring->addAction(startStopc);
-//    connect(startStopc,SIGNAL(triggered()),this,SLOT(startStopFunction()));
-
-//    QAction *mstopc=group->addAction(tr("暂停"));
-//    ui->monitoring->addAction(mstopc);
-//    connect(mstopc,SIGNAL(triggered()),this,SLOT(mstopFunction()));
-
-//    //回放
-//    QActionGroup *group2=new QActionGroup(this);
-//    QAction *openc=group2->addAction(tr("打开"));
-//    ui->playback->addAction(openc);
-//    connect(openc,SIGNAL(triggered()),this,SLOT(openFunction()));
-
-//    QAction *playc=group2->addAction(tr("播放"));
-//    ui->playback->addAction(playc);
-//    connect(playc,SIGNAL(triggered()),this,SLOT(playFunction()));
-
-//    QAction *rstopc=group2->addAction(tr("暂停"));
-//    ui->playback->addAction(rstopc);
-//    connect(rstopc,SIGNAL(triggered()),this,SLOT(rstopFunction()));
-
-//    QAction *timeLinec=group2->addAction(tr("时间线"));
-//    ui->playback->addAction(timeLinec);
-//    connect(timeLinec,SIGNAL(triggered()),this,SLOT(timeLineFunction()));
-
-//    //图像
-//    QActionGroup *group3=new QActionGroup(this);
-//    QAction *automc=group3->addAction(tr("自动"));
-//    ui->image->addAction(automc);
-//    connect(automc,SIGNAL(triggered()),this,SLOT(automFunction()));
-
-//    QAction *brightnessc=group3->addAction(tr("亮度"));
-//    ui->image->addAction(brightnessc);
-//    connect(brightnessc,SIGNAL(triggered()),this,SLOT(brightnessFunction()));
-
-//    QAction *saturationc=group3->addAction(tr("饱和度"));
-//    ui->image->addAction(saturationc);
-//    connect(saturationc,SIGNAL(triggered()),this,SLOT(saturationFunction()));
-
-//    QAction *pseudoColorc=group3->addAction(tr("伪彩色"));
-//    ui->image->addAction(pseudoColorc);
-//    connect(pseudoColorc,SIGNAL(triggered()),this,SLOT(pseudoColorFunction()));
-
-//    QAction *serialNumberc=group3->addAction(tr("编号"));
-//    ui->image->addAction(serialNumberc);
-//    connect(serialNumberc,SIGNAL(triggered()),this,SLOT(serialNumberFunction()));
-
-//    //告警
-//    QActionGroup *group4=new QActionGroup(this);
-//    QAction *openClosec=group4->addAction(tr("开/关"));
-//    ui->alarm->addAction(openClosec);
-//    connect(openClosec,SIGNAL(triggered()),this,SLOT(openCloseFunction()));
-
-//    QAction *manualc=group4->addAction(tr("手动"));
-//    ui->alarm->addAction(manualc);
-//    connect(manualc,SIGNAL(triggered()),this,SLOT(manualFunction()));
-
-//    QAction *attributec=group4->addAction(tr("属性"));
-//    ui->alarm->addAction(attributec);
-//    connect(attributec,SIGNAL(triggered()),this,SLOT(attributeFunction()));
-
-//    QAction *setUpc=group4->addAction(tr("设置"));
-//    ui->alarm->addAction(setUpc);
-//    connect(setUpc,SIGNAL(triggered()),this,SLOT(setUpFunction()));
-
-//    QAction *voicec=group4->addAction(tr("声音"));
-//    ui->alarm->addAction(voicec);
-//    connect(voicec,SIGNAL(triggered()),this,SLOT(voiceFunction()));
-
-//    QAction *lightc=group4->addAction(tr("指示灯"));
-//    ui->alarm->addAction(lightc);
-//    connect(lightc,SIGNAL(triggered()),this,SLOT(lightFunction()));
-
-    //创建状态栏
-    // addMyStatusBar();
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("累计监控时间:")));
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("   ")));
-    //ui->statusBar->addWidget(new QLabel(QObject::tr("初次出现目标信息:")));
-    //右键
-    //addAction(new QAction("目标列表",this));
-    //widget1->addAction(new QAction("到主显示区",widget1));
-    //widget1->addAction(new QAction("到凝视显示区",widget1));
-    //addAction(new QAction("最大化",this));
-    //addAction(new QAction("最佳显示效果",this));
-    //setContextMenuPolicy(Qt::ActionsContextMenu);
-
     //布局
     gridlayout = new QGridLayout;
     gridlayout->addWidget(mainToolBar,0,0,1,3);
@@ -344,30 +255,6 @@ void MainWindow::selfProcessing(){
     widget6->setObjects(objs);
     widget6->draw();
     //drawUiLabel(mat6,6);
-
-//    imageurl="./s1/1.bmp";
-//    imageurl2="./s2/1.bmp";
-
-//    //存储第一栏
-//    filename1 = "./s1/1.bmp";
-//    filename2 = "./s1/2.bmp";
-//    filename3 = "./s1/3.bmp";
-//    filename4 = "./s1/4.bmp";
-//    //存储第二栏
-//    filename5 = "./s2/1.bmp";
-//    filename6 = "./s2/2.bmp";
-//    filename7 = "./s2/3.bmp";
-//    filename8 = "./s2/4.bmp";
-//    //将第一栏存储在vector中
-//    vc1.push_back(filename1);
-//    vc1.push_back(filename2);
-//    vc1.push_back(filename3);
-//    vc1.push_back(filename4);
-//    //将第二栏存储在vector中
-//    vc2.push_back(filename5);
-//    vc2.push_back(filename6);
-//    vc2.push_back(filename7);
-//    vc2.push_back(filename8);
 }
 
 //----------------------------------------------------------
@@ -487,32 +374,6 @@ void MainWindow::addMyToolBar()
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
     mainToolBar->addWidget(new QLabel("   "));
 
-
-//    play = new QToolButton(this);
-//    play->setToolTip(tr("播放"));
-//    playSet="./icon/4_1.png";
-//    play->setIcon(QPixmap(playSet));
-//    play->setMinimumHeight(35);
-//    mainToolBar->addWidget(play);
-//    connect(play,SIGNAL(clicked()),this,SLOT(playFunction()));
-
-//    rstop = new QToolButton(this);
-//    rstop->setToolTip(tr("暂停"));
-//    rstopSet="./icon/2_1.png";
-//    rstop->setIcon(QPixmap(rstopSet));
-//    rstop->setMinimumHeight(35);
-//    mainToolBar->addWidget(rstop);
-//    connect(rstop,SIGNAL(clicked()),this,SLOT(rstopFunction()));
-
-
-//    timeLine = new QToolButton(this);
-//    timeLine->setToolTip(tr("时间线"));
-//    timeLineSet="./icon/5_1.png";
-//    timeLine->setIcon(QPixmap(timeLineSet));
-//    timeLine->setMinimumHeight(35);
-//    mainToolBar->addWidget(timeLine);
-//    connect(timeLine,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
-
     mainToolBar->addSeparator();
 
     //第二组按钮：图像
@@ -607,26 +468,7 @@ void MainWindow::addMyToolBar()
 
     mainToolBar->addSeparator();
 
-//    serialNumber = new QToolButton(this);
-//    serialNumber->setToolTip(tr("编号"));
-//    serialNumberSet="./icon/17_1.png";
-//    serialNumber->setIcon(QPixmap(serialNumberSet));
-//    serialNumber->setMinimumHeight(35);
-//    mainToolBar->addWidget(serialNumber);
-//    connect(serialNumber,SIGNAL(clicked()),this,SLOT(serialNumberFunction()));
-
-//    time = new QToolButton(this);
-//    time->setToolTip(tr("时间"));
-//    timeSet="./icon/10_1.png";
-//    time->setIcon(QPixmap(timeSet));
-//    time->setMinimumHeight(35);
-//    mainToolBar->addWidget(time);
-//    mainToolBar->addSeparator();
-//    connect(time,SIGNAL(clicked()),this,SLOT(timeFunction()));
-
     //第五组，告警
-    //listLabel4=new QLabel(tr(" 告警 "));
-    //mainToolBar->addWidget(listLabel4);
     mainToolBar->addWidget(new QLabel("   "));
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("关闭告警"));
@@ -722,53 +564,6 @@ void MainWindow::adjustment()
     widget2->setMat(mat2);
     widget2->draw();
     widget4->draw();
-//    Mat mat1 =imread(imageurl);
-//    if(this->isPseudo==true)
-//            mat1=setPseudocolor(mat1);
-//    widget1->setMat(mat1);
-//    drawUiLabel(mat1,1);
-
-//    Mat mat2 =imread(imageurl2);
-//    if(this->isPseudo==true)
-//            mat2=setPseudocolor(mat2);
-//    widget2->setMat(mat2);
-//    drawUiLabel(mat2,2);
-//    //更新第三栏
-//    Mat mat3 = widget1->getMat();
-//    Size dsize ;
-//    double scale = 1;
-//    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-//    Mat image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat3, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-//    aa=(&img)->copy(widget1->getQRectan());
-//    Mat image3 = QImageToMat(aa);
-//    Mat image33 = Mat(dsize,CV_32S);
-//    cv::resize(image3, image33,dsize);
-//    widget3->setMat(image33);
-//    widget3->draw();
-
-////    //更新第四栏
-////    Mat img2=QImageToMat(image2);
-////    paintRectangle(img2,1650,250,400,100);
-////    Mat mat4 =imread(imageurl2);
-////    drawUiLabelByCopy(mat4,4);
-//    Mat mat4 = widget2->getMat();
-//    //Size dsize ;
-//    //double scale = 1;
-//    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-//    image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat4, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-//    aa=(&img)->copy(widget2->getQRectan());
-//    Mat image4 = QImageToMat(aa);
-//    Mat image44 = Mat(dsize,CV_32S);
-//    cv::resize(image4, image44,dsize);
-//    widget4->setMat(image44);
-//    widget4->draw();
-
 }
 
 //定时器任务
@@ -851,83 +646,6 @@ void MainWindow::selfTimerout(){
     widget6->setPano(mat1);
     widget6->setObjects(objs);
     widget6->draw();
-
-    //更新第一栏的图片
-    //index1=index1+1;
-    //QImage *image=new QImage(vc1[(index1)%4]);
-//    image= QImage(vc1[(index1)%4]);
-//    QString s1=vc1[(index1)%4];
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
-//    widget1->setMat(mat1);
-//    qDebug()<<s1;
-//    drawUiLabel(mat1,1);
-//    image= QImage(in.getQJ1());
-//    QString s1=in.getQJ1();
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
-//    if(this->isPseudo==true)
-//            //mat1=setPseudocolor(mat1);
-//    widget1->setMat(mat1);
-//    qDebug()<<s1;
-//    drawUiLabel(mat1,1);
-//    //更新第二栏的图片
-////    index2=index2+1;
-////    //QImage *image2=new QImage(vc2[(index2)%4]);
-////    image2= QImage(vc2[(index2)%4]);
-////    QString s2=vc2[(index2)%4];
-////    imageurl2=s2.toStdString();
-////    Mat mat2 =imread(imageurl2);
-////    widget2->setMat(mat2);
-////    qDebug()<<s2;
-////    drawUiLabel(mat2,2);
-//    //index2=index2+1;
-//    //QImage *image2=new QImage(vc2[(index2)%4]);
-//    image2= QImage(in.getQJ2());
-//    QString s2=in.getQJ2();
-//    imageurl2=s2.toStdString();
-//    Mat mat2 =imread(imageurl2);
-//    if(this->isPseudo==true)
-//            //mat2=setPseudocolor(mat2);
-//    widget2->setMat(mat2);
-//    qDebug()<<s2;
-//    drawUiLabel(mat2,2);
-//    //更新第三栏
-////    Mat mat3 = widget1->getMat();
-////    Size dsize ;
-////    double scale = 1;
-////    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-////    Mat image11 = Mat(dsize,CV_32S);
-////    cv::resize(mat3, image11,dsize);
-////    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-////    aa=(&img)->copy(widget1->getQRectan());
-////    Mat image3 = QImageToMat(aa);
-////    Mat image33 = Mat(dsize,CV_32S);
-////    cv::resize(image3, image33,dsize);
-////    widget3->setMat(image33);
-//    widget3->draw();
-
-////    //更新第四栏
-////    Mat img2=QImageToMat(image2);
-////    paintRectangle(img2,1650,250,400,100);
-////    Mat mat4 =imread(imageurl2);
-////    drawUiLabelByCopy(mat4,4);
-////    Mat mat4 = widget2->getMat();
-////    //Size dsize ;
-////    //double scale = 1;
-////    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-////    image11 = Mat(dsize,CV_32S);
-////    cv::resize(mat4, image11,dsize);
-////    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-////    aa=(&img)->copy(widget2->getQRectan());
-////    Mat image4 = QImageToMat(aa);
-////    Mat image44 = Mat(dsize,CV_32S);
-////    cv::resize(image4, image44,dsize);
-////    widget4->setMat(image44);
-//    widget4->draw();
-//    qDebug()<<"tongguo 3!!!!!";
 }
 
 //与金老师接口的定时器处理
@@ -1749,8 +1467,6 @@ void MainWindow::startStopFunction()
         startStop->setToolTip("启动");
         //startStopSet="./icon/1_1.png";
         isQidong = false;
-        //dialogLabel->setText(tr("Information Message Box"));
-        //QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控启动。"));
     }
     else
     {
@@ -1758,8 +1474,6 @@ void MainWindow::startStopFunction()
         startStop->setToolTip("停止");
         isQidong = true;
         //startStopSet="./icon/1_2.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控停止。"));
     }
 
 }
@@ -1773,8 +1487,6 @@ void MainWindow::mstopFunction()
         mstop->setToolTip("继续");
         isJixu = false;
         //mstopSet="./icon/2_1.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控暂停。"));
     }
     else
     {
@@ -1796,16 +1508,78 @@ void MainWindow::backFunction()
 //回放
 void MainWindow::openFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("回放功能，有待实现。"),tr("继续努力。"));
+    startTime=new QLabel(QWidget::tr("起始时间"));
+    //开始时间选择框
+    startTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
+    startTimeSet->setCalendarPopup(true);
+    startTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    //结束时间选择框
+    stopTime=new QLabel(QWidget::tr("结束时间"));
+    stopTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
+    stopTimeSet->setCalendarPopup(true);
+    stopTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    queDing=new QPushButton("确定",this);
+    connect(queDing,SIGNAL(clicked()),this,SLOT(queDingFunction()));
+    quXiao=new QPushButton("取消",this);
+    connect(quXiao,SIGNAL(clicked()),this,SLOT(quXiaoFunction()));
+    //采用网格布局
+    gridLayout=new QGridLayout(this);
+    gridLayout->addWidget(startTime,0,0);
+    gridLayout->addWidget(startTimeSet,0,2);
+    gridLayout->addWidget(stopTime,0,3);
+    gridLayout->addWidget(stopTimeSet,0,5);
+
+    gridLayout->addWidget(queDing,3,2);
+    gridLayout->addWidget(quXiao,3,3);
+    gridLayout->setAlignment(Qt::AlignCenter);
+    widgetNew=new QWidget;
+    widgetNew->setWindowTitle("时间选择框");
+    widgetNew->setLayout(gridLayout);
+    widgetNew->setMinimumSize(QSize(600,150));
+    widgetNew->setMaximumSize(QSize(600,150));
+    widgetNew->move((QApplication::desktop()->width() - widgetNew->width())/2,
+              (QApplication::desktop()->height() - widgetNew->height())/2);
+    //widgetNew->setWindowFlags(Qt::WindowStaysOnTopHint);
+    widgetNew->show();
+
 }
 
+
+void MainWindow::queDingFunction()
+{
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
+
+}
+void MainWindow::quXiaoFunction()
+{
+    widgetNew->close();
+}
 //图像
 //自动
 void MainWindow::automFunction()
 {
-   // dialogLabel->setText(tr("Information Message Box"));
-    //QMessageBox::information(this,tr("自动色彩功能，有待实现。"),tr("继续努力。"));
     bright_TrackbarValue = 0;
     trackBar->setPosition(0);
     isPseudo = false;
@@ -1835,8 +1609,6 @@ void MainWindow::updateBright(Mat &mat1 )
 //亮度
 void MainWindow::brightnessFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    //QMessageBox::information(this,tr("调整图像亮度功能，有待实现。"),tr("继续努力。"));
     trackBar->setWindowTitle("亮度");
     trackBar->show();
     trackBar->activateWindow();
@@ -1851,61 +1623,12 @@ void MainWindow::brightnessFunction()
         brightness->setIcon(QPixmap("./icon/7_2.png"));
         brightnessSet="./icon/7_2.png";
     }
-//    setPopupMode(QToolButton::InstantPopup);
-//    QjWidget *popup=new QWidget(this);
-
-//    slider=new QSlider(Qt::Horizontal);
-//    slider->setRange(0,100);
-//    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(setLineEditValue(int)));
-
-//    labelbrightness=new QLabel(popup);
-//    labelbrightness->setAlignment(Qt::AlignCenter);
-//    labelbrightness->setNum(100);
-//    labelbrightness->setMinimumWidth(labelbrightness->sizeHint().width());
-//    connect(slider,SIGNAL(valueChanged(int)),labelbrightness,SLOT(setNum(int)));
-
-//    QBoxLayout *popupLayout=new QBoxLayout(popup);
-//    popupLayout->setMargin(2);
-//    popupLayout->addWidget(slider);
-//    popupLayout->addWidget(labelbrightness);
-
-//    QWidgetAction *action=new QWidgetAction(this);
-//    action->setDefaultWidget(popup);
-
-//    menu=new QMenu(this);
-//    menu->addAction(action);
-//    SetMenu(menu);
-
-//    int g_nTrackbarValue;
-//    g_nTrackbarValue = 20;
-//    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
 }
 
-//void MainWindow::on_trackbar(int, void*)
-//{
-//    Mat bw = threshval < 128 ? (img < threshval) : (img > threshval);//如果threshval小于128，则当bw中相应元素小于threshval时赋255，大于threshval时赋0。如果threshval大于128，则当bw相应元素大于threshval时赋255，小于threshval时赋0
-//    //定义点和向量
-//    vector<vector<Point> > contours;//存放轮廓，但是每个vector<Point>元素不一定只表示一个轮廓。
-//    vector<Vec4i> hierarchy;//存放轮廓之间的拓扑关系。hierarchy[idx][0]、 hierarchy[idx][1]、 hierarchy[idx][2]、 hierarchy[idx][3]分别表示索引为idx的轮廓的前一个、后一个、子、父轮廓对应的索引；当索引为0时，表示相应的轮廓不存在。
-//    findContours( bw, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );//查找轮廓
-//    Mat dst = Mat::zeros(img.size(), CV_8UC3);//初始化dst
-//    if( !contours.empty() && !hierarchy.empty() )//开始处理
-//    {
-//        //遍历所有顶层轮廓，随机生成颜色值绘制给各连接组成部分
-//        int idx = 0;
-//        for( ; idx >= 0; idx = hierarchy[idx][0] )
-//        {
-//            Scalar color( (rand()&255), (rand()&255), (rand()&255) );
-//            drawContours( dst, contours, idx, color, CV_FILLED, 8, hierarchy );//绘制填充轮廓
-//        }
-//    }
-//    imshow("Connected Components", dst);//显示窗口
-//}
+
 //饱和度
 void MainWindow::saturationFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    //QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
     strackBar->setWindowTitle("饱和度");
       strackBar->show();
       strackBar->activateWindow();
@@ -1929,8 +1652,6 @@ void MainWindow::pseudoColorFunction()
 {
     isPseudo=!isPseudo;
     adjustment();
-    //dialogLabel->setText(tr("Information Message Box"));
-    //QMessageBox::information(this,tr("调整图像伪彩色功能，有待实现。"),tr("继续努力。"));
 }
 
 //告警
@@ -1956,8 +1677,7 @@ void MainWindow::openCloseFunction()
 //手动
 void MainWindow::manualFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
+
 
     string imageurl="./s1/1.bmp";
     Mat mat1 =imread(imageurl);
@@ -1977,8 +1697,9 @@ void MainWindow::manualFunction()
 //目标属性列表
 void MainWindow::objectAttributeFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("目标属性列表功能，有待实现。"),tr("继续努力。"));
+    oba=new ObjectAttributes(this);
+    oba->show();
+
 }
 //设置
 void MainWindow::objectsFunction()
@@ -2044,7 +1765,6 @@ void MainWindow::adjustbrightness()
 
 void MainWindow::test()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 

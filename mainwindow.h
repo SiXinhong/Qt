@@ -46,7 +46,17 @@
 #include<QWidgetAction>
 #include "trackbar.h"
 #include "s_trackbar.h"
+//回放所需要的头文件
+#include"backwindow.h"
+#include<QDateEdit>
+#include<QDateTimeEdit>
+#include<QPushButton>
+#include <QDesktopWidget>
 #include "HSL.hpp"
+
+//目标属性所需要的头文件
+#include"objectattributes.h"
+
 using namespace cv;
 using namespace std;
 
@@ -289,11 +299,20 @@ protected:
      //QLineEdit *fileLineEdit;
      //QLabel *dialogLabel;
 
-     //调节图像所需要的参数
-//     QSlider *slider;
-//     QLineEdit *lineEdit;
-//     QLabel *labelbrightness;
-//     QMenu menu;
+     //回放按钮所需要的参数
+     class BackWindow *backwindow;
+     QWidget *widgetNew;
+//     QPushButton *inputBtn;
+     QPushButton *queDing;
+     QPushButton *quXiao;
+     QLabel *startTime;
+     QLabel *stopTime;
+     QDateTimeEdit *startTimeSet;
+     QDateTimeEdit *stopTimeSet;
+     QGridLayout *gridLayout;
+
+     //目标属性所需要的参数
+     class ObjectAttributes *oba;
 
 protected slots:
      void startStopFunction();
@@ -318,9 +337,10 @@ protected slots:
 
      //void lightFunction();
      void adjustbrightness();
+     //回放所需函数
+     void queDingFunction();
+     void quXiaoFunction();
 
-  //   void on_trackbar(int, void*);
-//     void setLineEditValue(int);
 
 
 private:
