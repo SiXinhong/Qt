@@ -31,7 +31,10 @@ SOURCES += main.cpp\
     show_sdk.cpp \
 #    backwindow.cpp \
     timetrackbar.cpp \
-    backwindow.cpp
+    backwindow.cpp \
+    HSL.cpp \
+    ColorSpace.cpp \
+    s_trakbar.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -50,7 +53,11 @@ HEADERS  += mainwindow.h \
     show_sdk.h\
 #    backwindow.h \
     timetrackbar.h \
-    backwindow.h
+    backwindow.h \
+    ColorSpace.hpp \
+    s_trackbar.h \
+    s_trackbar.h \
+    HSL.hpp
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

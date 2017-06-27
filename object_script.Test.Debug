@@ -17,6 +17,9 @@ INPUT(
 ./debug\show_sdk.o
 ./debug\timetrackbar.o
 ./debug\backwindow.o
+./debug\HSL.o
+./debug\ColorSpace.o
+./debug\s_trakbar.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o

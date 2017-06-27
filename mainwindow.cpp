@@ -45,6 +45,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    color = 0;
+    saturation1 = 100;
+    hsl=new HSL();
+    bright_TrackbarValue=0;
     //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
@@ -133,11 +137,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
-    bright_TrackbarValue=0;
+    this->strackBar = new STrackBar(this);
+
+    isPseudo = false;
 }
 
 MainWindow::~MainWindow(){
     delete ui;
+    delete hsl;
+    delete strackBar;
+    delete trackBar;
 }
 
 //与金老师的接口处理
@@ -201,6 +210,13 @@ void MainWindow::selfProcessing(){
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+    if(this->isPseudo==true)
+                        mat1=setPseudocolor(mat1);
+        updateBright(mat1);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -217,6 +233,13 @@ void MainWindow::selfProcessing(){
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
+    if(this->isPseudo==true)
+                       mat2=setPseudocolor(mat2);
+       updateBright(mat2);
+       if(saturation1!=100){
+              hsl->channels[color].saturation1 = saturation1 - 100;
+              hsl->adjust(mat2, mat2);
+          }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -537,6 +560,25 @@ void MainWindow::onTimerOut2(){
 
 void MainWindow::adjustment()
 {
+        Mat mat1 =imread(imageurl);
+        Mat mat2 =imread(imageurl2);
+        if(this->isPseudo==true){
+                        mat1=setPseudocolor(mat1);
+                        mat2=setPseudocolor(mat2);
+        }
+        updateBright(mat1);
+        updateBright(mat2);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+               hsl->adjust(mat2, mat2);
+           }
+        widget1->setMat(mat1);
+        widget1->draw();
+        widget3->draw();
+        widget2->setMat(mat2);
+        widget2->draw();
+        widget4->draw();
 //    Mat mat1 =imread(imageurl);
 //    if(this->isPseudo==true)
 //            mat1=setPseudocolor(mat1);
@@ -614,6 +656,13 @@ void MainWindow::selfTimerout(){
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+    if(this->isPseudo==true)
+                        mat1=setPseudocolor(mat1);
+        updateBright(mat1);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat1, mat1);
+           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -623,6 +672,13 @@ void MainWindow::selfTimerout(){
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
+    if(this->isPseudo==true)
+                        mat2=setPseudocolor(mat2);
+        updateBright(mat2);
+        if(saturation1!=100){
+               hsl->channels[color].saturation1 = saturation1 - 100;
+               hsl->adjust(mat2, mat2);
+           }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -1586,8 +1642,27 @@ void MainWindow::automFunction()
 {
     bright_TrackbarValue = 0;
     trackBar->setPosition(0);
+    saturation1 = 100;
     isPseudo = false;
     adjustment();
+}
+void MainWindow::updateBright(Mat &mat1 )
+{
+    for (int y = 0; y <mat1.rows; y++)
+               {
+                   for (int x = 0; x < mat1.cols; x++)
+                   {
+                       for (int c = 0; c < 3; c++)
+                       {
+                           //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                            mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((mat1.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                           if (mat1.at<Vec3b>(y, x)[c] > 255)
+                           {
+                               mat1.at<Vec3b>(y, x)[c] = 255;
+                           }
+                       }
+                   }
+               }
 }
 //亮度
 void MainWindow::brightnessFunction()
@@ -1660,7 +1735,11 @@ void MainWindow::brightnessFunction()
 void MainWindow::saturationFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
+   //QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
+    strackBar->setWindowTitle("饱和度");
+         strackBar->show();
+         strackBar->activateWindow();
+         strackBar->move(strackBar->x(),strackBar->y());
     if(saturationSet=="./icon/8_2.png")
     {
         saturation->setIcon(QPixmap("./icon/8_1.png"));

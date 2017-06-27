@@ -17,6 +17,9 @@ INPUT(
 ./release\show_sdk.o
 ./release\timetrackbar.o
 ./release\backwindow.o
+./release\HSL.o
+./release\ColorSpace.o
+./release\s_trakbar.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o
