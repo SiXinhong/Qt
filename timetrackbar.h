@@ -1,25 +1,3 @@
-//#ifndef TIMETRACKBAR_H
-//#define TIMETRACKBAR_H
-
-//#include <QMainWindow>
-
-//namespace Ui {
-//class timeTrackBar;
-//}
-
-//class timeTrackBar : public QMainWindow
-//{
-//    Q_OBJECT
-    
-//public:
-//    explicit timeTrackBar(QWidget *parent = 0);
-//    ~timeTrackBar();
-    
-//private:
-//    Ui::timeTrackBar *ui;
-//};
-
-//#endif // TIMETRACKBAR_H
 #ifndef TIMETRACKBAR_H
 #define TIMETRACKBAR_H
 

@@ -78,9 +78,6 @@ public:
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
     void update();
-//    QImage paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
-//    QImage paintCircle(Mat image,double x,double y);//画圆
-//    QImage paintScale(Mat image,double startw,double starth);//画标尺
 
     void test();
 
@@ -232,14 +229,7 @@ protected:
      QToolButton *back;
      //回放
      QString openSet;
-     //QString playSet;
-     //QString rstopSet;
-     //QString timeLineSet;
-     //QLabel *listLabel2;
      QToolButton *open;//打开
-     //QToolButton *play;//播放
-     //QToolButton *rstop;//暂停
-     //QToolButton *timeLine;//时间线
      //第二组按钮，图像
      //QLabel *listLabel3;
      QString automSet;
