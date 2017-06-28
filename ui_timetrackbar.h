@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'timetrackbar.ui'
 **
-** Created: Thu Jun 22 11:55:27 2017
+** Created: Tue Jun 27 16:13:55 2017
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
