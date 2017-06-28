@@ -28,7 +28,14 @@ SOURCES += main.cpp\
     myobject.cpp \
     myinterface.cpp \
     myobjecttrack.cpp \
-    show_sdk.cpp
+    show_sdk.cpp \
+#    backwindow.cpp \
+    timetrackbar.cpp \
+    backwindow.cpp \
+    HSL.cpp \
+    ColorSpace.cpp \
+    s_trakbar.cpp \
+    objectattributes.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -44,9 +51,21 @@ HEADERS  += mainwindow.h \
     myobject.h \
     myinterface.h \
     myobjecttrack.h \
-    show_sdk.h
+    show_sdk.h\
+#    backwindow.h \
+    timetrackbar.h \
+    backwindow.h \
+    ColorSpace.hpp \
+    s_trackbar.h \
+    s_trackbar.h \
+    HSL.hpp \
+    objectAttributes.h \
+    objectAttributes.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui\
+#    backwindow.ui \
+    timetrackbar.ui \
+    backwindow.ui
 
 INCLUDEPATH+=E:\QTsource\OpenCV\include\opencv\
 

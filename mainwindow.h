@@ -20,6 +20,7 @@
 #include <phonon>
 #include <QToolButton>
 #include <QApplication>
+#include <QSound>
 
 //OpenCV头文件
 #include <vector>
@@ -45,6 +46,17 @@
 #include<QLineEdit>
 #include<QWidgetAction>
 #include "trackbar.h"
+#include "s_trackbar.h"
+#include "HSL.hpp"
+
+//#include"ltrackbar.h"
+//回放所需要的头文件
+#include"backwindow.h"
+#include<QDateEdit>
+#include<QDateTimeEdit>
+#include<QPushButton>
+#include <QDesktopWidget>
+#include "objectAttributes.h"
 
 using namespace cv;
 using namespace std;
@@ -62,18 +74,24 @@ public slots:
   void onTimerOut2();
     
 public:
+  MyObject myobjects;
+  ObjectAttributes *objectAttributes;
+  //QLabel *objectAttributes;
+  QSound *sound;
    void adjustment();
    int bright_TrackbarValue;
    bool isPseudo;
+   bool isVoice;
+   HSL *hsl;
+   int color ;
+   int saturation1;
+   void updateBright(Mat &mat1);
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
     void update();
-//    QImage paintRectangle(Mat image,double x,double y,double width,double height);//画矩形
-//    QImage paintCircle(Mat image,double x,double y);//画圆
-//    QImage paintScale(Mat image,double startw,double starth);//画标尺
 
     void test();
 
@@ -225,14 +243,7 @@ protected:
      QToolButton *back;
      //回放
      QString openSet;
-     //QString playSet;
-     //QString rstopSet;
-     //QString timeLineSet;
-     //QLabel *listLabel2;
      QToolButton *open;//打开
-     //QToolButton *play;//播放
-     //QToolButton *rstop;//暂停
-     //QToolButton *timeLine;//时间线
      //第二组按钮，图像
      //QLabel *listLabel3;
      QString automSet;
@@ -284,11 +295,17 @@ protected:
      //QLineEdit *fileLineEdit;
      //QLabel *dialogLabel;
 
-     //调节图像所需要的参数
-//     QSlider *slider;
-//     QLineEdit *lineEdit;
-//     QLabel *labelbrightness;
-//     QMenu menu;
+     //回放按钮所需要的参数
+     class BackWindow *backwindow;
+     QWidget *widgetNew;
+//     QPushButton *inputBtn;
+     QPushButton *queDing;
+     QPushButton *quXiao;
+     QLabel *startTime;
+     QLabel *stopTime;
+     QDateTimeEdit *startTimeSet;
+     QDateTimeEdit *stopTimeSet;
+     QGridLayout *gridLayout;
 
 protected slots:
      void startStopFunction();
@@ -313,14 +330,16 @@ protected slots:
 
      //void lightFunction();
      void adjustbrightness();
+     //回放所需函数
+     void queDingFunction();
+     void quXiaoFunction();
 
-  //   void on_trackbar(int, void*);
-//     void setLineEditValue(int);
 
 
 private:
     Ui::MainWindow *ui;
 class TrackBar* trackBar;
+class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
 
 };
