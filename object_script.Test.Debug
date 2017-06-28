@@ -20,6 +20,7 @@ INPUT(
 ./debug\HSL.o
 ./debug\ColorSpace.o
 ./debug\s_trakbar.o
+./debug\objectattributes.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
@@ -30,4 +31,5 @@ INPUT(
 ./debug\moc_qj2widget.o
 ./debug\moc_timetrackbar.o
 ./debug\moc_backwindow.o
+./debug\moc_objectAttributes.o
 );

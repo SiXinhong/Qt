@@ -45,10 +45,15 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    this->objectAttributes=new ObjectAttributes(&this->myobjects);
+    sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
     saturation1 = 100;
     hsl=new HSL();
     bright_TrackbarValue=0;
+    //objectAttributes = new QLabel();
+    isPseudo = false;
+    isVoice = true;
     //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
@@ -139,7 +144,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
 
-    isPseudo = false;
+
 }
 
 MainWindow::~MainWindow(){
@@ -147,6 +152,8 @@ MainWindow::~MainWindow(){
     delete hsl;
     delete strackBar;
     delete trackBar;
+    delete objectAttributes;
+    delete sound;
 }
 
 //与金老师的接口处理
@@ -1803,7 +1810,24 @@ void MainWindow::manualFunction()
 void MainWindow::objectAttributeFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("目标属性列表功能，有待实现。"),tr("继续努力。"));
+    //const QString &objectstring = "oid =" ;
+    // QMessageBox::information(this,"目标属性列表",&objectstring);
+    this->objectAttributes->setWindowTitle("目标属性列表");
+    this->objectAttributes->setGeometry(800,100,300,500);
+   // this->objectAttributes->tr("oid");
+   // this->objectAttributes->resize(300,500);
+    //this->objectAttributes->setText("oid=: ");
+    //this->objectAttributes->setText("cenPoint");
+    //QString s=QString("oid:")+myobjects.oid+"\n目标中心坐标:<"+myobjects.cenPoint.x+","+myobjects.cenPoint.y
+//            +">/n监测框大小:<"+myobjects.blocksize.width+","+myobjects.blocksize.height;
+   //QString s1=QString(">\n运动速率:")+myobjects.Velocity
+//            +"\n运动方向："+myobjects.MotionDerection+"\n目标面积:"+myobjects.area+"\n水平轴长度:"+myobjects.horizontalAxisLength
+//            +"\n竖直轴长度:"+myobjects.verticalAxisLength+"\n绝对强度:"+myobjects.absoluteIntensity+"\n相对强度"+myobjects.relativeIntensity
+//            +"\n目标尺度:"+myobjects.targetScale+"\n中央周围对比度的相应强度:"+myobjects.CenSueEintensity+"\n目标背景信杂比"+myobjects.SCRValue;
+//    qDebug()<<"22222222222";
+//    this->objectAttributes->setText(s);
+//    this->objectAttributes->show();
+    this->objectAttributes->show();
 }
 //设置
 void MainWindow::objectsFunction()
@@ -1833,6 +1857,11 @@ void MainWindow::attributeFunction()
 void MainWindow::voiceFunction()
 {
     //if(voiceSet=="./icon/15_2.png")
+    isVoice = !isVoice;
+    if(isVoice == true)
+        this->sound->play();
+    else
+        this->sound->stop();
     if(isShengyin)
     {
         voice->setIcon(QPixmap("./icon/15_2.png"));

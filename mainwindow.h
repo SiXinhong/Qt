@@ -20,6 +20,7 @@
 #include <phonon>
 #include <QToolButton>
 #include <QApplication>
+#include <QSound>
 
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
@@ -55,7 +56,7 @@
 #include<QDateTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
-
+#include "objectAttributes.h"
 
 using namespace cv;
 using namespace std;
@@ -73,9 +74,14 @@ public slots:
   void onTimerOut2();
     
 public:
+  MyObject myobjects;
+  ObjectAttributes *objectAttributes;
+  //QLabel *objectAttributes;
+  QSound *sound;
    void adjustment();
    int bright_TrackbarValue;
    bool isPseudo;
+   bool isVoice;
    HSL *hsl;
    int color ;
    int saturation1;

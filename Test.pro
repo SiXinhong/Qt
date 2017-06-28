@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     backwindow.cpp \
     HSL.cpp \
     ColorSpace.cpp \
-    s_trakbar.cpp
+    s_trakbar.cpp \
+    objectattributes.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -57,7 +58,9 @@ HEADERS  += mainwindow.h \
     ColorSpace.hpp \
     s_trackbar.h \
     s_trackbar.h \
-    HSL.hpp
+    HSL.hpp \
+    objectAttributes.h \
+    objectAttributes.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
