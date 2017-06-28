@@ -420,7 +420,7 @@ double Qj2Widget::getWidgetY(double y){
 
 double Qj2Widget::getDirectionX(double x){
     //double x = this->rectan.x;
-    return 180*x/mat.cols -90;
+    return 180*x/mat.cols +90;
 }
 
 double Qj2Widget::getDirectionY(double y){
@@ -433,7 +433,7 @@ double Qj2Widget::getDirectionY(double y){
 
 double Qj2Widget::getDirectionX3(){
     double x = this->rectan3.x;
-    return 180*x/mat.cols -90;
+    return 180*x/mat.cols +90;
 }
 
 double Qj2Widget::getDirectionY3(){
@@ -446,7 +446,7 @@ double Qj2Widget::getDirectionY3(){
 
 double Qj2Widget::getDirectionX4(){
     double x = this->rectan4.x;
-    return 180*x/mat.cols -90;
+    return 180*x/mat.cols +90;
 }
 
 double Qj2Widget::getDirectionY4(){
@@ -459,7 +459,7 @@ double Qj2Widget::getDirectionY4(){
 
 double Qj2Widget::getDirectionX32(){
     double x = this->rectan3.x+this->rectan3.width;
-    return 180*x/mat.cols -90;
+    return 180*x/mat.cols +90;
 }
 
 double Qj2Widget::getDirectionY32(){
@@ -472,7 +472,7 @@ double Qj2Widget::getDirectionY32(){
 
 double Qj2Widget::getDirectionX42(){
     double x = this->rectan4.x+this->rectan4.width;
-    return 180*x/mat.cols -90;
+    return 180*x/mat.cols +90;
 }
 
 double Qj2Widget::getDirectionY42(){

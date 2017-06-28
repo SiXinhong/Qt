@@ -679,7 +679,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
     exitButton = new QToolButton(this);
     exitButton->setToolTip(tr("ÍË³ö"));
-    exitSet="./icon/16_1.png";
+    exitSet="./icon/18.png";
     exitButton->setIcon(QPixmap(exitSet));
     exitButton->setMinimumHeight(35);
     mainToolBar->addWidget(exitButton);
