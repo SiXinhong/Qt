@@ -47,18 +47,22 @@
 #include<QWidgetAction>
 #include "trackbar.h"
 #include "s_trackbar.h"
-#include "HSL.hpp"
-
-//#include"ltrackbar.h"
 //回放所需要的头文件
 #include"backwindow.h"
 #include<QDateEdit>
 #include<QDateTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
+<<<<<<< HEAD
 #include "objectAttributes.h"
+=======
+#include "HSL.hpp"
 
-using namespace cv;
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
+
+
+//目标属性所需要的头文件
+#include"objectattributes.h"using namespace cv;
 using namespace std;
 
 
@@ -81,12 +85,15 @@ public:
    void adjustment();
    int bright_TrackbarValue;
    bool isPseudo;
+<<<<<<< HEAD
    bool isVoice;
    HSL *hsl;
+=======
+ HSL *hsl;
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
    int color ;
    int saturation1;
-   void updateBright(Mat &mat1);
-    //QApplication a;
+   void updateBright(Mat &mat1);    //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void paintEvent(QPaintEvent *);
@@ -306,6 +313,9 @@ protected:
      QDateTimeEdit *startTimeSet;
      QDateTimeEdit *stopTimeSet;
      QGridLayout *gridLayout;
+
+     //目标属性所需要的参数
+     class ObjectAttributes *oba;
 
 protected slots:
      void startStopFunction();

@@ -35,7 +35,7 @@
 #include <QMouseEvent>
 #include <QtGui/QPainter>
 #include "trackbar.h"
-
+#include "s_trackbar.h"
 using namespace cv;
 using namespace std;
 
@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+<<<<<<< HEAD
     this->objectAttributes=new ObjectAttributes(&this->myobjects);
     sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
@@ -55,6 +56,12 @@ MainWindow::MainWindow(QWidget *parent) :
     isPseudo = false;
     isVoice = true;
     //设置属性设置中的变量的默认值-------------------------------
+=======
+	color = 0;
+    saturation1 = 100;
+    hsl=new HSL();
+    bright_TrackbarValue=0;    //设置属性设置中的变量的默认值-------------------------------
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
     //启动还是停止
     isQidong = true;
     //暂停还是继续
@@ -140,12 +147,18 @@ MainWindow::MainWindow(QWidget *parent) :
     widget->setLayout(gridlayout);
     this->setCentralWidget(widget);
 
+    isPseudo = false;
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
+<<<<<<< HEAD
     this->strackBar = new STrackBar(this);
 
 
 }
+=======
+ this->strackBar=new STrackBar(this);
+    isPseudo = false;}
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 
 MainWindow::~MainWindow(){
     delete ui;
@@ -585,55 +598,7 @@ void MainWindow::adjustment()
         widget3->draw();
         widget2->setMat(mat2);
         widget2->draw();
-        widget4->draw();
-//    Mat mat1 =imread(imageurl);
-//    if(this->isPseudo==true)
-//            mat1=setPseudocolor(mat1);
-//    widget1->setMat(mat1);
-//    drawUiLabel(mat1,1);
-
-//    Mat mat2 =imread(imageurl2);
-//    if(this->isPseudo==true)
-//            mat2=setPseudocolor(mat2);
-//    widget2->setMat(mat2);
-//    drawUiLabel(mat2,2);
-//    //更新第三栏
-//    Mat mat3 = widget1->getMat();
-//    Size dsize ;
-//    double scale = 1;
-//    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-//    Mat image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat3, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-//    aa=(&img)->copy(widget1->getQRectan());
-//    Mat image3 = QImageToMat(aa);
-//    Mat image33 = Mat(dsize,CV_32S);
-//    cv::resize(image3, image33,dsize);
-//    widget3->setMat(image33);
-//    widget3->draw();
-
-////    //更新第四栏
-////    Mat img2=QImageToMat(image2);
-////    paintRectangle(img2,1650,250,400,100);
-////    Mat mat4 =imread(imageurl2);
-////    drawUiLabelByCopy(mat4,4);
-//    Mat mat4 = widget2->getMat();
-//    //Size dsize ;
-//    //double scale = 1;
-//    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-//    image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat4, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-//    aa=(&img)->copy(widget2->getQRectan());
-//    Mat image4 = QImageToMat(aa);
-//    Mat image44 = Mat(dsize,CV_32S);
-//    cv::resize(image4, image44,dsize);
-//    widget4->setMat(image44);
-//    widget4->draw();
-
-}
+        widget4->draw();}
 
 //定时器任务
 void MainWindow::onTimerOut()
@@ -663,6 +628,15 @@ void MainWindow::selfTimerout(){
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
+<<<<<<< .mine
+    if(this->isPseudo==true)
+                    mat1=setPseudocolor(mat1);
+    updateBright(mat1);
+    if(saturation1!=100){
+           hsl->channels[color].saturation1 = saturation1 - 100;
+           hsl->adjust(mat1, mat1);
+       }
+=======
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
@@ -670,6 +644,7 @@ void MainWindow::selfTimerout(){
                hsl->channels[color].saturation1 = saturation1 - 100;
                hsl->adjust(mat1, mat1);
            }
+>>>>>>> .theirs
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -679,14 +654,13 @@ void MainWindow::selfTimerout(){
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
-    if(this->isPseudo==true)
+ if(this->isPseudo==true)
                         mat2=setPseudocolor(mat2);
         updateBright(mat2);
         if(saturation1!=100){
                hsl->channels[color].saturation1 = saturation1 - 100;
                hsl->adjust(mat2, mat2);
-           }
-    widget2->setMat(mat2);
+           }    widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
     widget2->draw();
@@ -1637,13 +1611,38 @@ void MainWindow::queDingFunction()
         backwindow=new BackWindow(this);
         backwindow->show();
     }
+}
+void MainWindow::queDingFunction()
+{
+    dateTimeStart=startTimeSet->dateTime();
+    dateTimeStop=stopTimeSet->dateTime();
+    int start=dateTimeStart.toTime_t();
+    int stop=dateTimeStop.toTime_t();
+    if(start==stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else if(start>stop)
+    {
+        QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
+        widgetNew->close();
+        widgetNew->show();
+    }
+    else
+    {
+        //qDebug()<<(stop-start);
+        widgetNew->close();
+        backwindow=new BackWindow(this);
+        backwindow->show();
+    }
 
 }
 void MainWindow::quXiaoFunction()
 {
     widgetNew->close();
-}
-//图像
+}//图像
 //自动
 void MainWindow::automFunction()
 {
@@ -1651,6 +1650,7 @@ void MainWindow::automFunction()
     trackBar->setPosition(0);
     saturation1 = 100;
     isPseudo = false;
+    saturation1 = 100;
     adjustment();
 }
 void MainWindow::updateBright(Mat &mat1 )
@@ -1670,8 +1670,7 @@ void MainWindow::updateBright(Mat &mat1 )
                        }
                    }
                }
-}
-//亮度
+}//亮度
 void MainWindow::brightnessFunction()
 {
     trackBar->setWindowTitle("亮度");
@@ -1688,65 +1687,16 @@ void MainWindow::brightnessFunction()
         brightness->setIcon(QPixmap("./icon/7_2.png"));
         brightnessSet="./icon/7_2.png";
     }
-//    setPopupMode(QToolButton::InstantPopup);
-//    QjWidget *popup=new QWidget(this);
-
-//    slider=new QSlider(Qt::Horizontal);
-//    slider->setRange(0,100);
-//    connect(slider,SIGNAL(valueChanged(int)),this,SLOT(setLineEditValue(int)));
-
-//    labelbrightness=new QLabel(popup);
-//    labelbrightness->setAlignment(Qt::AlignCenter);
-//    labelbrightness->setNum(100);
-//    labelbrightness->setMinimumWidth(labelbrightness->sizeHint().width());
-//    connect(slider,SIGNAL(valueChanged(int)),labelbrightness,SLOT(setNum(int)));
-
-//    QBoxLayout *popupLayout=new QBoxLayout(popup);
-//    popupLayout->setMargin(2);
-//    popupLayout->addWidget(slider);
-//    popupLayout->addWidget(labelbrightness);
-
-//    QWidgetAction *action=new QWidgetAction(this);
-//    action->setDefaultWidget(popup);
-
-//    menu=new QMenu(this);
-//    menu->addAction(action);
-//    SetMenu(menu);
-
-//    int g_nTrackbarValue;
-//    g_nTrackbarValue = 20;
-//    createTrackbar("亮度","红外全景控制系统",&g_nTrackbarValue,threshval,on_trackbar);
 }
 
-//void MainWindow::on_trackbar(int, void*)
-//{
-//    Mat bw = threshval < 128 ? (img < threshval) : (img > threshval);//如果threshval小于128，则当bw中相应元素小于threshval时赋255，大于threshval时赋0。如果threshval大于128，则当bw相应元素大于threshval时赋255，小于threshval时赋0
-//    //定义点和向量
-//    vector<vector<Point> > contours;//存放轮廓，但是每个vector<Point>元素不一定只表示一个轮廓。
-//    vector<Vec4i> hierarchy;//存放轮廓之间的拓扑关系。hierarchy[idx][0]、 hierarchy[idx][1]、 hierarchy[idx][2]、 hierarchy[idx][3]分别表示索引为idx的轮廓的前一个、后一个、子、父轮廓对应的索引；当索引为0时，表示相应的轮廓不存在。
-//    findContours( bw, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE );//查找轮廓
-//    Mat dst = Mat::zeros(img.size(), CV_8UC3);//初始化dst
-//    if( !contours.empty() && !hierarchy.empty() )//开始处理
-//    {
-//        //遍历所有顶层轮廓，随机生成颜色值绘制给各连接组成部分
-//        int idx = 0;
-//        for( ; idx >= 0; idx = hierarchy[idx][0] )
-//        {
-//            Scalar color( (rand()&255), (rand()&255), (rand()&255) );
-//            drawContours( dst, contours, idx, color, CV_FILLED, 8, hierarchy );//绘制填充轮廓
-//        }
-//    }
-//    imshow("Connected Components", dst);//显示窗口
-//}
+
 //饱和度
 void MainWindow::saturationFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-   //QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
-    strackBar->setWindowTitle("饱和度");
-         strackBar->show();
-         strackBar->activateWindow();
-         strackBar->move(strackBar->x(),strackBar->y());
+strackBar->setWindowTitle("饱和度");
+      strackBar->show();
+      strackBar->activateWindow();
+      strackBar->move(strackBar->x(),strackBar->y());
     if(saturationSet=="./icon/8_2.png")
     {
         saturation->setIcon(QPixmap("./icon/8_1.png"));
@@ -1788,8 +1738,7 @@ void MainWindow::openCloseFunction()
 //手动
 void MainWindow::manualFunction()
 {
-    //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
+
 
     string imageurl="./s1/1.bmp";
     Mat mat1 =imread(imageurl);
@@ -1809,6 +1758,7 @@ void MainWindow::manualFunction()
 //目标属性列表
 void MainWindow::objectAttributeFunction()
 {
+<<<<<<< HEAD
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
@@ -1828,6 +1778,11 @@ void MainWindow::objectAttributeFunction()
 //    this->objectAttributes->setText(s);
 //    this->objectAttributes->show();
     this->objectAttributes->show();
+=======
+    oba=new ObjectAttributes(this);
+    oba->show();
+
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 }
 //设置
 void MainWindow::objectsFunction()

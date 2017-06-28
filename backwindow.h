@@ -34,59 +34,11 @@
 #define BACKWINDOW_H
 
 #include <QMainWindow>
-
-#include <QImage>
-#include <QPixmap>
-#include <QLabel>
-#include "mylabel.h"
-#include "qj1widget.h"
-#include "qj2widget.h"
-#include "zwidget.h"
-#include "nwidget.h"
-#include "hwidget.h"
-#include "lwidget.h"
-#include "myinterface.h"
-#include "myobject.h"
-#include <QGridLayout>
-#include <cv.h>
-#include <phonon>
-#include <QToolButton>
-#include <QApplication>
-
-//OpenCV头文件
-#include <vector>
-#include <highgui.h>
-#include <cv.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-
-#include <QtGui/QPainter>
-#include "rectan.h"
-//#define arraySize 10;
-//SLOG头文件
-
-#include <QFileDialog>
-//对话框所需要的头文件
-#include <QLineEdit>
-#include <QMessageBox>
-
-//图像所需要的头文件
-#include "opencv2/imgproc/imgproc.hpp"
-#include "opencv2/highgui/highgui.hpp"
-#include <QSlider>
-#include<QLineEdit>
-#include<QWidgetAction>
-#include "trackbar.h"
-//#include"ltrackbar.h"
-//回放所需要的头文件
-//#include"backwindow.h"
-#include<QDateEdit>
-#include<QDateTimeEdit>
+#include"mainwindow.h"
 #include<QPushButton>
-#include <QDesktopWidget>
-//时间线需要的头文件
 #include"timetrackbar.h"
 
+<<<<<<< HEAD
 using namespace cv;
 using namespace std;
 
@@ -94,6 +46,8 @@ using namespace std;
 #include<QPushButton>
 #include"timetrackbar.h"
 
+=======
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 namespace Ui {
 class BackWindow;
 }
@@ -101,7 +55,11 @@ class BackWindow;
 class BackWindow : public QMainWindow
 {
     Q_OBJECT
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 public:
     explicit BackWindow(QWidget *parent = 0);
     ~BackWindow();
@@ -109,7 +67,11 @@ public:
     QPushButton *barBtn;
     timeTrackBar *ttbar;
 
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 private:
     Ui::BackWindow *ui;
 private slots:
@@ -118,3 +80,7 @@ private slots:
 };
 
 #endif // BACKWINDOW_H
+<<<<<<< HEAD
+=======
+
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174

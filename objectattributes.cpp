@@ -1,4 +1,5 @@
 #include "objectattributes.h"
+<<<<<<< HEAD
 #include <QPainter>
 #include<QString>
 
@@ -6,14 +7,30 @@ ObjectAttributes::ObjectAttributes(MyObject *obj) :
     QMainWindow()
 {
     this->obj=obj;
+=======
+#include "ui_objectattributes.h"
+#include <QPainter>
+#include<QString>
+
+ObjectAttributes::ObjectAttributes(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::ObjectAttributes)
+{
+    ui->setupUi(this);
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 }
 
 ObjectAttributes::~ObjectAttributes()
 {
+<<<<<<< HEAD
+=======
+    delete ui;
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
 }
 void ObjectAttributes::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
+<<<<<<< HEAD
     int y = 30;
     painter.drawText(40,y,QString("oid:").append(QString::number(obj->oid)));
     y+=30;
@@ -40,6 +57,11 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
     painter.drawText(40,y,QString("中央周围对比度的响应强度：").append(QString::number(obj->CenSueEintensity)));
     y+=30;
     painter.drawText(40,y,QString("目标背景信杂比：").append(QString::number(obj->SCRValue)));
+=======
+    painter.drawText(40,40,"好");
+    painter.drawText(40,60,"hao");
+
+>>>>>>> 03404bf2174822342ad3e06de98c11bd47e45174
     QFont font("宋体", 15, QFont::Bold, true);
     //设置下划线
     font.setUnderline(true);
