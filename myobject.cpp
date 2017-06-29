@@ -15,14 +15,14 @@ MyObject::MyObject(){
     absoluteIntensity = 0;           // 绝对强度
     relativeIntensity = 0;           // 相对强度
 
-    //vector<cv::Point> contours;                 // 目标轮廓
-    //cv::Mat Snapshoot;                          // 目标快照
-    //cv::Mat sihouette;                          // 目标剪影
+    vector<cv::Point> contours;                 // 目标轮廓
+    cv::Mat Snapshoot;                          // 目标快照
+    cv::Mat sihouette;                          // 目标剪影
 
     targetScale = 0;                 // 目标尺度
     CenSueEintensity = 0;            // 中央周围对比度的响应强度
     SCRValue = 0;                    // 目标背景信杂比
-    //vector<double> theFeatures;             // 13维的小目标特征向量
+    vector<double> theFeatures;             // 13维的小目标特征向量
 }
 
 void MyObject::setID(int id1){

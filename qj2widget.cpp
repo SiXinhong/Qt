@@ -227,7 +227,7 @@ void Qj2Widget::ToZhu()
 
     mw->widget3->setObjects(objs3);
 
-    mw->widget3->setFrom(1);
+    mw->widget3->setFrom(2);
     //mw->test();
 
     Mat mat = getMat();
@@ -290,7 +290,7 @@ void Qj2Widget::ToNingshi()
 
     mw->widget4->setObjects(objs4);
 
-    mw->widget4->setFrom(1);
+    mw->widget4->setFrom(2);
 
     Mat mat = getMat();
     Size dsize ;
