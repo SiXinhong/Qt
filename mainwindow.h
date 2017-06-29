@@ -15,6 +15,7 @@
 #include "lwidget.h"
 #include "myinterface.h"
 #include "myobject.h"
+#include "mixer.h"
 #include <QGridLayout>
 #include <cv.h>
 #include <phonon>
@@ -74,6 +75,7 @@ public slots:
   void onTimerOut2();
     
 public:
+  CMixer * cmixer;
   MyObject myobjects;
   ObjectAttributes *objectAttributes;
   //QLabel *objectAttributes;

@@ -8,6 +8,7 @@
 #include "lwidget.h"
 #include "myinterface.h"
 #include "myobject.h"
+#include "mixer.h"
 
 #include "imagedeal.h"
 
@@ -45,7 +46,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    this->objectAttributes=new ObjectAttributes(&this->myobjects);
+    this->objectAttributes=new ObjectAttributes(&this->in);
+    cmixer = new CMixer();
     sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
     saturation1 = 100;
@@ -53,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     bright_TrackbarValue=0;
     //objectAttributes = new QLabel();
     isPseudo = false;
-    isVoice = true;
+    isVoice = false;
     //设置属性设置中的变量的默认值-------------------------------
     //启动还是停止
     isQidong = true;
@@ -153,6 +155,7 @@ MainWindow::~MainWindow(){
     delete strackBar;
     delete trackBar;
     delete objectAttributes;
+    delete cmixer;
     delete sound;
 }
 
@@ -1813,7 +1816,7 @@ void MainWindow::objectAttributeFunction()
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
     this->objectAttributes->setWindowTitle("目标属性列表");
-    this->objectAttributes->setGeometry(800,100,300,500);
+    this->objectAttributes->setGeometry(300,50,800,650);
    // this->objectAttributes->tr("oid");
    // this->objectAttributes->resize(300,500);
     //this->objectAttributes->setText("oid=: ");
@@ -1858,10 +1861,10 @@ void MainWindow::voiceFunction()
 {
     //if(voiceSet=="./icon/15_2.png")
     isVoice = !isVoice;
-    if(isVoice == true)
+    cmixer->SetMute(isVoice);
+    if(isVoice == false)
         this->sound->play();
-    else
-        this->sound->stop();
+
     if(isShengyin)
     {
         voice->setIcon(QPixmap("./icon/15_2.png"));

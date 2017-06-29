@@ -3,19 +3,20 @@
 
 #include <QMainWindow>
 #include <myobject.h>
+#include "myinterface.h"
 
 class ObjectAttributes : public QMainWindow
 {
     Q_OBJECT
     
 public:
-    explicit ObjectAttributes(MyObject *obj);
+    explicit ObjectAttributes(MyInterface *objectInterface);
     ~ObjectAttributes();
 protected:
     void paintEvent(QPaintEvent *event);
     
 private:
-    MyObject *obj;
+    MyInterface *objectInterface;
 };
 
 #endif // OBJECTATTRIBUTES_H

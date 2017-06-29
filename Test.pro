@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     HSL.cpp \
     ColorSpace.cpp \
     s_trakbar.cpp \
-    objectattributes.cpp
+    objectattributes.cpp \
+    mixer.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     s_trackbar.h \
     HSL.hpp \
     objectAttributes.h \
-    objectAttributes.h
+    objectAttributes.h \
+    mixer.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
@@ -97,3 +99,5 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
+LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\User32.Lib"
+LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\WinMM.Lib"

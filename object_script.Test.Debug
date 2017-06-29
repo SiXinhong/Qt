@@ -21,6 +21,7 @@ INPUT(
 ./debug\ColorSpace.o
 ./debug\s_trakbar.o
 ./debug\objectattributes.o
+./debug\mixer.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
