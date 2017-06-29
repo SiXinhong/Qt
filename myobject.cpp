@@ -22,7 +22,7 @@ MyObject::MyObject(){
     targetScale = 0;                 // 目标尺度
     CenSueEintensity = 0;            // 中央周围对比度的响应强度
     SCRValue = 0;                    // 目标背景信杂比
-    //vector<double> theFeatures;             // 13维的小目标特征向量
+    vector<double> theFeatures;             // 13维的小目标特征向量
 }
 
 void MyObject::setID(int id1){
