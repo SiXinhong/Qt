@@ -4,6 +4,9 @@
 #include <QMainWindow>
 #include <myobject.h>
 #include "myinterface.h"
+#include <cv.h>
+//#include "mainwindow.h"
+#include<QImage>
 
 class ObjectAttributes : public QMainWindow
 {
@@ -14,6 +17,7 @@ public:
     ~ObjectAttributes();
 protected:
     void paintEvent(QPaintEvent *event);
+
     
 private:
     MyInterface *objectInterface;

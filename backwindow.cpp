@@ -1,26 +1,5 @@
 #include "backwindow.h"
-#include "ui_backwindow.h"
-#include<QDebug>
-#include"mainwindow.h"
-
-extern QDateTime dateTimeStart;
-extern QDateTime dateTimeStop;
-BackWindow::BackWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::BackWindow)
+BackWindow::BackWindow():MainWindow()
 {
-    ui->setupUi(this);
-    barBtn=new QPushButton("时间线",this);
-    connect(barBtn,SIGNAL(clicked()),this,SLOT(barBtnFunction()));
+    setWindowTitle("回放");
 }
-
-BackWindow::~BackWindow()
-{
-    delete ui;
-}
-void BackWindow::barBtnFunction()
-{
-    ttbar=new timeTrackBar(this);
-    ttbar->show();
-}
-

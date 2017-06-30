@@ -52,7 +52,7 @@
 
 //#include"ltrackbar.h"
 //回放所需要的头文件
-#include"backwindow.h"
+
 #include<QDateEdit>
 #include<QDateTimeEdit>
 #include<QPushButton>
@@ -102,7 +102,7 @@ public:
     void paintScale(Mat image,double startw,double starth);//画标尺
 
     cv::Mat QImageToMat(QImage image);
-    QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
+    static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
@@ -345,5 +345,5 @@ class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
 
 };
-
+#include"backwindow.h"
 #endif // MAINWINDOW_H

@@ -1637,7 +1637,7 @@ void MainWindow::queDingFunction()
     {
         //qDebug()<<(stop-start);
         widgetNew->close();
-        backwindow=new BackWindow(this);
+        backwindow=new BackWindow();
         backwindow->show();
     }
 
@@ -1816,7 +1816,7 @@ void MainWindow::objectAttributeFunction()
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
     this->objectAttributes->setWindowTitle("目标属性列表");
-    this->objectAttributes->setGeometry(300,50,800,650);
+    this->objectAttributes->setGeometry(250,60,900,650);
    // this->objectAttributes->tr("oid");
    // this->objectAttributes->resize(300,500);
     //this->objectAttributes->setText("oid=: ");
