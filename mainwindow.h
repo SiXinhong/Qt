@@ -22,6 +22,8 @@
 #include <QToolButton>
 #include <QApplication>
 #include <QSound>
+#include<QGroupBox>
+#include <QButtonGroup>
 
 //OpenCV头文件
 #include <vector>
@@ -265,11 +267,12 @@ protected:
      QString light3Set;
      QString light4Set;
      QString light5Set;
-     QToolButton *light1;
-     QToolButton *light2;
-     QToolButton *light3;
-     QToolButton *light4;
-     QToolButton *light5;
+     QLabel *light1;
+     //QToolButton *light1;
+     QLabel *light2;
+     QLabel *light3;
+     QLabel *light4;
+     QLabel *light5;
 
      //第四组，显示编号和系统当前时间
      QLabel *serialNumber;//编号

@@ -7,7 +7,8 @@
 #include <cv.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
+#include <QDataStream>
+#include <QByteArray>
 using namespace cv;
 using namespace std;
 
@@ -98,7 +99,13 @@ public:
 
     void SetColor(Scalar co);
     Scalar getColor();
-
+    friend QDataStream& operator>>(QDataStream &in,MyObject& data);
+    friend QDataStream& operator<<(QDataStream &out,MyObject& data);
+//    MyObject& DeSerializable(const QByteArray &datagram);
+//    QByteArray& Serializable(const MyObject &myObject);
+//private:
+//    friend QDataStream& writeMat(QDataStream &out,Mat &m);
+//    friend QDataStream& readMat(QDataStream &in,Mat &m);
 };
 
 #endif // MYOBJECT_H

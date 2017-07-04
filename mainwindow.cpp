@@ -280,6 +280,15 @@ void MainWindow::selfProcessing(){
     widget6->setObjects(objs);
     widget6->draw();
     //drawUiLabel(mat6,6);
+    QFile file("myobj.dat");
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+    for(int o = 0; o< in.getObjs2().size();o++ )
+    {
+        out << in.getObjs2().at(o);
+    }
+    //qDebug() << in.getObjs2().size();
+    file.close();
 }
 
 //----------------------------------------------------------
@@ -350,22 +359,32 @@ void MainWindow::tempProcessing(){
 //绘制工具栏
 void MainWindow::addMyToolBar()
 {
+
+    QGroupBox *group1=new QGroupBox(this);
+//    QGroupBox *group2=new QGroupBox(this);
+//    QGroupBox *group3=new QGroupBox(this);
+//    QGroupBox *group4=new QGroupBox(this);
+//    QGroupBox *group5=new QGroupBox(this);
+
+
+    QHBoxLayout *vbox1 = new QHBoxLayout;
+
+
+
     mainToolBar = addToolBar("monitoring");
 
     //第一组按钮：监控和后退，还有回放
     //启动/停止
     mainToolBar->addSeparator();
     mainToolBar->addWidget(new QLabel("   "));
-    //listLabel1=new QLabel(tr(" 监控 "));
-    //mainToolBar->addWidget(listLabel1);
     startStop = new QToolButton(this);
     startStop->setToolTip(tr("停止"));
     startStopSet="./icon/1_1.png";
     startStop->setIcon(QPixmap(startStopSet));
     startStop->setMinimumHeight(35);
-    mainToolBar->addWidget(startStop);
+    vbox1->addWidget(startStop);
+    vbox1->addWidget(new QLabel("   "));
     connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
 
     //暂停/继续
     mstop = new QToolButton(this);
@@ -373,10 +392,15 @@ void MainWindow::addMyToolBar()
     mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setMinimumHeight(35);
-    mainToolBar->addWidget(mstop);
-    //mainToolBar->addSeparator();
+    vbox1->addWidget(mstop);
+    vbox1->addWidget(new QLabel("   "));
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+
+    group1->setLayout(vbox1);
+    mainToolBar->addWidget(group1);
+
+
+
     //后退
     back = new QToolButton(this);
     back->setToolTip(tr("后退"));
@@ -445,38 +469,34 @@ void MainWindow::addMyToolBar()
 
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
     mainToolBar->addWidget(new QLabel("   "));
-    light1=new QToolButton(this);
-    light1Set="./icon/16_1.png";
-    light1->setIcon(QPixmap(light1Set));
-    brightness->setMinimumHeight(35);
+
+    QPixmap pixmap1("./icon/16_1.png");
+    QPixmap pixmap2("./icon/16_2.png");
+    QPixmap fitpixmap1=pixmap1.scaled(33,33, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap2=pixmap2.scaled(33,33, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    light1=new QLabel(this);
+    light1->setPixmap(fitpixmap1);
     mainToolBar->addWidget(light1);
     mainToolBar->addWidget(new QLabel("   "));
 
-    light2=new QToolButton(this);
-    light2Set="./icon/16_1.png";
-    light2->setIcon(QPixmap(light2Set));
-    brightness->setMinimumHeight(35);
+    light2=new QLabel(this);
+    light2->setPixmap(fitpixmap1);
     mainToolBar->addWidget(light2);
     mainToolBar->addWidget(new QLabel("   "));
 
-    light3=new QToolButton(this);
-    light3Set="./icon/16_1.png";
-    light3->setIcon(QPixmap(light3Set));
-    brightness->setMinimumHeight(35);
+    light3=new QLabel(this);
+    light3->setPixmap(fitpixmap1);
     mainToolBar->addWidget(light3);
     mainToolBar->addWidget(new QLabel("   "));
 
-    light4=new QToolButton(this);
-    light4Set="./icon/16_2.png";
-    light4->setIcon(QPixmap(light4Set));
-    brightness->setMinimumHeight(35);
+    light4=new QLabel(this);
+    light4->setPixmap(fitpixmap2);
     mainToolBar->addWidget(light4);
     mainToolBar->addWidget(new QLabel("   "));
 
-    light5=new QToolButton(this);
-    light5Set="./icon/16_2.png";
-    light5->setIcon(QPixmap(light5Set));
-    brightness->setMinimumHeight(35);
+    light5=new QLabel(this);
+    light5->setPixmap(fitpixmap2);
     mainToolBar->addWidget(light5);
     mainToolBar->addWidget(new QLabel("   "));
 
