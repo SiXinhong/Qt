@@ -51,9 +51,10 @@ MainWindow::MainWindow(QWidget *parent) :
     cmixer = new CMixer();
     sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
-    saturation1 = 100;
-    hsl=new HSL();
+    //saturation1 = 100;
+    //hsl=new HSL();
     bright_TrackbarValue=0;
+    alpha_contrast = 100;
     //objectAttributes = new QLabel();
     isPseudo = false;
     isVoice = false;
@@ -152,7 +153,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow(){
     delete ui;
-    delete hsl;
+   // delete hsl;
     delete strackBar;
     delete trackBar;
     delete objectAttributes;
@@ -224,10 +225,11 @@ void MainWindow::selfProcessing(){
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-           }
+        updateContrast(mat1);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -247,10 +249,11 @@ void MainWindow::selfProcessing(){
     if(this->isPseudo==true)
                        mat2=setPseudocolor(mat2);
        updateBright(mat2);
-       if(saturation1!=100){
-              hsl->channels[color].saturation1 = saturation1 - 100;
-              hsl->adjust(mat2, mat2);
-          }
+       updateContrast(mat2);
+//       if(saturation1!=100){
+//              hsl->channels[color].saturation1 = saturation1 - 100;
+//              hsl->adjust(mat2, mat2);
+//          }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -434,7 +437,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
 
     saturation = new QToolButton(this);
-    saturation->setToolTip(tr("饱和度"));
+    saturation->setToolTip(tr("对比度"));
     saturationSet="./icon/8_1.png";
     saturation->setIcon(QPixmap(saturationSet));
     saturation->setMinimumHeight(35);
@@ -588,11 +591,13 @@ void MainWindow::adjustment()
         }
         updateBright(mat1);
         updateBright(mat2);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-               hsl->adjust(mat2, mat2);
-           }
+        updateContrast(mat1);
+        updateContrast(mat2);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//               hsl->adjust(mat2, mat2);
+//           }
         widget1->setMat(mat1);
         widget1->draw();
         widget3->draw();
@@ -696,10 +701,11 @@ void MainWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-           }
+        updateContrast(mat1);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -712,10 +718,11 @@ void MainWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat2=setPseudocolor(mat2);
         updateBright(mat2);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat2, mat2);
-           }
+        updateContrast(mat2);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat2, mat2);
+//           }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -1678,8 +1685,10 @@ void MainWindow::quXiaoFunction()
 void MainWindow::automFunction()
 {
     bright_TrackbarValue = 0;
+    alpha_contrast = 100;
     trackBar->setPosition(0);
-    saturation1 = 100;
+    strackBar->setPosition(100);
+    //saturation1 = 100;
     isPseudo = false;
     adjustment();
 }
@@ -1768,12 +1777,33 @@ void MainWindow::brightnessFunction()
 //    }
 //    imshow("Connected Components", dst);//显示窗口
 //}
-//饱和度
+
+void MainWindow::updateContrast(Mat &mat1){
+    for (int y = 0; y < mat1.rows; y++)
+        {
+            for (int x = 0; x < mat1.cols; x++)
+            {
+                for (int c = 0; c < 3; c++)
+                {
+                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) + beta_value);
+                    mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(0.01*alpha_contrast*(mat1.at<Vec3b>(y, x)[c]));
+
+                    if (mat1.at<Vec3b>(y, x)[c] > 255)
+                    {
+                        mat1.at<Vec3b>(y, x)[c] = 255;
+                    }
+                }
+            }
+        }
+
+}
+//对比度
 void MainWindow::saturationFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
    //QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
-    strackBar->setWindowTitle("饱和度");
+        strackBar->setWindowTitle("对比度");
          strackBar->show();
          strackBar->activateWindow();
          strackBar->move(strackBar->x(),strackBar->y());

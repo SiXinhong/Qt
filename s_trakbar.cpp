@@ -21,17 +21,17 @@ void STrackBar:: mouseReleaseEvent(QMouseEvent *event){
     else
         position=pos-5;//减5是因为显示的时候为了好看左边从5的位置开始显示，当作饱和度0
     update();//触发重绘操作，生成paintEvent事件
-    mainWindow->saturation1=position*2;
+    mainWindow->alpha_contrast=position;
     mainWindow->adjustment();
 
 }
 void STrackBar::paintEvent(QPaintEvent *){
     QPainter p(this);
     p.setPen(Qt::lightGray);
-    p.drawLine(QPoint(5,20),QPoint(205,20));//中间的横线
+    p.drawLine(QPoint(5,20),QPoint(200,20));//中间的横线
     p.setPen(QPen(Qt::lightGray, 5));
     p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//竖线，标识亮度数值的位置
-    p.drawText(215,25,QString("饱和度")+QString::number(position));
+    p.drawText(215,25,QString("对比度")+QString::number(position));
 }
 void STrackBar:: mousePressEvent(QMouseEvent *){
     this->mousedown=true;//鼠标按下，之后鼠标移动操作产生拖动效果

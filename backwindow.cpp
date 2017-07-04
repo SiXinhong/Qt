@@ -53,10 +53,11 @@ void BackWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-           }
+        updateContrast(mat1);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -69,10 +70,11 @@ void BackWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat2=setPseudocolor(mat2);
         updateBright(mat2);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat2, mat2);
-           }
+        updateContrast(mat2);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat2, mat2);
+//           }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
