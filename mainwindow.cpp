@@ -281,17 +281,6 @@ void MainWindow::selfProcessing(){
     widget6->setObjects(objs);
     widget6->draw();
     //drawUiLabel(mat6,6);
-<<<<<<< HEAD
-    QFile file("myobj.dat");
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    for(int o = 0; o< in.getObjs2().size();o++ )
-    {
-        out << in.getObjs2().at(o);
-    }
-    //qDebug() << in.getObjs2().size();
-    file.close();
-=======
 //    QFile file("myobj.dat");
 //    file.open(QIODevice::WriteOnly);
 //    QDataStream out(&file);
@@ -301,7 +290,15 @@ void MainWindow::selfProcessing(){
 //    }
 //    //qDebug() << in.getObjs2().size();
 //    file.close();
->>>>>>> 641a9a0f6885379453011a77b15f7f1a4eb86aca
+//    QFile file("myobj.dat");
+//    file.open(QIODevice::WriteOnly);
+//    QDataStream out(&file);
+//    for(int o = 0; o< in.getObjs2().size();o++ )
+//    {
+//        out << in.getObjs2().at(o);
+//    }
+//    //qDebug() << in.getObjs2().size();
+//    file.close();
 }
 
 //----------------------------------------------------------
