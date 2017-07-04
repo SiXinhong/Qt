@@ -5,8 +5,8 @@
 TrackBar::TrackBar(MainWindow* mainWindow):QWidget()
 {
     this->mainWindow=mainWindow;
-    this->setFixedHeight(40);
-    this->setFixedWidth(319);
+    this->setMinimumSize(319,40);
+    this->setMaximumSize(319,40);
     this->position=0;//竖线的位置，标识亮度的数值
     this->mousedown=false;//为了实现拖动效果，先判断是否点下了鼠标，然后鼠标移动才有效
 }

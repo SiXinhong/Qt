@@ -153,6 +153,8 @@ public:
     boolean isMubiao;
     //系统编号
     QString xtbh;
+    //判断窗口是否打开
+    bool is_open;
 
      QLabel *label;
      QLabel *label2;
