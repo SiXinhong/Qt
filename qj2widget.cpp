@@ -29,19 +29,22 @@ Qj2Widget::Qj2Widget(QWidget *parent) :
     rectan3 = Rect(1490,250,100,100);
     rectan4 = Rect(1490,250,100,100);
     newrect = Rect(1490,250,100,100);
+    //paint=new QPainter;
 }
 
 void Qj2Widget::setMat(Mat m){
     mat = m;
-    if(isRect){
-        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        //mw->test();
+//    if(isRect){
+//        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+//        //mw->test();
 
-        rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
-        mw->loadPictureToLabel2();
-        isRect = true;
-    }
+//        rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
+//        cv::cvtColor(mat, mat, CV_BGR2RGB);
+//        mw->loadPictureToLabel2();
+//        isRect = true;
+//    }
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    mw->loadPictureToLabel2(isRect, qrect);
 }
 
 Mat Qj2Widget::getMat(){
@@ -120,7 +123,7 @@ void Qj2Widget::draw(){
     }
     cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->imgLabel2 = mw->MatToQImage(mat,mw->imgLabel2);
-    mw->loadPictureToLabel2();
+    mw->loadPictureToLabel2(isRect, qrect);
 
 }
 
@@ -204,6 +207,9 @@ void Qj2Widget::ToZhu()
         this->rectan3.height = this->newrect.height;
     }
 
+    //调整所选的矩形框，以使得在主显示区中的显示不变形
+    this->rectan3.width = this->rectan3.height * mw->widget3->width() / mw->widget3->height();
+
 //    this->rectan3.x = this->newrect.x;
 //    this->rectan3.y = this->newrect.y;
 //    this->rectan3.width = this->newrect.width;
@@ -277,6 +283,10 @@ void Qj2Widget::ToNingshi()
         this->rectan4.width = this->newrect.width;
         this->rectan4.height = this->newrect.height;
     }
+
+    //调整所选的矩形框，以使得在凝视显示区中的显示不变形
+    this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
+
     //更新凝视显示区所包含的目标
 
     vector<MyObject> objs4;
@@ -354,20 +364,23 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
         qDebug()<<position2;
         //
         if(position2.x()<=this->width() && position2.y()<=this->height()){
-            //qrectan = QRect(position1.x(),position1.y(),position2.x()-position1.x(),position2.y()-position1.y());
+            //qrect = QRect(position1.x(),position1.y(),position2.x()-position1.x(),position2.y()-position1.y());
 
             newrect.x=getMatX(position1.x());// = Rect(1490,250,100,100);
             newrect.y=getMatY(position1.y());
             newrect.width=getMatX(position2.x())-getMatX(position1.x());
             newrect.height=getMatY(position2.y())-getMatY(position1.y());
 
+            qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+
             MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
             //mw->test();
 
-            rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
-            mw->loadPictureToLabel2();
+            //rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
+            //cv::cvtColor(mat, mat, CV_BGR2RGB);
             isRect = true;
+            mw->loadPictureToLabel2(isRect, qrect);
+
         }
         else if(isRect){
 
@@ -381,6 +394,14 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
     isMove = false;
     e->ignore();
 }
+
+//void Qj2Widget::paintEvent(QPaintEvent *){
+//     paint->begin(this);
+//     paint->setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
+//     paint->setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
+//     paint->drawRect(20,20,160,160);
+//     paint->end();
+//}
 
 Rect Qj2Widget::getRectan3(){
     return this->rectan3;

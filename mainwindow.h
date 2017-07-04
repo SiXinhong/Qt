@@ -108,9 +108,9 @@ public:
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
     //加载图片到Label1上
-    void loadPictureToLabel1();
+    void loadPictureToLabel1(boolean isRect, QRect qrect);
     //加载图片到Label2上
-    void loadPictureToLabel2();
+    void loadPictureToLabel2(boolean isRect, QRect qrect);
     //加载图片到Label3上
     void loadPictureToLabel3();
     //加载图片到Label4上

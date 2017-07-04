@@ -146,6 +146,17 @@ Rect NWidget::getRectFromObjs(Rect r){
     if(mw->isMubiao){
         rr.width += 100;
     }
+   //使得不变形
+   rr.width = rr.height * this->width() / this->height();
+   //使得目标位于中间
+   rr.x = (xtemp1+xtemp2-rr.width)/2;
+   rr.y = (ytemp1+ytemp2-rr.height)/2;
+   if(rr.x<0){
+       rr.x=0;
+   }
+   if(rr.y<0){
+       rr.y = 0;
+   }
    return rr;
 }
 

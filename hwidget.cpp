@@ -116,11 +116,16 @@ void HWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
         }
     }
     //再向左上靠靠
-    xtemp1 -= 5;
-    ytemp1 -= 5;
+    if(xtemp1-5>=0 && ytemp1-5 >= 0){
+        xtemp1 -= 5;
+        ytemp1 -= 5;
+    }
     //再向右下靠靠
-    xtemp2 += 5;
-    ytemp2 += 5;
+    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
+        xtemp2 += 5;
+        ytemp2 += 5;
+    }
+
 
     Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
     Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));

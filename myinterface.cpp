@@ -330,6 +330,13 @@ int MyInterface::getIntegratedData(){
 vector<MyObject> MyInterface::getObjs2(){
     index++;
 
+//    if(100+index*5 >= this->panoImage.cols/2){
+//        index = 0;
+//    }
+//    else if (100+index*2 >= this->panoImage.rows){
+//        index = 0;
+//    }
+
     MyObject mo1 = (MyObject)objs[0];
     MyObject mo2 = (MyObject)objs[1];
     MyObject mo3 = (MyObject)objs[2];

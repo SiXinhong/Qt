@@ -893,6 +893,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget1->rectan3.width = widget1->rectan3.height * widget3->width() / widget3->height();
+
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
         int count = widget1->objs.size();
@@ -956,6 +959,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget2->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget2->rectan3.width = widget2->rectan3.height * widget3->width() / widget3->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
@@ -1013,6 +1018,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
+
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
         int count = widget1->objs.size();
@@ -1069,6 +1077,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
             widget2->rectan4.height = widget2->newrect.height;
         }
         widget2->isRect = false;
+
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
@@ -1323,13 +1334,32 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 }
 
 //加载图片到Label1上
-void MainWindow::loadPictureToLabel1(){
-    loadPictureToLabel(label,imgLabel1);
+void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect){
+    //loadPictureToLabel(label,imgLabel1);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel1);
+    if(isRect){
+        QPainter painter(&pixmap1);
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
+        painter.drawRect(qrect);
+    }
+    label->setScaledContents(true);
+    label->setPixmap(pixmap1);
 }
 
 //加载图片到Label2上
-void MainWindow::loadPictureToLabel2(){
-    loadPictureToLabel(label2,imgLabel2);
+void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect){
+    //loadPictureToLabel(label2,imgLabel2);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel2);
+
+    if(isRect){
+        QPainter painter(&pixmap1);
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
+        painter.drawRect(qrect);
+    }
+    label2->setScaledContents(true);
+    label2->setPixmap(pixmap1);
 }
 
 //加载图片到Label3上
@@ -1830,20 +1860,20 @@ void MainWindow::manualFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 
-    string imageurl="./s1/1.bmp";
-    Mat mat1 =imread(imageurl);
-    Rect rectan;
-    rectan.x=1690;// = Rect(1490,250,100,100);
-    rectan.y=350;
-    rectan.width=200;
-    rectan.height=200;
+//    string imageurl="./s1/1.bmp";
+//    Mat mat1 =imread(imageurl);
+//    Rect rectan;
+//    rectan.x=1690;// = Rect(1490,250,100,100);
+//    rectan.y=350;
+//    rectan.width=200;
+//    rectan.height=200;
 
-    //MainWindow *mw = (MainWindow*)parentWidget();
-    //mw->test();
+//    //MainWindow *mw = (MainWindow*)parentWidget();
+//    //mw->test();
 
-    drawRecOnPic2(mat1,rectan);
-    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
-    loadPictureToLabel1();
+//    drawRecOnPic2(mat1,rectan);
+//    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
+//    loadPictureToLabel1();
 }
 //目标属性列表
 void MainWindow::objectAttributeFunction()
