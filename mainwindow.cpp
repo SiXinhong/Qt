@@ -70,7 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //目标属性是否跟随
     isMubiao = true;
     //系统编号
-    xtbh = QString("XXXXXXX");
+    xtbh = QString("BJ036A站位");
     //-------------------------------------------------------
 
 
@@ -208,17 +208,9 @@ void MainWindow::jinProcessing(){
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::selfProcessing(){
     index=0;//用于计算标尺的起始位置
-//    index1=0;//用于取第一栏的图片
-//    index2=0;//用于取第二栏的图片
     vector<MyObject> objs = in.getObjs2();
 
     //图片1
-//    QString imageurl=in.getQJ1();
-//    qDebug()<<imageurl;
-//    Mat mat1 =imread(imageurl.toStdString());
-//    widget1->setMat(mat1);
-//    drawUiLabel(mat1,1);
-    //image= QImage(in.getQJ1());
     QString s1=in.getQJ1();
     imageurl=s1.toStdString();
     Mat mat1 =imread(imageurl);
@@ -226,23 +218,11 @@ void MainWindow::selfProcessing(){
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
         updateContrast(mat1);
-//        if(saturation1!=100){
-//               hsl->channels[color].saturation1 = saturation1 - 100;
-//               hsl->adjust(mat1, mat1);
-//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
     widget1->draw();
-    //qDebug()<<s1;
-    //drawUiLabel(mat1,1);
     //图片2
-//    QString imageurl2 = in.getQJ2();
-//    qDebug()<<imageurl2;
-//    Mat mat2 =imread(imageurl2.toStdString());
-//    widget2->setMat(mat2);
-//    drawUiLabel(mat2,2);
-    //image2= QImage(in.getQJ2());
     QString s2=in.getQJ2();
     imageurl2=s2.toStdString();
     Mat mat2 =imread(imageurl2);
@@ -250,23 +230,13 @@ void MainWindow::selfProcessing(){
                        mat2=setPseudocolor(mat2);
        updateBright(mat2);
        updateContrast(mat2);
-//       if(saturation1!=100){
-//              hsl->channels[color].saturation1 = saturation1 - 100;
-//              hsl->adjust(mat2, mat2);
-//          }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
     widget2->draw();
-    //qDebug()<<s2;
-    //drawUiLabel(mat2,2);
     //图片3
-    //Mat mat3 =imread(imageurl);
     widget3->draw();
-    //drawUiLabelByCopy(mat3,3);
     //图片4
-    //Mat mat4 =imread(imageurl2);
-    //drawUiLabelByCopy(mat4,4);
     widget4->draw();
     //图片5
     QString imageurl5=in.getHD();
@@ -275,7 +245,6 @@ void MainWindow::selfProcessing(){
     widget5->setPano(mat1);
     widget5->setObjects(objs);
     widget5->draw();
-    //drawUiLabel(mat5,5);
     //图片6
     QString imageurl6= in.getLD();
     Mat mat6 =imread(imageurl6.toStdString());
@@ -283,25 +252,6 @@ void MainWindow::selfProcessing(){
     widget6->setPano(mat1);
     widget6->setObjects(objs);
     widget6->draw();
-    //drawUiLabel(mat6,6);
-//    QFile file("myobj.dat");
-//    file.open(QIODevice::WriteOnly);
-//    QDataStream out(&file);
-//    for(int o = 0; o< in.getObjs2().size();o++ )
-//    {
-//        out << in.getObjs2().at(o);
-//    }
-//    //qDebug() << in.getObjs2().size();
-//    file.close();
-//    QFile file("myobj.dat");
-//    file.open(QIODevice::WriteOnly);
-//    QDataStream out(&file);
-//    for(int o = 0; o< in.getObjs2().size();o++ )
-//    {
-//        out << in.getObjs2().at(o);
-//    }
-//    //qDebug() << in.getObjs2().size();
-//    file.close();}
 }
 //----------------------------------------------------------
 
@@ -373,226 +323,292 @@ void MainWindow::addMyToolBar()
 {
 
     QGroupBox *group1=new QGroupBox(this);
-//    QGroupBox *group2=new QGroupBox(this);
-//    QGroupBox *group3=new QGroupBox(this);
-//    QGroupBox *group4=new QGroupBox(this);
-//    QGroupBox *group5=new QGroupBox(this);
-
+    QGroupBox *group2=new QGroupBox(this);
+    QGroupBox *group3=new QGroupBox(this);
+    QGroupBox *group4=new QGroupBox(this);
+    QGroupBox *group5=new QGroupBox(this);
 
     QHBoxLayout *vbox1 = new QHBoxLayout;
-
-
-
+    QHBoxLayout *vbox2 = new QHBoxLayout;
+    QHBoxLayout *vbox3 = new QHBoxLayout;
+    QVBoxLayout *vbox4 = new QVBoxLayout;
+    QHBoxLayout *vbox5 = new QHBoxLayout;
     mainToolBar = addToolBar("monitoring");
 
+    //加图标
+    //mainToolBar->addWidget(new QLabel(""));
+    QPixmap pixmap3("./icon/fujirui.png");
+    QPixmap fitpixmap3=pixmap3.scaled(50,50, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QLabel *tuBiao=new QLabel(this);
+    tuBiao->setPixmap(fitpixmap3);
+    mainToolBar->addWidget(tuBiao);
+    mainToolBar->addWidget(new QLabel(" "));
     //第一组按钮：监控和后退，还有回放
     //启动/停止
-    mainToolBar->addSeparator();
-    mainToolBar->addWidget(new QLabel("   "));
     startStop = new QToolButton(this);
     startStop->setToolTip(tr("停止"));
+    startStop->setMinimumHeight(40);
+    startStop->setMaximumHeight(40);
+    startStop->setMinimumWidth(40);
+    startStop->setMaximumWidth(40);
     startStopSet="./icon/1_1.png";
     startStop->setIcon(QPixmap(startStopSet));
-    startStop->setMinimumHeight(35);
+    startStop->setIconSize(QSize(40,40));
     vbox1->addWidget(startStop);
-    vbox1->addWidget(new QLabel("   "));
     connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
+    vbox1->addWidget(new QLabel(" "));
 
     //暂停/继续
     mstop = new QToolButton(this);
     mstop->setToolTip(tr("暂停"));
+    mstop->setMinimumHeight(40);
+    mstop->setMaximumHeight(40);
+    mstop->setMinimumWidth(40);
+    mstop->setMaximumWidth(40);
     mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
-    mstop->setMinimumHeight(35);
+    mstop->setIconSize(QSize(40,40));
     vbox1->addWidget(mstop);
-    vbox1->addWidget(new QLabel("   "));
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
-
-    group1->setLayout(vbox1);
-    mainToolBar->addWidget(group1);
-
-
+    vbox1->addWidget(new QLabel(" "));
 
     //后退
     back = new QToolButton(this);
     back->setToolTip(tr("后退"));
-    backSet="./icon/4_1.png";
+    back->setMinimumHeight(40);
+    back->setMaximumHeight(40);
+    back->setMinimumWidth(40);
+    back->setMaximumWidth(40);
+    backSet="./icon/19.png";
     back->setIcon(QPixmap(backSet));
-    back->setMinimumHeight(35);
-    mainToolBar->addWidget(back);
-    //mainToolBar->addSeparator();
+    back->setIconSize(QSize(40,40));
+    vbox1->addWidget(back);
     connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox1->addWidget(new QLabel(" "));
+
     //回放
-    //listLabel2=new QLabel(tr(" 回放 "));
-    //mainToolBar->addWidget(listLabel2);
     open = new QToolButton(this);
     open->setToolTip(tr("回放"));
+    open->setMinimumHeight(40);
+    open->setMaximumHeight(40);
+    open->setMinimumWidth(40);
+    open->setMaximumWidth(40);
     openSet="./icon/3_1.png";
     open->setIcon(QPixmap(openSet));
-    open->setMinimumHeight(35);
-    mainToolBar->addWidget(open);
+    open->setIconSize(QSize(40,40));
+    vbox1->addWidget(open);
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
 
-    mainToolBar->addSeparator();
-
+    group1->setLayout(vbox1);
+    mainToolBar->addWidget(group1);
+    mainToolBar->addWidget(new QLabel("    "));
     //第二组按钮：图像
-    //listLabel3=new QLabel(tr(" 图像 "));
-    //mainToolBar->addWidget(listLabel3);
-    mainToolBar->addWidget(new QLabel("   "));
+    //自动
     autom = new QToolButton(this);
     autom->setToolTip(tr("自动"));
+    autom->setMinimumHeight(40);
+    autom->setMaximumHeight(40);
+    autom->setMinimumWidth(40);
+    autom->setMaximumWidth(40);
     automSet="./icon/6_1.png";
     autom->setIcon(QPixmap(automSet));
-    autom->setMinimumHeight(35);
-    mainToolBar->addWidget(autom);
+    autom->setIconSize(QSize(40,40));
+    vbox2->addWidget(autom);
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox2->addWidget(new QLabel(" "));
 
+    //亮度
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
+    brightness->setMinimumHeight(40);
+    brightness->setMaximumHeight(40);
+    brightness->setMinimumWidth(40);
+    brightness->setMaximumWidth(40);
     brightnessSet="./icon/7_1.png";
     brightness->setIcon(QPixmap(brightnessSet));
-    brightness->setMinimumHeight(35);
-    mainToolBar->addWidget(brightness);
+    brightness->setIconSize(QSize(40,40));
+    vbox2->addWidget(brightness);
     connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox2->addWidget(new QLabel(" "));
 
+    //对比度
     saturation = new QToolButton(this);
     saturation->setToolTip(tr("对比度"));
+    saturation->setMinimumHeight(40);
+    saturation->setMaximumHeight(40);
+    saturation->setMinimumWidth(40);
+    saturation->setMaximumWidth(40);
     saturationSet="./icon/8_1.png";
     saturation->setIcon(QPixmap(saturationSet));
-    saturation->setMinimumHeight(35);
-    mainToolBar->addWidget(saturation);
+    saturation->setIconSize(QSize(40,40));
+    vbox2->addWidget(saturation);
     connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox2->addWidget(new QLabel(" "));
 
+    //伪彩色
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
+    pseudoColor->setMinimumHeight(40);
+    pseudoColor->setMaximumHeight(40);
+    pseudoColor->setMinimumWidth(40);
+    pseudoColor->setMaximumWidth(40);
     pseudoColorSet="./icon/9_1.png";
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
-    pseudoColor->setMinimumHeight(35);
-    mainToolBar->addWidget(pseudoColor);
+    pseudoColor->setIconSize(QSize(40,40));
+    vbox2->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
 
-    mainToolBar->addSeparator();
+    group2->setLayout(vbox2);
+    mainToolBar->addWidget(group2);
+    mainToolBar->addWidget(new QLabel("    "));
+
 
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
-    mainToolBar->addWidget(new QLabel("   "));
-
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(33,33, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(33,33, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap1=pixmap1.scaled(40,40, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap2=pixmap2.scaled(40,40, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     light1=new QLabel(this);
     light1->setPixmap(fitpixmap1);
-    mainToolBar->addWidget(light1);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox3->addWidget(light1);
+    vbox3->addWidget(new QLabel(" "));
 
     light2=new QLabel(this);
     light2->setPixmap(fitpixmap1);
-    mainToolBar->addWidget(light2);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox3->addWidget(light2);
+    vbox3->addWidget(new QLabel(" "));
 
     light3=new QLabel(this);
     light3->setPixmap(fitpixmap1);
-    mainToolBar->addWidget(light3);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox3->addWidget(light3);
+    vbox3->addWidget(new QLabel(" "));
 
     light4=new QLabel(this);
     light4->setPixmap(fitpixmap2);
-    mainToolBar->addWidget(light4);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox3->addWidget(light4);
+    vbox3->addWidget(new QLabel(" "));
 
     light5=new QLabel(this);
     light5->setPixmap(fitpixmap2);
-    mainToolBar->addWidget(light5);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox3->addWidget(light5);
 
-    mainToolBar->addSeparator();
+    group3->setLayout(vbox3);
+    mainToolBar->addWidget(group3);
+    mainToolBar->addWidget(new QLabel("    "));
 
     //第四组，显示编号和系统当前时间
-    mainToolBar->addWidget(new QLabel("   "));
-    serialNumber=new QLabel("系统编号："+xtbh);//编号
-    mainToolBar->addWidget(serialNumber);
-    mainToolBar->addWidget(new QLabel("   "));
+    serialNumber=new QLabel("    位置："+xtbh);//编号
+    vbox4->addWidget(serialNumber);
+    //vbox4->addWidget(new QLabel("   "));
     systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
-    mainToolBar->addWidget(systime);
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox4->addWidget(systime);
+    //vbox4->addWidget(new QLabel("   "));
 
-    mainToolBar->addSeparator();
+    group4->setLayout(vbox4);
+    mainToolBar->addWidget(group4);
+    mainToolBar->addWidget(new QLabel("    "));
 
     //第五组，告警
-    mainToolBar->addWidget(new QLabel("   "));
+    //关闭告警
     openClose = new QToolButton(this);
     openClose->setToolTip(tr("关闭告警"));
+    openClose->setMinimumHeight(40);
+    openClose->setMaximumHeight(40);
+    openClose->setMinimumWidth(40);
+    openClose->setMaximumWidth(40);
     openCloseSet="./icon/11_1.png";
     openClose->setIcon(QPixmap(openCloseSet));
-    openClose->setMinimumHeight(35);
-    mainToolBar->addWidget(openClose);
+    openClose->setIconSize(QSize(40,40));
+    vbox5->addWidget(openClose);
     connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox5->addWidget(new QLabel(" "));
 
+    //对象属性
     objectAttribute = new QToolButton(this);
     objectAttribute->setToolTip(tr("对象属性"));
+    objectAttribute->setMinimumHeight(40);
+    objectAttribute->setMaximumHeight(40);
+    objectAttribute->setMinimumWidth(40);
+    objectAttribute->setMaximumWidth(40);
     objectAttributeSet="./icon/17_1.png";
     objectAttribute->setIcon(QPixmap(objectAttributeSet));
-    objectAttribute->setMinimumHeight(35);
-    mainToolBar->addWidget(objectAttribute);
+    objectAttribute->setIconSize(QSize(40,40));
+    vbox5->addWidget(objectAttribute);
     connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox5->addWidget(new QLabel(" "));
 
+    //手动
     manual = new QToolButton(this);
     manual->setToolTip(tr("手动"));
+    manual->setMinimumHeight(40);
+    manual->setMaximumHeight(40);
+    manual->setMinimumWidth(40);
+    manual->setMaximumWidth(40);
     manualSet="./icon/12_1.png";
     manual->setIcon(QPixmap(manualSet));
-    manual->setMinimumHeight(35);
-    mainToolBar->addWidget(manual);
+    manual->setIconSize(QSize(40,40));
+    vbox5->addWidget(manual);
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox5->addWidget(new QLabel(" "));
 
+    //关闭目标属性跟随
     objects = new QToolButton(this);
     objects->setToolTip(tr("关闭目标属性跟随"));
+    objects->setMinimumHeight(40);
+    objects->setMaximumHeight(40);
+    objects->setMinimumWidth(40);
+    objects->setMaximumWidth(40);
     objectSet="./icon/13_1.png";
     objects->setIcon(QPixmap(objectSet));
-    objects->setMinimumHeight(35);
-    mainToolBar->addWidget(objects);
+    objects->setIconSize(QSize(40,40));
+    vbox5->addWidget(objects);
     connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox5->addWidget(new QLabel(" "));
 
+    //设置
     attribute = new QToolButton(this);
     attribute->setToolTip(tr("设置"));
+    attribute->setMinimumHeight(40);
+    attribute->setMaximumHeight(40);
+    attribute->setMinimumWidth(40);
+    attribute->setMaximumWidth(40);
     attributeSet="./icon/14_1.png";
     attribute->setIcon(QPixmap(attributeSet));
-    attribute->setMinimumHeight(35);
-    mainToolBar->addWidget(attribute);
+    attribute->setIconSize(QSize(40,40));
+    vbox5->addWidget(attribute);
     connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
+    vbox5->addWidget(new QLabel(" "));
 
+    //关闭声音
     voice = new QToolButton(this);
     voice->setToolTip(tr("关闭声音"));
+    voice->setMinimumHeight(40);
+    voice->setMaximumHeight(40);
+    voice->setMinimumWidth(40);
+    voice->setMaximumWidth(40);
     voiceSet="./icon/15_1.png";
     voice->setIcon(QPixmap(voiceSet));
-    voice->setMinimumHeight(35);
-    mainToolBar->addWidget(voice);
+    voice->setIconSize(QSize(40,40));
+    vbox5->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+
+    group5->setLayout(vbox5);
+    mainToolBar->addWidget(group5);
     mainToolBar->addWidget(new QLabel("   "));
 
-    mainToolBar->addSeparator();
-
-    mainToolBar->addWidget(new QLabel("   "));
+    //第六组
     exitButton = new QToolButton(this);
     exitButton->setToolTip(tr("退出"));
+    exitButton->setMinimumHeight(40);
+    exitButton->setMaximumHeight(40);
+    exitButton->setMinimumWidth(40);
+    exitButton->setMaximumWidth(40);
     exitSet="./icon/18.png";
     exitButton->setIcon(QPixmap(exitSet));
-    exitButton->setMinimumHeight(35);
+    exitButton->setIconSize(QSize(40,40));
     mainToolBar->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
-    mainToolBar->addWidget(new QLabel("   "));
-    mainToolBar->addSeparator();
 }
 
 //获取系统当前时间定时器
