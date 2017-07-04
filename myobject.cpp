@@ -227,6 +227,9 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     int size;
     in>>size;
     if(size>0){
+        cv::Point p;
+        in >>p.x>>p.y;
+        data.contours.push_back(p);
         for(int i=0;i<size;i++){
             cv::Point p;
             in >>p.x>>p.y;
@@ -249,6 +252,8 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     in >> size;
     double d;
     if(size>0){
+        in>>d;
+        data.theFeatures.push_back(d);
         for(int i=0;i<size;i++){
             in>>d;
             data.theFeatures.push_back(d);

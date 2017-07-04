@@ -293,6 +293,15 @@ void MainWindow::selfProcessing(){
 //    }
 //    //qDebug() << in.getObjs2().size();
 //    file.close();
+//    QFile file("myobj.dat");
+//    file.open(QIODevice::WriteOnly);
+//    QDataStream out(&file);
+//    for(int o = 0; o< in.getObjs2().size();o++ )
+//    {
+//        out << in.getObjs2().at(o);
+//    }
+//    //qDebug() << in.getObjs2().size();
+//    file.close();
 }
 
 //----------------------------------------------------------
