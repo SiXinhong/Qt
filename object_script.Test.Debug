@@ -17,8 +17,6 @@ INPUT(
 ./debug\show_sdk.o
 ./debug\timetrackbar.o
 ./debug\backwindow.o
-./debug\HSL.o
-./debug\ColorSpace.o
 ./debug\s_trakbar.o
 ./debug\objectattributes.o
 ./debug\mixer.o
@@ -31,6 +29,5 @@ INPUT(
 ./debug\moc_qj1widget.o
 ./debug\moc_qj2widget.o
 ./debug\moc_timetrackbar.o
-./debug\moc_backwindow.o
 ./debug\moc_objectAttributes.o
 );

@@ -32,8 +32,6 @@ SOURCES += main.cpp\
 #    backwindow.cpp \
     timetrackbar.cpp \
     backwindow.cpp \
-    HSL.cpp \
-    ColorSpace.cpp \
     s_trakbar.cpp \
     objectattributes.cpp \
     mixer.cpp
@@ -56,10 +54,8 @@ HEADERS  += mainwindow.h \
 #    backwindow.h \
     timetrackbar.h \
     backwindow.h \
-    ColorSpace.hpp \
     s_trackbar.h \
     s_trackbar.h \
-    HSL.hpp \
     objectAttributes.h \
     objectAttributes.h \
     mixer.h
@@ -99,5 +95,5 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
-LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\User32.Lib"
-LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\WinMM.Lib"
+LIBS += E:\github\Qt\lib\WinMM.Lib
+LIBS += E:\github\Qt\lib\User32.Lib

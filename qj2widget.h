@@ -12,6 +12,8 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QLabel>
+#include <QPainter>
+
 
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
@@ -31,6 +33,9 @@ private:
 QAction* Cancel_Select;
 QAction* To_Zhu;
 QAction* To_Ningshi;
+//QPainter * paint;
+QRect qrect;
+
 //QAction* To_Tanchu;
 
 public:
@@ -63,6 +68,8 @@ public:
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+    //void paintEvent(QPaintEvent *);
+
 
     void setMat(Mat m);
     Mat getMat();

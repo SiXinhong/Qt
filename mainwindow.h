@@ -50,13 +50,13 @@
 #include<QWidgetAction>
 #include "trackbar.h"
 #include "s_trackbar.h"
-#include "HSL.hpp"
 
 //#include"ltrackbar.h"
 //回放所需要的头文件
 
 #include<QDateEdit>
 #include<QDateTimeEdit>
+#include<QTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
 #include "objectAttributes.h"
@@ -84,12 +84,14 @@ public:
   QSound *sound;
    void adjustment();
    int bright_TrackbarValue;
+   int alpha_contrast;
    bool isPseudo;
    bool isVoice;
-   HSL *hsl;
+   //HSL *hsl;
    int color ;
-   int saturation1;
+  // int saturation1;
    void updateBright(Mat &mat1);
+   void updateContrast(Mat &mat1);
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -109,9 +111,9 @@ public:
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
     //加载图片到Label1上
-    void loadPictureToLabel1();
+    void loadPictureToLabel1(boolean isRect, QRect qrect);
     //加载图片到Label2上
-    void loadPictureToLabel2();
+    void loadPictureToLabel2(boolean isRect, QRect qrect);
     //加载图片到Label3上
     void loadPictureToLabel3();
     //加载图片到Label4上
@@ -230,7 +232,7 @@ protected:
      void jinProcessing();
 
      //自定义接口定时器
-     void selfTimerout();
+     virtual void selfTimerout();
 
      //与金老师接口的定时器处理
      void jinTimerout();
@@ -308,8 +310,8 @@ protected:
      QPushButton *quXiao;
      QLabel *startTime;
      QLabel *stopTime;
-     QDateTimeEdit *startTimeSet;
-     QDateTimeEdit *stopTimeSet;
+     QTimeEdit *startTimeSet;
+     QTimeEdit *stopTimeSet;
      QGridLayout *gridLayout;
 
 protected slots:
@@ -341,7 +343,8 @@ protected slots:
 
 
 
-private:
+//private:
+public:
     Ui::MainWindow *ui;
 class TrackBar* trackBar;
 class STrackBar* strackBar;

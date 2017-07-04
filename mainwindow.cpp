@@ -36,12 +36,13 @@
 #include <QMouseEvent>
 #include <QtGui/QPainter>
 #include "trackbar.h"
+#include <QDir>
 
 using namespace cv;
 using namespace std;
 
-QDateTime dateTimeStart;
-QDateTime dateTimeStop;
+QTime dateTimeStart;
+QTime dateTimeStop;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -50,9 +51,10 @@ MainWindow::MainWindow(QWidget *parent) :
     cmixer = new CMixer();
     sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
-    saturation1 = 100;
-    hsl=new HSL();
+    //saturation1 = 100;
+    //hsl=new HSL();
     bright_TrackbarValue=0;
+    alpha_contrast = 100;
     //objectAttributes = new QLabel();
     isPseudo = false;
     isVoice = false;
@@ -151,7 +153,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow(){
     delete ui;
-    delete hsl;
+   // delete hsl;
     delete strackBar;
     delete trackBar;
     delete objectAttributes;
@@ -223,10 +225,11 @@ void MainWindow::selfProcessing(){
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-           }
+        updateContrast(mat1);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -246,10 +249,11 @@ void MainWindow::selfProcessing(){
     if(this->isPseudo==true)
                        mat2=setPseudocolor(mat2);
        updateBright(mat2);
-       if(saturation1!=100){
-              hsl->channels[color].saturation1 = saturation1 - 100;
-              hsl->adjust(mat2, mat2);
-          }
+       updateContrast(mat2);
+//       if(saturation1!=100){
+//              hsl->channels[color].saturation1 = saturation1 - 100;
+//              hsl->adjust(mat2, mat2);
+//          }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -280,17 +284,25 @@ void MainWindow::selfProcessing(){
     widget6->setObjects(objs);
     widget6->draw();
     //drawUiLabel(mat6,6);
-    QFile file("myobj.dat");
-    file.open(QIODevice::WriteOnly);
-    QDataStream out(&file);
-    for(int o = 0; o< in.getObjs2().size();o++ )
-    {
-        out << in.getObjs2().at(o);
-    }
-    //qDebug() << in.getObjs2().size();
-    file.close();
+//    QFile file("myobj.dat");
+//    file.open(QIODevice::WriteOnly);
+//    QDataStream out(&file);
+//    for(int o = 0; o< in.getObjs2().size();o++ )
+//    {
+//        out << in.getObjs2().at(o);
+//    }
+//    //qDebug() << in.getObjs2().size();
+//    file.close();
+//    QFile file("myobj.dat");
+//    file.open(QIODevice::WriteOnly);
+//    QDataStream out(&file);
+//    for(int o = 0; o< in.getObjs2().size();o++ )
+//    {
+//        out << in.getObjs2().at(o);
+//    }
+//    //qDebug() << in.getObjs2().size();
+//    file.close();}
 }
-
 //----------------------------------------------------------
 
 //临时性处理函数，将来被金老师SDK替换------------------------------
@@ -448,7 +460,7 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(new QLabel("   "));
 
     saturation = new QToolButton(this);
-    saturation->setToolTip(tr("饱和度"));
+    saturation->setToolTip(tr("对比度"));
     saturationSet="./icon/8_1.png";
     saturation->setIcon(QPixmap(saturationSet));
     saturation->setMinimumHeight(35);
@@ -598,11 +610,13 @@ void MainWindow::adjustment()
         }
         updateBright(mat1);
         updateBright(mat2);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-               hsl->adjust(mat2, mat2);
-           }
+        updateContrast(mat1);
+        updateContrast(mat2);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//               hsl->adjust(mat2, mat2);
+//           }
         widget1->setMat(mat1);
         widget1->draw();
         widget3->draw();
@@ -668,8 +682,25 @@ void MainWindow::onTimerOut()
 //自定义接口定时器
 void MainWindow::selfTimerout(){
     //index=index+1;
+    QString today=QString("./huifang/")+QDate::currentDate().toString("yyyy-MM-dd");
+    QDir *todayDir=new QDir();
+    bool exist=todayDir->exists(today);
+    if(!exist){
+        todayDir->mkdir(today);
+    }
+    delete todayDir;
     vector<MyObject> objs = in.getObjs2();
-
+    for(int i=0;i<objs.size();i++){
+        QString current_time=QTime::currentTime().toString("hh-mm-ss");
+        QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i));
+        QFile file(current_path);
+        file.open(QIODevice::WriteOnly);
+        QDataStream out(&file);
+        out<<objs.at(i);
+        file.close();
+        current_time.clear();
+        current_path.clear();
+    }
 //    for(int i = 0; i < objs.size(); i++){
 //        MyObject obj = objs[i];
 //        qDebug()<<i;
@@ -689,10 +720,11 @@ void MainWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat1, mat1);
-           }
+        updateContrast(mat1);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat1, mat1);
+//           }
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
@@ -705,10 +737,11 @@ void MainWindow::selfTimerout(){
     if(this->isPseudo==true)
                         mat2=setPseudocolor(mat2);
         updateBright(mat2);
-        if(saturation1!=100){
-               hsl->channels[color].saturation1 = saturation1 - 100;
-               hsl->adjust(mat2, mat2);
-           }
+        updateContrast(mat2);
+//        if(saturation1!=100){
+//               hsl->channels[color].saturation1 = saturation1 - 100;
+//               hsl->adjust(mat2, mat2);
+//           }
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -877,6 +910,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget1->rectan3.width = widget1->rectan3.height * widget3->width() / widget3->height();
+
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
         int count = widget1->objs.size();
@@ -940,6 +976,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget2->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget2->rectan3.width = widget2->rectan3.height * widget3->width() / widget3->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
@@ -997,6 +1035,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
+
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
         int count = widget1->objs.size();
@@ -1053,6 +1094,9 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
             widget2->rectan4.height = widget2->newrect.height;
         }
         widget2->isRect = false;
+
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
@@ -1307,13 +1351,32 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 }
 
 //加载图片到Label1上
-void MainWindow::loadPictureToLabel1(){
-    loadPictureToLabel(label,imgLabel1);
+void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect){
+    //loadPictureToLabel(label,imgLabel1);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel1);
+    if(isRect){
+        QPainter painter(&pixmap1);
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
+        painter.drawRect(qrect);
+    }
+    label->setScaledContents(true);
+    label->setPixmap(pixmap1);
 }
 
 //加载图片到Label2上
-void MainWindow::loadPictureToLabel2(){
-    loadPictureToLabel(label2,imgLabel2);
+void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect){
+    //loadPictureToLabel(label2,imgLabel2);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel2);
+
+    if(isRect){
+        QPainter painter(&pixmap1);
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
+        painter.drawRect(qrect);
+    }
+    label2->setScaledContents(true);
+    label2->setPixmap(pixmap1);
 }
 
 //加载图片到Label3上
@@ -1602,14 +1665,14 @@ void MainWindow::openFunction()
 {
     startTime=new QLabel(QWidget::tr("起始时间"));
     //开始时间选择框
-    startTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
-    startTimeSet->setCalendarPopup(true);
-    startTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    startTimeSet=new QTimeEdit(QTime::currentTime(), this);
+    //startTimeSet->setCalendarPopup(true);
+    startTimeSet->setDisplayFormat("HH:mm:ss");
     //结束时间选择框
     stopTime=new QLabel(QWidget::tr("结束时间"));
-    stopTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
-    stopTimeSet->setCalendarPopup(true);
-    stopTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    stopTimeSet=new QTimeEdit(QTime::currentTime(), this);
+    //stopTimeSet->setCalendarPopup(true);
+    stopTimeSet->setDisplayFormat("HH:mm:ss");
     queDing=new QPushButton("确定",this);
     connect(queDing,SIGNAL(clicked()),this,SLOT(queDingFunction()));
     quXiao=new QPushButton("取消",this);
@@ -1637,17 +1700,17 @@ void MainWindow::openFunction()
 }
 void MainWindow::queDingFunction()
 {
-    dateTimeStart=startTimeSet->dateTime();
-    dateTimeStop=stopTimeSet->dateTime();
-    int start=dateTimeStart.toTime_t();
-    int stop=dateTimeStop.toTime_t();
-    if(start==stop)
+    dateTimeStart=startTimeSet->time();
+    dateTimeStop=stopTimeSet->time();
+//    int start=dateTimeStart.toTime_t();
+//    int stop=dateTimeStop.toTime_t();
+    if(dateTimeStart==dateTimeStop)
     {
         QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
         widgetNew->close();
         widgetNew->show();
     }
-    else if(start>stop)
+    else if(dateTimeStart>dateTimeStop)
     {
         QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
         widgetNew->close();
@@ -1671,8 +1734,10 @@ void MainWindow::quXiaoFunction()
 void MainWindow::automFunction()
 {
     bright_TrackbarValue = 0;
+    alpha_contrast = 100;
     trackBar->setPosition(0);
-    saturation1 = 100;
+    strackBar->setPosition(100);
+    //saturation1 = 100;
     isPseudo = false;
     adjustment();
 }
@@ -1761,12 +1826,33 @@ void MainWindow::brightnessFunction()
 //    }
 //    imshow("Connected Components", dst);//显示窗口
 //}
-//饱和度
+
+void MainWindow::updateContrast(Mat &mat1){
+    for (int y = 0; y < mat1.rows; y++)
+        {
+            for (int x = 0; x < mat1.cols; x++)
+            {
+                for (int c = 0; c < 3; c++)
+                {
+                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) + beta_value);
+                    mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(0.01*alpha_contrast*(mat1.at<Vec3b>(y, x)[c]));
+
+                    if (mat1.at<Vec3b>(y, x)[c] > 255)
+                    {
+                        mat1.at<Vec3b>(y, x)[c] = 255;
+                    }
+                }
+            }
+        }
+
+}
+//对比度
 void MainWindow::saturationFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
    //QMessageBox::information(this,tr("调整图像饱和度功能，有待实现。"),tr("继续努力。"));
-    strackBar->setWindowTitle("饱和度");
+        strackBar->setWindowTitle("对比度");
          strackBar->show();
          strackBar->activateWindow();
          strackBar->move(strackBar->x(),strackBar->y());
@@ -1814,20 +1900,20 @@ void MainWindow::manualFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 
-    string imageurl="./s1/1.bmp";
-    Mat mat1 =imread(imageurl);
-    Rect rectan;
-    rectan.x=1690;// = Rect(1490,250,100,100);
-    rectan.y=350;
-    rectan.width=200;
-    rectan.height=200;
+//    string imageurl="./s1/1.bmp";
+//    Mat mat1 =imread(imageurl);
+//    Rect rectan;
+//    rectan.x=1690;// = Rect(1490,250,100,100);
+//    rectan.y=350;
+//    rectan.width=200;
+//    rectan.height=200;
 
-    //MainWindow *mw = (MainWindow*)parentWidget();
-    //mw->test();
+//    //MainWindow *mw = (MainWindow*)parentWidget();
+//    //mw->test();
 
-    drawRecOnPic2(mat1,rectan);
-    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
-    loadPictureToLabel1();
+//    drawRecOnPic2(mat1,rectan);
+//    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
+//    loadPictureToLabel1();
 }
 //目标属性列表
 void MainWindow::objectAttributeFunction()
@@ -1835,6 +1921,7 @@ void MainWindow::objectAttributeFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
+    this->objectAttributes->activateWindow();
     this->objectAttributes->setWindowTitle("目标属性列表");
     this->objectAttributes->setGeometry(250,60,900,650);
    // this->objectAttributes->tr("oid");
