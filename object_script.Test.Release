@@ -17,8 +17,6 @@ INPUT(
 ./release\show_sdk.o
 ./release\timetrackbar.o
 ./release\backwindow.o
-./release\HSL.o
-./release\ColorSpace.o
 ./release\s_trakbar.o
 ./release\objectattributes.o
 ./release\mixer.o

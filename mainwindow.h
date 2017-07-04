@@ -48,7 +48,6 @@
 #include<QWidgetAction>
 #include "trackbar.h"
 #include "s_trackbar.h"
-#include "HSL.hpp"
 
 //#include"ltrackbar.h"
 //回放所需要的头文件
@@ -83,12 +82,14 @@ public:
   QSound *sound;
    void adjustment();
    int bright_TrackbarValue;
+   int alpha_contrast;
    bool isPseudo;
    bool isVoice;
-   HSL *hsl;
+   //HSL *hsl;
    int color ;
-   int saturation1;
+  // int saturation1;
    void updateBright(Mat &mat1);
+   void updateContrast(Mat &mat1);
     //QApplication a;
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();

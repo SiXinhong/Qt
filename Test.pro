@@ -32,8 +32,6 @@ SOURCES += main.cpp\
 #    backwindow.cpp \
     timetrackbar.cpp \
     backwindow.cpp \
-    HSL.cpp \
-    ColorSpace.cpp \
     s_trakbar.cpp \
     objectattributes.cpp \
     mixer.cpp
@@ -56,10 +54,8 @@ HEADERS  += mainwindow.h \
 #    backwindow.h \
     timetrackbar.h \
     backwindow.h \
-    ColorSpace.hpp \
     s_trackbar.h \
     s_trackbar.h \
-    HSL.hpp \
     objectAttributes.h \
     objectAttributes.h \
     mixer.h
