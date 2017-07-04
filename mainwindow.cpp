@@ -36,12 +36,13 @@
 #include <QMouseEvent>
 #include <QtGui/QPainter>
 #include "trackbar.h"
+#include <QDir>
 
 using namespace cv;
 using namespace std;
 
-QDateTime dateTimeStart;
-QDateTime dateTimeStop;
+QTime dateTimeStart;
+QTime dateTimeStop;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -280,6 +281,15 @@ void MainWindow::selfProcessing(){
     widget6->setObjects(objs);
     widget6->draw();
     //drawUiLabel(mat6,6);
+//    QFile file("myobj.dat");
+//    file.open(QIODevice::WriteOnly);
+//    QDataStream out(&file);
+//    for(int o = 0; o< in.getObjs2().size();o++ )
+//    {
+//        out << in.getObjs2().at(o);
+//    }
+//    //qDebug() << in.getObjs2().size();
+//    file.close();
 }
 
 //----------------------------------------------------------
@@ -648,8 +658,25 @@ void MainWindow::onTimerOut()
 //自定义接口定时器
 void MainWindow::selfTimerout(){
     //index=index+1;
+    QString today=QString("./huifang/")+QDate::currentDate().toString("yyyy-MM-dd");
+    QDir *todayDir=new QDir();
+    bool exist=todayDir->exists(today);
+    if(!exist){
+        todayDir->mkdir(today);
+    }
+    delete todayDir;
     vector<MyObject> objs = in.getObjs2();
-
+    for(int i=0;i<objs.size();i++){
+        QString current_time=QTime::currentTime().toString("hh-mm-ss");
+        QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i));
+        QFile file(current_path);
+        file.open(QIODevice::WriteOnly);
+        QDataStream out(&file);
+        out<<objs.at(i);
+        file.close();
+        current_time.clear();
+        current_path.clear();
+    }
 //    for(int i = 0; i < objs.size(); i++){
 //        MyObject obj = objs[i];
 //        qDebug()<<i;
@@ -1582,14 +1609,14 @@ void MainWindow::openFunction()
 {
     startTime=new QLabel(QWidget::tr("起始时间"));
     //开始时间选择框
-    startTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
-    startTimeSet->setCalendarPopup(true);
-    startTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    startTimeSet=new QTimeEdit(QTime::currentTime(), this);
+    //startTimeSet->setCalendarPopup(true);
+    startTimeSet->setDisplayFormat("HH:mm:ss");
     //结束时间选择框
     stopTime=new QLabel(QWidget::tr("结束时间"));
-    stopTimeSet=new QDateTimeEdit(QDateTime::currentDateTime(), this);
-    stopTimeSet->setCalendarPopup(true);
-    stopTimeSet->setDisplayFormat("yyyy-MM-dd HH:mm:ss");
+    stopTimeSet=new QTimeEdit(QTime::currentTime(), this);
+    //stopTimeSet->setCalendarPopup(true);
+    stopTimeSet->setDisplayFormat("HH:mm:ss");
     queDing=new QPushButton("确定",this);
     connect(queDing,SIGNAL(clicked()),this,SLOT(queDingFunction()));
     quXiao=new QPushButton("取消",this);
@@ -1617,17 +1644,17 @@ void MainWindow::openFunction()
 }
 void MainWindow::queDingFunction()
 {
-    dateTimeStart=startTimeSet->dateTime();
-    dateTimeStop=stopTimeSet->dateTime();
-    int start=dateTimeStart.toTime_t();
-    int stop=dateTimeStop.toTime_t();
-    if(start==stop)
+    dateTimeStart=startTimeSet->time();
+    dateTimeStop=stopTimeSet->time();
+//    int start=dateTimeStart.toTime_t();
+//    int stop=dateTimeStop.toTime_t();
+    if(dateTimeStart==dateTimeStop)
     {
         QMessageBox::information(this,tr("警告"),tr("开始时间和结束时间相同"));
         widgetNew->close();
         widgetNew->show();
     }
-    else if(start>stop)
+    else if(dateTimeStart>dateTimeStop)
     {
         QMessageBox::information(this,tr("警告"),tr("开始时间大于结束时间"));
         widgetNew->close();
@@ -1815,6 +1842,7 @@ void MainWindow::objectAttributeFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
+    this->objectAttributes->activateWindow();
     this->objectAttributes->setWindowTitle("目标属性列表");
     this->objectAttributes->setGeometry(250,60,900,650);
    // this->objectAttributes->tr("oid");

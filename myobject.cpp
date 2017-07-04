@@ -1,6 +1,6 @@
 #include "myobject.h"
 #include "cvutil.h";
-
+#include <QBuffer>
 MyObject::MyObject(){
     this->color = CVUtil::getRandomColor();
 
@@ -177,3 +177,157 @@ void MyObject::SetColor(Scalar co){
 Scalar MyObject::getColor(){
     return this->color;
 }
+QDataStream& writeMat(QDataStream &out,Mat &m){
+    size_t elem_size = m.elemSize();
+    size_t elem_type = m.type();
+    const size_t data_size = m.cols * m.rows * elem_size;
+
+    out << elem_size<<elem_type <<m.cols<<m.rows;
+
+    uchar *p=m.ptr();
+    for(size_t i=0;i<data_size;i++){
+        out<<*(p++);
+    }
+    return out;
+}
+
+QDataStream& readMat(QDataStream &in,Mat &m){
+    size_t elem_size,elem_type;
+    int cols,rows;
+    in>> elem_size >> elem_type >> cols >> rows;
+
+    const size_t data_size = cols * rows * elem_size;
+
+    m.create(rows, cols, elem_type);
+    uchar *p=m.ptr();
+    for(size_t i=0;i<data_size;i++){
+        in>>*(p++);
+    }
+
+    return in;
+}
+QDataStream& operator>>(QDataStream &in,MyObject& data){
+    in>>data.box.x>>data.box.y>>data.box.height>>data.box.width;
+
+//    int c1,c2,c3;
+//    in>>c1>>c2>>c3;
+//    data.SetColor(Scalar(c1,c2,c3));
+//    color初始化的代码是随机生成的颜色,也就是每次看到的物体的颜色是不同的,应该无需序列化,如果需要,上面三行可能能用
+    in>>data.oid;
+    in>>data.cenPoint.x>>data.cenPoint.y;
+    in>>data.blocksize.width>>data.blocksize.height;
+    in>>data.Velocity;
+    in>>data.MotionDerection;
+    in>>data.area;
+    in>>data.horizontalAxisLength;
+    in>>data.verticalAxisLength;
+    in>>data.absoluteIntensity;
+    in>>data.relativeIntensity;
+
+    int size;
+    in>>size;
+    if(size>0){
+        for(int i=0;i<size;i++){
+            cv::Point p;
+            in >>p.x>>p.y;
+            data.contours.push_back(p);
+        }
+    }
+    int flag;
+    in >> flag;
+    if(flag==1){
+        readMat(in,data.Snapshoot);
+    }
+    in >> flag;
+    if(flag==1){
+        readMat(in,data.sihouette);
+    }
+    in>>data.targetScale;
+    in>>data.CenSueEintensity;
+    in>>data.SCRValue;
+
+    in >> size;
+    double d;
+    if(size>0){
+        for(int i=0;i<size;i++){
+            in>>d;
+            data.theFeatures.push_back(d);
+        }
+    }
+    return in;
+}
+
+QDataStream& operator<<(QDataStream &out,MyObject& data){
+    out<<data.box.x<<data.box.y<<data.box.height<<data.box.width;//box
+
+//    out<<data.color.val[0];
+//    out<<data.color.val[1];
+//    out<<data.color.val[2];
+//    color初始化的代码是随机生成的颜色,也就是每次看到的物体的颜色是不同的,应该无需序列化,如果需要,上面三行可能能用
+    out<<data.oid;
+    out<<data.cenPoint.x<<data.cenPoint.y;
+    out<<data.blocksize.width<<data.blocksize.height;
+    out<<data.Velocity;
+    out<<data.MotionDerection;
+    out<<data.area;
+    out<<data.horizontalAxisLength;
+    out<<data.verticalAxisLength;
+    out<<data.absoluteIntensity;
+    out<<data.relativeIntensity;
+    int size=data.contours.size();
+    out<<size;
+    if(size>0){
+        for(int i=0;i<size;i++){
+            cv::Point p= data.contours.at(i);
+            out<<p.x<<p.y;
+        }
+    }
+    if(data.Snapshoot.empty()){
+        out<<-1;
+    }else{
+        out<<1;
+        writeMat(out,data.Snapshoot);
+    }
+    if(data.sihouette.empty()){
+        out<<-1;
+    }else{
+        out<<1;
+        writeMat(out,data.sihouette);
+    }
+    out<<data.targetScale;
+    out<<data.CenSueEintensity;
+    out<<data.SCRValue;
+    size=data.theFeatures.size();
+    out<<size;
+    if(size>0){
+        for(int j=0;j<size;j++){
+            double d=data.theFeatures.at(j);
+            out<<d;
+        }
+    }
+    return out;
+}
+//MyObject& DeSerializable(const QByteArray &datagram){
+//    QByteArray tmp_array = datagram;
+//    QBuffer buffer(&tmp_array);
+//    buffer.open(QIODevice::ReadOnly);
+
+//    QDataStream in(&buffer);
+//    //反序列化，获取对象信息
+//    MyObject obj;
+//    in>>obj;
+//    buffer.close();
+//    return obj;
+//}
+//QByteArray& Serializable(const MyObject &myObject){
+//        QByteArray tmp_array;
+//        QBuffer buffer(&tmp_array);
+//        buffer.open(QIODevice::WriteOnly);
+
+//        QDataStream out(&buffer);
+//        //序列化对象信息
+//        //out<<myObject;
+//        buffer.close();
+//        return tmp_array;
+//}
+

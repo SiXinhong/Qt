@@ -31,6 +31,5 @@ INPUT(
 ./release\moc_qj1widget.o
 ./release\moc_qj2widget.o
 ./release\moc_timetrackbar.o
-./release\moc_backwindow.o
 ./release\moc_objectAttributes.o
 );
