@@ -55,6 +55,7 @@
 
 #include<QDateEdit>
 #include<QDateTimeEdit>
+#include<QTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
 #include "objectAttributes.h"
@@ -228,7 +229,7 @@ protected:
      void jinProcessing();
 
      //自定义接口定时器
-     void selfTimerout();
+     virtual void selfTimerout();
 
      //与金老师接口的定时器处理
      void jinTimerout();
@@ -305,8 +306,8 @@ protected:
      QPushButton *quXiao;
      QLabel *startTime;
      QLabel *stopTime;
-     QDateTimeEdit *startTimeSet;
-     QDateTimeEdit *stopTimeSet;
+     QTimeEdit *startTimeSet;
+     QTimeEdit *stopTimeSet;
      QGridLayout *gridLayout;
 
 protected slots:
@@ -338,7 +339,8 @@ protected slots:
 
 
 
-private:
+//private:
+public:
     Ui::MainWindow *ui;
 class TrackBar* trackBar;
 class STrackBar* strackBar;

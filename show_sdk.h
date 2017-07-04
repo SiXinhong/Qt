@@ -10,6 +10,9 @@
 #include <vector>
 #include <fstream>
 #include <opencv.hpp>
+
+
+#include <QDataStream>
 using namespace std;
 
 #define MIN_ID 0

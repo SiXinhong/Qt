@@ -227,9 +227,17 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     int size;
     in>>size;
     if(size>0){
+<<<<<<< HEAD
         cv::Point p;
         in >>p.x>>p.y;
         data.contours.push_back(p);
+=======
+        for(int i=0;i<size;i++){
+            cv::Point p;
+            in >>p.x>>p.y;
+            data.contours.push_back(p);
+        }
+>>>>>>> 641a9a0f6885379453011a77b15f7f1a4eb86aca
     }
     int flag;
     in >> flag;
@@ -247,8 +255,15 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     in >> size;
     double d;
     if(size>0){
+<<<<<<< HEAD
         in>>d;
         data.theFeatures.push_back(d);
+=======
+        for(int i=0;i<size;i++){
+            in>>d;
+            data.theFeatures.push_back(d);
+        }
+>>>>>>> 641a9a0f6885379453011a77b15f7f1a4eb86aca
     }
     return in;
 }

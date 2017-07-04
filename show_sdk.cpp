@@ -265,3 +265,155 @@ int GetCameraPara(int id,char *&para_string)
 
 	return GetParaSuccess;
 }
+
+QDataStream& writeMat2(QDataStream &out,cv::Mat &m){
+    size_t elem_size = m.elemSize();
+    size_t elem_type = m.type();
+    const size_t data_size = m.cols * m.rows * elem_size;
+
+    out << elem_size<<elem_type <<m.cols<<m.rows;
+
+    uchar *p=m.ptr();
+    for(size_t i=0;i<data_size;i++){
+        out<<*(p++);
+    }
+    return out;
+}
+
+QDataStream& readMat2(QDataStream &in,cv::Mat &m){
+    size_t elem_size,elem_type;
+    int cols,rows;
+    in>> elem_size >> elem_type >> cols >> rows;
+
+    const size_t data_size = cols * rows * elem_size;
+
+    m.create(rows, cols, elem_type);
+    uchar *p=m.ptr();
+    for(size_t i=0;i<data_size;i++){
+        in>>*(p++);
+    }
+
+    return in;
+}
+QDataStream& readSmallTarget(QDataStream &in,SmallTarget& data){
+    in>>data.id;
+    in>>data.cenPoint.x>>data.cenPoint.y;
+    in>>data.blocksize.width>>data.blocksize.height;
+    in>>data.Velocity;
+    in>>data.MotionDerection;
+    in>>data.area;
+    in>>data.horizontalAxisLength;
+    in>>data.verticalAxisLength;
+    in>>data.absoluteIntensity;
+    in>>data.relativeIntensity;
+
+    int size;
+    in>>size;
+    if(size>0){
+        cv::Point p;
+        in >>p.x>>p.y;
+        data.contours.push_back(p);
+    }
+    int flag;
+    in >> flag;
+    if(flag==1){
+        readMat2(in,data.Snapshoot);
+    }
+    in >> flag;
+    if(flag==1){
+        readMat2(in,data.sihouette);
+    }
+    in>>data.targetScale;
+    in>>data.CenSueEintensity;
+    in>>data.SCRValue;
+
+    in >> size;
+    double d;
+    if(size>0){
+        in>>d;
+        data.theFeatures.push_back(d);
+    }
+    return in;
+}
+
+QDataStream& writeSmallTarget(QDataStream &out,SmallTarget& data){
+    out<<data.id;
+    out<<data.cenPoint.x<<data.cenPoint.y;
+    out<<data.blocksize.width<<data.blocksize.height;
+    out<<data.Velocity;
+    out<<data.MotionDerection;
+    out<<data.area;
+    out<<data.horizontalAxisLength;
+    out<<data.verticalAxisLength;
+    out<<data.absoluteIntensity;
+    out<<data.relativeIntensity;
+    int size=data.contours.size();
+    out<<size;
+    if(size>0){
+        for(int i=0;i<size;i++){
+            cv::Point p= data.contours.at(i);
+            out<<p.x<<p.y;
+        }
+    }
+    if(data.Snapshoot.empty()){
+        out<<-1;
+    }else{
+        out<<1;
+        writeMat2(out,data.Snapshoot);
+    }
+    if(data.sihouette.empty()){
+        out<<-1;
+    }else{
+        out<<1;
+        writeMat2(out,data.sihouette);
+    }
+    out<<data.targetScale;
+    out<<data.CenSueEintensity;
+    out<<data.SCRValue;
+    size=data.theFeatures.size();
+    out<<size;
+    if(size>0){
+        for(int j=0;j<size;j++){
+            double d=data.theFeatures.at(j);
+            out<<d;
+        }
+    }
+    return out;
+}
+
+QDataStream& writeIntegratedData(QDataStream &out,IntegratedData& data){
+    out<<data.time.year<<data.time.month<<data.time.day<<data.time.hour<<data.time.minute<<data.time.seconds<<data.time.millisecond;
+    if(data.panoImage.empty()){
+        out<<-1;
+    }else{
+        out<<1;
+        writeMat2(out,data.panoImage);
+    }
+    int size=data.targets.size();
+    out<<size;
+    if(size>0){
+        for(int j=0;j<size;j++){
+            SmallTarget smallTarget=data.targets.at(j);
+            writeSmallTarget(out,smallTarget);
+        }
+    }
+    return out;
+}
+
+QDataStream& readIntegratedData(QDataStream &in,IntegratedData& data){
+    in>>data.time.year>>data.time.month>>data.time.day>>data.time.hour>>data.time.minute>>data.time.seconds>>data.time.millisecond;
+    int flag;
+    in>>flag;
+    if(flag==1){
+        readMat2(in,data.panoImage);
+    }
+    int size;
+    in>>size;
+    if(size>0){
+        for(int j=0;j<size;j++){
+            SmallTarget smallTarget;
+            data.targets.push_back(smallTarget);
+        }
+    }
+    return in;
+}

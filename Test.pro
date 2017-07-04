@@ -99,5 +99,5 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
         LIBS+=E:\QTsource\OpenCV\lib\libopencv_ts231.a\
 
-LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\User32.Lib"
-LIBS += "C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.1A\\Lib\\WinMM.Lib"
+LIBS += E:\github\Qt\lib\WinMM.Lib
+LIBS += E:\github\Qt\lib\User32.Lib
