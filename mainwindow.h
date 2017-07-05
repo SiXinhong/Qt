@@ -314,6 +314,7 @@ protected:
      QLabel *stopTime;
      QTimeEdit *startTimeSet;
      QTimeEdit *stopTimeSet;
+     QDateEdit *dateEdit;
      QGridLayout *gridLayout;
 
 protected slots:
@@ -334,7 +335,7 @@ protected slots:
 
      void attributeFunction();
      void voiceFunction();
-     void exitFunction();
+     virtual void exitFunction();
      void closeEvent(QCloseEvent *event);
 
      //void lightFunction();
@@ -342,6 +343,7 @@ protected slots:
      //回放所需函数
      void queDingFunction();
      void quXiaoFunction();
+     virtual void timeLineFunction();
 
 
 

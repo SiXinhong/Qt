@@ -252,8 +252,6 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     in >> size;
     double d;
     if(size>0){
-        in>>d;
-        data.theFeatures.push_back(d);
         for(int i=0;i<size;i++){
             in>>d;
             data.theFeatures.push_back(d);
@@ -312,26 +310,3 @@ QDataStream& operator<<(QDataStream &out,MyObject& data){
     }
     return out;
 }
-//MyObject& DeSerializable(const QByteArray &datagram){
-//    QByteArray tmp_array = datagram;
-//    QBuffer buffer(&tmp_array);
-//    buffer.open(QIODevice::ReadOnly);
-
-//    QDataStream in(&buffer);
-//    //反序列化，获取对象信息
-//    MyObject obj;
-//    in>>obj;
-//    buffer.close();
-//    return obj;
-//}
-//QByteArray& Serializable(const MyObject &myObject){
-//        QByteArray tmp_array;
-//        QBuffer buffer(&tmp_array);
-//        buffer.open(QIODevice::WriteOnly);
-
-//        QDataStream out(&buffer);
-//        //序列化对象信息
-//        //out<<myObject;
-//        buffer.close();
-//        return tmp_array;
-//}

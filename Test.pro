@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     backwindow.cpp \
     s_trakbar.cpp \
     objectattributes.cpp \
-    mixer.cpp
+    mixer.cpp \
+    timeline.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     s_trackbar.h \
     objectAttributes.h \
     objectAttributes.h \
-    mixer.h
+    mixer.h \
+    timeline.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

@@ -23,7 +23,6 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
     update();//触发重绘操作，生成paintEvent事件
     mainWindow->bright_TrackbarValue=position;
     mainWindow->adjustment();
-
 }
 
 
