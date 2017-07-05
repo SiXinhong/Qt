@@ -416,6 +416,7 @@ void BackWindow :: timeLineFunction(){
     timeLine->setTime(start,stop);
     timeLine->setWindowFlags(Qt::WindowStaysOnTopHint);
     timeLine->setWindowTitle("Ê±¼äÏß");
+    timeLine->activateWindow();
     timeLine->move(200,200);
     timeLine->move(timeLine->x(),timeLine->y());
     timeLine->show();

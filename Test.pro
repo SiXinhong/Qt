@@ -30,7 +30,6 @@ SOURCES += main.cpp\
     myobjecttrack.cpp \
     show_sdk.cpp \
 #    backwindow.cpp \
-    timetrackbar.cpp \
     backwindow.cpp \
     s_trakbar.cpp \
     objectattributes.cpp \
@@ -53,7 +52,6 @@ HEADERS  += mainwindow.h \
     myobjecttrack.h \
     show_sdk.h\
 #    backwindow.h \
-    timetrackbar.h \
     backwindow.h \
     s_trackbar.h \
     s_trackbar.h \

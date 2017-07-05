@@ -15,7 +15,6 @@ INPUT(
 ./debug\myinterface.o
 ./debug\myobjecttrack.o
 ./debug\show_sdk.o
-./debug\timetrackbar.o
 ./debug\backwindow.o
 ./debug\s_trakbar.o
 ./debug\objectattributes.o
@@ -29,6 +28,5 @@ INPUT(
 ./debug\moc_lwidget.o
 ./debug\moc_qj1widget.o
 ./debug\moc_qj2widget.o
-./debug\moc_timetrackbar.o
 ./debug\moc_objectAttributes.o
 );
