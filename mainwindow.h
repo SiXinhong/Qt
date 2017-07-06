@@ -312,8 +312,8 @@ protected:
      QPushButton *quXiao;
      QLabel *startTime;
      QLabel *stopTime;
-     QTimeEdit *startTimeSet;
-     QTimeEdit *stopTimeSet;
+     QDateTimeEdit *startTimeSet;
+     QDateTimeEdit *stopTimeSet;
      QDateEdit *dateEdit;
      QGridLayout *gridLayout;
 
