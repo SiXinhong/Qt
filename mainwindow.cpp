@@ -734,10 +734,12 @@ void MainWindow::selfTimerout(){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
         QFile file(current_path);
+        if(isJixu == true){
         file.open(QIODevice::WriteOnly);
         QDataStream out(&file);
         out<<objs.at(i);
         file.close();
+        }
         current_time.clear();
         current_path.clear();
     }

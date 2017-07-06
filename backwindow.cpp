@@ -186,20 +186,20 @@ void BackWindow::addMyToolBar_backWindow()
     mstop->setIconSize(QSize(buttonSize,buttonSize));
     vbox1->addWidget(mstop);
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
-    //vbox1->addWidget(new QLabel(" "));
+   // vbox1->addWidget(new QLabel(" "));
     //回放
-    open = new QToolButton(this);
-    open->setToolTip(tr("回放"));
-    open->setMinimumHeight(buttonSize);
-    open->setMaximumHeight(buttonSize);
-    open->setMinimumWidth(buttonSize);
-    open->setMaximumWidth(buttonSize);
-    open->setStyleSheet("border-style:flat;background-color:2E302D");
-    openSet="./icon/3_1.png";
-    open->setIcon(QPixmap(openSet));
-    open->setIconSize(QSize(buttonSize,buttonSize));
-    vbox1->addWidget(open);
-    connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
+//    open = new QToolButton(this);
+//    open->setToolTip(tr("回放"));
+//    open->setMinimumHeight(buttonSize);
+//    open->setMaximumHeight(buttonSize);
+//    open->setMinimumWidth(buttonSize);
+//    open->setMaximumWidth(buttonSize);
+//    open->setStyleSheet("border-style:flat;background-color:2E302D");
+//    openSet="./icon/3_1.png";
+//    open->setIcon(QPixmap(openSet));
+//    open->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox1->addWidget(open);
+//    connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
     group1->setLayout(vbox1);
     mainToolBar->addWidget(group1);
@@ -420,4 +420,6 @@ void BackWindow :: timeLineFunction(){
     timeLine->move(200,200);
     timeLine->move(timeLine->x(),timeLine->y());
     timeLine->show();
+    timeLine->position= fileIndex*255/fileInfo->count();
+   // backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
 }

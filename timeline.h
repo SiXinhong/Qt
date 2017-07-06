@@ -11,9 +11,10 @@ public:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    int position;
 private:
     class BackWindow* backWindow;
-    int position;
+
     bool mousedown;
     QTime start;
     QTime stop;

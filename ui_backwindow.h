@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'backwindow.ui'
 **
-** Created: Wed Jun 28 15:26:39 2017
+** Created: Thu Jul 6 10:59:14 2017
 **      by: Qt User Interface Compiler version 4.7.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
@@ -52,7 +52,7 @@ public:
 
     void retranslateUi(QMainWindow *BackWindow)
     {
-        BackWindow->setWindowTitle(QApplication::translate("BackWindow", "\345\233\236\346\224\276", 0, QApplication::UnicodeUTF8));
+        BackWindow->setWindowTitle(QApplication::translate("BackWindow", "MainWindow", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };
