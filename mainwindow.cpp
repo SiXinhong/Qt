@@ -331,7 +331,7 @@ void MainWindow::addMyToolBar()
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
     int screenWidth=screenRect.width();
-    const int buttonSize=(screenWidth-466)/20;
+    const int buttonSize=(screenWidth*0.7)/21.6;
 
     QGroupBox *group1=new QGroupBox(this);
     QGroupBox *group2=new QGroupBox(this);
@@ -349,11 +349,11 @@ void MainWindow::addMyToolBar()
     //加图标
     //mainToolBar->addWidget(new QLabel(""));
     QPixmap pixmap3("./icon/fujirui.png");
-    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.5,buttonSize*1.5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.7,buttonSize*1.7, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QLabel *tuBiao=new QLabel(this);
     tuBiao->setPixmap(fitpixmap3);
     mainToolBar->addWidget(tuBiao);
-    //mainToolBar->addWidget(new QLabel(" "));
+    mainToolBar->addWidget(new QLabel(" "));
     //第一组按钮：监控和后退，还有回放
     //启动/停止
 
@@ -489,29 +489,164 @@ void MainWindow::addMyToolBar()
     QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    light1=new QLabel(this);
-    light1->setPixmap(fitpixmap1);
-    vbox3->addWidget(light1);
-    //vbox3->addWidget(new QLabel(" "));
+    vector<MyObject> vec = in.getObjs2();
+      if(vec.size()==0)
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap2);
+          vbox3->addWidget(light1);
+          //vbox3->addWidget(new QLabel(" "));
 
-    light2=new QLabel(this);
-    light2->setPixmap(fitpixmap1);
-    vbox3->addWidget(light2);
-    //vbox3->addWidget(new QLabel(" "));
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap2);
+          vbox3->addWidget(light2);
+          //vbox3->addWidget(new QLabel(" "));
 
-    light3=new QLabel(this);
-    light3->setPixmap(fitpixmap1);
-    vbox3->addWidget(light3);
-    //vbox3->addWidget(new QLabel(" "));
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap2);
+          vbox3->addWidget(light3);
+          //vbox3->addWidget(new QLabel(" "));
 
-    light4=new QLabel(this);
-    light4->setPixmap(fitpixmap2);
-    vbox3->addWidget(light4);
-    //vbox3->addWidget(new QLabel(" "));
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap2);
+          vbox3->addWidget(light4);
+         // vbox3->addWidget(new QLabel(" "));
 
-    light5=new QLabel(this);
-    light5->setPixmap(fitpixmap2);
-    vbox3->addWidget(light5);
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap2);
+          //vbox3->addWidget(light5);
+      }
+      else if(vec.size()==1)
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap1);
+          vbox3->addWidget(light1);
+          //vbox3->addWidget(new QLabel(" "));
+
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap2);
+          vbox3->addWidget(light2);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap2);
+          vbox3->addWidget(light3);
+          //vbox3->addWidget(new QLabel(" "));
+
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap2);
+          vbox3->addWidget(light4);
+        // vbox3->addWidget(new QLabel(" "));
+
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap2);
+         // vbox3->addWidget(light5);
+      }
+      else if(vec.size()==2)
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap1);
+          vbox3->addWidget(light1);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap1);
+          vbox3->addWidget(light2);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap2);
+          vbox3->addWidget(light3);
+        //  vbox3->addWidget(new QLabel(" "));
+
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap2);
+          vbox3->addWidget(light4);
+        //  vbox3->addWidget(new QLabel(" "));
+
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap2);
+        //  vbox3->addWidget(light5);
+      }
+      else if(vec.size()==3)
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap1);
+          vbox3->addWidget(light1);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap1);
+          vbox3->addWidget(light2);
+        //  vbox3->addWidget(new QLabel(" "));
+
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap1);
+          vbox3->addWidget(light3);
+        //  vbox3->addWidget(new QLabel(" "));
+
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap2);
+          vbox3->addWidget(light4);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap2);
+        vbox3->addWidget(light5);
+      }
+      else if(vec.size()==4)
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap1);
+          vbox3->addWidget(light1);
+       //   vbox3->addWidget(new QLabel(" "));
+
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap1);
+          vbox3->addWidget(light2);
+       //   vbox3->addWidget(new QLabel(" "));
+
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap1);
+          vbox3->addWidget(light3);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap1);
+          vbox3->addWidget(light4);
+         // vbox3->addWidget(new QLabel(" "));
+
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap2);
+          vbox3->addWidget(light5);
+      }
+      else
+      {
+          light1=new QLabel(this);
+          light1->setPixmap(fitpixmap1);
+          vbox3->addWidget(light1);
+      //    vbox3->addWidget(new QLabel(" "));
+
+          light2=new QLabel(this);
+          light2->setPixmap(fitpixmap1);
+          vbox3->addWidget(light2);
+      //    vbox3->addWidget(new QLabel(" "));
+
+          light3=new QLabel(this);
+          light3->setPixmap(fitpixmap1);
+          vbox3->addWidget(light3);
+     //    vbox3->addWidget(new QLabel(" "));
+
+          light4=new QLabel(this);
+          light4->setPixmap(fitpixmap1);
+          vbox3->addWidget(light4);
+       //   vbox3->addWidget(new QLabel(" "));
+
+          light5=new QLabel(this);
+          light5->setPixmap(fitpixmap1);
+          vbox3->addWidget(light5);
+      }
+
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);
