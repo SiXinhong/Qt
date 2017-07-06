@@ -349,7 +349,7 @@ void MainWindow::addMyToolBar()
     //¼ÓÍ¼±ê
     //mainToolBar->addWidget(new QLabel(""));
     QPixmap pixmap3("./icon/fujirui.png");
-    QPixmap fitpixmap3=pixmap3.scaled(70,70, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.5,buttonSize*1.5, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     QLabel *tuBiao=new QLabel(this);
     tuBiao->setPixmap(fitpixmap3);
     mainToolBar->addWidget(tuBiao);
