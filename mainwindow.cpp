@@ -1840,6 +1840,12 @@ void MainWindow::backFunction()
 //回放
 void MainWindow::openFunction()
 {
+    if(is_open==true){
+        startTimeSet->setTime(QTime::currentTime());
+        stopTimeSet->setTime(QTime::currentTime());
+        widgetNew->show();
+        return;
+    }
     dateEdit=new QDateEdit(QDate::currentDate());
     startTime=new QLabel(QWidget::tr("起始时间"));
     //开始时间选择框
@@ -1871,8 +1877,8 @@ void MainWindow::openFunction()
 
     if(is_open==false)
     {
-//        if(widgetNew!=NULL)
-//            delete widgetNew;
+        if(widgetNew!=NULL)
+            delete widgetNew;
         widgetNew=new QWidget();
         is_open=true;
     }
@@ -1892,8 +1898,9 @@ void MainWindow::queDingFunction()
     dateTimeStart=startTimeSet->time();
     dateTimeStop=stopTimeSet->time();
     QDate date=dateEdit->date();
-//    int start=dateTimeStart.toTime_t();
-//    int stop=dateTimeStop.toTime_t();
+   // int start=(int)dateTimeStart.currentTime();
+   // int stop=(int)dateTimeStop.currentTime();
+    int dif=dateTimeStart.secsTo(dateTimeStop);
     if(date>QDate::currentDate())
     {
         QMessageBox::information(widgetNew,tr("警告"),tr("日期不能大于今天"));
@@ -1901,13 +1908,13 @@ void MainWindow::queDingFunction()
 //        widgetNew->show();
         return;
     }
-    if(dateTimeStart==dateTimeStop)
+    if(dif==0)
     {
         QMessageBox::information(widgetNew,tr("警告"),tr("开始时间和结束时间相同"));
         widgetNew->close();
         widgetNew->show();
     }
-    else if(dateTimeStart>dateTimeStop)
+    else if(dif<0)
     {
         QMessageBox::information(widgetNew,tr("警告"),tr("开始时间大于结束时间"));
         widgetNew->close();
