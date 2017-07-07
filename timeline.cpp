@@ -5,8 +5,8 @@
 TimeLine::TimeLine(BackWindow* backWindow):QWidget()
 {
     this->backWindow=backWindow;
-    this->setMinimumSize(350,40);
-    this->setMaximumSize(350,40);
+    this->setMinimumSize(400,40);
+    this->setMaximumSize(400,40);
     this->position=0;//竖线的位置，标识亮度的数值
     this->mousedown=false;//为了实现拖动效果，先判断是否点下了鼠标，然后鼠标移动才有效
 }
