@@ -4,6 +4,7 @@
 #include "myobject.h"
 #include "myobjecttrack.h"
 #include "show_sdk.h"
+#include "socket.h"
 
 #include <QString>
 
@@ -30,13 +31,29 @@ private:
     QString filename7;
     QString filename8;
 
-    int index;
+    QString f0;
+    QString f1;
+    QString f2;
+    QString f3;
+    QString f4;
+    QString f5;
+    QString f6;
+    QString f7;
+    QString f8;
+    QString f9;
+    QString f10;
+    QString f11;
+    QString f12;
+
+    int indexx;
+    int indexy;
 
     int index1;//读取第几张图片
 
     vector<QString> vc1;//存储第一栏的图片
     int index2;//读取第二栏第几张图片
     vector<QString> vc2;//存储第二栏的图片
+    vector<QString> vc;
     //临时变量结束------------------------------
 
 public:
@@ -118,6 +135,8 @@ public:
     vector<MyObject> getQj2Objs();
     //获得综合数据
     int getIntegratedData();
+
+    int getIntegratedData2();
 //    //设置系统参数
 //    int SetSysPara(int mode, const char *para_string, int id = 0);
 //    //获得系统参数

@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "myobject.h"
 #include "myobjecttrack.h"
+#include "cvutil.h"
 
 
 using namespace cv;
@@ -52,6 +53,14 @@ Mat Qj1Widget::getMat(){
     return mat;
 }
 
+void Qj1Widget::setPano(Mat p){
+    this->pano = p;
+}
+
+Mat Qj1Widget::getPano(){
+    return this->pano;
+}
+
 
 void Qj1Widget::setObjects(vector<MyObject> os){
     this->objs = os;
@@ -86,45 +95,46 @@ void Qj1Widget::CancelSelect(){
 void Qj1Widget::draw(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    //qDebug()<<this->objs.size();
+//    int count = this->objs.size();
+//    for (int i = 0; i < count;i++)
+//    {
+//        //画对象的box
+//        MyObject obj = objs[i];
+//        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+//        //画轨迹
+//        for(int ii = 0; ii < this->tracks.size(); ii++){
+//            MyObjectTrack track = this->tracks[ii];
+//            int id = track.getId();
+//            vector<Point> points = track.getTrack();
+//            if(id == obj.getID()){
+//                for(int iii = 0; iii < points.size(); iii++){
+//                    Point point = points[iii];
+//                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+//                    if(iii >= 1){
+//                        Point point2 = points[iii-1];
+//                        line(mat,point,point2,obj.getColor(),1,8,0);
+//                    }
+//                }
+//            }
+//        }
+//        //画对象中心点的位置
+//        if(mw->isMubiao){
+//            int x = (int)(this->getDirectionX(obj.getCenPoint().x));
+//            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+//            QString tx = QString::number(x,10);
+//            QString ty = QString::number(y,10);
+//            QString tstr = "x="+tx+",y="+ty;
+//            string str = tstr.toStdString();
+//            //qDebug()<<tstr;
+//            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+//            putText(mat,str,p,3,1,obj.getColor());
+//        }
+//        cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    }
 
-    int count = this->objs.size();
-    for (int i = 0; i < count;i++)
-    {
-        //画对象的box
-        MyObject obj = objs[i];
-        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
-        //画轨迹
-        for(int ii = 0; ii < this->tracks.size(); ii++){
-            MyObjectTrack track = this->tracks[ii];
-            int id = track.getId();
-            vector<Point> points = track.getTrack();
-            if(id == obj.getID()){
-                for(int iii = 0; iii < points.size(); iii++){
-                    Point point = points[iii];
-                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    if(iii >= 1){
-                        Point point2 = points[iii-1];
-                        line(mat,point,point2,obj.getColor(),1,8,0);
-                    }
-                }
-            }
-        }
-        //画对象中心点的位置
-        if(mw->isMubiao){
-            int x = (int)(this->getDirectionX(obj.getCenPoint().x));
-            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-            QString tx = QString::number(x,10);
-            QString ty = QString::number(y,10);
-            QString tstr = "x="+tx+",y="+ty;
-            string str = tstr.toStdString();
-            //qDebug()<<tstr;
-            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-            putText(mat,str,p,3,1,obj.getColor());
-        }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
-    }
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
+    cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->loadPictureToLabel1(isRect, qrect);
 }
 
@@ -216,7 +226,7 @@ void Qj1Widget::ToZhu()
 //    this->rectan3.height = this->newrect.height;
 
     //调整所选的矩形框，以使得在主显示区中的显示不变形
-    this->rectan3.width = this->rectan3.height * mw->widget3->width() / mw->widget3->height();
+    //this->rectan3.width = this->rectan3.height * mw->widget3->width() / mw->widget3->height();
 
     //更新主显示区所包含的目标
     vector<MyObject> objs3;
@@ -237,19 +247,26 @@ void Qj1Widget::ToZhu()
     mw->widget3->setObjects(objs3);
 
     mw->widget3->setFrom(1);
+
+    mw->widget3->setRect(rectan3);
     //mw->test();
 
-    Mat mat = getMat();
+    Mat mat = getPano();
     Size dsize ;
     double scale = 1;
     dsize = Size(mat.cols*scale,mat.rows*scale);
-    Mat image11 = Mat(dsize,CV_32S);
-    cv::resize(mat, image11,dsize);
-    mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-
-    //vector<Rectan> rectans;
-    mw->aa=(&(mw->img))->copy(getQRectan3());
-    Mat image3 = mw->QImageToMat(mw->aa);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat, image11,dsize);
+//    mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    //mw->img = CVUtil::MatToQImage(mat, mw->img);
+//    //vector<Rectan> rectans;
+//    mw->aa=(&(mw->img))->copy(getQRectan3());
+//    Mat image3 = mw->QImageToMat(mw->aa);
+//    Mat image33 = Mat(dsize,CV_32S);
+//    cv::resize(image3, image33,dsize);
+//    mw->widget3->setMat(image33);
+    Mat image3;
+    mat(rectan3).copyTo(image3);//mw->QImageToMat(mw->aa);
     Mat image33 = Mat(dsize,CV_32S);
     cv::resize(image3, image33,dsize);
     mw->widget3->setMat(image33);
@@ -288,7 +305,7 @@ void Qj1Widget::ToNingshi()
     }
 
     //调整所选的矩形框，以使得在凝视显示区中的显示不变形
-    this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
+    //this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
     //更新凝视显示区所包含的目标
 
     vector<MyObject> objs4;
@@ -304,17 +321,24 @@ void Qj1Widget::ToNingshi()
 
     mw->widget4->setFrom(1);
 
-    Mat mat = getMat();
+    mw->widget4->setRect(rectan4);
+
+    Mat mat = getPano();
     Size dsize ;
     double scale = 1;
     dsize = Size(mat.cols*scale,mat.rows*scale);
-    Mat image11 = Mat(dsize,CV_32S);
-    cv::resize(mat, image11,dsize);
-    mw->img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat, image11,dsize);
+//    mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-    //vector<Rectan> rectans;
-    mw->aa=(&(mw->img))->copy(getQRectan4());
-    Mat image4 = mw->QImageToMat(mw->aa);
+//    //vector<Rectan> rectans;
+//    mw->aa=(&(mw->img))->copy(getQRectan4());
+//    Mat image4 = mw->QImageToMat(mw->aa);
+//    Mat image44 = Mat(dsize,CV_32S);
+//    cv::resize(image4, image44,dsize);
+//    mw->widget4->setMat(image44);
+    Mat image4;
+    mat(rectan4).copyTo(image4);//mw->QImageToMat(mw->aa);
     Mat image44 = Mat(dsize,CV_32S);
     cv::resize(image4, image44,dsize);
     mw->widget4->setMat(image44);
@@ -408,16 +432,16 @@ Rect Qj1Widget::getRectan3(){
     return this->rectan3;
 }
 
-QRect Qj1Widget::getQRectan3(){
-    return QRect(rectan3.x+2,rectan3.y+2,rectan3.width-2,rectan3.height-2);
+Rect Qj1Widget::getQRectan3(){
+    return Rect(rectan3.x,rectan3.y,rectan3.width,rectan3.height);
 }
 
 Rect Qj1Widget::getRectan4(){
     return this->rectan4;
 }
 
-QRect Qj1Widget::getQRectan4(){
-    return QRect(rectan4.x+2,rectan4.y+2,rectan4.width-2,rectan4.height-2);
+Rect Qj1Widget::getQRectan4(){
+    return Rect(rectan4.x,rectan4.y,rectan4.width,rectan4.height);
 }
 
 //由Widget坐标的X获得图像中的X
@@ -515,9 +539,36 @@ vector<MyObject> Qj1Widget::getSelectedObjects3(){
         }
     }
 
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+
+        //已经出现过的，也跟上
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+        vector<MyObject> aos = mw->widget3->objs;
+        for(int j = 0; j < aos.size(); j++){
+            MyObject aobj = aos[j];
+            if(obj.getID() == aobj.getID()){
+                boolean all = false;
+                for(int k = 0; k < os.size(); k++){
+                    MyObject bobj = os[k];
+                    if(aobj.getID() == bobj.getID()){
+                        all = true;
+                    }
+                }
+                if(!all){
+                    os.push_back(obj);
+                    all = false;
+                }
+            }
+        }
+    }
+
+
     return os;
 }
 
+//选择的目标不能捎上，只能减少
 vector<MyObject> Qj1Widget::getSelectedObjects4(){
     vector<MyObject> os;
     int count = this->objs.size();
@@ -526,7 +577,34 @@ vector<MyObject> Qj1Widget::getSelectedObjects4(){
         if(isObjSelected4(obj)){
             os.push_back(obj);
         }
+
     }
+
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+
+        //已经出现过的，也跟上
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+        vector<MyObject> aos = mw->widget4->objs;
+        for(int j = 0; j < aos.size(); j++){
+            MyObject aobj = aos[j];
+            if(obj.getID() == aobj.getID()){
+                boolean all = false;
+                for(int k = 0; k < os.size(); k++){
+                    MyObject bobj = os[k];
+                    if(aobj.getID() == bobj.getID()){
+                        all = true;
+                    }
+                }
+                if(!all){
+                    os.push_back(obj);
+                    all = false;
+                }
+            }
+        }
+    }
+
 
     return os;
 }

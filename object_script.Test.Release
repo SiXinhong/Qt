@@ -20,6 +20,7 @@ INPUT(
 ./release\objectattributes.o
 ./release\mixer.o
 ./release\timeline.o
+./release\socket.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o

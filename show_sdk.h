@@ -11,9 +11,13 @@
 #include <fstream>
 #include <opencv.hpp>
 
+//#include "socket.h"
+//using namespace std;
 
-#include <QDataStream>
-using namespace std;
+using std::vector;
+using cv::Point;
+using cv::Size;
+using cv::Mat;
 
 #define MIN_ID 0
 #define MAX_ID 2
@@ -23,34 +27,55 @@ using namespace std;
 #define GetParaSuccess 0
 #define GetDataSuccess 0
 
-enum SYSTEM_ERROR
-{
-    ERROR_MODE,// = 1,//模式设置值不是有效值
-	ERROR_SringIsNull,//参数为空，检查
-	ERROR_SetFail,//设置失败，检查设置格式
-	ERROR_Id,//id不是有效值
-	ERROR_GetFail,//获取参数失败
-	ERROR_DataStructIsNull,//综合数据结构体指针为空
-	ERROR_HasNoValidFile//本地测试文件丢失
-};
+
+    #define ERROR_MODE 1//模式设置值不是有效值
+    #define ERROR_SringIsNull 2//参数为空，检查
+    #define ERROR_SetFail 3//设置失败，检查设置格式
+    #define ERROR_Id 4 //id不是有效值
+    #define ERROR_GetFail 5//获取数据失败
+    #define ERROR_DataStructIsNull 6//综合数据结构体指针为空
+    #define ERROR_HasNoValidFile 7//本地测试文件丢失
+
+
 
 
 //数据结构体
-struct ImagePro
+
+struct SmallTarget
 {
-	int height;
-	int width;
-	int data_type_bit;
-	int channel;
+
+    int id;// = -1;                            //                  !!
+    Point cenPoint; //= Point(-1, -1);         // 目标中心坐标     !!
+    Point cenPointACS; //= Point(-1, -1);      // 目标的绝对坐标
+    Size blocksize ; //= Size(0, 0);            // 检测框大小
+    double Velocity ; //= 0;                    // 运动速率         !!
+    double MotionDerection; // = 0;             // 运动方向         !!
+    int area ; //= 0;                           // 目标面积          !!
+    int horizontalAxisLength ; //= 0;           // 水平轴长度        !!
+    int verticalAxisLength ; //= 0;             // 竖直轴长度         !!
+    double absoluteIntensity ; //= 0;           // 绝对强度           !!
+    double relativeIntensity; // = 0;           // 相对强度            !!
+
+    std::vector<Point> contours;            // 目标轮廓          !!
+    Mat Snapshoot;                          // 目标快照
+    Mat sihouette;                         // 目标剪影          !!
+
+    double targetScale; // = 0;                 // 目标尺度            !!
+    double CenSueEintensity; //= 0;            // 中央周围对比度的响应强度      !!
+    double SCRValue ; //= 0;                    // 目标背景信杂比                 !!
+    std::vector<double> theFeatures;             // 13维的小目标特征向量     !!
 };
 
-//图像采集buffer
-struct ImageBuffer
+typedef SmallTarget Target;
+
+struct imageInfo
 {
-    vector< vector < cv::Mat > > collectd_image;
-	int processing_buffer_id;
-	ImagePro image_pro;//每一帧图像的属性
-	int num_of_buffer_pic;//每个buffer存放的最大帧数
+    double timeInfo;                  // 时间戳
+    cv::Mat oriIMG;                   // 16bit图
+    cv::Mat oriIMG8bit;                   // 8bit图
+    std::vector<int> directionInfo;        // 图像方位信息
+    std::vector<Target> targets;           // 该帧图像的目标集合
+
 };
 
 struct Time
@@ -64,31 +89,33 @@ struct Time
 	int millisecond;
 };
 
+
+
 //小目标描述结构体
-struct SmallTarget
-{
+//struct SmallTarget
+//{
 
-    int id;// = -1;
-    cv::Point cenPoint;// = cv::Point(-1, -1);         // 目标中心坐标
-    cv::Size blocksize;// = cv::Size(0, 0);            // 检测框大小
-    double Velocity;// = 0;                    // 运动速率
-    double MotionDerection;// = 0;             // 运动方向
-    int area;// = 0;                           // 目标面积
-    int horizontalAxisLength;// = 0;           // 水平轴长度
-    int verticalAxisLength;// = 0;             // 竖直轴长度
-    double absoluteIntensity;// = 0;           // 绝对强度
-    double relativeIntensity;// = 0;           // 相对强度
+//    int id;// = -1;
+//    cv::Point cenPoint;// = cv::Point(-1, -1);         // 目标中心坐标
+//    cv::Size blocksize;// = cv::Size(0, 0);            // 检测框大小
+//    double Velocity;// = 0;                    // 运动速率
+//    double MotionDerection;// = 0;             // 运动方向
+//    int area;// = 0;                           // 目标面积
+//    int horizontalAxisLength;// = 0;           // 水平轴长度
+//    int verticalAxisLength;// = 0;             // 竖直轴长度
+//    double absoluteIntensity;// = 0;           // 绝对强度
+//    double relativeIntensity;// = 0;           // 相对强度
 
-	vector<cv::Point> contours;                 // 目标轮廓
-	cv::Mat Snapshoot;                          // 目标快照
-	cv::Mat sihouette;                          // 目标剪影
+//	vector<cv::Point> contours;                 // 目标轮廓
+//	cv::Mat Snapshoot;                          // 目标快照
+//	cv::Mat sihouette;                          // 目标剪影
 
-    double targetScale;// = 0;                 // 目标尺度
-    double CenSueEintensity;// = 0;            // 中央周围对比度的响应强度
-    double SCRValue;// = 0;                    // 目标背景信杂比
-	vector<double> theFeatures;             // 13维的小目标特征向量
+//    double targetScale;// = 0;                 // 目标尺度
+//    double CenSueEintensity;// = 0;            // 中央周围对比度的响应强度
+//    double SCRValue;// = 0;                    // 目标背景信杂比
+//	vector<double> theFeatures;             // 13维的小目标特征向量
 
-};
+//};
 
 //综合数据结构体
 struct IntegratedData

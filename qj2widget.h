@@ -42,6 +42,8 @@ public:
 
     Mat mat;
 
+    Mat pano;
+
     //全景1所包含的运动目标
     vector<MyObject> objs;
 
@@ -74,6 +76,9 @@ public:
     void setMat(Mat m);
     Mat getMat();
 
+    void setPano(Mat p);
+    Mat getPano();
+
     void setObjects(vector<MyObject> os);
     vector<MyObject> getObjects();
 
@@ -81,10 +86,10 @@ public:
     vector<MyObjectTrack> getTracks();
 
     Rect getRectan3();
-    QRect getQRectan3();
+    Rect getQRectan3();
 
     Rect getRectan4();
-    QRect getQRectan4();
+    Rect getQRectan4();
 
     double getMatX(double x);
 

@@ -34,7 +34,8 @@ SOURCES += main.cpp\
     s_trakbar.cpp \
     objectattributes.cpp \
     mixer.cpp \
-    timeline.cpp
+    timeline.cpp \
+    socket.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     objectAttributes.h \
     objectAttributes.h \
     mixer.h \
-    timeline.h
+    timeline.h \
+    socket.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
@@ -97,3 +99,7 @@ LIBS+=E:\QTsource\OpenCV\lib\libopencv_calib3d231.dll.a\
 
 LIBS += E:\github\Qt\lib\WinMM.Lib
 LIBS += E:\github\Qt\lib\User32.Lib
+
+#///////////////////////////////////////////////////////zc
+
+LIBS += -lwsock32 libws2_32

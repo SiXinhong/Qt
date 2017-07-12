@@ -31,18 +31,24 @@ private:
 
 public:
 
+    QAction* Yuan_Xuanze;
+    QAction* Wu_Bianxing;
+
+    boolean isYuan;
+
+    Rect rect;
+
+    Mat pano;
+
     Mat mat;
-    //vector<Rect> rects;//包含的目标的box
+
+    vector<MyObject> allobjs;
+
     vector<MyObject> objs;
 
-    void setObjects(vector<MyObject> os);
-
-    vector<MyObject> getObjects();
-
+    int from;
 
     explicit NWidget(QWidget *parent = 0);
-
-    int from;
 
     void setFrom(int f);
 
@@ -50,16 +56,52 @@ public:
 
     Rect getRectFromObjs(Rect r);
 
+    //Rect getRectFromObjs2(Rect r);
+
+    void setPano(Mat p);
+
+    Mat getPano();
+
+    void setRect(Rect r);
+
+    Rect getRect();
+
+    double getDirectionX(double x);
+
+    double getDirectionY(double y);
+
+    double getDirectionX2();
+
+    double getDirectionY2();
+
     void setMat(Mat m);
 
     Mat getMat();
 
+    void setObjects(vector<MyObject> os);
+
+    vector<MyObject> getObjects();
+
+    void setAllObjects(vector<MyObject> aos);
+
+    vector<MyObject> getAllObjects();
+
     void draw();
+
+    void contextMenuEvent(QContextMenuEvent *);
+
+    boolean isObjSelected(MyObject obj);
+
+    vector<MyObject> getSelectedObjects();
+
 
 signals:
 
 public slots:
 
+    void Yuanxuanze();
+
+    void Wubianxing();
 
 };
 

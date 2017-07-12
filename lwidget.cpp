@@ -47,6 +47,22 @@ vector<MyObject> LWidget::getObjects(){
     return this->objs;
 }
 
+void LWidget::setObjects3(vector<MyObject> os3){
+    this->objs3 = os3;
+}
+
+vector<MyObject> LWidget::getObjects3(){
+    return this->objs3;
+}
+
+void LWidget::setObjects4(vector<MyObject> os4){
+    this->objs4 = os4;
+}
+
+vector<MyObject> LWidget::getObjects4(){
+    return this->objs4;
+}
+
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double LWidget::getDirectionX(double x, double y){
     double x2 = x0 + (r/r0)*(((y*(this->pano.cols)/(2*M_PI*pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
@@ -75,8 +91,8 @@ Point LWidget::getPoint(Point p){
     return Point(xaa,yaa);
 }
 
-//获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
-void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
+//凝视显示区的，获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
+void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
     //先找最小点
     double xtemp1 = this->pano.cols;
@@ -87,13 +103,19 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 
     for(int i = 0; i < sobjs.size(); i++){
         MyObject obj = sobjs[i];
-        if(xtemp1 > obj.getCenPoint().x){
-            xtemp1 = obj.getCenPoint().x;
-            ytemp1 = obj.getCenPoint().y;
+        if(xtemp1 > obj.getRect().x){
+            xtemp1 = obj.getRect().x;
+            //ytemp1 = obj.getRect().y;
         }
-        if(xtemp2 < obj.getCenPoint().x){
-            xtemp2 = obj.getCenPoint().x;
-            ytemp2 = obj.getCenPoint().y;
+        if(ytemp1 > obj.getRect().y){
+            ytemp1 = obj.getRect().y;
+        }
+        if(xtemp2 < (obj.getRect().x + obj.getRect().width)){
+            xtemp2 = obj.getRect().x + obj.getRect().width;
+            //ytemp2 = obj.getRect().y + obj.getRect().height;
+        }
+        if(ytemp2 < (obj.getRect().y + obj.getRect().height)){
+            ytemp2 = obj.getRect().y + obj.getRect().height;
         }
     }
     //再向左上靠靠
@@ -149,6 +171,80 @@ void LWidget::drawArc(vector<MyObject> sobjs, Mat tmat){
 //    return ps;
 }
 
+//主显示区的，获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
+void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
+    //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
+    //先找最小点
+    double xtemp1 = this->pano.cols;
+    double ytemp1 = this->pano.rows;
+    //再找最大点
+    double xtemp2 = 0;
+    double ytemp2 = 0;
+
+    for(int i = 0; i < sobjs.size(); i++){
+        MyObject obj = sobjs[i];
+        if(xtemp1 > obj.getCenPoint().x){
+            xtemp1 = obj.getCenPoint().x;
+            ytemp1 = obj.getCenPoint().y;
+        }
+        if(xtemp2 < obj.getCenPoint().x){
+            xtemp2 = obj.getCenPoint().x;
+            ytemp2 = obj.getCenPoint().y;
+        }
+    }
+    //再向左上靠靠
+    if(xtemp1-5>=0 && ytemp1-5 >= 0){
+        xtemp1 -= 5;
+        ytemp1 -= 5;
+    }
+    //再向右下靠靠
+    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
+        xtemp2 += 5;
+        ytemp2 += 5;
+    }
+
+
+    Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
+    Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
+    //qDebug()<<"p1 & p2"<<p1.x<<p1.y<<p2.x<<p2.y;
+    Point p3 = Point(x0, y0);
+
+    Point p11 = this->getPoint(p1);
+    Point p22 = this->getPoint(p2);
+
+    line(tmat,p11,p3,Scalar(255,0,0),1,8,0);
+
+    line(tmat,p22,p3,Scalar(255,0,0),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+//    if(angle1 < 0){
+//        angle1 += 360;
+//    }
+//    if(angle2 < 0){
+//        angle2 += 360;
+//    }
+
+    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
+    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+
+//    vector<Point> ps;
+////    Point point1(75,60);
+////    Point point2(110,39);
+////    Point point3(75,60);
+////    Point point4(150,150);
+////    Point point5(110,40);
+////    Point point6(150,150);
+//    ps.push_back(p11);
+//    ps.push_back(p22);
+//    ps.push_back(p11);
+//    ps.push_back(p3);
+//    ps.push_back(p22);
+//    ps.push_back(p3);
+//    return ps;
+}
+
 void LWidget::draw(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
@@ -165,7 +261,11 @@ void LWidget::draw(){
 //        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
 //    }
     if(mw->widget3->getObjects().size() > 0){
-       this->drawArc(mw->widget3->getObjects(),tmat);
+       this->drawArc3(mw->widget3->getObjects(),tmat);
+    }
+
+    if(mw->widget4->getObjects().size() > 0){
+       this->drawArc4(mw->widget4->getObjects(),tmat);
     }
     //在图像上画圆点
     int count = objs.size();

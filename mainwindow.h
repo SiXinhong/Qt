@@ -224,6 +224,10 @@ public:
 
 
 protected:
+     double getDirectionX(double x, Mat mat);
+
+     double getDirectionY(double y, Mat mat);
+
      //工具条需要的变量
      void addMyToolBar();
      //临时性处理

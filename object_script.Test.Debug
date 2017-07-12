@@ -20,6 +20,7 @@ INPUT(
 ./debug\objectattributes.o
 ./debug\mixer.o
 ./debug\timeline.o
+./debug\socket.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o

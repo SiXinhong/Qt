@@ -9,6 +9,7 @@
 #include "myinterface.h"
 #include "myobject.h"
 #include "mixer.h"
+#include "cvutil.h"
 #include <QDesktopWidget>
 #include "imagedeal.h"
 
@@ -37,6 +38,21 @@
 #include <QtGui/QPainter>
 #include "trackbar.h"
 #include <QDir>
+
+
+//////////////////////////////ZC/////////////////
+SOCKET hSocket;			//事件对象连接的套接字
+WSAEVENT hEvent;			//套接字相连的事件对象
+int datalen;			//定义一个整数，表示从当前传输的数据中得到的数据长度
+char sendbuffer[SEND_BUFFER_SIZE];				//定义的一个socket的发送缓冲区
+char recvbuffer[RECV_BUFFER_SIZE];				//定义的一个socket的接收缓冲区
+char *databuffer = (char *)malloc(DATA_BUFFER_SIZE);//存放数据的静态缓冲区
+
+WSANETWORKEVENTS netEvents;
+
+#define DATA_LENGTH_MAX     10*1024*1024
+#define DATA_LENGTH_MIN     9
+////////////////////////////////zc//////////////////
 
 using namespace cv;
 using namespace std;
@@ -100,6 +116,10 @@ MainWindow::MainWindow(QWidget *parent) :
     isDrag1 = false;
     isDrag2 = false;
     isMove = false;
+
+    ////////////////zc///////////////////////
+    //通信连接
+    //MySocketInitial();
 
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
@@ -170,31 +190,87 @@ MainWindow::~MainWindow(){
 void MainWindow::jinProcessing(){
     //vector<MyObject> objs = in.getObjs2();
     if(in.getIntegratedData() == 0){
-        //图片1
-        //QString s1=in.getQJ1();
-        //imageurl=s1.toStdString();
-        Mat mat1 = in.getQJ1Mat();
+//        //图片1
+//        //QString s1=in.getQJ1();
+//        //imageurl=s1.toStdString();
+        //std::cout<<"get data ok "<<std::endl;
+        //在全景上画矩形，文字，轨迹等
+        Mat mat = in.getPano();
+        vector<MyObject> objs = in.getObjs();
+        vector<MyObjectTrack> tracks = in.getTracks();
+
+        int count = objs.size();
+        for (int i = 0; i < count;i++)
+        {
+            //画对象的box
+            MyObject obj = objs[i];
+            rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //画轨迹
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point2 = points[iii-1];
+                            line(mat,point,point2,obj.getColor(),1,8,0);
+                        }
+                    }
+                }
+            }
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //画对象中心点的位置
+            if(isMubiao){
+                int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
+                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mat)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+                QString tx = QString::number(x,10);
+                QString ty = QString::number(y,10);
+                QString tstr = "x="+tx+",y="+ty;
+                string str = tstr.toStdString();
+                //qDebug()<<tstr;
+                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+                putText(mat,str,p,3,1,obj.getColor());
+            }
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+
+        //然后劈成2半
+
+        Mat mat1, mat2;
+        mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
+        mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+
+        widget1->setPano(mat);
         widget1->setMat(mat1);
-        widget1->setObjects(in.getQj1Objs());
+        widget1->setObjects(in.getObjs());
         widget1->setTracks(in.getTracks());
         widget1->draw();
         //图片2
-        //QString s2=in.getQJ2();
-        //imageurl2=s2.toStdString();
-        Mat mat2 = in.getQJ2Mat();
+//        //QString s2=in.getQJ2();
+//        //imageurl2=s2.toStdString();
+        widget2->setPano(mat);
         widget2->setMat(mat2);
-        widget2->setObjects(in.getQj2Objs());
+        widget2->setObjects(in.getObjs());
         widget2->setTracks(in.getTracks());
         widget2->draw();
         //图片3
+        widget3->setPano(mat);
+        widget3->setAllObjects(in.getObjs());
         widget3->draw();
         //图片4
+        widget4->setPano(mat);
+        widget4->setAllObjects(in.getObjs());
         widget4->draw();
-        //图片5
+//        //图片5
+        widget5->setPano(in.getPano());
         QString imageurl5=in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
         widget5->setMat(mat5);
-        widget5->setPano(in.getPano());
         widget5->setObjects(in.getObjs());
         widget5->draw();
         //图片6
@@ -213,50 +289,118 @@ void MainWindow::jinProcessing(){
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::selfProcessing(){
     index=0;//用于计算标尺的起始位置
+    in.getIntegratedData2();
+
     vector<MyObject> objs = in.getObjs2();
 
     //图片1
-    QString s1=in.getQJ1();
-    imageurl=s1.toStdString();
-    Mat mat1 =imread(imageurl);
+//    QString s1=in.getQJ1();
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+
+    //在全景上画矩形，文字，轨迹等
+    Mat mat = in.getPano();
+    //vector<MyObject> objs = in.getObjs();
+    vector<MyObjectTrack> tracks = in.getTracks();
+
+    int count = objs.size();
+    for (int i = 0; i < count;i++)
+    {
+        //画对象的box
+        MyObject obj = objs[i];
+        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //画轨迹
+        for(int ii = 0; ii < tracks.size(); ii++){
+            MyObjectTrack track = tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        Point point2 = points[iii-1];
+                        line(mat,point,point2,obj.getColor(),1,8,0);
+                    }
+                }
+            }
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //画对象中心点的位置
+        if(isMubiao){
+            int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
+            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mat)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+            QString tx = QString::number(x,10);
+            QString ty = QString::number(y,10);
+            QString tstr = "x="+tx+",y="+ty;
+            string str = tstr.toStdString();
+            //qDebug()<<tstr;
+            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+            putText(mat,str,p,3,1,obj.getColor());
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+    }
+    cv::cvtColor(mat, mat, CV_BGR2RGB);
+
+    //然后劈成2半
+
+    Mat mat1, mat2;
+    mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
+    mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
         updateContrast(mat1);
+    widget1->setPano(mat);
     widget1->setMat(mat1);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
+    //qDebug()<<mat1.cols;
     widget1->draw();
+
     //图片2
-    QString s2=in.getQJ2();
-    imageurl2=s2.toStdString();
-    Mat mat2 =imread(imageurl2);
+//    QString s2=in.getQJ2();
+//    imageurl2=s2.toStdString();
+//    Mat mat2 =imread(imageurl2);
+
     if(this->isPseudo==true)
                        mat2=setPseudocolor(mat2);
        updateBright(mat2);
        updateContrast(mat2);
+    widget2->setPano(mat);
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
+
     widget2->draw();
+
     //图片3
+    //qDebug()<<mat2.cols;
+    widget3->setPano(mat);
+    widget3->setAllObjects(in.getObjs());
     widget3->draw();
+    //qDebug()<<mat2.cols;
     //图片4
+    widget4->setPano(mat);
+    widget4->setAllObjects(in.getObjs());
     widget4->draw();
     //图片5
+    widget5->setPano(in.getPano());
     QString imageurl5=in.getHD();
     Mat mat5 =imread(imageurl5.toStdString());
     widget5->setMat(mat5);
-    widget5->setPano(mat1);
     widget5->setObjects(objs);
     widget5->draw();
     //图片6
     QString imageurl6= in.getLD();
     Mat mat6 =imread(imageurl6.toStdString());
     widget6->setMat(mat6);
-    widget6->setPano(mat1);
+    widget6->setPano(in.getPano());
     widget6->setObjects(objs);
     widget6->draw();
+
 }
 //----------------------------------------------------------
 
@@ -850,6 +994,7 @@ void MainWindow::adjustment()
 //定时器任务
 void MainWindow::onTimerOut()
 {
+    //std::cout<<"ok1 "<<std::endl;
     this->selfTimerout();
     //this->jinTimerout();
 }
@@ -864,7 +1009,10 @@ void MainWindow::selfTimerout(){
         todayDir->mkdir(today);
     }
     delete todayDir;
+
+    in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
+
     for(int i=0;i<objs.size();i++){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
@@ -891,9 +1039,81 @@ void MainWindow::selfTimerout(){
 //    }
 
     //图片1
-    QString s1=in.getQJ1();
-    imageurl=s1.toStdString();
-    Mat mat1 =imread(imageurl);
+    //图片1
+//    QString s1=in.getQJ1();
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+
+    //在全景上画矩形，文字，轨迹等
+    Mat mat = in.getPano();
+    //vector<MyObject> objs = in.getObjs();
+    vector<MyObjectTrack> tracks = in.getTracks();
+
+    int count = objs.size();
+    for (int i = 0; i < count;i++)
+    {
+        //画对象的box
+        MyObject obj = objs[i];
+        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //画轨迹
+        for(int ii = 0; ii < tracks.size(); ii++){
+            MyObjectTrack track = tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        Point point2 = points[iii-1];
+                        line(mat,point,point2,obj.getColor(),1,8,0);
+                    }
+                }
+            }
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //画对象中心点的位置
+        if(isMubiao){
+            int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
+            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mat)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+            QString tx = QString::number(x,10);
+            QString ty = QString::number(y,10);
+            QString tstr = "x="+tx+",y="+ty;
+            string str = tstr.toStdString();
+            //qDebug()<<tstr;
+            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+            putText(mat,str,p,3,1,obj.getColor());
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+    }
+    cv::cvtColor(mat, mat, CV_BGR2RGB);
+
+    //然后劈成2半
+
+//    Size dsize ;
+//    double scale = 1;
+//    dsize = Size(mat.cols*scale,mat.rows*scale);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat, image11,dsize);
+
+//    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+//    Mat image4 = CVUtil::QImageToMat(aa);
+//    Mat image44 = Mat(dsize,CV_32S);
+//    cv::resize(image4, image44,dsize);
+
+//    //全景2Mat
+//    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+//    Mat image5 = CVUtil::QImageToMat(aa2);
+//    Mat image55 = Mat(dsize,CV_32S);
+//    cv::resize(image5, image55,dsize);
+
+    Mat mat1, mat2;
+    mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
+    mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+
+    //Mat mat1 = image44;
     if(this->isPseudo==true)
                         mat1=setPseudocolor(mat1);
         updateBright(mat1);
@@ -903,14 +1123,18 @@ void MainWindow::selfTimerout(){
 //               hsl->adjust(mat1, mat1);
 //           }
     widget1->setMat(mat1);
+    widget1->setPano(mat);
     widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
     widget1->draw();
     //qDebug()<<s1;
     //图片2
-    QString s2=in.getQJ2();
-    imageurl2=s2.toStdString();
-    Mat mat2 =imread(imageurl2);
+    //图片1
+//    QString s1=in.getQJ1();
+//    imageurl=s1.toStdString();
+//    Mat mat1 =imread(imageurl);
+
+    //Mat mat2 = image55;
     if(this->isPseudo==true)
                         mat2=setPseudocolor(mat2);
         updateBright(mat2);
@@ -919,6 +1143,7 @@ void MainWindow::selfTimerout(){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat2, mat2);
 //           }
+    widget2->setPano(mat);
     widget2->setMat(mat2);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
@@ -927,17 +1152,21 @@ void MainWindow::selfTimerout(){
     //drawUiLabel(mat2,2);
     //图片3
     //Mat mat3 =imread(imageurl);
+    widget3->setPano(mat);
+    widget3->setAllObjects(in.getObjs());
     widget3->draw();
     //drawUiLabelByCopy(mat3,3);
     //图片4
     //Mat mat4 =imread(imageurl2);
     //drawUiLabelByCopy(mat4,4);
+    widget4->setPano(mat);
+    widget4->setAllObjects(in.getObjs());
     widget4->draw();
     //图片5
     //QString imageurl5=in.getHD();
     //Mat mat5 =imread(imageurl5.toStdString());
     //widget5->setMat(mat5);
-    widget5->setPano(mat1);
+    widget5->setPano(in.getPano());
     widget5->setObjects(objs);
     widget5->draw();
     //drawUiLabel(mat5,5);
@@ -945,7 +1174,7 @@ void MainWindow::selfTimerout(){
     //QString imageurl6= in.getLD();
     //Mat mat6 =imread(imageurl6.toStdString());
     //widget6->setMat(mat6);
-    widget6->setPano(mat1);
+    widget6->setPano(in.getPano());
     widget6->setObjects(objs);
     widget6->draw();
 }
@@ -953,27 +1182,88 @@ void MainWindow::selfTimerout(){
 //与金老师接口的定时器处理
 void MainWindow::jinTimerout(){
     //vector<MyObject> objs = in.getObjs2();
+    //std::cout<<"ok2 "<<std::endl;
+  //#if 1
     if(in.getIntegratedData() == 0){
+        //std::cout<<"getintegrated data "<<std::endl;
         //图片1
-        //QString s1=in.getQJ1();
-        //imageurl=s1.toStdString();
-        //qDebug()<<in.getObjs().size();
-        Mat mat1 = in.getQJ1Mat();
+//        QString s1=in.getQJ1();
+//        imageurl=s1.toStdString();
+//        //qDebug()<<in.getObjs().size();
+        //在全景上画矩形，文字，轨迹等
+        Mat mat = in.getPano();
+        vector<MyObject> objs = in.getObjs();
+        vector<MyObjectTrack> tracks = in.getTracks();
+
+        int count = objs.size();
+        for (int i = 0; i < count;i++)
+        {
+            //画对象的box
+            MyObject obj = objs[i];
+            rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //画轨迹
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point2 = points[iii-1];
+                            line(mat,point,point2,obj.getColor(),1,8,0);
+                        }
+                    }
+                }
+            }
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //画对象中心点的位置
+            if(isMubiao){
+                int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
+                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mat)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+                QString tx = QString::number(x,10);
+                QString ty = QString::number(y,10);
+                QString tstr = "x="+tx+",y="+ty;
+                string str = tstr.toStdString();
+                //qDebug()<<tstr;
+                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+                putText(mat,str,p,3,1,obj.getColor());
+            }
+            cv::cvtColor(mat, mat, CV_BGR2RGB);
+        }
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+
+        //然后劈成2半
+
+        Mat mat1, mat2;
+        mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
+        mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+
         widget1->setMat(mat1);
-        widget1->setObjects(in.getQj1Objs());
+        widget1->setPano(mat);
+//        cv::imshow("pano", mat1);
+//        cv::waitKey(10);
+
+        widget1->setObjects(in.getObjs());
         widget1->setTracks(in.getTracks());
         widget1->draw();
-        //图片2
-        //QString s2=in.getQJ2();
-        //imageurl2=s2.toStdString();
-        Mat mat2 = in.getQJ2Mat();
+//        //图片2
+//        //QString s2=in.getQJ2();
+//        //imageurl2=s2.toStdString();
         widget2->setMat(mat2);
-        widget2->setObjects(in.getQj2Objs());
+        widget2->setPano(mat);
+        widget2->setObjects(in.getObjs());
         widget2->setTracks(in.getTracks());
         widget2->draw();
         //图片3
+        widget3->setPano(mat);
+        widget3->setAllObjects(in.getObjs());
         widget3->draw();
         //图片4
+        widget4->setPano(mat);
+        widget4->setAllObjects(in.getObjs());
         widget4->draw();
         //图片5
         //QString imageurl5=in.getHD();
@@ -981,6 +1271,7 @@ void MainWindow::jinTimerout(){
         //widget5->setMat(mat5);
         widget5->setPano(in.getPano());
         widget5->setObjects(in.getObjs());
+        //std::cout<<" parse object "<<std::endl;
         widget5->draw();
         //图片6
         //QString imageurl6= in.getLD();
@@ -991,8 +1282,14 @@ void MainWindow::jinTimerout(){
         widget6->draw();
     }
     else{
-        this->selfTimerout();
+       this->selfTimerout();
     }
+//    }
+//    else
+//    {
+//    std::cout<<"no ok"<<std::endl;
+//    }
+//    #endif
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
@@ -1088,7 +1385,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget1->isRect = false;
 
         //调整所选的矩形框，以使得在主显示区中的显示不变形
-        widget1->rectan3.width = widget1->rectan3.height * widget3->width() / widget3->height();
+        //widget1->rectan3.width = widget1->rectan3.height * widget3->width() / widget3->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
@@ -1103,19 +1400,26 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget3->setObjects(objs3);
 
         widget3->setFrom(1);
+
+        widget3->setRect(widget1->getQRectan3());
         //widget1->rectan = widget1->newrect;
 
-        Mat mat = widget1->getMat();
+        Mat mat = widget1->getPano();
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-        Mat image11 = Mat(dsize,CV_32S);
-        cv::resize(mat, image11,dsize);
-        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//        Mat image11 = Mat(dsize,CV_32S);
+//        cv::resize(mat, image11,dsize);
+//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-        //vector<Rectan> rectans;
-        aa=(&img)->copy(widget1->getQRectan3());
-        Mat image3 = QImageToMat(aa);
+//        //vector<Rectan> rectans;
+//        aa=(&img)->copy(widget1->getQRectan3());
+//        Mat image3 = QImageToMat(aa);
+//        Mat image33 = Mat(dsize,CV_32S);
+//        cv::resize(image3, image33,dsize);
+//        widget3->setMat(image33);
+        Mat image3;
+        mat(widget1->rectan3).copyTo(image3);//mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
         widget3->setMat(image33);
@@ -1154,7 +1458,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget2->isRect = false;
 
         //调整所选的矩形框，以使得在主显示区中的显示不变形
-        widget2->rectan3.width = widget2->rectan3.height * widget3->width() / widget3->height();
+        //widget2->rectan3.width = widget2->rectan3.height * widget3->width() / widget3->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
@@ -1170,17 +1474,25 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget3->setFrom(2);
 
-        Mat mat = widget2->getMat();
+        widget3->setRect(widget2->getQRectan3());
+
+        Mat mat = widget2->getPano();
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-        Mat image11 = Mat(dsize,CV_32S);
-        cv::resize(mat, image11,dsize);
-        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//        Mat image11 = Mat(dsize,CV_32S);
+//        cv::resize(mat, image11,dsize);
+//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-        //vector<Rectan> rectans;
-        aa=(&img)->copy(widget2->getQRectan3());
-        Mat image3 = QImageToMat(aa);
+//        //vector<Rectan> rectans;
+//        aa=(&img)->copy(widget2->getQRectan3());
+//        Mat image3 = QImageToMat(aa);
+//        Mat image33 = Mat(dsize,CV_32S);
+//        cv::resize(image3, image33,dsize);
+//        widget3->setMat(image33);
+//        widget3->draw();
+        Mat image3;
+        mat(widget2->getQRectan3()).copyTo(image3);//mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
         cv::resize(image3, image33,dsize);
         widget3->setMat(image33);
@@ -1213,7 +1525,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget1->isRect = false;
 
         //调整所选的矩形框，以使得在主显示区中的显示不变形
-        widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
+        //widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
@@ -1229,17 +1541,25 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget4->setFrom(1);
 
-        Mat mat = widget1->getMat();
+        widget4->setRect(widget1->getQRectan4());
+
+        Mat mat = widget1->getPano();
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-        Mat image11 = Mat(dsize,CV_32S);
-        cv::resize(mat, image11,dsize);
-        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//        Mat image11 = Mat(dsize,CV_32S);
+//        cv::resize(mat, image11,dsize);
+//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-        //vector<Rectan> rectans;
-        aa=(&img)->copy(widget1->getQRectan4());
-        Mat image4 = QImageToMat(aa);
+//        //vector<Rectan> rectans;
+//        aa=(&img)->copy(widget1->getQRectan4());
+//        Mat image4 = QImageToMat(aa);
+//        Mat image44 = Mat(dsize,CV_32S);
+//        cv::resize(image4, image44,dsize);
+//        widget4->setMat(image44);
+//        widget4->draw();
+        Mat image4;
+        mat(widget1->rectan4).copyTo(image4);//mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);
         widget4->setMat(image44);
@@ -1273,7 +1593,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget2->isRect = false;
 
         //调整所选的矩形框，以使得在主显示区中的显示不变形
-        widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
+        //widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
@@ -1289,17 +1609,25 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget4->setFrom(2);
 
-        Mat mat = widget2->getMat();
+        widget4->setRect(widget2->getQRectan4());
+
+        Mat mat = widget2->getPano();
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-        Mat image11 = Mat(dsize,CV_32S);
-        cv::resize(mat, image11,dsize);
-        img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//        Mat image11 = Mat(dsize,CV_32S);
+//        cv::resize(mat, image11,dsize);
+//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-        //vector<Rectan> rectans;
-        aa=(&img)->copy(widget2->getQRectan4());
-        Mat image4 = QImageToMat(aa);
+//        //vector<Rectan> rectans;
+//        aa=(&img)->copy(widget2->getQRectan4());
+//        Mat image4 = QImageToMat(aa);
+//        Mat image44 = Mat(dsize,CV_32S);
+//        cv::resize(image4, image44,dsize);
+//        widget4->setMat(image44);
+//        widget4->draw();
+        Mat image4;
+        mat(widget2->getQRectan4()).copyTo(image4);//mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
         cv::resize(image4, image44,dsize);
         widget4->setMat(image44);
@@ -1337,6 +1665,20 @@ Mat MainWindow::setPseudocolor(Mat& image){
             }
         return img_pseudocolor;
 }
+
+double MainWindow::getDirectionX(double x, Mat mat){
+    //double x = this->rectan.x;
+    return 360*x/mat.cols -90;
+}
+
+double MainWindow::getDirectionY(double y, Mat mat){
+
+    double yy = 20;
+    //double y = this->rectan.y;
+    return yy*y/mat.rows;
+
+}
+
 
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){

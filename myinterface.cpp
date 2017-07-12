@@ -33,6 +33,7 @@ MyInterface::MyInterface(){
     filename6 = "./s2/2.bmp";
     filename7 = "./s2/3.bmp";
     filename8 = "./s2/4.bmp";
+
     //将第一栏存储在vector中
     vc1.push_back(filename1);
     vc1.push_back(filename2);
@@ -44,20 +45,69 @@ MyInterface::MyInterface(){
     vc2.push_back(filename7);
     vc2.push_back(filename8);
 
+    //从金老师得来的图片
+    f0 = "./s/0.bmp";
+    f1 = "./s/1.bmp";
+    f2 = "./s/2.bmp";
+    f3 = "./s/3.bmp";
+    f4 = "./s/4.bmp";
+    f5 = "./s/5.bmp";
+    f6 = "./s/6.bmp";
+    f7 = "./s/7.bmp";
+    f8 = "./s/8.bmp";
+    f9 = "./s/9.bmp";
+    f10 = "./s/10.bmp";
+    f11 = "./s/11.bmp";
+    f12 = "./s/12.bmp";
+
+    vc.push_back(f0);
+    vc.push_back(f1);
+    vc.push_back(f2);
+    vc.push_back(f3);
+    vc.push_back(f4);
+    vc.push_back(f5);
+    vc.push_back(f6);
+    vc.push_back(f7);
+    vc.push_back(f8);
+    vc.push_back(f9);
+    vc.push_back(f10);
+    vc.push_back(f11);
+    vc.push_back(f12);
+
+
     index1=0;//用于取第一栏的图片
     index2=0;//用于取第二栏的图片
 
-    index = 0;
+    indexx = 0;
+    indexy = 0;
 
     this->hd = "./0.png";
     this->ld = "./0.png";
 
     MyObject mo1 = MyObject();
+    int x1 = this->panoImage.cols-150;
+    int y1 = 10;
+    int w = 30;
+    int h = 30;
+
+    mo1.setRect(Rect(x1,y1,w,h));
+    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
     mo1.setID(12345);
     MyObject mo2 = MyObject();
+    int x2 = this->panoImage.cols-200;
+    int y2 = 30;
+    mo2.setRect(Rect(x2,y2,w,h));
+    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
+
+
     mo2.setID(12346);
     MyObject mo3 = MyObject();
     mo3.setID(12348);
+    int x3 = this->panoImage.cols-300;
+    int y3 = 100;
+
+    mo3.setRect(Rect(x3,y3,w,h));
+    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
     objs.push_back(mo1);
     objs.push_back(mo2);
     objs.push_back(mo3);
@@ -157,18 +207,57 @@ vector<MyObject> MyInterface::getQj2Objs(){
     return this->objs2;
 }
 
+int MyInterface::getIntegratedData2(){
+    index1++;
+    QString qj = vc[(index1)%13];
+
+    this->panoImage = imread(qj.toStdString());
+//    Mat mat = this->panoImage;
+//    Size dsize ;
+//    double scale = 1;
+//    dsize = Size(mat.cols*scale,mat.rows*scale);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat, image11,dsize);
+
+//    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+//    Mat image4 = CVUtil::QImageToMat(aa);
+//    Mat image44 = Mat(dsize,CV_32S);
+//    cv::resize(image4, image44,dsize);
+//    this->qj1mat = image44;
+
+//    //全景2Mat
+//    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+//    Mat image5 = CVUtil::QImageToMat(aa2);
+//    Mat image55 = Mat(dsize,CV_32S);
+//    cv::resize(image5, image55,dsize);
+//    this->qj2mat = image55;
+}
 
 //获得综合数据
 int MyInterface::getIntegratedData(){
     IntegratedData  *data = new IntegratedData;
         int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
+        isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
         if (isfail_getdata == 0)
         {
             if (!data->panoImage.empty())
             {
-                //cv::imshow("pano", data->panoImage);
+//                cv::imshow("pano", data->panoImage);
+//                cv::waitKey(10);
                 this->timett = data->time;
+                cv::Mat pano_temp=cv::Mat(data->panoImage.rows,data->panoImage.cols,CV_8UC3);
+                vector<cv::Mat> v_mat(3);
+                cv::split(pano_temp,v_mat);
+                v_mat[0]=data->panoImage.clone();
+                v_mat[1]=data->panoImage.clone();
+                v_mat[2]=data->panoImage.clone();
+                cv::merge(v_mat,pano_temp);
+                //cv::imshow(pano_image);
+                data->panoImage=pano_temp;
+
                 this->panoImage = data->panoImage;
+                //std::cout<<panoImage.channels()<<std::endl;
                 //下面将整个的图像切成两幅
                 //全景1Mat
                 Mat mat = this->panoImage;
@@ -177,13 +266,25 @@ int MyInterface::getIntegratedData(){
                 dsize = Size(mat.cols*scale,mat.rows*scale);
                 Mat image11 = Mat(dsize,CV_32S);
                 cv::resize(mat, image11,dsize);
-                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,mat.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+                //std::cout<<"resize 1"<<std::endl;
+                 //std::cout<<"image1"<<image11.empty()<<std::endl;
 
+                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+                //QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_Indexed8);
+
+                //std::cout<<"img "<<img.height()<<std::endl;
                 QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+                //std::cout<<"aa "<<aa.height()<<std::endl;
                 Mat image4 = CVUtil::QImageToMat(aa);
                 Mat image44 = Mat(dsize,CV_32S);
+               // std::cout<<"image1"<<image4.empty()<<std::endl;
+                //std::cout<<"4 "<<image44.empty()<<std::endl;
+                //std::cout<<dsize.height<<std::endl;
                 cv::resize(image4, image44,dsize);
+                // std::cout<<"resize 2"<<std::endl;
                 this->qj1mat = image44;
+
+                //this->qj1mat = mat;
                 //全景2Mat
                 //mat = this->panoImage;
                 //dsize ;
@@ -197,11 +298,13 @@ int MyInterface::getIntegratedData(){
                 Mat image5 = CVUtil::QImageToMat(aa2);
                 Mat image55 = Mat(dsize,CV_32S);
                 cv::resize(image5, image55,dsize);
+                //std::cout<<"resize 3"<<std::endl;
                 this->qj2mat = image55;
+                //this->qj2mat = mat;
 
 
                 //下面完成每个目标的构造
-                this->objs.clear();
+                //this->objs.clear();
                 this->objs1.clear();
                 this->objs2.clear();
                 this->targets = data->targets;
@@ -210,10 +313,24 @@ int MyInterface::getIntegratedData(){
                 int count = this->targets.size();
                 for (int i = 0; i < count;i++)
                 {
-                    MyObject obj = MyObject();
                     SmallTarget tar = targets[i];
+                    //先判断目标是不是已经存在
+                    boolean isObjExisted = false;
+                    MyObject obj;
+                    for(int i = 0; i < this->objs.size(); i++){
+                        obj = objs[i];
+                        if(obj.getID() == tar.id){
+                            isObjExisted = true;
+                        }
+                    }
+
+                    if(!isObjExisted){
+                        obj = MyObject();
+                    }
+
+
                     obj.setID(tar.id);
-                    obj.setCenPoint(tar.cenPoint);
+                    obj.setCenPoint(tar.cenPointACS);
                     obj.setBlockSize(tar.blocksize);
                     obj.setVelocity(tar.Velocity);
                     obj.setMotionDerection(tar.MotionDerection);
@@ -231,8 +348,11 @@ int MyInterface::getIntegratedData(){
                     obj.setTheFeatures(tar.theFeatures);
                     //设置矩形框
                     obj.setRect(Rect(obj.getCenPoint().x-obj.getBlockSize().width/2,obj.getCenPoint().y-obj.getBlockSize().height/2,obj.getBlockSize().width,obj.getBlockSize().height));
+                    if(!isObjExisted){
+                        this->objs.push_back(obj);
+                    }
 
-                    this->objs.push_back(obj);
+
 
                     //设置轨迹
                     boolean isExisted = false;
@@ -328,7 +448,8 @@ int MyInterface::getIntegratedData(){
 
 //随机生成3个对象
 vector<MyObject> MyInterface::getObjs2(){
-    index++;
+    indexx++;
+    indexy++;
 
 //    if(100+index*5 >= this->panoImage.cols/2){
 //        index = 0;
@@ -340,11 +461,22 @@ vector<MyObject> MyInterface::getObjs2(){
     MyObject mo1 = (MyObject)objs[0];
     MyObject mo2 = (MyObject)objs[1];
     MyObject mo3 = (MyObject)objs[2];
-    int x1 = 10+index*5;
-    int y1 = 10+index*2;
-    int w = 50;
-    int h = 50;
+    int x1=mo1.getRect().x;// = this->panoImage.cols-150+indexx*15;
+    int y1=mo1.getRect().y;// = 10+indexy*2;
+    int w = 30;
+    int h = 30;
 
+    if(x1+mo1.getRect().width >= this->panoImage.cols){
+        indexx = 0;
+        x1 = 30;
+
+    }
+    if(y1+mo1.getRect().height>= this->panoImage.rows){
+        indexy = 0;
+        y1 = 10;
+    }
+    x1 = x1+indexx*5;
+    y1 = y1+indexy*2;
     mo1.setRect(Rect(x1,y1,w,h));
     mo1.setCenPoint(Point(x1+w/2, y1+h/2));
 //    mo1.getRect().x = x1;
@@ -355,8 +487,19 @@ vector<MyObject> MyInterface::getObjs2(){
 //    mo1.getCenPoint().y = (y1+h/2);
 
 
-    int x2 = 50+index*5;
-    int y2 = 30+index*2;
+    int x2=mo2.getRect().x;// = this->panoImage.cols-200+indexx*20;
+    int y2=mo2.getRect().y;// = 30+indexy*2;
+    if(x2 >= this->panoImage.cols){
+        indexx = 0;
+        x2 = 10;
+
+    }
+    if(y2>= this->panoImage.rows){
+        indexy = 0;
+        y2 = 30;
+    }
+    x2 = x2+indexx*5;
+    y2 = y2+indexy*2;
 
 //    mo2.getRect().x = x2;
 //    mo2.getRect().y = y2;
@@ -367,9 +510,20 @@ vector<MyObject> MyInterface::getObjs2(){
     mo2.setRect(Rect(x2,y2,w,h));
     mo2.setCenPoint(Point(x2+w/2, y2+h/2));
 
-    int x3 = 100+index*5;
-    int y3 = 100+index*2;
+    int x3=mo3.getRect().x;// = this->panoImage.cols-300+indexx*25;
+    int y3=mo3.getRect().y;// = 100+indexy*2;
 
+    if(x3 >= this->panoImage.cols){
+        indexx = 0;
+        x3 = 50;
+
+    }
+    if(y3>= this->panoImage.rows){
+        indexy = 0;
+        y3 = 100;
+    }
+    x3 = x3+indexx*5;
+    y3 = y3+indexy*2;
 //    mo3.getRect().x = x3;
 //    mo3.getRect().y = y3;
 //    mo3.getRect().width = w;
