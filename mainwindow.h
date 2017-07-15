@@ -87,6 +87,8 @@ public:
    int alpha_contrast;
    bool isPseudo;
    bool isVoice;
+//   Mat mat;
+//   Mat mat1, mat2;
    //HSL *hsl;
    int color ;
   // int saturation1;

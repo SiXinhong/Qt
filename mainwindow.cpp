@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent) :
     is_open=false;
 
 
-    ui->setupUi(this);   
+    ui->setupUi(this);
     QWidget* widget = new QWidget(this);
 
     //widget10 = new QWidget(this);
@@ -178,7 +178,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow(){
     delete ui;
-   // delete hsl;
+    // delete hsl;
     delete strackBar;
     delete trackBar;
     delete objectAttributes;
@@ -190,9 +190,9 @@ MainWindow::~MainWindow(){
 void MainWindow::jinProcessing(){
     //vector<MyObject> objs = in.getObjs2();
     if(in.getIntegratedData() == 0){
-//        //图片1
-//        //QString s1=in.getQJ1();
-//        //imageurl=s1.toStdString();
+        //        //图片1
+        //        //QString s1=in.getQJ1();
+        //        //imageurl=s1.toStdString();
         //std::cout<<"get data ok "<<std::endl;
         //在全景上画矩形，文字，轨迹等
         Mat mat = in.getPano();
@@ -251,8 +251,8 @@ void MainWindow::jinProcessing(){
         widget1->setTracks(in.getTracks());
         widget1->draw();
         //图片2
-//        //QString s2=in.getQJ2();
-//        //imageurl2=s2.toStdString();
+        //        //QString s2=in.getQJ2();
+        //        //imageurl2=s2.toStdString();
         widget2->setPano(mat);
         widget2->setMat(mat2);
         widget2->setObjects(in.getObjs());
@@ -266,7 +266,7 @@ void MainWindow::jinProcessing(){
         widget4->setPano(mat);
         widget4->setAllObjects(in.getObjs());
         widget4->draw();
-//        //图片5
+        //        //图片5
         widget5->setPano(in.getPano());
         QString imageurl5=in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
@@ -294,12 +294,12 @@ void MainWindow::selfProcessing(){
     vector<MyObject> objs = in.getObjs2();
 
     //图片1
-//    QString s1=in.getQJ1();
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
+    //    QString s1=in.getQJ1();
+    //    imageurl=s1.toStdString();
+    //    Mat mat1 =imread(imageurl);
 
     //在全景上画矩形，文字，轨迹等
-    Mat mat = in.getPano();
+    Mat mat = in.getPano().clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -350,9 +350,9 @@ void MainWindow::selfProcessing(){
     mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
 
     if(this->isPseudo==true)
-                        mat1=setPseudocolor(mat1);
-        updateBright(mat1);
-        updateContrast(mat1);
+        mat1=setPseudocolor(mat1);
+    updateBright(mat1);
+    updateContrast(mat1);
     widget1->setPano(mat);
     widget1->setMat(mat1);
     widget1->setObjects(objs);
@@ -361,14 +361,14 @@ void MainWindow::selfProcessing(){
     widget1->draw();
 
     //图片2
-//    QString s2=in.getQJ2();
-//    imageurl2=s2.toStdString();
-//    Mat mat2 =imread(imageurl2);
+    //    QString s2=in.getQJ2();
+    //    imageurl2=s2.toStdString();
+    //    Mat mat2 =imread(imageurl2);
 
     if(this->isPseudo==true)
-                       mat2=setPseudocolor(mat2);
-       updateBright(mat2);
-       updateContrast(mat2);
+        mat2=setPseudocolor(mat2);
+    updateBright(mat2);
+    updateContrast(mat2);
     widget2->setPano(mat);
     widget2->setMat(mat2);
     widget2->setObjects(objs);
@@ -634,169 +634,169 @@ void MainWindow::addMyToolBar()
     QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     vector<MyObject> vec = in.getObjs2();
-      if(vec.size()==0)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap2);
-          vbox3->addWidget(light1);
-          //vbox3->addWidget(new QLabel(" "));
+    if(vec.size()==0)
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap2);
+        vbox3->addWidget(light1);
+        //vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap2);
-          vbox3->addWidget(light2);
-          //vbox3->addWidget(new QLabel(" "));
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap2);
+        vbox3->addWidget(light2);
+        //vbox3->addWidget(new QLabel(" "));
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
-          //vbox3->addWidget(new QLabel(" "));
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap2);
+        vbox3->addWidget(light3);
+        //vbox3->addWidget(new QLabel(" "));
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-          //vbox3->addWidget(light5);
-      }
-      else if(vec.size()==1)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-          //vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap2);
-          vbox3->addWidget(light2);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
-          //vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap2);
+        vbox3->addWidget(light4);
         // vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-         // vbox3->addWidget(light5);
-      }
-      else if(vec.size()==2)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-         // vbox3->addWidget(new QLabel(" "));
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap2);
+        //vbox3->addWidget(light5);
+    }
+    else if(vec.size()==1)
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap1);
+        vbox3->addWidget(light1);
+        //vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-         // vbox3->addWidget(new QLabel(" "));
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap2);
+        vbox3->addWidget(light2);
+        // vbox3->addWidget(new QLabel(" "));
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap2);
+        vbox3->addWidget(light3);
+        //vbox3->addWidget(new QLabel(" "));
+
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap2);
+        vbox3->addWidget(light4);
+        // vbox3->addWidget(new QLabel(" "));
+
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap2);
+        // vbox3->addWidget(light5);
+    }
+    else if(vec.size()==2)
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap1);
+        vbox3->addWidget(light1);
+        // vbox3->addWidget(new QLabel(" "));
+
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap1);
+        vbox3->addWidget(light2);
+        // vbox3->addWidget(new QLabel(" "));
+
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap2);
+        vbox3->addWidget(light3);
         //  vbox3->addWidget(new QLabel(" "));
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap2);
+        vbox3->addWidget(light4);
         //  vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap2);
         //  vbox3->addWidget(light5);
-      }
-      else if(vec.size()==3)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-         // vbox3->addWidget(new QLabel(" "));
+    }
+    else if(vec.size()==3)
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap1);
+        vbox3->addWidget(light1);
+        // vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap1);
+        vbox3->addWidget(light2);
         //  vbox3->addWidget(new QLabel(" "));
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap1);
+        vbox3->addWidget(light3);
         //  vbox3->addWidget(new QLabel(" "));
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap2);
+        vbox3->addWidget(light4);
+        // vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap2);
         vbox3->addWidget(light5);
-      }
-      else if(vec.size()==4)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-       //   vbox3->addWidget(new QLabel(" "));
+    }
+    else if(vec.size()==4)
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap1);
+        vbox3->addWidget(light1);
+        //   vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-       //   vbox3->addWidget(new QLabel(" "));
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap1);
+        vbox3->addWidget(light2);
+        //   vbox3->addWidget(new QLabel(" "));
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
-         // vbox3->addWidget(new QLabel(" "));
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap1);
+        vbox3->addWidget(light3);
+        // vbox3->addWidget(new QLabel(" "));
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap1);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap1);
+        vbox3->addWidget(light4);
+        // vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-          vbox3->addWidget(light5);
-      }
-      else
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-      //    vbox3->addWidget(new QLabel(" "));
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap2);
+        vbox3->addWidget(light5);
+    }
+    else
+    {
+        light1=new QLabel(this);
+        light1->setPixmap(fitpixmap1);
+        vbox3->addWidget(light1);
+        //    vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-      //    vbox3->addWidget(new QLabel(" "));
+        light2=new QLabel(this);
+        light2->setPixmap(fitpixmap1);
+        vbox3->addWidget(light2);
+        //    vbox3->addWidget(new QLabel(" "));
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
-     //    vbox3->addWidget(new QLabel(" "));
+        light3=new QLabel(this);
+        light3->setPixmap(fitpixmap1);
+        vbox3->addWidget(light3);
+        //    vbox3->addWidget(new QLabel(" "));
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap1);
-          vbox3->addWidget(light4);
-       //   vbox3->addWidget(new QLabel(" "));
+        light4=new QLabel(this);
+        light4->setPixmap(fitpixmap1);
+        vbox3->addWidget(light4);
+        //   vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap1);
-          vbox3->addWidget(light5);
-      }
+        light5=new QLabel(this);
+        light5->setPixmap(fitpixmap1);
+        vbox3->addWidget(light5);
+    }
 
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);
     //mainToolBar->addWidget(new QLabel("    "));
 
-    //第四组，显示编号和系统当前时间  
+    //第四组，显示编号和系统当前时间
     serialNumber=new QLabel("    位置："+xtbh);//编号
     serialNumber->setStyleSheet("color:White");
     vbox4->addWidget(serialNumber);
@@ -926,69 +926,34 @@ void MainWindow::onTimerOut2(){
 
 void MainWindow::adjustment()
 {
-        Mat mat1 =imread(imageurl);
-        Mat mat2 =imread(imageurl2);
-        if(this->isPseudo==true){
-                        mat1=setPseudocolor(mat1);
-                        mat2=setPseudocolor(mat2);
-        }
-        updateBright(mat1);
-        updateBright(mat2);
-        updateContrast(mat1);
-        updateContrast(mat2);
-        widget1->setMat(mat1);
-        widget1->draw();
-        widget3->draw();
-        widget2->setMat(mat2);
-        widget2->draw();
-        widget4->draw();
-//    Mat mat1 =imread(imageurl);
-//    if(this->isPseudo==true)
-//            mat1=setPseudocolor(mat1);
-//    widget1->setMat(mat1);
-//    drawUiLabel(mat1,1);
+    Mat mat = in.getPano().clone();
 
-//    Mat mat2 =imread(imageurl2);
-//    if(this->isPseudo==true)
-//            mat2=setPseudocolor(mat2);
-//    widget2->setMat(mat2);
-//    drawUiLabel(mat2,2);
-//    //更新第三栏
-//    Mat mat3 = widget1->getMat();
-//    Size dsize ;
-//    double scale = 1;
-//    dsize = Size(mat3.cols*scale,mat3.rows*scale);
-//    Mat image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat3, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat3.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+    if(this->isPseudo==true)
+        mat=setPseudocolor(mat);
+    updateBright(mat);
+    updateContrast(mat);
 
-//    aa=(&img)->copy(widget1->getQRectan());
-//    Mat image3 = QImageToMat(aa);
-//    Mat image33 = Mat(dsize,CV_32S);
-//    cv::resize(image3, image33,dsize);
-//    widget3->setMat(image33);
-//    widget3->draw();
+    cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-////    //更新第四栏
-////    Mat img2=QImageToMat(image2);
-////    paintRectangle(img2,1650,250,400,100);
-////    Mat mat4 =imread(imageurl2);
-////    drawUiLabelByCopy(mat4,4);
-//    Mat mat4 = widget2->getMat();
-//    //Size dsize ;
-//    //double scale = 1;
-//    dsize = Size(mat4.cols*scale,mat4.rows*scale);
-//    image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat4, image11,dsize);
-//    img = QImage((const unsigned char*)(image11.data),image11.cols,mat4.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+    Mat mat1, mat2;
+    mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
+    mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
 
-//    aa=(&img)->copy(widget2->getQRectan());
-//    Mat image4 = QImageToMat(aa);
-//    Mat image44 = Mat(dsize,CV_32S);
-//    cv::resize(image4, image44,dsize);
-//    widget4->setMat(image44);
-//    widget4->draw();
+    widget1->setMat(mat1);
+    widget1->setPano(mat);
+    widget1->draw();
 
+    widget2->setPano(mat);
+    widget2->setMat(mat2);
+    widget2->draw();
+
+    widget3->setPano(mat);
+    widget3->setAllObjects(in.getObjs());
+    widget3->draw();
+
+    widget4->setPano(mat);
+    widget4->setAllObjects(in.getObjs());
+    widget4->draw();
 }
 
 //定时器任务
@@ -1018,34 +983,34 @@ void MainWindow::selfTimerout(){
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
         QFile file(current_path);
         if(isJixu == true){
-        file.open(QIODevice::WriteOnly);
-        QDataStream out(&file);
-        out<<objs.at(i);
-        file.close();
+            file.open(QIODevice::WriteOnly);
+            QDataStream out(&file);
+            out<<objs.at(i);
+            file.close();
         }
         current_time.clear();
         current_path.clear();
     }
-//    for(int i = 0; i < objs.size(); i++){
-//        MyObject obj = objs[i];
-//        qDebug()<<i;
-//        qDebug()<<obj.getID();
-//        qDebug()<<obj.getCenPoint().x;
-//        qDebug()<<obj.getCenPoint().y;
-//        qDebug()<<obj.getRect().x;
-//        qDebug()<<obj.getRect().y;
-//        qDebug()<<obj.getRect().width;
-//        qDebug()<<obj.getRect().height;
-//    }
+    //    for(int i = 0; i < objs.size(); i++){
+    //        MyObject obj = objs[i];
+    //        qDebug()<<i;
+    //        qDebug()<<obj.getID();
+    //        qDebug()<<obj.getCenPoint().x;
+    //        qDebug()<<obj.getCenPoint().y;
+    //        qDebug()<<obj.getRect().x;
+    //        qDebug()<<obj.getRect().y;
+    //        qDebug()<<obj.getRect().width;
+    //        qDebug()<<obj.getRect().height;
+    //    }
 
     //图片1
     //图片1
-//    QString s1=in.getQJ1();
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
+    //    QString s1=in.getQJ1();
+    //    imageurl=s1.toStdString();
+    //    Mat mat1 =imread(imageurl);
 
     //在全景上画矩形，文字，轨迹等
-    Mat mat = in.getPano();
+    Mat mat = in.getPano().clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -1091,37 +1056,41 @@ void MainWindow::selfTimerout(){
 
     //然后劈成2半
 
-//    Size dsize ;
-//    double scale = 1;
-//    dsize = Size(mat.cols*scale,mat.rows*scale);
-//    Mat image11 = Mat(dsize,CV_32S);
-//    cv::resize(mat, image11,dsize);
+    //    Size dsize ;
+    //    double scale = 1;
+    //    dsize = Size(mat.cols*scale,mat.rows*scale);
+    //    Mat image11 = Mat(dsize,CV_32S);
+    //    cv::resize(mat, image11,dsize);
 
-//    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-//    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
-//    Mat image4 = CVUtil::QImageToMat(aa);
-//    Mat image44 = Mat(dsize,CV_32S);
-//    cv::resize(image4, image44,dsize);
+    //    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+    //    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+    //    Mat image4 = CVUtil::QImageToMat(aa);
+    //    Mat image44 = Mat(dsize,CV_32S);
+    //    cv::resize(image4, image44,dsize);
 
-//    //全景2Mat
-//    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
-//    Mat image5 = CVUtil::QImageToMat(aa2);
-//    Mat image55 = Mat(dsize,CV_32S);
-//    cv::resize(image5, image55,dsize);
+    //    //全景2Mat
+    //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+    //    Mat image5 = CVUtil::QImageToMat(aa2);
+    //    Mat image55 = Mat(dsize,CV_32S);
+    //    cv::resize(image5, image55,dsize);
+    if(this->isPseudo==true)
+        mat=setPseudocolor(mat);
+    updateBright(mat);
+    updateContrast(mat);
 
     Mat mat1, mat2;
     mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
     mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
 
     //Mat mat1 = image44;
-    if(this->isPseudo==true)
-                        mat1=setPseudocolor(mat1);
-        updateBright(mat1);
-        updateContrast(mat1);
-//        if(saturation1!=100){
-//               hsl->channels[color].saturation1 = saturation1 - 100;
-//               hsl->adjust(mat1, mat1);
-//           }
+//    if(this->isPseudo==true)
+//        mat1=setPseudocolor(mat1);
+//    updateBright(mat1);
+//    updateContrast(mat1);
+    //        if(saturation1!=100){
+    //               hsl->channels[color].saturation1 = saturation1 - 100;
+    //               hsl->adjust(mat1, mat1);
+    //           }
     widget1->setMat(mat1);
     widget1->setPano(mat);
     widget1->setObjects(objs);
@@ -1130,19 +1099,19 @@ void MainWindow::selfTimerout(){
     //qDebug()<<s1;
     //图片2
     //图片1
-//    QString s1=in.getQJ1();
-//    imageurl=s1.toStdString();
-//    Mat mat1 =imread(imageurl);
+    //    QString s1=in.getQJ1();
+    //    imageurl=s1.toStdString();
+    //    Mat mat1 =imread(imageurl);
 
     //Mat mat2 = image55;
-    if(this->isPseudo==true)
-                        mat2=setPseudocolor(mat2);
-        updateBright(mat2);
-        updateContrast(mat2);
-//        if(saturation1!=100){
-//               hsl->channels[color].saturation1 = saturation1 - 100;
-//               hsl->adjust(mat2, mat2);
-//           }
+//    if(this->isPseudo==true)
+//        mat2=setPseudocolor(mat2);
+//    updateBright(mat2);
+//    updateContrast(mat2);
+    //        if(saturation1!=100){
+    //               hsl->channels[color].saturation1 = saturation1 - 100;
+    //               hsl->adjust(mat2, mat2);
+    //           }
     widget2->setPano(mat);
     widget2->setMat(mat2);
     widget2->setObjects(objs);
@@ -1183,13 +1152,13 @@ void MainWindow::selfTimerout(){
 void MainWindow::jinTimerout(){
     //vector<MyObject> objs = in.getObjs2();
     //std::cout<<"ok2 "<<std::endl;
-  //#if 1
+    //#if 1
     if(in.getIntegratedData() == 0){
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
-//        QString s1=in.getQJ1();
-//        imageurl=s1.toStdString();
-//        //qDebug()<<in.getObjs().size();
+        //        QString s1=in.getQJ1();
+        //        imageurl=s1.toStdString();
+        //        //qDebug()<<in.getObjs().size();
         //在全景上画矩形，文字，轨迹等
         Mat mat = in.getPano();
         vector<MyObject> objs = in.getObjs();
@@ -1243,15 +1212,15 @@ void MainWindow::jinTimerout(){
 
         widget1->setMat(mat1);
         widget1->setPano(mat);
-//        cv::imshow("pano", mat1);
-//        cv::waitKey(10);
+        //        cv::imshow("pano", mat1);
+        //        cv::waitKey(10);
 
         widget1->setObjects(in.getObjs());
         widget1->setTracks(in.getTracks());
         widget1->draw();
-//        //图片2
-//        //QString s2=in.getQJ2();
-//        //imageurl2=s2.toStdString();
+        //        //图片2
+        //        //QString s2=in.getQJ2();
+        //        //imageurl2=s2.toStdString();
         widget2->setMat(mat2);
         widget2->setPano(mat);
         widget2->setObjects(in.getObjs());
@@ -1282,14 +1251,14 @@ void MainWindow::jinTimerout(){
         widget6->draw();
     }
     else{
-       this->selfTimerout();
+        this->selfTimerout();
     }
-//    }
-//    else
-//    {
-//    std::cout<<"no ok"<<std::endl;
-//    }
-//    #endif
+    //    }
+    //    else
+    //    {
+    //    std::cout<<"no ok"<<std::endl;
+    //    }
+    //    #endif
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
@@ -1357,10 +1326,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //1. 如果出发点是全景显示区1，并且全景显示区1中有选择框，并且目的是主显示区，则拷贝全景显示区1选择框内的图像到主显示区
     if(isDrag1 && isMove && target3){
 
-//        widget1->rectan.x = widget1->newrect.x;
-//        widget1->rectan.y = widget1->newrect.y;
-//        widget1->rectan.width = widget1->newrect.width;
-//        widget1->rectan.height = widget1->newrect.height;
+        //        widget1->rectan.x = widget1->newrect.x;
+        //        widget1->rectan.y = widget1->newrect.y;
+        //        widget1->rectan.width = widget1->newrect.width;
+        //        widget1->rectan.height = widget1->newrect.height;
         widget1->isTo3 = true;
         widget2->isTo3 = false;
 
@@ -1408,16 +1377,16 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-//        Mat image11 = Mat(dsize,CV_32S);
-//        cv::resize(mat, image11,dsize);
-//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//        //vector<Rectan> rectans;
-//        aa=(&img)->copy(widget1->getQRectan3());
-//        Mat image3 = QImageToMat(aa);
-//        Mat image33 = Mat(dsize,CV_32S);
-//        cv::resize(image3, image33,dsize);
-//        widget3->setMat(image33);
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget1->getQRectan3());
+        //        Mat image3 = QImageToMat(aa);
+        //        Mat image33 = Mat(dsize,CV_32S);
+        //        cv::resize(image3, image33,dsize);
+        //        widget3->setMat(image33);
         Mat image3;
         mat(widget1->rectan3).copyTo(image3);//mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
@@ -1428,10 +1397,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //2. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是主显示区，则拷贝全景显示区2选择框内的图像到主显示区
     if(isDrag2 && isMove && target3){
         //widget2->rectan = widget2->newrect;
-//        widget2->rectan.x = widget2->newrect.x;
-//        widget2->rectan.y = widget2->newrect.y;
-//        widget2->rectan.width = widget2->newrect.width;
-//        widget2->rectan.height = widget2->newrect.height;
+        //        widget2->rectan.x = widget2->newrect.x;
+        //        widget2->rectan.y = widget2->newrect.y;
+        //        widget2->rectan.width = widget2->newrect.width;
+        //        widget2->rectan.height = widget2->newrect.height;
 
         widget1->isTo3 = false;
         widget2->isTo3 = true;
@@ -1480,17 +1449,17 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-//        Mat image11 = Mat(dsize,CV_32S);
-//        cv::resize(mat, image11,dsize);
-//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//        //vector<Rectan> rectans;
-//        aa=(&img)->copy(widget2->getQRectan3());
-//        Mat image3 = QImageToMat(aa);
-//        Mat image33 = Mat(dsize,CV_32S);
-//        cv::resize(image3, image33,dsize);
-//        widget3->setMat(image33);
-//        widget3->draw();
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget2->getQRectan3());
+        //        Mat image3 = QImageToMat(aa);
+        //        Mat image33 = Mat(dsize,CV_32S);
+        //        cv::resize(image3, image33,dsize);
+        //        widget3->setMat(image33);
+        //        widget3->draw();
         Mat image3;
         mat(widget2->getQRectan3()).copyTo(image3);//mw->QImageToMat(mw->aa);
         Mat image33 = Mat(dsize,CV_32S);
@@ -1547,17 +1516,17 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-//        Mat image11 = Mat(dsize,CV_32S);
-//        cv::resize(mat, image11,dsize);
-//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//        //vector<Rectan> rectans;
-//        aa=(&img)->copy(widget1->getQRectan4());
-//        Mat image4 = QImageToMat(aa);
-//        Mat image44 = Mat(dsize,CV_32S);
-//        cv::resize(image4, image44,dsize);
-//        widget4->setMat(image44);
-//        widget4->draw();
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget1->getQRectan4());
+        //        Mat image4 = QImageToMat(aa);
+        //        Mat image44 = Mat(dsize,CV_32S);
+        //        cv::resize(image4, image44,dsize);
+        //        widget4->setMat(image44);
+        //        widget4->draw();
         Mat image4;
         mat(widget1->rectan4).copyTo(image4);//mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
@@ -1615,17 +1584,17 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         Size dsize ;
         double scale = 1;
         dsize = Size(mat.cols*scale,mat.rows*scale);
-//        Mat image11 = Mat(dsize,CV_32S);
-//        cv::resize(mat, image11,dsize);
-//        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
-//        //vector<Rectan> rectans;
-//        aa=(&img)->copy(widget2->getQRectan4());
-//        Mat image4 = QImageToMat(aa);
-//        Mat image44 = Mat(dsize,CV_32S);
-//        cv::resize(image4, image44,dsize);
-//        widget4->setMat(image44);
-//        widget4->draw();
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget2->getQRectan4());
+        //        Mat image4 = QImageToMat(aa);
+        //        Mat image44 = Mat(dsize,CV_32S);
+        //        cv::resize(image4, image44,dsize);
+        //        widget4->setMat(image44);
+        //        widget4->draw();
         Mat image4;
         mat(widget2->getQRectan4()).copyTo(image4);//mw->QImageToMat(mw->aa);
         Mat image44 = Mat(dsize,CV_32S);
@@ -1652,18 +1621,18 @@ void MainWindow::paintEvent(QPaintEvent *){
 }
 
 Mat MainWindow::setPseudocolor(Mat& image){
-        Mat img_pseudocolor(image.rows, image.cols, CV_8UC3);
-        for (int y = 0; y < image.rows; y++)//转为伪彩色图像的具体算法
-            {
-                for (int x = 0; x < image.cols; x++)
-                {
-                    int tmp = image.at<unsigned char>(y, x);
-                    img_pseudocolor.at<Vec3b>(y, x)[0] = abs(255 - tmp); //blue
-                    img_pseudocolor.at<Vec3b>(y, x)[1] = abs(127 - tmp); //green
-                    img_pseudocolor.at<Vec3b>(y, x)[2] = abs(0 - tmp); //red
-                }
-            }
-        return img_pseudocolor;
+    Mat img_pseudocolor(image.rows, image.cols, CV_8UC3);
+    for (int y = 0; y < image.rows; y++)//转为伪彩色图像的具体算法
+    {
+        for (int x = 0; x < image.cols; x++)
+        {
+            int tmp = image.at<unsigned char>(y, x);
+            img_pseudocolor.at<Vec3b>(y, x)[0] = abs(255 - tmp); //blue
+            img_pseudocolor.at<Vec3b>(y, x)[1] = abs(127 - tmp); //green
+            img_pseudocolor.at<Vec3b>(y, x)[2] = abs(0 - tmp); //red
+        }
+    }
+    return img_pseudocolor;
 }
 
 double MainWindow::getDirectionX(double x, Mat mat){
@@ -1683,22 +1652,22 @@ double MainWindow::getDirectionY(double y, Mat mat){
 //---xiaotian 绘制界面上的图片3  图片4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){
     if(this->isPseudo==true)
-                image=setPseudocolor(image);
+        image=setPseudocolor(image);
     for (int y = 0; y < image.rows; y++)
+    {
+        for (int x = 0; x < image.cols; x++)
+        {
+            for (int c = 0; c < 3; c++)
             {
-                for (int x = 0; x < image.cols; x++)
+                //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                if (image.at<Vec3b>(y, x)[c] > 255)
                 {
-                    for (int c = 0; c < 3; c++)
-                    {
-                        //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
-                     image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
-                        if (image.at<Vec3b>(y, x)[c] > 255)
-                        {
-                            image.at<Vec3b>(y, x)[c] = 255;
-                        }
-                    }
+                    image.at<Vec3b>(y, x)[c] = 255;
                 }
             }
+        }
+    }
 
     //Mat image =imread(imgurl);
     Size dsize ;
@@ -1706,7 +1675,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
     dsize = Size(image.cols*scale,image.rows*scale);
     Mat image11 = Mat(dsize,CV_32S);
     cv::resize(image, image11,dsize);
-//    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+    //    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
     img = QImage((const unsigned char*)(image11.data),image11.cols,image.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
 
     vector<Rectan> rectans;
@@ -1765,97 +1734,97 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
 void MainWindow::drawUiLabel(Mat image, int index){
     if(index == 1 || index==2){
         for (int y = 0; y < image.rows; y++)
+        {
+            for (int x = 0; x < image.cols; x++)
+            {
+                for (int c = 0; c < 3; c++)
                 {
-                    for (int x = 0; x < image.cols; x++)
+                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                    image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                    if (image.at<Vec3b>(y, x)[c] > 255)
                     {
-                        for (int c = 0; c < 3; c++)
-                        {
-                            //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
-                         image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
-                            if (image.at<Vec3b>(y, x)[c] > 255)
-                            {
-                                image.at<Vec3b>(y, x)[c] = 255;
-                            }
-                        }
+                        image.at<Vec3b>(y, x)[c] = 255;
                     }
                 }
+            }
+        }
     }
-     //Mat image =imread(imgurl);
-     vector<Rectan> rectans;
-     if(index == 1){
-         //图片1
-         Rectan rec(1490,250,100,100);
-         Rectan rec2(1800,250,50,50);
-         rectans.push_back(rec);
-         rectans.push_back(rec2);
-         //QImage imgLabel = drawRecOnPic(image,rectans);
-         drawRecOnPic(image,rectans);
-         cv::cvtColor(image, image, CV_BGR2RGB);
-         imgLabel1 = MatToQImage(image,imgLabel1);
-         loadPictureToLabel(label,imgLabel1);
-     }
+    //Mat image =imread(imgurl);
+    vector<Rectan> rectans;
+    if(index == 1){
+        //图片1
+        Rectan rec(1490,250,100,100);
+        Rectan rec2(1800,250,50,50);
+        rectans.push_back(rec);
+        rectans.push_back(rec2);
+        //QImage imgLabel = drawRecOnPic(image,rectans);
+        drawRecOnPic(image,rectans);
+        cv::cvtColor(image, image, CV_BGR2RGB);
+        imgLabel1 = MatToQImage(image,imgLabel1);
+        loadPictureToLabel(label,imgLabel1);
+    }
 
-     if(index == 2){
+    if(index == 2){
         //图片2
-         Rectan rec3(2600,10,100,100);
-         rectans.clear();
-         rectans.push_back(rec3);
-         //QImage imgLabel = drawRecOnPic(image,rectans);
-         drawRecOnPic(image,rectans);
-         cv::cvtColor(image, image, CV_BGR2RGB);
-         imgLabel2 = MatToQImage(image,imgLabel2);
-         loadPictureToLabel(label2,imgLabel2);
-     }
+        Rectan rec3(2600,10,100,100);
+        rectans.clear();
+        rectans.push_back(rec3);
+        //QImage imgLabel = drawRecOnPic(image,rectans);
+        drawRecOnPic(image,rectans);
+        cv::cvtColor(image, image, CV_BGR2RGB);
+        imgLabel2 = MatToQImage(image,imgLabel2);
+        loadPictureToLabel(label2,imgLabel2);
+    }
 
-     if(index == 5){
+    if(index == 5){
         //图片5
-         Point point1(75,60);
-         Point point2(110,40);
-         Point point3(75,60);
-         Point point4(125,118);
-         Point point5(125,118);
-         Point point6(130,114);
-         Point point7(130,114);
-         Point point8(110,40);
-         vector<Point> points;
-         points.push_back(point1);
-         points.push_back(point2);
-         points.push_back(point3);
-         points.push_back(point4);
-         points.push_back(point5);
-         points.push_back(point6);
-         points.push_back(point7);
-         points.push_back(point8);
-         //QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
-         drawCircleOnPic(image,points,120,100);
-         imgLabel5 = MatToQImage(image, imgLabel5);
-         cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label5,imgLabel5);
-         //delete imgLabel5;
-     }
-     if(index == 6){
+        Point point1(75,60);
+        Point point2(110,40);
+        Point point3(75,60);
+        Point point4(125,118);
+        Point point5(125,118);
+        Point point6(130,114);
+        Point point7(130,114);
+        Point point8(110,40);
+        vector<Point> points;
+        points.push_back(point1);
+        points.push_back(point2);
+        points.push_back(point3);
+        points.push_back(point4);
+        points.push_back(point5);
+        points.push_back(point6);
+        points.push_back(point7);
+        points.push_back(point8);
+        //QImage imgLabel5 = drawCircleOnPic(image,points,120,100);
+        drawCircleOnPic(image,points,120,100);
+        imgLabel5 = MatToQImage(image, imgLabel5);
+        cv::cvtColor(image, image, CV_BGR2RGB);
+        loadPictureToLabel(label5,imgLabel5);
+        //delete imgLabel5;
+    }
+    if(index == 6){
         //图片6
-         Point point11(75,60);
-         Point point21(110,39);
-         Point point31(75,60);
-         Point point41(150,150);
-         Point point51(110,40);
-         Point point61(150,150);
-         vector<Point> points1;
-         points1.push_back(point11);
-         points1.push_back(point21);
-         points1.push_back(point31);
-         points1.push_back(point41);
-         points1.push_back(point51);
-         points1.push_back(point61);
-         //QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
-         drawCircleOnPic(image,points1,120,100);
-         imgLabel6 = MatToQImage(image, imgLabel6);
-         cv::cvtColor(image, image, CV_BGR2RGB);
-         loadPictureToLabel(label6,imgLabel6);
-         //delete imgLabel6;
-     }
-     //cvReleaseMat(&image);
+        Point point11(75,60);
+        Point point21(110,39);
+        Point point31(75,60);
+        Point point41(150,150);
+        Point point51(110,40);
+        Point point61(150,150);
+        vector<Point> points1;
+        points1.push_back(point11);
+        points1.push_back(point21);
+        points1.push_back(point31);
+        points1.push_back(point41);
+        points1.push_back(point51);
+        points1.push_back(point61);
+        //QImage imgLabel6 = drawCircleOnPic(image,points1,120,100);
+        drawCircleOnPic(image,points1,120,100);
+        imgLabel6 = MatToQImage(image, imgLabel6);
+        cv::cvtColor(image, image, CV_BGR2RGB);
+        loadPictureToLabel(label6,imgLabel6);
+        //delete imgLabel6;
+    }
+    //cvReleaseMat(&image);
 }
 
 
@@ -1934,8 +1903,8 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     }
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
+    //    imgLabel = MatToQImage(image);
+    //    return imgLabel;
 
 }
 
@@ -1945,8 +1914,8 @@ void MainWindow::drawRecOnPic2(Mat image, Rect rect){
     rectangle(image,rect,Scalar(0,0,255),1,1,0);
     cv::cvtColor(image, image, CV_BGR2RGB);
     //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    //return imgLabel;
+    //    imgLabel = MatToQImage(image);
+    //    //return imgLabel;
 }
 
 //---xiaotian  图像上绘制标尺和矩形框
@@ -1967,8 +1936,8 @@ void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
     paintScale(image,startw,starth);
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel3;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
+    //    imgLabel = MatToQImage(image);
+    //    return imgLabel;
 }
 
 //---xiaotian  图像上绘制多边形和圆
@@ -1985,8 +1954,8 @@ void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, doubl
     paintCircle(image,x,y);
     cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
-//    imgLabel = MatToQImage(image);
-//    return imgLabel;
+    //    imgLabel = MatToQImage(image);
+    //    return imgLabel;
 }
 
 
@@ -2025,17 +1994,17 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
     line(image,Point(0,0),Point(image.cols,0),Scalar(255,255,255),2,8,0);
     for(int t=startw; t<=startw+30; t++)
     {
-     int i=t-startw;
-     if(i%2 == 0){
-        line(image,Point(i*c,0),Point(i*c,20),Scalar(255,255,255),2,8,0);
-        //标尺上写字
-        QString text = QString::number(t,10);
-        string str = text.toStdString();
-        putText(image,str,Point(i*c-10,50),3,1,Scalar(255,255,255));
-     }
-     else{
-         line(image,Point(i*c,0),Point(i*c,15),Scalar(255,255,255),2,8,0);
-     }
+        int i=t-startw;
+        if(i%2 == 0){
+            line(image,Point(i*c,0),Point(i*c,20),Scalar(255,255,255),2,8,0);
+            //标尺上写字
+            QString text = QString::number(t,10);
+            string str = text.toStdString();
+            putText(image,str,Point(i*c-10,50),3,1,Scalar(255,255,255));
+        }
+        else{
+            line(image,Point(i*c,0),Point(i*c,15),Scalar(255,255,255),2,8,0);
+        }
     }
     line(image,Point(0,0),Point(0,image.rows),Scalar(255,255,255),2,8,0);
     for(int t=starth; t<=starth+10; t++)
@@ -2168,8 +2137,8 @@ void MainWindow::mstopFunction()
         mstop->setToolTip("暂停");
         isJixu = true;
         //mstopSet="./icon/2_2.png";
-//        dialogLabel->setText(tr("Information Message Box"));
-//        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
+        //        dialogLabel->setText(tr("Information Message Box"));
+        //        QMessageBox::information(this,tr("红外全景系统"),tr("通过金老师SDK，实现监控继续。"));
     }
 
 }
@@ -2230,7 +2199,7 @@ void MainWindow::openFunction()
     widgetNew->setMinimumSize(QSize(600,150));
     widgetNew->setMaximumSize(QSize(600,150));
     widgetNew->move((QApplication::desktop()->width() - widgetNew->width())/2,
-              (QApplication::desktop()->height() - widgetNew->height())/2);
+                    (QApplication::desktop()->height() - widgetNew->height())/2);
     widgetNew->setWindowFlags(Qt::WindowStaysOnTopHint);
     widgetNew->show();
 
@@ -2240,14 +2209,14 @@ void MainWindow::queDingFunction()
     dateTimeStart=startTimeSet->time();
     dateTimeStop=stopTimeSet->time();
     QDate date=dateEdit->date();
-   // int start=(int)dateTimeStart.currentTime();
-   // int stop=(int)dateTimeStop.currentTime();
+    // int start=(int)dateTimeStart.currentTime();
+    // int stop=(int)dateTimeStop.currentTime();
     int dif=dateTimeStart.secsTo(dateTimeStop);
     if(date>QDate::currentDate())
     {
         QMessageBox::information(widgetNew,tr("警告"),tr("日期不能大于今天"));
-//        widgetNew->close();
-//        widgetNew->show();
+        //        widgetNew->close();
+        //        widgetNew->show();
         return;
     }
     if(dif==0)
@@ -2290,20 +2259,20 @@ void MainWindow::automFunction()
 void MainWindow::updateBright(Mat &mat1 )
 {
     for (int y = 0; y <mat1.rows; y++)
-               {
-                   for (int x = 0; x < mat1.cols; x++)
-                   {
-                       for (int c = 0; c < 3; c++)
-                       {
-                           //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
-                            mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((mat1.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
-                           if (mat1.at<Vec3b>(y, x)[c] > 255)
-                           {
-                               mat1.at<Vec3b>(y, x)[c] = 255;
-                           }
-                       }
-                   }
-               }
+    {
+        for (int x = 0; x < mat1.cols; x++)
+        {
+            for (int c = 0; c < 3; c++)
+            {
+                //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((mat1.at<Vec3b>(y, x)[c]) +  bright_TrackbarValue);
+                if (mat1.at<Vec3b>(y, x)[c] > 255)
+                {
+                    mat1.at<Vec3b>(y, x)[c] = 255;
+                }
+            }
+        }
+    }
 }
 //亮度
 void MainWindow::brightnessFunction()
@@ -2328,32 +2297,32 @@ void MainWindow::brightnessFunction()
 
 void MainWindow::updateContrast(Mat &mat1){
     for (int y = 0; y < mat1.rows; y++)
+    {
+        for (int x = 0; x < mat1.cols; x++)
         {
-            for (int x = 0; x < mat1.cols; x++)
+            for (int c = 0; c < 3; c++)
             {
-                for (int c = 0; c < 3; c++)
-                {
-                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
-                    //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) + beta_value);
-                    mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(0.01*alpha_contrast*(mat1.at<Vec3b>(y, x)[c]));
+                //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(alpha*(image.at<Vec3b>(y, x)[c]) + beta);
+                //new_image.at<Vec3b>(y, x)[c] = saturate_cast<uchar>((image.at<Vec3b>(y, x)[c]) + beta_value);
+                mat1.at<Vec3b>(y, x)[c] = saturate_cast<uchar>(0.01*alpha_contrast*(mat1.at<Vec3b>(y, x)[c]));
 
-                    if (mat1.at<Vec3b>(y, x)[c] > 255)
-                    {
-                        mat1.at<Vec3b>(y, x)[c] = 255;
-                    }
+                if (mat1.at<Vec3b>(y, x)[c] > 255)
+                {
+                    mat1.at<Vec3b>(y, x)[c] = 255;
                 }
             }
         }
+    }
 
 }
 //对比度
 void MainWindow::saturationFunction()
 {
     strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-        strackBar->setWindowTitle("对比度");
-         strackBar->show();
-         strackBar->activateWindow();
-         strackBar->move(strackBar->x(),strackBar->y());
+    strackBar->setWindowTitle("对比度");
+    strackBar->show();
+    strackBar->activateWindow();
+    strackBar->move(strackBar->x(),strackBar->y());
     if(saturationSet=="./icon/8_2.png")
     {
         saturation->setIcon(QPixmap("./icon/8_1.png"));
@@ -2398,20 +2367,20 @@ void MainWindow::manualFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     QMessageBox::information(this,tr("手动捕获目标功能，有待实现。"),tr("继续努力。"));
 
-//    string imageurl="./s1/1.bmp";
-//    Mat mat1 =imread(imageurl);
-//    Rect rectan;
-//    rectan.x=1690;// = Rect(1490,250,100,100);
-//    rectan.y=350;
-//    rectan.width=200;
-//    rectan.height=200;
+    //    string imageurl="./s1/1.bmp";
+    //    Mat mat1 =imread(imageurl);
+    //    Rect rectan;
+    //    rectan.x=1690;// = Rect(1490,250,100,100);
+    //    rectan.y=350;
+    //    rectan.width=200;
+    //    rectan.height=200;
 
-//    //MainWindow *mw = (MainWindow*)parentWidget();
-//    //mw->test();
+    //    //MainWindow *mw = (MainWindow*)parentWidget();
+    //    //mw->test();
 
-//    drawRecOnPic2(mat1,rectan);
-//    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
-//    loadPictureToLabel1();
+    //    drawRecOnPic2(mat1,rectan);
+    //    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
+    //    loadPictureToLabel1();
 }
 //目标属性列表
 void MainWindow::objectAttributeFunction()
@@ -2423,19 +2392,19 @@ void MainWindow::objectAttributeFunction()
     this->objectAttributes->activateWindow();
     this->objectAttributes->setWindowTitle("目标属性列表");
     this->objectAttributes->setGeometry(250,60,900,650);
-   // this->objectAttributes->tr("oid");
-   // this->objectAttributes->resize(300,500);
+    // this->objectAttributes->tr("oid");
+    // this->objectAttributes->resize(300,500);
     //this->objectAttributes->setText("oid=: ");
     //this->objectAttributes->setText("cenPoint");
     //QString s=QString("oid:")+myobjects.oid+"\n目标中心坐标:<"+myobjects.cenPoint.x+","+myobjects.cenPoint.y
-//            +">/n监测框大小:<"+myobjects.blocksize.width+","+myobjects.blocksize.height;
-   //QString s1=QString(">\n运动速率:")+myobjects.Velocity
-//            +"\n运动方向："+myobjects.MotionDerection+"\n目标面积:"+myobjects.area+"\n水平轴长度:"+myobjects.horizontalAxisLength
-//            +"\n竖直轴长度:"+myobjects.verticalAxisLength+"\n绝对强度:"+myobjects.absoluteIntensity+"\n相对强度"+myobjects.relativeIntensity
-//            +"\n目标尺度:"+myobjects.targetScale+"\n中央周围对比度的相应强度:"+myobjects.CenSueEintensity+"\n目标背景信杂比"+myobjects.SCRValue;
-//    qDebug()<<"22222222222";
-//    this->objectAttributes->setText(s);
-//    this->objectAttributes->show();
+    //            +">/n监测框大小:<"+myobjects.blocksize.width+","+myobjects.blocksize.height;
+    //QString s1=QString(">\n运动速率:")+myobjects.Velocity
+    //            +"\n运动方向："+myobjects.MotionDerection+"\n目标面积:"+myobjects.area+"\n水平轴长度:"+myobjects.horizontalAxisLength
+    //            +"\n竖直轴长度:"+myobjects.verticalAxisLength+"\n绝对强度:"+myobjects.absoluteIntensity+"\n相对强度"+myobjects.relativeIntensity
+    //            +"\n目标尺度:"+myobjects.targetScale+"\n中央周围对比度的相应强度:"+myobjects.CenSueEintensity+"\n目标背景信杂比"+myobjects.SCRValue;
+    //    qDebug()<<"22222222222";
+    //    this->objectAttributes->setText(s);
+    //    this->objectAttributes->show();
     this->objectAttributes->show();
 }
 //设置
@@ -2501,7 +2470,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::adjustbrightness()
 {
-//    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
+    //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
 }
 
 void MainWindow::test()
