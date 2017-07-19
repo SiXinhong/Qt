@@ -482,12 +482,15 @@ void MainWindow::addMyToolBar()
     QGroupBox *group3=new QGroupBox(this);
     QGroupBox *group4=new QGroupBox(this);
     QGroupBox *group5=new QGroupBox(this);
+    QGroupBox *group6=new QGroupBox(this);
 
     QHBoxLayout *vbox1 = new QHBoxLayout;
     QHBoxLayout *vbox2 = new QHBoxLayout;
     QHBoxLayout *vbox3 = new QHBoxLayout;
     QVBoxLayout *vbox4 = new QVBoxLayout;
     QHBoxLayout *vbox5 = new QHBoxLayout;
+    QHBoxLayout *vbox6 = new QHBoxLayout;
+
     mainToolBar = addToolBar("monitoring");
 
     //加图标
@@ -915,8 +918,13 @@ void MainWindow::addMyToolBar()
     exitSet="./icon/18.png";
     exitButton->setIcon(QPixmap(exitSet));
     exitButton->setIconSize(QSize(buttonSize,buttonSize));
-    mainToolBar->addWidget(exitButton);
+    //mainToolBar->addWidget(exitButton);
+        vbox6->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+
+
+    mainToolBar->addWidget(group6);
+    group6->setLayout(vbox6);
 }
 
 //获取系统当前时间定时器
