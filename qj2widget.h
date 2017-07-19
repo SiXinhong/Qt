@@ -40,6 +40,11 @@ QRect qrect;
 
 public:
 
+    int x_position1;
+    int y_position1;
+    int x_position2;
+    int y_position2;
+
     Mat mat;
 
     Mat pano;

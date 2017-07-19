@@ -132,6 +132,7 @@ void BackWindow::selfTimerout(){
        //»­¶ÔÏóµÄbox
        MyObject obj = objs[i];
        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+
        cv::cvtColor(mat, mat, CV_BGR2RGB);
        //»­¹ì¼£
        for(int ii = 0; ii < tracks.size(); ii++){

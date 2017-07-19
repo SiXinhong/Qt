@@ -183,6 +183,7 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 
     for(int i = 0; i < sobjs.size(); i++){
         MyObject obj = sobjs[i];
+        //qDebug()<<QString("######obj").append(QString::number(i))<<": "<<obj.getCenPoint().x;
         if(xtemp1 > obj.getCenPoint().x){
             xtemp1 = obj.getCenPoint().x;
             ytemp1 = obj.getCenPoint().y;
@@ -202,7 +203,7 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
         xtemp2 += 5;
         ytemp2 += 5;
     }
-
+    //qDebug()<<"@@@@@@x1:"<<xtemp1;
 
     Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
     Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
@@ -225,8 +226,18 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //    if(angle2 < 0){
 //        angle2 += 360;
 //    }
-
-    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
+//    qDebug()<<angle1<<"--->"<<angle2;
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1=180-angle1;
+    }
+    //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
     cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;

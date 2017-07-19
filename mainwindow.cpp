@@ -2106,7 +2106,7 @@ void MainWindow::startStopFunction()
     //if(startStopSet=="./icon/1_2.png")
     if (isQidong)
     {
-        startStop->setIcon(QPixmap("./icon/4_1.png"));
+        startStop->setIcon(QPixmap("./icon/2_1灰.png"));
         startStop->setToolTip("启动");
         //startStopSet="./icon/1_1.png";
         isQidong = false;
@@ -2126,7 +2126,7 @@ void MainWindow::mstopFunction()
     //if(mstopSet=="./icon/2_2.png")
     if(isJixu)
     {
-        mstop->setIcon(QPixmap("./icon/4_1.png"));
+        mstop->setIcon(QPixmap("./icon/2_1灰.png"));
         mstop->setToolTip("继续");
         isJixu = false;
         //mstopSet="./icon/2_1.png";
@@ -2283,15 +2283,15 @@ void MainWindow::brightnessFunction()
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //trackBar->activateWindow();
     trackBar->move(trackBar->x(),trackBar->y());
-    if(brightnessSet=="./icon/7_2.png")
+    if(brightnessSet=="./icon/7_1.png")
     {
         brightness->setIcon(QPixmap("./icon/7_1.png"));
         brightnessSet="./icon/7_1.png";
     }
     else
     {
-        brightness->setIcon(QPixmap("./icon/7_2.png"));
-        brightnessSet="./icon/7_2.png";
+        brightness->setIcon(QPixmap("./icon/7_1.png"));
+        brightnessSet="./icon/7_1.png";
     }
 }
 
@@ -2323,15 +2323,15 @@ void MainWindow::saturationFunction()
     strackBar->show();
     strackBar->activateWindow();
     strackBar->move(strackBar->x(),strackBar->y());
-    if(saturationSet=="./icon/8_2.png")
+    if(saturationSet=="./icon/8_1.png")
     {
         saturation->setIcon(QPixmap("./icon/8_1.png"));
         saturationSet="./icon/8_1.png";
     }
     else
     {
-        saturation->setIcon(QPixmap("./icon/8_2.png"));
-        saturationSet="./icon/8_2.png";
+        saturation->setIcon(QPixmap("./icon/8_1.png"));
+        saturationSet="./icon/8_1.png";
     }
 }
 //伪彩色
@@ -2413,7 +2413,7 @@ void MainWindow::objectsFunction()
     //if(objectSet=="./icon/13_2.png")
     if(isMubiao)
     {
-        objects->setIcon(QPixmap("./icon/13_2.png"));
+        objects->setIcon(QPixmap("./icon/13_1.png"));
         isMubiao = false;
         //objectSet="./icon/13_1.png";
         objects->setToolTip("开启目标属性跟随");
@@ -2434,15 +2434,22 @@ void MainWindow::attributeFunction()
 //声音
 void MainWindow::voiceFunction()
 {
+
     //if(voiceSet=="./icon/15_2.png")
     isVoice = !isVoice;
     cmixer->SetMute(isVoice);
     if(isVoice == false)
         this->sound->play();
+//     QImage icon;
+//     icon = QImage("./icon/15_1.png");
+//    Mat micon;
+//    micon =  QImageToMat(icon);
+//    cv::cvtColor(micon, micon, CV_RGB2GRAY);
+    //icon = QImage((unsigned char*)micon.data,micon.cols,micon.rows,micon.step,QImage::Format_RGB16);
 
     if(isShengyin)
     {
-        voice->setIcon(QPixmap("./icon/15_2.png"));
+        voice->setIcon(QPixmap("./icon/15_1灰.png"));
         isShengyin = false;
         //voiceSet="./icon/15_1.png";
         voice->setToolTip("打开声音");
@@ -2468,10 +2475,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 }
 
-void MainWindow::adjustbrightness()
-{
-    //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
-}
+//void MainWindow::adjustbrightness()
+//{
+//    //    QImage a = ImageDeal.AdjustBrightness(QImage Img, int iBrightValue);
+//}
 
 void MainWindow::test()
 {

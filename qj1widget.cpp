@@ -31,6 +31,8 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
         rectan4 = Rect(1490,250,100,100);
         newrect = Rect(1490,250,100,100);
 
+
+
         //paint=new QPainter;
     }
 
@@ -361,10 +363,40 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
     {
         isDrag = true;
         //isRect = false;
+//       int posX = e->x();
+//       int posY = e->y();
+//        if(posX>this->width())
+//        {
+//             position1.x() = this->width();
+//        }
+//        else if( posX< 0)
+//        {
+//            position1.x() =0;
+//        }
+//        else
+//        {
+//            position1.x() = e->x();
+//        }
+//       if( posY>this->height())
+//        {
+//           position1.y() = this->height();
+//        }
+
+//        else if ( posY < 0)
+//        {
+//            position1.y()=0;
+//        }
+//       else
+//       {
+//            position1.y()=posY;
+//       }
         position1 = e->pos();//e->globalPos() - this->pos();
+
         //e->accept();
         //qDebug()<<position1;
     }
+//    qDebug()<<position1.x();
+//    qDebug()<<position1.y();
     e->ignore();//这个东西非常重要，使得父类的事件处理函数可以被执行
 }
 
@@ -384,18 +416,74 @@ void Qj1Widget::mouseMoveEvent(QMouseEvent *e)
 
 void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
 {
+    int posX = e->x();
+    int posY = e->y();
 
     if(isDrag && isMove){
-        position2 = e->pos();//e->globalPos() - this->pos();
+
+        if(posX>this->width())
+        {
+             x_position2 = e->x();
+        }
+        else if( posX< 0)
+        {
+           x_position2 =0;
+        }
+        else
+        {
+            x_position2 = e->x();
+        }
+       if( posY>this->height())
+        {
+           y_position2 = e->y();
+        }
+
+        else if ( posY < 0)
+        {
+            y_position2=0;
+        }
+       else
+       {
+            y_position2=posY;
+       }
+        //e->globalPos() - this->pos();
         //qDebug()<<position2;
         //
-        if(position2.x()<=this->width() && position2.y()<=this->height()){
-            newrect.x=getMatX(position1.x());// = Rect(1490,250,100,100);
-            newrect.y=getMatY(position1.y());
-            newrect.width=getMatX(position2.x())-getMatX(position1.x());
-            newrect.height=getMatY(position2.y())-getMatY(position1.y());
-
-            qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+        if(x_position2<=this->width() && y_position2<=this->height()){
+            if(position1.x()<x_position2 && position1.y()<y_position2)
+            {
+                newrect.x=getMatX(position1.x());
+                newrect.y=getMatY(position1.y());
+                newrect.width=getMatX(x_position2)-getMatX(position1.x());
+                newrect.height=getMatY(y_position2)-getMatY(position1.y());
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()<x_position2 && position1.y()> y_position2)
+            {
+                newrect.x=getMatX(position1.x());
+                newrect.y=getMatY(y_position2);
+                newrect.width=getMatX(x_position2)-getMatX(position1.x());
+                newrect.height=getMatY(position1.y())-getMatY(y_position2);
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()>x_position2 && position1.y()< y_position2)
+            {
+                newrect.x=getMatX(x_position2);
+                newrect.y=getMatY(position1.y());
+                newrect.width=getMatX(position1.x())-getMatX(x_position2);
+                newrect.height=getMatY(y_position2)-getMatY(position1.y());
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()>x_position2 && position1.y()> y_position2)
+            {
+                newrect.x=getMatX(x_position2);
+                newrect.y=getMatY(y_position2);
+                newrect.width=getMatX(position1.x())-getMatX(x_position2);
+                newrect.height=getMatY(position1.y())-getMatY(y_position2);
+//                newrect.width=position1.x()-x_position2;
+//                newrect.height=position1.y()-y_position2;
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
 
             MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
             //mw->test();
@@ -415,6 +503,8 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
             isMove = false;
         }
     }
+    qDebug()<<x_position2;
+    qDebug()<<y_position2;
     isDrag = false;
     isMove = false;
     e->ignore();

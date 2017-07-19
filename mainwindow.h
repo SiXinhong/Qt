@@ -107,7 +107,7 @@ public:
     void paintCircle(Mat image,double x,double y);//画圆
     void paintScale(Mat image,double startw,double starth);//画标尺
 
-    cv::Mat QImageToMat(QImage image);
+   cv:: Mat QImageToMat(QImage image);
     static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
     //---xiaotian   加载图片到Label上。
@@ -345,7 +345,7 @@ protected slots:
      void closeEvent(QCloseEvent *event);
 
      //void lightFunction();
-     void adjustbrightness();
+    // void adjustbrightness();
      //回放所需函数
      void queDingFunction();
      void quXiaoFunction();
