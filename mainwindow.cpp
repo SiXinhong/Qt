@@ -1162,6 +1162,7 @@ void MainWindow::selfTimerout(){
     //ͼƬ3
     //Mat mat3 =imread(imageurl);
     widget3->setPano(newpano);
+    widget3->setTwoPanos(mat);
     widget3->setAllObjects(in.getObjs());
     widget3->draw();
     //drawUiLabelByCopy(mat3,3);
@@ -1169,6 +1170,7 @@ void MainWindow::selfTimerout(){
     //Mat mat4 =imread(imageurl2);
     //drawUiLabelByCopy(mat4,4);
     widget4->setPano(newpano);
+    widget4->setTwoPanos(mat);
     widget4->setAllObjects(in.getObjs());
     widget4->draw();
     //ͼƬ5

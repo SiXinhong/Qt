@@ -103,19 +103,14 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 
     for(int i = 0; i < sobjs.size(); i++){
         MyObject obj = sobjs[i];
-        if(xtemp1 > obj.getRect().x){
-            xtemp1 = obj.getRect().x;
-            //ytemp1 = obj.getRect().y;
+        //qDebug()<<QString("######obj").append(QString::number(i))<<": "<<obj.getCenPoint().x;
+        if(xtemp1 > obj.getCenPoint().x){
+            xtemp1 = obj.getCenPoint().x;
+            ytemp1 = obj.getCenPoint().y;
         }
-        if(ytemp1 > obj.getRect().y){
-            ytemp1 = obj.getRect().y;
-        }
-        if(xtemp2 < (obj.getRect().x + obj.getRect().width)){
-            xtemp2 = obj.getRect().x + obj.getRect().width;
-            //ytemp2 = obj.getRect().y + obj.getRect().height;
-        }
-        if(ytemp2 < (obj.getRect().y + obj.getRect().height)){
-            ytemp2 = obj.getRect().y + obj.getRect().height;
+        if(xtemp2 < obj.getCenPoint().x){
+            xtemp2 = obj.getCenPoint().x;
+            ytemp2 = obj.getCenPoint().y;
         }
     }
     //再向左上靠靠
@@ -127,6 +122,24 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
         xtemp2 += 5;
         ytemp2 += 5;
+    }
+    //重新找最小点
+    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
+        xtemp1 = 0;
+
+        for(int i = 0; i < sobjs.size(); i++){
+            MyObject obj = objs[i];
+            if(obj.getRect().x > this->pano.cols/2){
+
+            }
+            else{
+                if(xtemp1 < obj.getCenPoint().x){
+                    xtemp1 = obj.getCenPoint().x;
+                    ytemp1 = obj.getCenPoint().y;
+                }
+
+            }
+        }
     }
 
 
@@ -151,24 +164,19 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //    if(angle2 < 0){
 //        angle2 += 360;
 //    }
-
-    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,255,0));
+//    qDebug()<<angle1<<"--->"<<angle2;
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1=180-angle1;
+    }
+    //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
     cv::cvtColor(tmat,tmat,CV_BGR2RGB);
-
-//    vector<Point> ps;
-////    Point point1(75,60);
-////    Point point2(110,39);
-////    Point point3(75,60);
-////    Point point4(150,150);
-////    Point point5(110,40);
-////    Point point6(150,150);
-//    ps.push_back(p11);
-//    ps.push_back(p22);
-//    ps.push_back(p11);
-//    ps.push_back(p3);
-//    ps.push_back(p22);
-//    ps.push_back(p3);
-//    return ps;
 }
 
 //主显示区的，获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
@@ -203,7 +211,25 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
         xtemp2 += 5;
         ytemp2 += 5;
     }
-    //qDebug()<<"@@@@@@x1:"<<xtemp1;
+    //重新找最小点
+    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
+        xtemp1 = 0;
+
+        for(int i = 0; i < sobjs.size(); i++){
+            MyObject obj = objs[i];
+            if(obj.getRect().x > this->pano.cols/2){
+
+            }
+            else{
+                if(xtemp1 < obj.getCenPoint().x){
+                    xtemp1 = obj.getCenPoint().x;
+                    ytemp1 = obj.getCenPoint().y;
+                }
+
+            }
+        }
+    }
+
 
     Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
     Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));

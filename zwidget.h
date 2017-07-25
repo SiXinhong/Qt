@@ -38,6 +38,8 @@ public:
 
     Rect rect;
 
+    Mat twopanos;
+
     Mat pano;
 
     Mat mat;
@@ -61,6 +63,10 @@ public:
     void setPano(Mat p);
 
     Mat getPano();
+
+    void setTwoPanos(Mat tps);
+
+    Mat getTwoPanos();
 
     void setRect(Rect r);
 
