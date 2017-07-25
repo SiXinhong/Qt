@@ -387,24 +387,73 @@ void Qj2Widget::mouseMoveEvent(QMouseEvent *e)
 
 void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
 {
-
+    int posX = e->x();
+    int posY = e->y();
     if(isDrag && isMove){
-        position2 = e->pos();//e->globalPos() - this->pos();
-        qDebug()<<position2;
+        if(posX>this->width())
+        {
+             x_position2 = e->x();
+        }
+        else if( posX< 0)
+        {
+           x_position2 =0;
+        }
+        else
+        {
+            x_position2 = e->x();
+        }
+       if( posY>this->height())
+        {
+           y_position2 = e->y();
+        }
+
+        else if ( posY < 0)
+        {
+            y_position2=0;
+        }
+       else
+       {
+            y_position2=posY;
+       }
+        //e->globalPos() - this->pos();
+        //qDebug()<<position2;
         //
-        if(position2.x()<=this->width() && position2.y()<=this->height()){
-            //qrect = QRect(position1.x(),position1.y(),position2.x()-position1.x(),position2.y()-position1.y());
+        if(x_position2<=this->width() && y_position2<=this->height()){
+            if(position1.x()<x_position2 && position1.y()<y_position2)
+            {
+                newrect.x=getMatX(position1.x());
+                newrect.y=getMatY(position1.y());
+                newrect.width=getMatX(x_position2)-getMatX(position1.x());
+                newrect.height=getMatY(y_position2)-getMatY(position1.y());
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()<x_position2 && position1.y()> y_position2)
+            {
+                newrect.x=getMatX(position1.x());
+                newrect.y=getMatY(y_position2);
+                newrect.width=getMatX(x_position2)-getMatX(position1.x());
+                newrect.height=getMatY(position1.y())-getMatY(y_position2);
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()>x_position2 && position1.y()< y_position2)
+            {
+                newrect.x=getMatX(x_position2);
+                newrect.y=getMatY(position1.y());
+                newrect.width=getMatX(position1.x())-getMatX(x_position2);
+                newrect.height=getMatY(y_position2)-getMatY(position1.y());
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
+            else if(position1.x()>x_position2 && position1.y()> y_position2)
+            {
+                newrect.x=getMatX(x_position2);
+                newrect.y=getMatY(y_position2);
+                newrect.width=getMatX(position1.x())-getMatX(x_position2);
+                newrect.height=getMatY(position1.y())-getMatY(y_position2);
 
-            newrect.x=getMatX(position1.x());// = Rect(1490,250,100,100);
-            newrect.y=getMatY(position1.y());
-            newrect.width=getMatX(position2.x())-getMatX(position1.x());
-            newrect.height=getMatY(position2.y())-getMatY(position1.y());
-
-            qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
-
+                qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
+            }
             MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
             //mw->test();
-
             //rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
             //cv::cvtColor(mat, mat, CV_BGR2RGB);
             isRect = true;

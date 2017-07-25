@@ -268,10 +268,19 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //    if(angle2 < 0){
 //        angle2 += 360;
 //    }
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1=180-angle1;
+    }
 
-    ellipse(tmat,p3,Size(r1, r1),0,angle1+180,angle2+180,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));
 
-    ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
     cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;

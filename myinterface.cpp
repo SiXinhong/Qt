@@ -85,7 +85,8 @@ MyInterface::MyInterface(){
     this->ld = "./0.png";
 
     MyObject mo1 = MyObject();
-    int x1 = this->panoImage.cols-150;
+    //int x1 = this->panoImage.cols-150;
+    int x1=300;//为了不让x小于0
     int y1 = 10;
     int w = 30;
     int h = 30;
@@ -94,7 +95,8 @@ MyInterface::MyInterface(){
     mo1.setCenPoint(Point(x1+w/2, y1+h/2));
     mo1.setID(12345);
     MyObject mo2 = MyObject();
-    int x2 = this->panoImage.cols-200;
+    //int x2 = this->panoImage.cols-200;
+    int x2=200;
     int y2 = 30;
     mo2.setRect(Rect(x2,y2,w,h));
     mo2.setCenPoint(Point(x2+w/2, y2+h/2));
@@ -103,7 +105,8 @@ MyInterface::MyInterface(){
     mo2.setID(12346);
     MyObject mo3 = MyObject();
     mo3.setID(12348);
-    int x3 = this->panoImage.cols-300;
+    //int x3 = this->panoImage.cols-300;
+    int x3=100;
     int y3 = 100;
 
     mo3.setRect(Rect(x3,y3,w,h));
@@ -465,18 +468,18 @@ vector<MyObject> MyInterface::getObjs2(){
     int y1=mo1.getRect().y;// = 10+indexy*2;
     int w = 30;
     int h = 30;
-
+    x1 = x1+indexx*5;
+    y1 = y1+indexy*2;
     if(x1+mo1.getRect().width >= this->panoImage.cols){
         indexx = 0;
-        x1 = 30;
+        x1 = 300;
 
     }
     if(y1+mo1.getRect().height>= this->panoImage.rows){
         indexy = 0;
         y1 = 10;
     }
-    x1 = x1+indexx*5;
-    y1 = y1+indexy*2;
+
     mo1.setRect(Rect(x1,y1,w,h));
     mo1.setCenPoint(Point(x1+w/2, y1+h/2));
 //    mo1.getRect().x = x1;
@@ -489,17 +492,18 @@ vector<MyObject> MyInterface::getObjs2(){
 
     int x2=mo2.getRect().x;// = this->panoImage.cols-200+indexx*20;
     int y2=mo2.getRect().y;// = 30+indexy*2;
+    x2 = x2+indexx*5;
+    y2 = y2+indexy*2;
     if(x2 >= this->panoImage.cols){
         indexx = 0;
-        x2 = 10;
+        x2 = 200;
 
     }
     if(y2>= this->panoImage.rows){
         indexy = 0;
         y2 = 30;
     }
-    x2 = x2+indexx*5;
-    y2 = y2+indexy*2;
+
 
 //    mo2.getRect().x = x2;
 //    mo2.getRect().y = y2;
@@ -512,18 +516,21 @@ vector<MyObject> MyInterface::getObjs2(){
 
     int x3=mo3.getRect().x;// = this->panoImage.cols-300+indexx*25;
     int y3=mo3.getRect().y;// = 100+indexy*2;
-
+    x3 = x3+indexx*5;
+    y3 = y3+indexy*2;
     if(x3 >= this->panoImage.cols){
         indexx = 0;
-        x3 = 50;
+        x3 = 100;
 
     }
     if(y3>= this->panoImage.rows){
         indexy = 0;
         y3 = 100;
     }
-    x3 = x3+indexx*5;
-    y3 = y3+indexy*2;
+    if(x1<x3){
+        x2=200;
+        x3=100;
+    }
 //    mo3.getRect().x = x3;
 //    mo3.getRect().y = y3;
 //    mo3.getRect().width = w;
