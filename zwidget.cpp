@@ -464,8 +464,8 @@ void ZWidget::draw(){
 //        qDebug()<<this->rect.height;
         Mat mat1 = this->twopanos;
         Size dsize ;
-        double scale = 1;
-        dsize = Size(mat1.cols*scale/2,mat1.rows*scale/2);
+        double scale = 0.5;
+        dsize = Size(mat1.cols*scale,mat1.rows*scale);
 //        Mat image11 = Mat(dsize,CV_32S);
 //        cv::resize(mat1, image11,dsize);
 //        mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);

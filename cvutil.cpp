@@ -110,7 +110,7 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
     {
      int i=t-startw;
      if(i%2 == 0){
-        line(image,Point(i*c,0),Point(i*c,20),Scalar(255,255,255),2,8,0);
+        line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
         //±ê³ßÉÏÐ´×Ö
         int ii = (int)(startw+i*(endw-startw)/30);
         if(ii > 270){
@@ -118,10 +118,10 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
         }
         QString text = QString::number(ii,10);
         string str = text.toStdString();
-        putText(image,str,Point(i*c-10,50),3,1,Scalar(255,255,255));
+        putText(image,str,Point(i*c-10,25),3,0.75,Scalar(255,255,255));
      }
      else{
-         line(image,Point(i*c,0),Point(i*c,15),Scalar(255,255,255),2,8,0);
+         line(image,Point(i*c,0),Point(i*c,8),Scalar(255,255,255),2,8,0);
      }
     }
     line(image,Point(0,0),Point(0,image.rows),Scalar(255,255,255),2,8,0);
@@ -129,14 +129,14 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
     {
         int i=t-starth;
         if(i%2 == 0){
-            line(image,Point(0,i*r),Point(20,i*r),Scalar(255,255,255),2,8,0);
+            line(image,Point(0,i*r),Point(12,i*r),Scalar(255,255,255),2,8,0);
             int ii = (int)(endh - i*(endh-starth)/10);
             QString text2 = QString::number(ii,10);
             string str2 = text2.toStdString();
-            putText(image,str2,Point(50,i*r+10),3,1,Scalar(255,255,255));
+            putText(image,str2,Point(20,i*r+10),3,0.75,Scalar(255,255,255));
         }
         else{
-            line(image,Point(0,i*r),Point(15,i*r),Scalar(255,255,255),2,8,0);
+            line(image,Point(0,i*r),Point(8,i*r),Scalar(255,255,255),2,8,0);
         }
     }
     //return img;

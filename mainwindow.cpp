@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //目标属性是否跟随
     isMubiao = true;
     //系统编号
-    xtbh = QString("BJ036A站位");
+    xtbh = QString("BJ036A战位");
     //-------------------------------------------------------
     //判断窗口是否打开
     is_open=false;
@@ -235,10 +235,11 @@ void MainWindow::jinProcessing(){
                             line(mat,point,point3,obj.getColor(),1,8,0);
                             line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
+                        cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
+
             //画对象中心点的位置
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -251,8 +252,8 @@ void MainWindow::jinProcessing(){
                 Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
                 Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-                putText(mat,str,p,3,1,obj.getColor());
-                putText(mat,str,p2,3,1,obj.getColor());
+                putText(mat,str,p,3,0.5,obj.getColor());
+                putText(mat,str,p2,3,0.5,obj.getColor());
                         }
             cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
@@ -454,10 +455,11 @@ void MainWindow::selfProcessing(){
                         line(mat,point,point3,obj.getColor(),1,8,0);
                         line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
+                    cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+
         //画对象中心点的位置
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -470,8 +472,8 @@ void MainWindow::selfProcessing(){
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
             Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-            putText(mat,str,p,3,1,obj.getColor());
-            putText(mat,str,p2,3,1,obj.getColor());
+            putText(mat,str,p,3,0.5,obj.getColor());
+            putText(mat,str,p2,3,0.5,obj.getColor());
                     }
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
@@ -1240,10 +1242,11 @@ void MainWindow::selfTimerout(){
                         line(mat,point,point3,obj.getColor(),1,8,0);
                         line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
+                    cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+
         //画对象中心点的位置
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -1256,8 +1259,8 @@ void MainWindow::selfTimerout(){
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
             Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-            putText(mat,str,p,3,1,obj.getColor());
-            putText(mat,str,p2,3,1,obj.getColor());
+            putText(mat,str,p,3,0.5,obj.getColor());
+            putText(mat,str,p2,3,0.5,obj.getColor());
                     }
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
@@ -1424,10 +1427,11 @@ void MainWindow::jinTimerout(){
                             line(mat,point,point3,obj.getColor(),1,8,0);
                             line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
+                        cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
+
             //画对象中心点的位置
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -1440,8 +1444,8 @@ void MainWindow::jinTimerout(){
                 Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
                 Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-                putText(mat,str,p,3,1,obj.getColor());
-                putText(mat,str,p2,3,1,obj.getColor());
+                putText(mat,str,p,3,0.5,obj.getColor());
+                putText(mat,str,p2,3,0.5,obj.getColor());
                         }
             cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
