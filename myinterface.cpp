@@ -261,48 +261,48 @@ int MyInterface::getIntegratedData(){
 
                 this->panoImage = data->panoImage;
                 //std::cout<<panoImage.channels()<<std::endl;
-                //下面将整个的图像切成两幅
-                //全景1Mat
-                Mat mat = this->panoImage;
-                Size dsize ;
-                double scale = 1;
-                dsize = Size(mat.cols*scale,mat.rows*scale);
-                Mat image11 = Mat(dsize,CV_32S);
-                cv::resize(mat, image11,dsize);
-                //std::cout<<"resize 1"<<std::endl;
-                 //std::cout<<"image1"<<image11.empty()<<std::endl;
+//                //下面将整个的图像切成两幅
+//                //全景1Mat
+//                Mat mat = this->panoImage;
+//                Size dsize ;
+//                double scale = 1;
+//                dsize = Size(mat.cols*scale,mat.rows*scale);
+//                Mat image11 = Mat(dsize,CV_32S);
+//                cv::resize(mat, image11,dsize);
+//                //std::cout<<"resize 1"<<std::endl;
+//                 //std::cout<<"image1"<<image11.empty()<<std::endl;
 
-                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-                //QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_Indexed8);
+//                QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//                //QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_Indexed8);
 
-                //std::cout<<"img "<<img.height()<<std::endl;
-                QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
-                //std::cout<<"aa "<<aa.height()<<std::endl;
-                Mat image4 = CVUtil::QImageToMat(aa);
-                Mat image44 = Mat(dsize,CV_32S);
-               // std::cout<<"image1"<<image4.empty()<<std::endl;
-                //std::cout<<"4 "<<image44.empty()<<std::endl;
-                //std::cout<<dsize.height<<std::endl;
-                cv::resize(image4, image44,dsize);
-                // std::cout<<"resize 2"<<std::endl;
-                this->qj1mat = image44;
+//                //std::cout<<"img "<<img.height()<<std::endl;
+//                QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+//                //std::cout<<"aa "<<aa.height()<<std::endl;
+//                Mat image4 = CVUtil::QImageToMat(aa);
+//                Mat image44 = Mat(dsize,CV_32S);
+//               // std::cout<<"image1"<<image4.empty()<<std::endl;
+//                //std::cout<<"4 "<<image44.empty()<<std::endl;
+//                //std::cout<<dsize.height<<std::endl;
+//                cv::resize(image4, image44,dsize);
+//                // std::cout<<"resize 2"<<std::endl;
+//                this->qj1mat = image44;
 
-                //this->qj1mat = mat;
-                //全景2Mat
-                //mat = this->panoImage;
-                //dsize ;
-                //double scale = 1;
-                //dsize = Size(mat.cols*scale,mat.rows*scale);
-                //Mat image12 = Mat(dsize,CV_32S);
-                //cv::resize(mat, image12,dsize);
-                //QImage img2 = QImage((const unsigned char*)(image12.data),image12.cols,mat.rows, image12.cols*image12.channels(),  QImage::Format_RGB888);
+//                //this->qj1mat = mat;
+//                //全景2Mat
+//                //mat = this->panoImage;
+//                //dsize ;
+//                //double scale = 1;
+//                //dsize = Size(mat.cols*scale,mat.rows*scale);
+//                //Mat image12 = Mat(dsize,CV_32S);
+//                //cv::resize(mat, image12,dsize);
+//                //QImage img2 = QImage((const unsigned char*)(image12.data),image12.cols,mat.rows, image12.cols*image12.channels(),  QImage::Format_RGB888);
 
-                QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
-                Mat image5 = CVUtil::QImageToMat(aa2);
-                Mat image55 = Mat(dsize,CV_32S);
-                cv::resize(image5, image55,dsize);
-                //std::cout<<"resize 3"<<std::endl;
-                this->qj2mat = image55;
+//                QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+//                Mat image5 = CVUtil::QImageToMat(aa2);
+//                Mat image55 = Mat(dsize,CV_32S);
+//                cv::resize(image5, image55,dsize);
+//                //std::cout<<"resize 3"<<std::endl;
+//                this->qj2mat = image55;
                 //this->qj2mat = mat;
 
 

@@ -119,7 +119,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ////////////////zc///////////////////////
     //通信连接
-    //MySocketInitial();
+    MySocketInitial();
 
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
@@ -188,7 +188,8 @@ MainWindow::~MainWindow(){
 
 //与金老师的接口处理
 void MainWindow::jinProcessing(){
-    if(in.getIntegratedData() == 0){
+    int v=in.getIntegratedData();
+    if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
         //        QString s1=in.getQJ1();
@@ -367,7 +368,9 @@ void MainWindow::jinProcessing(){
         widget6->draw();
     }
     else{
+        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
         this->selfProcessing();
+
     }
 }
 
@@ -1380,7 +1383,8 @@ void MainWindow::jinTimerout(){
     //vector<MyObject> objs = in.getObjs2();
     //std::cout<<"ok2 "<<std::endl;
     //#if 1
-    if(in.getIntegratedData() == 0){
+    int v=in.getIntegratedData();
+    if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
         //        QString s1=in.getQJ1();
@@ -1649,6 +1653,7 @@ void MainWindow::jinTimerout(){
 //        widget6->draw();
     }
     else{
+        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
         this->selfTimerout();
     }
     //    }
