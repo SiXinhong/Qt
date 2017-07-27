@@ -77,14 +77,27 @@ vector<MyObject> HWidget::getObjects4(){
 
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double HWidget::getDirectionX(double x, double y){
+    //顺时针旋转90度
+    double x90;
+    if(x< 3*pano.cols/4)
+        x90 = x+pano.cols/4;
+    else
+        x90 = x-3*pano.cols/4;
     //double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
-    double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x/pano.cols);
+    double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x90/pano.cols);
     return x2;
 }
 
 double HWidget::getDirectionY(double x, double y){
     //double y2 = y0 + (r/r0)*((r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols));
-    double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols);
+    //顺时针旋转90度
+    double x90;
+    if(x< 3*pano.cols/4)
+        x90 = x+pano.cols/4;
+    else
+        x90 = x-3*pano.cols/4;
+
+    double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
     return y2;
 }
 
@@ -205,7 +218,7 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
         angle2+=180;
     }
     if(angle1<0 && angle2>180){
-        angle1=180-angle1;
+        angle1+=360;
     }
 
     ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,255,0));
@@ -316,7 +329,7 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
         angle2+=180;
     }
     if(angle1<0 && angle2>180){
-        angle1=180-angle1;
+         angle1+=360;
     }
 
     ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));

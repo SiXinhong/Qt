@@ -2500,7 +2500,7 @@ void MainWindow::startStopFunction()
     //if(startStopSet=="./icon/1_2.png")
     if (isQidong)
     {
-        startStop->setIcon(QPixmap("./icon/2_1»Ò.png"));
+        startStop->setIcon(QPixmap("./icon/²¥·Å.png"));
         startStop->setToolTip("Æô¶¯");
         //startStopSet="./icon/1_1.png";
         isQidong = false;

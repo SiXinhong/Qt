@@ -86,7 +86,7 @@ MyInterface::MyInterface(){
 
     MyObject mo1 = MyObject();
     //int x1 = this->panoImage.cols-150;
-    int x1=300;//为了不让x小于0
+    int x1=500;//为了不让x小于0
     int y1 = 10;
     int w = 30;
     int h = 30;
@@ -96,7 +96,7 @@ MyInterface::MyInterface(){
     mo1.setID(12345);
     MyObject mo2 = MyObject();
     //int x2 = this->panoImage.cols-200;
-    int x2=200;
+    int x2=300;
     int y2 = 30;
     mo2.setRect(Rect(x2,y2,w,h));
     mo2.setCenPoint(Point(x2+w/2, y2+h/2));
@@ -107,7 +107,7 @@ MyInterface::MyInterface(){
     mo3.setID(12348);
     //int x3 = this->panoImage.cols-300;
     int x3=100;
-    int y3 = 100;
+    int y3 = 40;
 
     mo3.setRect(Rect(x3,y3,w,h));
     mo3.setCenPoint(Point(x3+w/2, y3+h/2));
@@ -453,7 +453,7 @@ int MyInterface::getIntegratedData(){
 vector<MyObject> MyInterface::getObjs2(){
     indexx++;
     indexy++;
-
+const float y_increace_ratio=1.2;
 //    if(100+index*5 >= this->panoImage.cols/2){
 //        index = 0;
 //    }
@@ -469,10 +469,11 @@ vector<MyObject> MyInterface::getObjs2(){
     int w = 30;
     int h = 30;
     x1 = x1+indexx*5;
-    y1 = y1+indexy*2;
+    //y1 = y1+indexy*2;
+    y1*=y_increace_ratio;
     if(x1+mo1.getRect().width >= this->panoImage.cols){
         indexx = 0;
-        x1 = 300;
+        x1 = 500;////////
 
     }
     if(y1+mo1.getRect().height>= this->panoImage.rows){
@@ -493,13 +494,16 @@ vector<MyObject> MyInterface::getObjs2(){
     int x2=mo2.getRect().x;// = this->panoImage.cols-200+indexx*20;
     int y2=mo2.getRect().y;// = 30+indexy*2;
     x2 = x2+indexx*5;
-    y2 = y2+indexy*2;
-    if(x2 >= this->panoImage.cols){
+    //y2 = y2+indexy*2;
+    y2*=y_increace_ratio;
+    //这里x和y跟长度和宽度比较，但是下面mo2.setCenPoint(Point(x2+w/2, y2+h/2))
+    //设置的时候又给加上了w/2和h/2，导致会超出界限，让其比较时加上了mo2.getRect().width
+    if(x2+mo2.getRect().width >= this->panoImage.cols){
         indexx = 0;
-        x2 = 200;
+        x2 = 300;
 
     }
-    if(y2>= this->panoImage.rows){
+    if(y2+mo2.getRect().height>= this->panoImage.rows){
         indexy = 0;
         y2 = 30;
     }
@@ -517,18 +521,19 @@ vector<MyObject> MyInterface::getObjs2(){
     int x3=mo3.getRect().x;// = this->panoImage.cols-300+indexx*25;
     int y3=mo3.getRect().y;// = 100+indexy*2;
     x3 = x3+indexx*5;
-    y3 = y3+indexy*2;
-    if(x3 >= this->panoImage.cols){
+    //y3 = y3+indexy*2;
+    y3*=y_increace_ratio;
+    if(x3+mo3.getRect().width >= this->panoImage.cols){
         indexx = 0;
         x3 = 100;
 
     }
-    if(y3>= this->panoImage.rows){
+    if(y3+mo3.getRect().height>= this->panoImage.rows){
         indexy = 0;
-        y3 = 100;
+        y3 = 40;
     }
     if(x1<x3){
-        x2=200;
+        x2=300;
         x3=100;
     }
 //    mo3.getRect().x = x3;

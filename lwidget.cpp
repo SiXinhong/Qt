@@ -65,12 +65,24 @@ vector<MyObject> LWidget::getObjects4(){
 
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double LWidget::getDirectionX(double x, double y){
-    double x2 = x0 + (r/r0)*(((y*(this->pano.cols)/(2*M_PI*pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
+   //顺时针90度
+    double x90;
+    if(x< 3*pano.cols/4)
+        x90 = x+pano.cols/4;
+    else
+        x90 = x-3*pano.cols/4;
+    double x2 = x0 + (r/r0)*(((y*(this->pano.cols)/(2*M_PI*pano.rows))-r0) * qSin(2*M_PI*x90/pano.cols));
     return x2;
 }
 
 double LWidget::getDirectionY(double x, double y){
-    double y2 = y0 + (r/r0)*((r0-(y*(this->pano.cols)/(2*M_PI*pano.rows))) * qCos(2*M_PI*x/pano.cols));
+    //顺时针90度
+    double x90;
+    if(x < 3*pano.cols/4)
+        x90 = x+pano.cols/4;
+    else
+        x90 = x-3*pano.cols/4;
+    double y2 = y0 + (r/r0)*((r0-(y*(this->pano.cols)/(2*M_PI*pano.rows))) * qCos(2*M_PI*x90/pano.cols));
     return y2;
 }
 
@@ -164,7 +176,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //    if(angle2 < 0){
 //        angle2 += 360;
 //    }
-//    qDebug()<<angle1<<"--->"<<angle2;
+    qDebug()<<angle1<<"--->"<<angle2;
     if(p22.x<x0){
         angle1+=180;
     }
@@ -172,7 +184,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
         angle2+=180;
     }
     if(angle1<0 && angle2>180){
-        angle1=180-angle1;
+        angle1+=360;
     }
     //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
@@ -252,15 +264,16 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //    if(angle2 < 0){
 //        angle2 += 360;
 //    }
-//    qDebug()<<angle1<<"--->"<<angle2;
+   qDebug()<<angle1<<"--->"<<angle2;
     if(p22.x<x0){
         angle1+=180;
     }
     if(p11.x<x0){
+
         angle2+=180;
     }
     if(angle1<0 && angle2>180){
-        angle1=180-angle1;
+        angle1+=360;
     }
     //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
