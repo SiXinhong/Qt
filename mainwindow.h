@@ -77,6 +77,7 @@ public slots:
   void onTimerOut2();
     
 public:
+  int num_objs;
   CMixer * cmixer;
   MyObject myobjects;
   ObjectAttributes *objectAttributes;

@@ -386,7 +386,8 @@ void MainWindow::selfProcessing(){
 
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
-
+   // num_objs =objs.size();
+    num_objs =0;
     for(int i=0;i<objs.size();i++){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
@@ -1087,6 +1088,16 @@ void MainWindow::selfTimerout(){
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
 
+    if(isGaojing)
+    {
+    if(objs.size()>num_objs){
+         this->sound->play();
+        num_objs = objs.size();
+    }
+    else
+        num_objs =objs.size();
+    }
+
     for(int i=0;i<objs.size();i++){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
@@ -1289,6 +1300,8 @@ void MainWindow::selfTimerout(){
     widget6->setPano(newpano);
     widget6->setObjects(objs);
     widget6->draw();
+
+
 }
 
 //与金老师接口的定时器处理
