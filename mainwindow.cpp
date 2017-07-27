@@ -386,8 +386,8 @@ void MainWindow::selfProcessing(){
 
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
-   // num_objs =objs.size();
-    num_objs =0;
+   num_objs =objs.size();
+   // num_objs =0;
     for(int i=0;i<objs.size();i++){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
