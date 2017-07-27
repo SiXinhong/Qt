@@ -817,7 +817,6 @@ void MainWindow::addMyToolBar()
     mainToolBar->addWidget(group2);
     //mainToolBar->addWidget(new QLabel("    "));
 
-
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
@@ -825,163 +824,77 @@ void MainWindow::addMyToolBar()
     QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     vector<MyObject> vec = in.getObjs2();
-    if(vec.size()==0)
+
+    light1=new QLabel(this);
+    light2=new QLabel(this);
+    light3=new QLabel(this);
+    light4=new QLabel(this);
+    light5=new QLabel(this);
+
+    if(!isGaojing)
     {
-        light1=new QLabel(this);
         light1->setPixmap(fitpixmap2);
-        vbox3->addWidget(light1);
-        //vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
         light2->setPixmap(fitpixmap2);
-        vbox3->addWidget(light2);
-        //vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
         light3->setPixmap(fitpixmap2);
-        vbox3->addWidget(light3);
-        //vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
         light4->setPixmap(fitpixmap2);
-        vbox3->addWidget(light4);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
         light5->setPixmap(fitpixmap2);
-        //vbox3->addWidget(light5);
-    }
-    else if(vec.size()==1)
-    {
-        light1=new QLabel(this);
-        light1->setPixmap(fitpixmap1);
-        vbox3->addWidget(light1);
-        //vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
-        light2->setPixmap(fitpixmap2);
-        vbox3->addWidget(light2);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
-        light3->setPixmap(fitpixmap2);
-        vbox3->addWidget(light3);
-        //vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
-        light4->setPixmap(fitpixmap2);
-        vbox3->addWidget(light4);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
-        light5->setPixmap(fitpixmap2);
-        // vbox3->addWidget(light5);
-    }
-    else if(vec.size()==2)
-    {
-        light1=new QLabel(this);
-        light1->setPixmap(fitpixmap1);
-        vbox3->addWidget(light1);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
-        light2->setPixmap(fitpixmap1);
-        vbox3->addWidget(light2);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
-        light3->setPixmap(fitpixmap2);
-        vbox3->addWidget(light3);
-        //  vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
-        light4->setPixmap(fitpixmap2);
-        vbox3->addWidget(light4);
-        //  vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
-        light5->setPixmap(fitpixmap2);
-        //  vbox3->addWidget(light5);
-    }
-    else if(vec.size()==3)
-    {
-        light1=new QLabel(this);
-        light1->setPixmap(fitpixmap1);
-        vbox3->addWidget(light1);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
-        light2->setPixmap(fitpixmap1);
-        vbox3->addWidget(light2);
-        //  vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
-        light3->setPixmap(fitpixmap1);
-        vbox3->addWidget(light3);
-        //  vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
-        light4->setPixmap(fitpixmap2);
-        vbox3->addWidget(light4);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
-        light5->setPixmap(fitpixmap2);
-        vbox3->addWidget(light5);
-    }
-    else if(vec.size()==4)
-    {
-        light1=new QLabel(this);
-        light1->setPixmap(fitpixmap1);
-        vbox3->addWidget(light1);
-        //   vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
-        light2->setPixmap(fitpixmap1);
-        vbox3->addWidget(light2);
-        //   vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
-        light3->setPixmap(fitpixmap1);
-        vbox3->addWidget(light3);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
-        light4->setPixmap(fitpixmap1);
-        vbox3->addWidget(light4);
-        // vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
-        light5->setPixmap(fitpixmap2);
-        vbox3->addWidget(light5);
     }
     else
     {
-        light1=new QLabel(this);
-        light1->setPixmap(fitpixmap1);
-        vbox3->addWidget(light1);
-        //    vbox3->addWidget(new QLabel(" "));
-
-        light2=new QLabel(this);
-        light2->setPixmap(fitpixmap1);
-        vbox3->addWidget(light2);
-        //    vbox3->addWidget(new QLabel(" "));
-
-        light3=new QLabel(this);
-        light3->setPixmap(fitpixmap1);
-        vbox3->addWidget(light3);
-        //    vbox3->addWidget(new QLabel(" "));
-
-        light4=new QLabel(this);
-        light4->setPixmap(fitpixmap1);
-        vbox3->addWidget(light4);
-        //   vbox3->addWidget(new QLabel(" "));
-
-        light5=new QLabel(this);
-        light5->setPixmap(fitpixmap1);
-        vbox3->addWidget(light5);
+        if(vec.size()==0)
+        {
+            light1->setPixmap(fitpixmap2);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==1)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==2)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==3)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==4)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()>= 5 )
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap1);
+        }
     }
-
+            vbox3->addWidget(light1);
+            vbox3->addWidget(light2);
+            vbox3->addWidget(light3);
+            vbox3->addWidget(light4);
+            vbox3->addWidget(light5);
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);
@@ -2748,21 +2661,79 @@ void MainWindow::pseudoColorFunction()
 //打开关闭
 void MainWindow::openCloseFunction()
 {
-    //if(openCloseSet=="./icon/11_2.png")
-    if(!isGaojing)
+    isGaojing = !isGaojing;
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();
+    const int buttonSize=(screenRect.width()*0.7)/21.6;
+    QPixmap pixmap1("./icon/16_1.png");
+    QPixmap pixmap2("./icon/16_2.png");
+    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    vector<MyObject> vec = in.getObjs2();
+    if(isGaojing)
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));
-        //openCloseSet="./icon/11_1.png";
-        isGaojing = true;
         openClose->setToolTip("关闭告警");
+        if(vec.size()==0)
+        {
+            light1->setPixmap(fitpixmap2);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==1)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==2)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==3)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()==4)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(vec.size()>= 5 )
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap1);
+      }
     }
     else
     {
         openClose->setIcon(QPixmap("./icon/11_2.png"));
-        //openCloseSet="./icon/11_2.png";
-        isGaojing = false;
         openClose->setToolTip("打开告警");
-    }
+
+        light1->setPixmap(fitpixmap2);
+        light2->setPixmap(fitpixmap2);
+        light3->setPixmap(fitpixmap2);
+        light4->setPixmap(fitpixmap2);
+        light5->setPixmap(fitpixmap2);
+   }
 }
 //手动
 void MainWindow::manualFunction()
