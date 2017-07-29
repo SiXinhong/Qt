@@ -224,7 +224,7 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,255,0));
 
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+   // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
 //    cv::Point point1(75,60);
@@ -335,7 +335,7 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));
 
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+   // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
 //    cv::Point point1(75,60);
@@ -388,11 +388,11 @@ void HWidget::draw(){
 //        qDebug()<<this->getDirectionPoint(p).y;
         Scalar color = objs[i].getColor();
         circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
-        cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+       // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+ //   cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     mw->imgLabel5 = mw->MatToQImage(tmat, mw->imgLabel5);
-    cv::cvtColor(tmat, tmat, CV_BGR2RGB);
+ //   cv::cvtColor(tmat, tmat, CV_BGR2RGB);
     mw->loadPictureToLabel5();
 
 }

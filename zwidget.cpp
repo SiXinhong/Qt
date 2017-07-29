@@ -588,7 +588,7 @@ void ZWidget::draw(){
 
 
     mw->imgLabel3 = mw->MatToQImage(mat,mw->imgLabel3);
-    cv::cvtColor(mat,mat,CV_BGR2RGB);
+    //cv::cvtColor(mat,mat,CV_BGR2RGB);
     mw->loadPictureToLabel3();
 
 }

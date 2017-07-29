@@ -217,7 +217,7 @@ void MainWindow::jinProcessing(){
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
             //画轨迹
             for(int ii = 0; ii < tracks.size(); ii++){
@@ -236,7 +236,7 @@ void MainWindow::jinProcessing(){
                             line(mat,point,point3,obj.getColor(),1,8,0);
                             line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
-                        cv::cvtColor(mat, mat, CV_BGR2RGB);
+                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
@@ -256,9 +256,9 @@ void MainWindow::jinProcessing(){
                 putText(mat,str,p,3,0.5,obj.getColor());
                 putText(mat,str,p2,3,0.5,obj.getColor());
                         }
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+       // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //然后劈成2半
 
@@ -440,7 +440,7 @@ void MainWindow::selfProcessing(){
         Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
         rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
         rectangle(mat,rect2,obj.getColor(),2,1,0);
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+       // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //画轨迹
         for(int ii = 0; ii < tracks.size(); ii++){
@@ -459,7 +459,7 @@ void MainWindow::selfProcessing(){
                         line(mat,point,point3,obj.getColor(),1,8,0);
                         line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
-                    cv::cvtColor(mat, mat, CV_BGR2RGB);
+                   // cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
@@ -479,9 +479,9 @@ void MainWindow::selfProcessing(){
             putText(mat,str,p,3,0.5,obj.getColor());
             putText(mat,str,p2,3,0.5,obj.getColor());
                     }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+       // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
     //然后劈成2半
 
@@ -1045,7 +1045,7 @@ void MainWindow::adjustment()
     updateBright(mat);
     updateContrast(mat);
 
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
     Mat mat1, mat2;
     mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
@@ -1152,7 +1152,7 @@ void MainWindow::selfTimerout(){
         Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
         rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
         rectangle(mat,rect2,obj.getColor(),2,1,0);
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //画轨迹
         for(int ii = 0; ii < tracks.size(); ii++){
@@ -1171,7 +1171,7 @@ void MainWindow::selfTimerout(){
                         line(mat,point,point3,obj.getColor(),1,8,0);
                         line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
-                    cv::cvtColor(mat, mat, CV_BGR2RGB);
+                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
@@ -1191,9 +1191,9 @@ void MainWindow::selfTimerout(){
             putText(mat,str,p,3,0.5,obj.getColor());
             putText(mat,str,p2,3,0.5,obj.getColor());
                     }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+       // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+   // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
     //然后劈成2半
 
@@ -1359,7 +1359,7 @@ void MainWindow::jinTimerout(){
                             line(mat,point,point3,obj.getColor(),1,8,0);
                             line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
-                        cv::cvtColor(mat, mat, CV_BGR2RGB);
+                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
@@ -1379,9 +1379,9 @@ void MainWindow::jinTimerout(){
                 putText(mat,str,p,3,0.5,obj.getColor());
                 putText(mat,str,p2,3,0.5,obj.getColor());
                         }
-            cv::cvtColor(mat, mat, CV_BGR2RGB);
+            //cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
-        cv::cvtColor(mat, mat, CV_BGR2RGB);
+      //  cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //然后劈成2半
 
@@ -2033,7 +2033,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
         //QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
         drawScaleAndRecOnPic(image33,rectans1,index,-1);
         imgLabel3 = MatToQImage(image33,imgLabel3);
-        cv::cvtColor(image11, image11, CV_BGR2RGB);
+     //   cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label3,imgLabel3);
         //release(&image3);
         //release(&image33);
@@ -2049,7 +2049,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
         //QImage imgLabel4 = drawRecOnPic(image44,rectans);
         drawRecOnPic(image44,rectans);
         imgLabel4 = MatToQImage(image44,imgLabel4);
-        cv::cvtColor(image11, image11, CV_BGR2RGB);
+       // cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label4,imgLabel4);
         //cvReleaseMat(&image4);
         //cvReleaseMat(&image44);
@@ -2230,9 +2230,9 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
         rect.width = rectans[i].getWidth();
         rect.height = rectans[i].getHeight();
         rectangle(image,rect,Scalar(0,0,255),4,1,0);
-        cv::cvtColor(image, image, CV_BGR2RGB);
+      //  cv::cvtColor(image, image, CV_BGR2RGB);
     }
-    cv::cvtColor(image,image,CV_BGR2RGB);
+   // cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
@@ -2243,7 +2243,7 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
 void MainWindow::drawRecOnPic2(Mat image, Rect rect){
     //在图像上画矩形。
     rectangle(image,rect,Scalar(0,0,255),1,1,0);
-    cv::cvtColor(image, image, CV_BGR2RGB);
+   // cv::cvtColor(image, image, CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    //return imgLabel;
@@ -2261,11 +2261,11 @@ void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
         rect.width = rectans[i].getWidth();
         rect.height = rectans[i].getHeight();
         rectangle(image,rect,Scalar(0,0,255),4,1,0);
-        cv::cvtColor(image, image, CV_BGR2RGB);
+     //   cv::cvtColor(image, image, CV_BGR2RGB);
     }
     //在图像上画标尺
     paintScale(image,startw,starth);
-    cv::cvtColor(image,image,CV_BGR2RGB);
+  //  cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel3;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
@@ -2283,7 +2283,7 @@ void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, doubl
     }
     //在图像上画圆点
     paintCircle(image,x,y);
-    cv::cvtColor(image,image,CV_BGR2RGB);
+  //  cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
@@ -2300,7 +2300,7 @@ void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double
     rect.width = width;
     rect.height = height;
     rectangle(image,rect,Scalar(0,0,255),4,1,0);
-    cv::cvtColor(image, image, CV_BGR2RGB);
+ //   cv::cvtColor(image, image, CV_BGR2RGB);
     //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
     //return img;
 }
