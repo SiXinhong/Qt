@@ -188,7 +188,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     }
     //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+    //cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 }
 
 //主显示区的，获得画多边形的六个点，需要计算主显示区所关注的对象集合的坐标来确定。
@@ -277,7 +277,7 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     }
     //ellipse(tmat,p3,Size(r, r),0,angle1+180,angle2+180,Scalar(255,0,0));
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+    //cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
 ////    Point point1(75,60);
@@ -323,11 +323,11 @@ void LWidget::draw(){
         cv::Point p = objs[i].getCenPoint();
         Scalar color = objs[i].getColor();
         circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
-        cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+       // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
-    cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+   // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     mw->imgLabel6 = mw->MatToQImage(tmat, mw->imgLabel6);
-    cv::cvtColor(tmat, tmat, CV_BGR2RGB);
+   // cv::cvtColor(tmat, tmat, CV_BGR2RGB);
     mw->loadPictureToLabel6();
 
 }

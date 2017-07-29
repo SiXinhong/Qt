@@ -163,9 +163,9 @@ void BackWindow::selfTimerout(){
            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
            putText(mat,str,p,3,1,obj.getColor());
        }
-       cv::cvtColor(mat, mat, CV_BGR2RGB);
+      // cv::cvtColor(mat, mat, CV_BGR2RGB);
    }
-   cv::cvtColor(mat, mat, CV_BGR2RGB);
+ //  cv::cvtColor(mat, mat, CV_BGR2RGB);
 
    //È»ºóÅü³É2°ë
 
@@ -416,162 +416,79 @@ void BackWindow::addMyToolBar_backWindow()
     QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     vector<MyObject> vec = in.getObjs2();
-      if(vec.size()==0)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap2);
-          vbox3->addWidget(light1);
-          //vbox3->addWidget(new QLabel(" "));
 
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap2);
-          vbox3->addWidget(light2);
-          //vbox3->addWidget(new QLabel(" "));
+    light1=new QLabel(this);
+    light2=new QLabel(this);
+    light3=new QLabel(this);
+    light4=new QLabel(this);
+    light5=new QLabel(this);
 
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
-          //vbox3->addWidget(new QLabel(" "));
+        if(!isGaojing)
+        {
+            light1->setPixmap(fitpixmap2);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else
+        {
+            if(vec.size()==0)
+            {
+                light1->setPixmap(fitpixmap2);
+                light2->setPixmap(fitpixmap2);
+                light3->setPixmap(fitpixmap2);
+                light4->setPixmap(fitpixmap2);
+                light5->setPixmap(fitpixmap2);
+            }
+            else if(vec.size()==1)
+            {
+                light1->setPixmap(fitpixmap1);
+                light2->setPixmap(fitpixmap2);
+                light3->setPixmap(fitpixmap2);
+                light4->setPixmap(fitpixmap2);
+                light5->setPixmap(fitpixmap2);
+            }
+            else if(vec.size()==2)
+            {
+                light1->setPixmap(fitpixmap1);
+                light2->setPixmap(fitpixmap1);
+                light3->setPixmap(fitpixmap2);
+                light4->setPixmap(fitpixmap2);
+                light5->setPixmap(fitpixmap2);
+            }
+            else if(vec.size()==3)
+            {
+                light1->setPixmap(fitpixmap1);
+                light2->setPixmap(fitpixmap1);
+                light3->setPixmap(fitpixmap1);
+                light4->setPixmap(fitpixmap2);
+                light5->setPixmap(fitpixmap2);
+            }
+            else if(vec.size()==4)
+            {
+                light1->setPixmap(fitpixmap1);
+                light2->setPixmap(fitpixmap1);
+                light3->setPixmap(fitpixmap1);
+                light4->setPixmap(fitpixmap1);
+                light5->setPixmap(fitpixmap2);
+            }
+            else if(vec.size()>= 5 )
+            {
+                light1->setPixmap(fitpixmap1);
+                light2->setPixmap(fitpixmap1);
+                light3->setPixmap(fitpixmap1);
+                light4->setPixmap(fitpixmap1);
+                light5->setPixmap(fitpixmap1);
+            }
+        }
 
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
 
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-          //vbox3->addWidget(light5);
-      }
-      else if(vec.size()==1)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-          //vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap2);
-          vbox3->addWidget(light2);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
-          //vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-        // vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-         // vbox3->addWidget(light5);
-      }
-      else if(vec.size()==2)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap2);
-          vbox3->addWidget(light3);
-        //  vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-        //  vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-        //  vbox3->addWidget(light5);
-      }
-      else if(vec.size()==3)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-        //  vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
-        //  vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap2);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
+        vbox3->addWidget(light1);
+        vbox3->addWidget(light2);
+        vbox3->addWidget(light3);
+        vbox3->addWidget(light4);
         vbox3->addWidget(light5);
-      }
-      else if(vec.size()==4)
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-       //   vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-       //   vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap1);
-          vbox3->addWidget(light4);
-         // vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap2);
-          vbox3->addWidget(light5);
-      }
-      else
-      {
-          light1=new QLabel(this);
-          light1->setPixmap(fitpixmap1);
-          vbox3->addWidget(light1);
-      //    vbox3->addWidget(new QLabel(" "));
-
-          light2=new QLabel(this);
-          light2->setPixmap(fitpixmap1);
-          vbox3->addWidget(light2);
-      //    vbox3->addWidget(new QLabel(" "));
-
-          light3=new QLabel(this);
-          light3->setPixmap(fitpixmap1);
-          vbox3->addWidget(light3);
-     //    vbox3->addWidget(new QLabel(" "));
-
-          light4=new QLabel(this);
-          light4->setPixmap(fitpixmap1);
-          vbox3->addWidget(light4);
-       //   vbox3->addWidget(new QLabel(" "));
-
-          light5=new QLabel(this);
-          light5->setPixmap(fitpixmap1);
-          vbox3->addWidget(light5);
-      }
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);

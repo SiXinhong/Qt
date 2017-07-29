@@ -422,7 +422,7 @@ void NWidget::draw(){
 
 
     mw->imgLabel4 = mw->MatToQImage(mat,mw->imgLabel4);
-    cv::cvtColor(mat,mat,CV_BGR2RGB);
+ //   cv::cvtColor(mat,mat,CV_BGR2RGB);
     mw->loadPictureToLabel4();
 
 }

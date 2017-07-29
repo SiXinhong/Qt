@@ -136,7 +136,7 @@ void Qj2Widget::draw(){
 //    }
 
     mw->imgLabel2 = mw->MatToQImage(mat,mw->imgLabel2);
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
+    //cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->loadPictureToLabel2(isRect, qrect);
 
 }
