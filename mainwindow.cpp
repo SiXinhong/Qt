@@ -664,6 +664,8 @@ void MainWindow::addMyToolBar()
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
     int screenWidth=screenRect.width();
+//    qDebug()<<screenWidth;
+//    qDebug()<<screenRect.height();
     const int buttonSize=(screenWidth*0.7)/21.6;
 
     QGroupBox *group1=new QGroupBox(this);
@@ -2775,10 +2777,15 @@ void MainWindow::objectAttributeFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
-    this->objectAttributes->setWindowFlags(Qt::WindowStaysOnTopHint);
+    this->objectAttributes->setWindowFlags(Qt::FramelessWindowHint);
     this->objectAttributes->activateWindow();
-    this->objectAttributes->setWindowTitle("目标属性列表");
-    this->objectAttributes->setGeometry(250,60,900,650);
+    //this->objectAttributes->setWindowTitle("目标属性列表");
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
+    int width = screenRect.width();
+    int height = screenRect.height();
+    this->objectAttributes->setGeometry(width/4,height/4,width/2,height/3);
+
     // this->objectAttributes->tr("oid");
     // this->objectAttributes->resize(300,500);
     //this->objectAttributes->setText("oid=: ");
