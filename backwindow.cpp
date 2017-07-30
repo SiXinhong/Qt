@@ -7,12 +7,6 @@ BackWindow::BackWindow():MainWindow()
 }
 BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     setWindowTitle("回放");
-    mainToolBar->clear();
-    addMyToolBar_backWindow();
-    timeLine=new TimeLine(this);
-    this->start=start;
-    this->stop=stop;
-    this->date=date;
 
     QString day=QString("./回放/")+date.toString("yyyy-MM-dd");
     QDir *dir=new QDir(day);
@@ -28,6 +22,16 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     while((!fileInfo->isEmpty())&&(fileInfo->last().lastModified().time()>stop)){
         fileInfo->removeLast();
     }
+
+
+    mainToolBar->clear();
+    addMyToolBar_backWindow();
+    timeLine=new TimeLine(this);
+    this->start=start;
+    this->stop=stop;
+    this->date=date;
+
+
 }
 BackWindow::~BackWindow()
 {
@@ -51,6 +55,10 @@ void BackWindow::selfTimerout(){
             fileIndex++;
         }
     }
+
+
+    //systime= QLabel();//时间
+
     in.getIntegratedData2();
 //    for(int i = 0; i < objs.size(); i++){
 //        MyObject obj = objs[i];
@@ -150,7 +158,7 @@ void BackWindow::selfTimerout(){
                }
            }
        }
-       cv::cvtColor(mat, mat, CV_BGR2RGB);
+       //cv::cvtColor(mat, mat, CV_BGR2RGB);
        //画对象中心点的位置
        if(isMubiao){
            int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
@@ -500,6 +508,17 @@ void BackWindow::addMyToolBar_backWindow()
     vbox4->addWidget(serialNumber);
     //vbox4->addWidget(new QLabel("   "));
     systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+
+    QString datetime = fileInfo->at(fileIndex).filePath();
+    QString backDate = datetime.right(datetime.length()-5).left(10);
+    QString backHour = datetime.right(14).left(2);
+    QString backMinute= datetime.right(11).left(2);
+    QString backSec = datetime.right(8).left(2);
+    systime->setText(backDate.append("  ").append(backHour).append(":").append(backMinute).append(":").append(backSec));
+
+
+    //QString datetime = fileInfo->at(fileIndex).filePath();
+    //qDebug()<<datetime.length();
     systime->setStyleSheet("color:White");
     vbox4->addWidget(systime);
     //vbox4->addWidget(new QLabel("   "));
@@ -618,4 +637,22 @@ void BackWindow :: timeLineFunction(){
     timeLine->show();
     timeLine->position= fileIndex*255/fileInfo->count();
    // backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
+}
+
+void BackWindow::onTimerOut2(){
+    //systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+
+    if(fileIndex < fileInfo->count())
+    {
+        QString datetime = fileInfo->at(fileIndex).filePath();
+        QString backDate = datetime.right(datetime.length()-5).left(10);
+        QString backHour = datetime.right(14).left(2);
+        QString backMinute= datetime.right(11).left(2);
+        QString backSec = datetime.right(8).left(2);
+        systime->setText(backDate.append(" ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
+    }
+    else
+        systime->setText("       当前无回放      ");
+
+
 }
