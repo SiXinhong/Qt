@@ -2491,7 +2491,7 @@ void MainWindow::openFunction()
     dateEdit=new QDateEdit(QDate::currentDate());
     startTime=new QLabel(QWidget::tr("起始时间"));
     //开始时间选择框
-    startTimeSet=new QTimeEdit(QTime::currentTime(), this);
+    startTimeSet=new QTimeEdit(QTime::currentTime().addSecs(-300), this);
     //startTimeSet->setCalendarPopup(true);
     startTimeSet->setDisplayFormat("HH:mm:ss");
     //结束时间选择框

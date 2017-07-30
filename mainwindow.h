@@ -74,7 +74,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public slots:
   void onTimerOut();
-  void onTimerOut2();
+  virtual void onTimerOut2();
     
 public:
   int num_objs;

@@ -21,6 +21,7 @@ public:
 
     class TimeLine *timeLine;
     void timeLineFunction();
+    void onTimerOut2();
 };
 
 #endif // BACKWINDOW_H
