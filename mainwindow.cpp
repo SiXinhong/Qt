@@ -1038,7 +1038,13 @@ void MainWindow::onTimerOut2(){
 
 void MainWindow::adjustment()
 {
-    Mat mat = in.getPano().clone();
+    Mat pano = in.getPano();
+
+    Mat pano1 = pano.clone();
+    Mat pano2 = pano.clone();
+    Mat mat;
+    hconcat(pano1,pano2,mat);
+   // Mat mat = in.getPano().clone();
 
     if(this->isPseudo==true)
         mat=setPseudocolor(mat);
@@ -1048,24 +1054,59 @@ void MainWindow::adjustment()
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
     Mat mat1, mat2;
-    mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
-    mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+    mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
+    mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
-    widget1->setMat(mat1);
-    widget1->setPano(mat);
+    Mat newpano;
+
+    hconcat(mat1,mat2,newpano);
+
+    Mat w1 = widget1->getMat();
+    if(this->isPseudo==true)
+        mat=setPseudocolor(w1);
+    updateBright(w1);
+    updateContrast(w1);
+    widget1->setMat(w1);
+
+    //widget1->setMat(mat1);
+  //  widget1->setPano(mat);
+    widget1->setPano(newpano);
+   //widget1->setObjects(objs);
+    widget1->setTracks(in.getTracks());
     widget1->draw();
 
-    widget2->setPano(mat);
-    widget2->setMat(mat2);
+    Mat w2 = widget2->getMat();
+    if(this->isPseudo==true)
+        mat=setPseudocolor(w2);
+    updateBright(w2);
+    updateContrast(w2);
+    widget2->setMat(w2);
+
+    //widget2->setPano(mat);
+  //  widget2->setMat(mat2);
+    widget2->setPano(newpano);
+    //widget2->setObjects(objs);
+    widget2->setTracks(in.getTracks());
     widget2->draw();
 
-    widget3->setPano(mat);
-    widget3->setAllObjects(in.getObjs());
+
+    widget3->setPano(newpano);
+    widget3->setTwoPanos(mat);
+   widget3->setAllObjects(in.getObjs());
     widget3->draw();
 
-    widget4->setPano(mat);
+    widget4->setPano(newpano);
+    widget4->setTwoPanos(mat);
     widget4->setAllObjects(in.getObjs());
     widget4->draw();
+
+  //  widget3->setPano(mat);
+
+
+
+    //widget4->setPano(mat);
+
+
 }
 
 //定时器任务
@@ -1223,6 +1264,7 @@ void MainWindow::selfTimerout(){
     mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
     mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
+
     Mat newpano;
 
     hconcat(mat1,mat2,newpano);
@@ -1249,23 +1291,15 @@ void MainWindow::selfTimerout(){
     //    Mat mat1 =imread(imageurl);
 
     //Mat mat2 = image55;
-    if(this->isPseudo==true)
-                        mat2=setPseudocolor(mat2);
-        updateBright(mat2);
-        updateContrast(mat2);
+//    if(this->isPseudo==true)
+//                        mat2=setPseudocolor(mat2);
+//        updateBright(mat2);
+//        updateContrast(mat2);
 //        if(saturation1!=100){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat2, mat2);
 //           }
     widget2->setPano(newpano);
-//    if(this->isPseudo==true)
-//        mat2=setPseudocolor(mat2);
-//    updateBright(mat2);
-//    updateContrast(mat2);
-    //        if(saturation1!=100){
-    //               hsl->channels[color].saturation1 = saturation1 - 100;
-    //               hsl->adjust(mat2, mat2);
-    //           }
     //widget2->setPano(mat);
     widget2->setMat(mat2);
     widget2->setObjects(objs);
