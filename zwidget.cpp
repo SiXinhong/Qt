@@ -667,9 +667,9 @@ double ZWidget::getDirectionX(double x){
 
 double ZWidget::getDirectionY(double y){
 
-    double yy = 20;
+    double yy = 10;
     //double y = this->rectan.y;
-    return yy*y/pano.rows;
+    return 10-yy*y/pano.rows;
 
 }
 
@@ -680,8 +680,8 @@ double ZWidget::getDirectionX2(){
 
 double ZWidget::getDirectionY2(){
 
-    double yy = 20;
+    double yy = 10;
     double y = this->rect.y+this->rect.height;
-    return yy*y/pano.rows;
+    return 10-yy*y/pano.rows;
 
 }

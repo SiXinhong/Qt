@@ -106,9 +106,9 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
     int c = image.cols/30;
     int r = image.rows/10;
     line(image,Point(0,0),Point(image.cols,0),Scalar(255,255,255),2,8,0);
-    for(int t=startw; t<=startw+30; t++)
+    for(int t=startw; t<=(int)startw+30; t++)
     {
-     int i=t-startw;
+     int i=t-(int)startw;
      if(i%2 == 0){
         line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
         //±ê³ßÉÏÐ´×Ö
@@ -125,12 +125,13 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
      }
     }
     line(image,Point(0,0),Point(0,image.rows),Scalar(255,255,255),2,8,0);
-    for(int t=starth; t<=starth+10; t++)
+    for(int t=starth; t<=(int)starth+10; t++)
     {
-        int i=t-starth;
+        int i=t-(int)starth;
         if(i%2 == 0){
             line(image,Point(0,i*r),Point(12,i*r),Scalar(255,255,255),2,8,0);
-            int ii = (int)(endh - i*(endh-starth)/10);
+            //int ii = (int)(endh - i*(endh-starth)/10);
+             int ii = (int)(starth+i*(endh-starth)/10);
             QString text2 = QString::number(ii,10);
             string str2 = text2.toStdString();
             putText(image,str2,Point(20,i*r+10),3,0.75,Scalar(255,255,255));

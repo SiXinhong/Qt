@@ -130,7 +130,13 @@ void BackWindow::selfTimerout(){
 //    widget6->setPano(mat1);
 //    widget6->setObjects(objs);
 //    widget6->draw();
-    Mat mat = in.getPano().clone();
+
+    Mat pano = in.getPano();
+    Mat pano1 = pano.clone();
+    Mat pano2 = pano.clone();
+    Mat mat;
+    hconcat(pano1,pano2,mat);
+
    //vector<MyObject> objs = in.getObjs();
    vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -139,9 +145,11 @@ void BackWindow::selfTimerout(){
    {
        //画对象的box
        MyObject obj = objs[i];
+       Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+       rectangle(mat,rect2,obj.getColor(),2,1,0);
+       //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-       cv::cvtColor(mat, mat, CV_BGR2RGB);
        //画轨迹
        for(int ii = 0; ii < tracks.size(); ii++){
            MyObjectTrack track = tracks[ii];
@@ -150,27 +158,35 @@ void BackWindow::selfTimerout(){
            if(id == obj.getID()){
                for(int iii = 0; iii < points.size(); iii++){
                    Point point = points[iii];
+                   Point point2 = Point(point.x+pano.cols, point.y);
                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                   circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
                    if(iii >= 1){
-                       Point point2 = points[iii-1];
-                       line(mat,point,point2,obj.getColor(),1,8,0);
+                       Point point3 = points[iii-1];
+                       Point point4 = Point(point3.x+pano.cols, point3.y);
+                       line(mat,point,point3,obj.getColor(),1,8,0);
+                       line(mat,point2,point4,obj.getColor(),1,8,0);
                    }
+                   //cv::cvtColor(mat, mat, CV_BGR2RGB);
                }
            }
        }
-       //cv::cvtColor(mat, mat, CV_BGR2RGB);
+
        //画对象中心点的位置
        if(isMubiao){
-           int x = (int)(this->getDirectionX(obj.getCenPoint().x, mat));
-           int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mat)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+           int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
+           int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
            QString tx = QString::number(x,10);
            QString ty = QString::number(y,10);
            QString tstr = "x="+tx+",y="+ty;
            string str = tstr.toStdString();
            //qDebug()<<tstr;
            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-           putText(mat,str,p,3,1,obj.getColor());
-       }
+           Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+
+           putText(mat,str,p,3,0.5,obj.getColor());
+           putText(mat,str,p2,3,0.5,obj.getColor());
+                   }
       // cv::cvtColor(mat, mat, CV_BGR2RGB);
    }
  //  cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -198,24 +214,29 @@ void BackWindow::selfTimerout(){
                        mat=setPseudocolor(mat);
        updateBright(mat);
        updateContrast(mat);
-  Mat mat1, mat2;
-   mat(Rect(0,0,mat.cols/2,mat.rows)).copyTo(mat1);
-   mat(Rect(mat.cols/2,0,mat.cols/2,mat.rows)).copyTo(mat2);
+
+       Mat mat1, mat2;
+       mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
+       mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
+
+       Mat newpano;
+       hconcat(mat1,mat2,newpano);
 
    //Mat mat1 = image44;
-   if(this->isPseudo==true)
-                       mat1=setPseudocolor(mat1);
-       updateBright(mat1);
-       updateContrast(mat1);
+//   if(this->isPseudo==true)
+//                       mat1=setPseudocolor(mat1);
+//       updateBright(mat1);
+//       updateContrast(mat1);
 //        if(saturation1!=100){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat1, mat1);
 //           }
    widget1->setMat(mat1);
-   widget1->setPano(mat);
+   widget1->setPano(newpano);
    widget1->setObjects(objs);
    widget1->setTracks(in.getTracks());
    widget1->draw();
+
    //qDebug()<<s1;
    //图片2
    //图片1
@@ -224,15 +245,15 @@ void BackWindow::selfTimerout(){
 //    Mat mat1 =imread(imageurl);
 
    //Mat mat2 = image55;
-   if(this->isPseudo==true)
-                       mat2=setPseudocolor(mat2);
-       updateBright(mat2);
-       updateContrast(mat2);
+//   if(this->isPseudo==true)
+//                       mat2=setPseudocolor(mat2);
+//       updateBright(mat2);
+//       updateContrast(mat2);
 //        if(saturation1!=100){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat2, mat2);
 //           }
-   widget2->setPano(mat);
+    widget1->setPano(newpano);
    widget2->setMat(mat2);
    widget2->setObjects(objs);
    widget2->setTracks(in.getTracks());
@@ -241,21 +262,26 @@ void BackWindow::selfTimerout(){
    //drawUiLabel(mat2,2);
    //图片3
    //Mat mat3 =imread(imageurl);
-   widget3->setPano(mat);
+   widget3->setPano(newpano);
+   widget3->setTwoPanos(mat);
+   //widget3->setPano(mat);
    widget3->setAllObjects(in.getObjs());
    widget3->draw();
    //drawUiLabelByCopy(mat3,3);
    //图片4
    //Mat mat4 =imread(imageurl2);
    //drawUiLabelByCopy(mat4,4);
-   widget4->setPano(mat);
+   //widget4->setPano(mat);
+   widget4->setPano(newpano);
+   widget4->setTwoPanos(mat);
    widget4->setAllObjects(in.getObjs());
    widget4->draw();
    //图片5
    //QString imageurl5=in.getHD();
    //Mat mat5 =imread(imageurl5.toStdString());
    //widget5->setMat(mat5);
-   widget5->setPano(in.getPano());
+   widget5->setPano(newpano);
+   //widget5->setPano(in.getPano());
    widget5->setObjects(objs);
    widget5->draw();
    //drawUiLabel(mat5,5);
@@ -263,7 +289,8 @@ void BackWindow::selfTimerout(){
    //QString imageurl6= in.getLD();
    //Mat mat6 =imread(imageurl6.toStdString());
    //widget6->setMat(mat6);
-   widget6->setPano(in.getPano());
+   //widget6->setPano(in.getPano());
+   widget6->setPano(newpano);
    widget6->setObjects(objs);
    widget6->draw();
 }
