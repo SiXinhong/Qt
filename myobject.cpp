@@ -207,13 +207,14 @@ QDataStream& readMat(QDataStream &in,Mat &m){
     return in;
 }
 QDataStream& operator>>(QDataStream &in,MyObject& data){
+    //不读ID了，让backwindow读取id，判断是否存在obj，如果不存在就创建并设置id
     in>>data.box.x>>data.box.y>>data.box.height>>data.box.width;
 
 //    int c1,c2,c3;
 //    in>>c1>>c2>>c3;
 //    data.SetColor(Scalar(c1,c2,c3));
 //    color初始化的代码是随机生成的颜色,也就是每次看到的物体的颜色是不同的,应该无需序列化,如果需要,上面三行可能能用
-    in>>data.oid;
+
     in>>data.cenPoint.x>>data.cenPoint.y;
     in>>data.blocksize.width>>data.blocksize.height;
     in>>data.Velocity;
@@ -261,13 +262,14 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
 }
 
 QDataStream& operator<<(QDataStream &out,MyObject& data){
+    out<<data.oid;//提到最上边，先序列号id，以便从文件先读取id判断是否是存在的obj
     out<<data.box.x<<data.box.y<<data.box.height<<data.box.width;//box
 
 //    out<<data.color.val[0];
 //    out<<data.color.val[1];
 //    out<<data.color.val[2];
 //    color初始化的代码是随机生成的颜色,也就是每次看到的物体的颜色是不同的,应该无需序列化,如果需要,上面三行可能能用
-    out<<data.oid;
+
     out<<data.cenPoint.x<<data.cenPoint.y;
     out<<data.blocksize.width<<data.blocksize.height;
     out<<data.Velocity;

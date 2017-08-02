@@ -1,6 +1,7 @@
 #include "backwindow.h"
 #include <QFileInfo>
 #include <QToolBar>
+#include <map>
 BackWindow::BackWindow():MainWindow()
 {
     setWindowTitle("回放");
@@ -36,25 +37,59 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
 BackWindow::~BackWindow()
 {
     delete fileInfo;
+    map<int, MyObject*>::iterator iter;
+    for(iter = objmap.begin(); iter != objmap.end(); ++iter)
+    {
+        delete iter->second;
+    }
 }
 void BackWindow::selfTimerout(){
     if(!isJixu){
     return;
     }
     vector<MyObject> objs;
-    for(int i=0;i<3;i++){
-        if(fileIndex<fileInfo->count()){
-            qDebug()<<fileInfo->at(fileIndex).filePath();
-            MyObject *obj=new MyObject();
-            QFile file(fileInfo->at(fileIndex).filePath());
-            file.open(QIODevice::ReadOnly);
-            QDataStream in(&file);
-            in>>*obj;
-            objs.push_back(*obj);
-            file.close();
-            fileIndex++;
-        }
+    QString currentFileTime;
+    if(fileIndex<fileInfo->count()){
+        currentFileTime=fileInfo->at(fileIndex).fileName().left(8);
+        qDebug()<<"filetime"<<currentFileTime;
     }
+    while(fileIndex<fileInfo->count()){
+        if(currentFileTime.compare(fileInfo->at(fileIndex).fileName().left(8)) != 0)
+            break;
+        QFile file(fileInfo->at(fileIndex).filePath());
+        file.open(QIODevice::ReadOnly);
+        QDataStream in(&file);
+        int id;
+        in>>id;
+        MyObject *obj;
+        map<int, MyObject*>::iterator iter;
+        iter = objmap.find(id);
+        if(iter != objmap.end()){
+            obj=iter->second;
+            qDebug()<<"map.size"<<objmap.size();
+        } else{
+            obj=new MyObject();
+            obj->setID(id);
+            objmap.insert(pair<int,MyObject*>(id,obj));
+        }
+        in>>*obj;
+        objs.push_back(*obj);
+        file.close();
+        fileIndex++;
+    }
+//    for(int i=0;i<3;i++){
+//        if(fileIndex<fileInfo->count()){
+//            qDebug()<<fileInfo->at(fileIndex).filePath();
+//            MyObject *obj=new MyObject();
+//            QFile file(fileInfo->at(fileIndex).filePath());
+//            file.open(QIODevice::ReadOnly);
+//            QDataStream in(&file);
+//            in>>*obj;
+//            objs.push_back(*obj);
+//            file.close();
+//            fileIndex++;
+//        }
+//    }
 
 
     //systime= QLabel();//时间

@@ -4,6 +4,7 @@
 #include <QTime>
 #include <QFileInfo>
 #include "timeline.h"
+#include <map>
 class BackWindow :public MainWindow
 {
 public:
@@ -22,6 +23,7 @@ public:
     class TimeLine *timeLine;
     void timeLineFunction();
     void onTimerOut2();
+    map<int,MyObject*> objmap;
 };
 
 #endif // BACKWINDOW_H
