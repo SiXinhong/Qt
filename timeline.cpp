@@ -32,7 +32,7 @@ void TimeLine:: mouseReleaseEvent(QMouseEvent *event){
 //    backWindow->bright_TimeLineValue=position;
 //    backWindow->adjustment();
     backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
-    backWindow->panoIndex=position*backWindow->fileInfo->count()/255;
+    backWindow->panoIndex=position*backWindow->filepano->count()/255;
 
 }
 

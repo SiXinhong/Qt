@@ -132,7 +132,7 @@ void MyInterface::fillObjs(){
         Rect r=mo1.getRect();
         int w=r.width;
         int h=r.height;
-        int x=qrand()%this->panoImage.cols;
+        int x=qrand()%this->panoImage.cols;//初始值随机
         int y=qrand()%this->panoImage.rows;
         mo1.setRect(Rect(x,y,w,h));
         mo1.setCenPoint(Point(x+w/2, y+h/2));
@@ -665,7 +665,7 @@ vector<MyObject> MyInterface::getRandomObjs(){
         int y1=mo1.getRect().y;
         int w = 30;
         int h = 30;
-        x1 = x1+indexx*5;
+        x1 = x1+indexx*5;//每次移动增加50
         y1*=y_increace_ratio;
         if(x1+mo1.getRect().width >= this->panoImage.cols){
             x1 = x1 % this->panoImage.cols;

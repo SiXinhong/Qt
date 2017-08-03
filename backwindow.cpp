@@ -116,7 +116,7 @@ void BackWindow::selfTimerout(){
             }
             file.close();
             panoIndex++;
-    }else
+    }else{
 //        widget1->setObjects(objs);
 //        widget1->draw();
 //        widget2->setObjects(objs);
@@ -126,6 +126,7 @@ void BackWindow::selfTimerout(){
         widget6->setObjects(objs);
         widget6->draw();
         return;
+ }
 
 
     if(isGaojing)
