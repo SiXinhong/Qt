@@ -1,11 +1,11 @@
 #ifndef MYINTERFACE_H
 #define MYINTERFACE_H
 
-#include "myobject.h"
+
 #include "myobjecttrack.h"
 #include "show_sdk.h"
 #include "socket.h"
-
+#include "myobject.h"
 #include <QString>
 
 //OpenCVÍ·ÎÄ¼þ

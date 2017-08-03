@@ -7,13 +7,15 @@
 #include "mainwindow.h"
 #include <QImage>
 
-ObjectAttributes::ObjectAttributes(MyInterface *objectInterface) :
+ObjectAttributes::ObjectAttributes(vector<MyObject> objs) :
     QMainWindow()
 {
 
-    this->objectInterface=objectInterface;
+    //this->objectInterface=objectInterface;
     index2Show=-1;
+    this->objs =objs;
     addMyToolBar();
+
 }
 
 ObjectAttributes::~ObjectAttributes()
@@ -25,8 +27,8 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
 {
     if(index2Show<0)
         return;
-    vector<MyObject> vec = objectInterface->getObjs2();
-    MyObject *obj = &vec.at(index2Show);
+    //vector<MyObject> vec = objectInterface->getObjs2();
+    MyObject *obj = &objs.at(index2Show);
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
     int width = screenRect.width();
@@ -126,12 +128,10 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
 void ObjectAttributes::addMyToolBar()
 {
     mainToolBar = addToolBar("objs");
-    vector<MyObject> vec = objectInterface->getObjs2();
-    //int objs = vec.size();
-
-
-    for(int i = 0; i < vec.size();i++){
-        MyObject *obj = &vec.at(i);
+    //vector<MyObject> vec = objectInterface->getObjs2();
+   // qDebug()<< vec.size();
+    for(int i = 0; i < objs.size();i++){
+        MyObject *obj = &objs.at(i);
 
         QGroupBox *group = new QGroupBox(this);
         QHBoxLayout *vbox = new QHBoxLayout;

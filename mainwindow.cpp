@@ -65,7 +65,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     widgetNew=NULL;
     this->setWindowFlags(Qt::FramelessWindowHint);
-    this->objectAttributes=new ObjectAttributes(&this->in);
+   // this->objectAttributes=new ObjectAttributes(&this->in);
+    this->objectAttributes = 0;
     cmixer = new CMixer();
     sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
@@ -181,7 +182,8 @@ MainWindow::~MainWindow(){
     // delete hsl;
     delete strackBar;
     delete trackBar;
-    delete objectAttributes;
+    if( objectAttributes)
+        delete objectAttributes;
     delete cmixer;
     delete sound;
 }
@@ -209,8 +211,8 @@ void MainWindow::jinProcessing(){
         vector<MyObject> objs = in.getObjs();
         vector<MyObjectTrack> tracks = in.getTracks();
 
-        int count = objs.size();
-        for (int i = 0; i < count;i++)
+        int num_objs = objs.size();
+        for (int i = 0; i < num_objs;i++)
         {
             //画对象的box
             MyObject obj = objs[i];
@@ -432,8 +434,7 @@ void MainWindow::selfProcessing(){
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
-    int count = objs.size();
-    for (int i = 0; i < count;i++)
+    for (int i = 0; i < num_objs;i++)
     {
         //画对象的box
         MyObject obj = objs[i];
@@ -1134,25 +1135,91 @@ void MainWindow::selfTimerout(){
     if(isGaojing)
     {
     if(objs.size()>num_objs){
-         this->sound->play();
+        this->sound->play();
         num_objs = objs.size();
     }
     else
         num_objs =objs.size();
     }
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();
+    const int buttonSize=(screenRect.width()*0.7)/21.6;
+    QPixmap pixmap1("./icon/16_1.png");
+    QPixmap pixmap2("./icon/16_2.png");
+    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    if(isGaojing)
+    {
+        if(num_objs==0)
+        {
+            light1->setPixmap(fitpixmap2);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(num_objs==1)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(num_objs==2)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(num_objs==3)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(num_objs==4)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(num_objs>= 5 )
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap1);
+      }
+    }
+    else
+    {
+        light1->setPixmap(fitpixmap2);
+        light2->setPixmap(fitpixmap2);
+        light3->setPixmap(fitpixmap2);
+        light4->setPixmap(fitpixmap2);
+        light5->setPixmap(fitpixmap2);
+   }
 
-    for(int i=0;i<objs.size();i++){
-        QString current_time=QTime::currentTime().toString("hh-mm-ss");
-        QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
-        QFile file(current_path);
-        if(isJixu == true){
+    if(isJixu == true){
+        for(int i=0;i<objs.size();i++){
+            QString current_time=QTime::currentTime().toString("hh-mm-ss");
+            QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
+            QFile file(current_path);
             file.open(QIODevice::WriteOnly);
             QDataStream out(&file);
             out<<objs.at(i);
             file.close();
+            current_time.clear();
+            current_path.clear();
         }
-        current_time.clear();
-        current_path.clear();
     }
     //    for(int i = 0; i < objs.size(); i++){
     //        MyObject obj = objs[i];
@@ -1175,6 +1242,26 @@ void MainWindow::selfTimerout(){
     //在两个全景上画矩形，文字，轨迹等
     Mat pano = in.getPano();
 
+    if(isJixu == true){
+            QString current_time=QTime::currentTime().toString("hh-mm-ss");
+            QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
+            QFile file(current_path);
+            file.open(QIODevice::WriteOnly);
+            QDataStream out(&file);
+            if(pano.empty()){
+                out<<-1;
+            }else{
+                out<<1;
+                MyObject::writeMat(out,pano);
+            }
+            file.close();
+            current_time.clear();
+            current_path.clear();
+
+    }
+
+
+
     Mat pano1 = pano.clone();
     Mat pano2 = pano.clone();
     Mat mat;
@@ -1185,8 +1272,8 @@ void MainWindow::selfTimerout(){
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
-    int count = objs.size();
-    for (int i = 0; i < count;i++)
+
+    for (int i = 0; i < num_objs;i++)
     {
         //画对象的box
         MyObject obj = objs[i];
@@ -1366,8 +1453,8 @@ void MainWindow::jinTimerout(){
         vector<MyObject> objs = in.getObjs();
         vector<MyObjectTrack> tracks = in.getTracks();
 
-        int count = objs.size();
-        for (int i = 0; i < count;i++)
+        int num_objs = objs.size();
+        for (int i = 0; i < num_objs;i++)
         {
             //画对象的box
             MyObject obj = objs[i];
@@ -1528,8 +1615,8 @@ void MainWindow::jinTimerout(){
 //        vector<MyObject> objs = in.getObjs();
 //        vector<MyObjectTrack> tracks = in.getTracks();
 
-//        int count = objs.size();
-//        for (int i = 0; i < count;i++)
+//        int num_objs = objs.size();
+//        for (int i = 0; i < num_objs;i++)
 //        {
 //            //画对象的box
 //            MyObject obj = objs[i];
@@ -1723,8 +1810,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
-        int count = widget1->objs.size();
-        for(int i = 0; i < count; i++){
+        int num_objs = widget1->objs.size();
+        for(int i = 0; i < num_objs; i++){
             MyObject obj = widget1->objs[i];
             if(widget1->isObjSelected3(obj)){
                 objs3.push_back(obj);
@@ -1796,8 +1883,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         //更新主显示区所包含的目标
         vector<MyObject> objs3;
-        int count = widget2->objs.size();
-        for(int i = 0; i < count; i++){
+        int num_objs = widget2->objs.size();
+        for(int i = 0; i < num_objs; i++){
             MyObject obj = widget2->objs[i];
             if(widget2->isObjSelected3(obj)){
                 objs3.push_back(obj);
@@ -1863,8 +1950,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
-        int count = widget1->objs.size();
-        for(int i = 0; i < count; i++){
+        int num_objs = widget1->objs.size();
+        for(int i = 0; i < num_objs; i++){
             MyObject obj = widget1->objs[i];
             if(widget1->isObjSelected4(obj)){
                 objs4.push_back(obj);
@@ -1931,8 +2018,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         //更新主显示区所包含的目标
         vector<MyObject> objs4;
-        int count = widget2->objs.size();
-        for(int i = 0; i < count; i++){
+        int num_objs = widget2->objs.size();
+        for(int i = 0; i < num_objs; i++){
             MyObject obj = widget2->objs[i];
             if(widget2->isObjSelected4(obj)){
                 objs4.push_back(obj);
@@ -2255,8 +2342,8 @@ void MainWindow::loadPictureToLabel6(){
 //---xiaotian   图像上绘制矩形框
 void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。
-    int count = rectans.size();
-    for (int i = 0; i < count;i++)
+    int num_objs = rectans.size();
+    for (int i = 0; i < num_objs;i++)
     {
         Rect rect;
         rect.x = rectans[i].getX();
@@ -2286,8 +2373,8 @@ void MainWindow::drawRecOnPic2(Mat image, Rect rect){
 //---xiaotian  图像上绘制标尺和矩形框
 void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
     //在图像上画矩形。
-    int count = rectans.size();
-    for (int i = 0; i < count;i++)
+    int num_objs = rectans.size();
+    for (int i = 0; i < num_objs;i++)
     {
         Rect rect;
         rect.x = rectans[i].getX();
@@ -2308,8 +2395,8 @@ void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
 //---xiaotian  图像上绘制多边形和圆
 void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
     //在图像上画多边形
-    int count = point.size();
-    for (int i = 0; i <count;i+=2)
+    int num_objs = point.size();
+    for (int i = 0; i <num_objs;i+=2)
     {
         Point point1 = point[i];
         Point point2 = point[i+1];
@@ -2517,7 +2604,7 @@ void MainWindow::backFunction()
 void MainWindow::openFunction()
 {
     if(is_open==true){
-        startTimeSet->setTime(QTime::currentTime());
+        startTimeSet->setTime(QTime::currentTime().addSecs(-300));
         stopTimeSet->setTime(QTime::currentTime());
         widgetNew->show();
         return;
@@ -2811,6 +2898,11 @@ void MainWindow::objectAttributeFunction()
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
     // QMessageBox::information(this,"目标属性列表",&objectstring);
+    if(objectAttributes)
+    {
+        delete objectAttributes;
+    }
+    this->objectAttributes=new ObjectAttributes(widget1->objs);
     this->objectAttributes->setWindowFlags(Qt::FramelessWindowHint);
     this->objectAttributes->activateWindow();
     //this->objectAttributes->setWindowTitle("目标属性列表");

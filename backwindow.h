@@ -16,7 +16,10 @@ public:
     QTime start;
     QTime stop;
     QList<QFileInfo> *fileInfo;
+    QList<QFileInfo> *filepano;
     int fileIndex;
+    int panoIndex;
+    int count;
     void exitFunction();
     void addMyToolBar_backWindow();
 

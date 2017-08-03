@@ -22,7 +22,7 @@ private:
     int index2Show;
     
 public:
-    explicit ObjectAttributes(MyInterface *objectInterface);
+    explicit ObjectAttributes(vector<MyObject> objs);
     void addMyToolBar();
     ~ObjectAttributes();
 protected:
@@ -30,7 +30,8 @@ protected:
 
     
 private:
-    MyInterface *objectInterface;
+   // MyInterface *objectInterface;
+    vector<MyObject> objs;
 };
 
 #endif // OBJECTATTRIBUTES_H

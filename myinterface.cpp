@@ -687,7 +687,7 @@ vector<MyObject> MyInterface::getRandomObjs(){
                 track.setTrack(ps);
                 tracks[i]=track;
                 isExisted = true;
-                qDebug()<<"tracks"<<mo1.getID()<<":"<<track.getTrack().size();
+                //qDebug()<<"tracks"<<mo1.getID()<<":"<<track.getTrack().size();
             }
         }
         if(!isExisted){

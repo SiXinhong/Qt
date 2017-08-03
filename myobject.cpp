@@ -1,6 +1,8 @@
 #include "myobject.h"
 #include "cvutil.h";
 #include <QBuffer>
+#include"myinterface.h"
+
 MyObject::MyObject(){
     this->color = CVUtil::getRandomColor();
 
@@ -23,6 +25,7 @@ MyObject::MyObject(){
     CenSueEintensity = 0;            // 中央周围对比度的响应强度
     SCRValue = 0;                    // 目标背景信杂比
     vector<double> theFeatures;             // 13维的小目标特征向量
+
 }
 
 void MyObject::setID(int id1){
@@ -177,7 +180,8 @@ void MyObject::SetColor(Scalar co){
 Scalar MyObject::getColor(){
     return this->color;
 }
-QDataStream& writeMat(QDataStream &out,Mat &m){
+
+QDataStream&  MyObject::writeMat(QDataStream &out,Mat &m){
     size_t elem_size = m.elemSize();
     size_t elem_type = m.type();
     const size_t data_size = m.cols * m.rows * elem_size;
@@ -191,7 +195,7 @@ QDataStream& writeMat(QDataStream &out,Mat &m){
     return out;
 }
 
-QDataStream& readMat(QDataStream &in,Mat &m){
+QDataStream& MyObject::readMat(QDataStream &in,Mat &m){
     size_t elem_size,elem_type;
     int cols,rows;
     in>> elem_size >> elem_type >> cols >> rows;
@@ -225,6 +229,7 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     in>>data.absoluteIntensity;
     in>>data.relativeIntensity;
 
+
     int size;
     in>>size;
     if(size>0){
@@ -240,11 +245,11 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
     int flag;
     in >> flag;
     if(flag==1){
-        readMat(in,data.Snapshoot);
+        MyObject::readMat(in,data.Snapshoot);
     }
     in >> flag;
     if(flag==1){
-        readMat(in,data.sihouette);
+        MyObject::readMat(in,data.sihouette);
     }
     in>>data.targetScale;
     in>>data.CenSueEintensity;
@@ -258,10 +263,12 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
             data.theFeatures.push_back(d);
         }
     }
+
+
     return in;
 }
 
-QDataStream& operator<<(QDataStream &out,MyObject& data){
+QDataStream& operator<<(QDataStream &out,MyObject& data ){
     out<<data.oid;//提到最上边，先序列号id，以便从文件先读取id判断是否是存在的obj
     out<<data.box.x<<data.box.y<<data.box.height<<data.box.width;//box
 
@@ -279,6 +286,7 @@ QDataStream& operator<<(QDataStream &out,MyObject& data){
     out<<data.verticalAxisLength;
     out<<data.absoluteIntensity;
     out<<data.relativeIntensity;
+
     int size=data.contours.size();
     out<<size;
     if(size>0){
@@ -291,13 +299,13 @@ QDataStream& operator<<(QDataStream &out,MyObject& data){
         out<<-1;
     }else{
         out<<1;
-        writeMat(out,data.Snapshoot);
+        MyObject::writeMat(out,data.Snapshoot);
     }
     if(data.sihouette.empty()){
         out<<-1;
     }else{
         out<<1;
-        writeMat(out,data.sihouette);
+        MyObject::writeMat(out,data.sihouette);
     }
     out<<data.targetScale;
     out<<data.CenSueEintensity;
@@ -310,5 +318,7 @@ QDataStream& operator<<(QDataStream &out,MyObject& data){
             out<<d;
         }
     }
+
+
     return out;
 }

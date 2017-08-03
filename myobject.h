@@ -9,6 +9,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <QDataStream>
 #include <QByteArray>
+
+
 using namespace cv;
 using namespace std;
 
@@ -42,6 +44,9 @@ public:
     double CenSueEintensity;// = 0;            // 中央周围对比度的响应强度
     double SCRValue;// = 0;                    // 目标背景信杂比
     vector<double> theFeatures;             // 13维的小目标特征向量
+
+
+    cv::Mat pano;
 
     void setID(int id1);
     int getID();
@@ -101,6 +106,9 @@ public:
     Scalar getColor();
     friend QDataStream& operator>>(QDataStream &in,MyObject& data);
     friend QDataStream& operator<<(QDataStream &out,MyObject& data);
+
+    static QDataStream& writeMat(QDataStream &out,Mat &m);
+    static QDataStream& readMat(QDataStream &in,Mat &m);
 //    MyObject& DeSerializable(const QByteArray &datagram);
 //    QByteArray& Serializable(const MyObject &myObject);
 //private:
@@ -108,4 +116,5 @@ public:
 //    friend QDataStream& readMat(QDataStream &in,Mat &m);
 };
 
+#include "myinterface.h"
 #endif // MYOBJECT_H

@@ -2,6 +2,7 @@
 #include <QFileInfo>
 #include <QToolBar>
 #include <map>
+#include "myobject.h"
 BackWindow::BackWindow():MainWindow()
 {
     setWindowTitle("回放");
@@ -16,15 +17,32 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     dir->setNameFilters(filter);
     fileInfo=new QList<QFileInfo>(dir->entryInfoList(filter));
     fileIndex=0;
-    delete dir;
+    panoIndex=0;
     while((!fileInfo->isEmpty()) && (fileInfo->first().lastModified().time()<start)){
         fileInfo->removeFirst();
     }
     while((!fileInfo->isEmpty())&&(fileInfo->last().lastModified().time()>stop)){
         fileInfo->removeLast();
     }
+    delete dir;
 
+    QStringList filter2;
+    filter2<<"*.pan";
+    QDir *dir2=new QDir(day);
+    dir2->setNameFilters(filter2);
 
+    filepano = new QList<QFileInfo>(dir2->entryInfoList(filter2));
+
+    while((!filepano->isEmpty()) && (filepano->first().lastModified().time()<start)){
+        filepano->removeFirst();
+    }
+    while((!filepano->isEmpty())&&(filepano->last().lastModified().time()>stop)){
+        filepano->removeLast();
+    }
+
+    delete dir2;
+
+    count =0;
     mainToolBar->clear();
     addMyToolBar_backWindow();
     timeLine=new TimeLine(this);
@@ -48,15 +66,20 @@ void BackWindow::selfTimerout(){
     return;
     }
     vector<MyObject> objs;
+
+
     QString currentFileTime;
     if(fileIndex<fileInfo->count()){
         currentFileTime=fileInfo->at(fileIndex).fileName().left(8);
-        qDebug()<<"filetime"<<currentFileTime;
+       // qDebug()<<"filetime"<<currentFileTime;
     }
+
+
     while(fileIndex<fileInfo->count()){
         if(currentFileTime.compare(fileInfo->at(fileIndex).fileName().left(8)) != 0)
             break;
         QFile file(fileInfo->at(fileIndex).filePath());
+        //qDebug()<<fileInfo->at(fileIndex).filePath();
         file.open(QIODevice::ReadOnly);
         QDataStream in(&file);
         int id;
@@ -66,17 +89,121 @@ void BackWindow::selfTimerout(){
         iter = objmap.find(id);
         if(iter != objmap.end()){
             obj=iter->second;
-            qDebug()<<"map.size"<<objmap.size();
+            //qDebug()<<"map.size"<<objmap.size();
         } else{
             obj=new MyObject();
             obj->setID(id);
             objmap.insert(pair<int,MyObject*>(id,obj));
         }
         in>>*obj;
+
         objs.push_back(*obj);
         file.close();
         fileIndex++;
     }
+
+
+    Mat pano;
+    if(panoIndex<filepano->count()){
+        QFile file(filepano->at(panoIndex).filePath());
+            //qDebug()<<filepano->at(fileIndex).filePath();
+            file.open(QIODevice::ReadOnly);
+            QDataStream din(&file);
+            int flag;
+            din >> flag;
+            if(flag == 1){
+                MyObject::readMat(din,pano);
+            }
+            file.close();
+            panoIndex++;
+    }else
+//        widget1->setObjects(objs);
+//        widget1->draw();
+//        widget2->setObjects(objs);
+//        widget2->draw();
+        widget5->setObjects(objs);
+        widget5->draw();
+        widget6->setObjects(objs);
+        widget6->draw();
+        return;
+
+
+    if(isGaojing)
+    {
+    if(objs.size()> count){
+        this->sound->play();
+        count = objs.size();
+    }
+    }
+    count = objs.size();
+
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();
+    const int buttonSize=(screenRect.width()*0.7)/21.6;
+    QPixmap pixmap1("./icon/16_1.png");
+    QPixmap pixmap2("./icon/16_2.png");
+    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    if(isGaojing)
+    {
+        if(count==0)
+        {
+            light1->setPixmap(fitpixmap2);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(count==1)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap2);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(count==2)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap2);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(count==3)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap2);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(count==4)
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap2);
+        }
+        else if(count>= 5 )
+        {
+            light1->setPixmap(fitpixmap1);
+            light2->setPixmap(fitpixmap1);
+            light3->setPixmap(fitpixmap1);
+            light4->setPixmap(fitpixmap1);
+            light5->setPixmap(fitpixmap1);
+      }
+    }
+    else
+    {
+        light1->setPixmap(fitpixmap2);
+        light2->setPixmap(fitpixmap2);
+        light3->setPixmap(fitpixmap2);
+        light4->setPixmap(fitpixmap2);
+        light5->setPixmap(fitpixmap2);
+   }
+
 //    for(int i=0;i<3;i++){
 //        if(fileIndex<fileInfo->count()){
 //            qDebug()<<fileInfo->at(fileIndex).filePath();
@@ -94,7 +221,7 @@ void BackWindow::selfTimerout(){
 
     //systime= QLabel();//时间
 
-    in.getIntegratedData2();
+    //in.getIntegratedData2();
 //    for(int i = 0; i < objs.size(); i++){
 //        MyObject obj = objs[i];
 //        qDebug()<<i;
@@ -166,7 +293,7 @@ void BackWindow::selfTimerout(){
 //    widget6->setObjects(objs);
 //    widget6->draw();
 
-    Mat pano = in.getPano();
+
     Mat pano1 = pano.clone();
     Mat pano2 = pano.clone();
     Mat mat;
@@ -175,7 +302,7 @@ void BackWindow::selfTimerout(){
    //vector<MyObject> objs = in.getObjs();
    vector<MyObjectTrack> tracks = in.getTracks();
 
-   int count = objs.size();
+
    for (int i = 0; i < count;i++)
    {
        //画对象的box
@@ -288,7 +415,7 @@ void BackWindow::selfTimerout(){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat2, mat2);
 //           }
-    widget1->setPano(newpano);
+   widget1->setPano(newpano);
    widget2->setMat(mat2);
    widget2->setObjects(objs);
    widget2->setTracks(in.getTracks());
@@ -367,6 +494,15 @@ void BackWindow::addMyToolBar_backWindow()
     tuBiao->setPixmap(fitpixmap3);
     mainToolBar->addWidget(tuBiao);
     mainToolBar->addWidget(new QLabel(" "));
+
+    //回放文字
+    QLabel *text = new QLabel(this);
+    text->setText(" 回放 ");
+    QFont font("宋体", 22, 87);
+    text->setFont(font);
+    text->setStyleSheet("color:white;");
+    mainToolBar->addWidget(text);
+
     //第一组按钮：回放时间线,回放暂停,回放
     //回放时间线
     startStop = new QToolButton(this);
@@ -637,19 +773,19 @@ void BackWindow::addMyToolBar_backWindow()
     //vbox5->addWidget(new QLabel(" "));
 
     //设置
-    attribute = new QToolButton(this);
-    attribute->setToolTip(tr("设置"));
-    attribute->setMinimumHeight(buttonSize);
-    attribute->setMaximumHeight(buttonSize);
-    attribute->setMinimumWidth(buttonSize);
-    attribute->setMaximumWidth(buttonSize);
-    attribute->setStyleSheet("border-style:flat;background-color:2E302D");
-    attributeSet="./icon/14_1.png";
-    attribute->setIcon(QPixmap(attributeSet));
-    attribute->setIconSize(QSize(buttonSize,buttonSize));
-    vbox5->addWidget(attribute);
-    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
-    //vbox5->addWidget(new QLabel(" "));
+//    attribute = new QToolButton(this);
+//    attribute->setToolTip(tr("设置"));
+//    attribute->setMinimumHeight(buttonSize);
+//    attribute->setMaximumHeight(buttonSize);
+//    attribute->setMinimumWidth(buttonSize);
+//    attribute->setMaximumWidth(buttonSize);
+//    attribute->setStyleSheet("border-style:flat;background-color:2E302D");
+//    attributeSet="./icon/14_1.png";
+//    attribute->setIcon(QPixmap(attributeSet));
+//    attribute->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox5->addWidget(attribute);
+//    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
+//    //vbox5->addWidget(new QLabel(" "));
 
     //关闭声音
     voice = new QToolButton(this);
@@ -709,7 +845,7 @@ void BackWindow::onTimerOut2(){
         QString datetime = fileInfo->at(fileIndex).filePath();
         QString backDate = datetime.right(datetime.length()-5).left(10);
         QString backHour = datetime.right(14).left(2);
-        QString backMinute= datetime.right(11).left(2);
+        QString backMinute = datetime.right(11).left(2);
         QString backSec = datetime.right(8).left(2);
         systime->setText(backDate.append(" ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
     }
