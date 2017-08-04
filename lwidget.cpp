@@ -164,9 +164,9 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
        Point p11 = this->getPoint(p1);
        Point p22 = this->getPoint(p2);
 
-       line(tmat,p11,p3,Scalar(255,0,0),1,8,0);
+       line(tmat,p11,p3,Scalar(255,255,0),1,8,0);
 
-       line(tmat,p22,p3,Scalar(255,0,0),1,8,0);
+       line(tmat,p22,p3,Scalar(255,255,0),1,8,0);
        //p11和p22之间是一段圆弧
        double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
        double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
@@ -180,7 +180,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
        if(angle1<0 && angle2>180){
            angle1+=360;
        }
-       ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
+       ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
 //    //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
 //    //先找最小点
 //    double xtemp1 = this->pano.cols;
