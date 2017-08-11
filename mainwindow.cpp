@@ -222,23 +222,25 @@ void MainWindow::jinProcessing(){
             //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
             //画轨迹
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
+            if(isMubiao){
+                for(int ii = 0; ii < tracks.size(); ii++){
+                    MyObjectTrack track = tracks[ii];
+                    int id = track.getId();
+                    vector<Point> points = track.getTrack();
+                    if(id == obj.getID()){
+                        for(int iii = 0; iii < points.size(); iii++){
+                            Point point = points[iii];
+                            Point point2 = Point(point.x+pano.cols, point.y);
+                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            if(iii >= 1){
+                                Point point3 = points[iii-1];
+                                Point point4 = Point(point3.x+pano.cols, point3.y);
+                                line(mat,point,point3,obj.getColor(),1,8,0);
+                                line(mat,point2,point4,obj.getColor(),1,8,0);
+                            }
+                            //cv::cvtColor(mat, mat, CV_BGR2RGB);
                         }
-                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
@@ -444,23 +446,25 @@ void MainWindow::selfProcessing(){
        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //画轨迹
-        for(int ii = 0; ii < tracks.size(); ii++){
-            MyObjectTrack track = tracks[ii];
-            int id = track.getId();
-            vector<Point> points = track.getTrack();
-            if(id == obj.getID()){
-                for(int iii = 0; iii < points.size(); iii++){
-                    Point point = points[iii];
-                    Point point2 = Point(point.x+pano.cols, point.y);
-                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    if(iii >= 1){
-                        Point point3 = points[iii-1];
-                        Point point4 = Point(point3.x+pano.cols, point3.y);
-                        line(mat,point,point3,obj.getColor(),1,8,0);
-                        line(mat,point2,point4,obj.getColor(),1,8,0);
+        if(isMubiao){
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                        }
+                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
-                   // cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
@@ -1283,23 +1287,25 @@ void MainWindow::selfTimerout(){
         //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
         //画轨迹
-        for(int ii = 0; ii < tracks.size(); ii++){
-            MyObjectTrack track = tracks[ii];
-            int id = track.getId();
-            vector<Point> points = track.getTrack();
-            if(id == obj.getID()){
-                for(int iii = 0; iii < points.size(); iii++){
-                    Point point = points[iii];
-                    Point point2 = Point(point.x+pano.cols, point.y);
-                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                    if(iii >= 1){
-                        Point point3 = points[iii-1];
-                        Point point4 = Point(point3.x+pano.cols, point3.y);
-                        line(mat,point,point3,obj.getColor(),1,8,0);
-                        line(mat,point2,point4,obj.getColor(),1,8,0);
+        if(isMubiao){
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                        }
+                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
-                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
@@ -1464,23 +1470,25 @@ void MainWindow::jinTimerout(){
             cv::cvtColor(mat, mat, CV_BGR2RGB);
 
             //画轨迹
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
+            if(isMubiao){
+                for(int ii = 0; ii < tracks.size(); ii++){
+                    MyObjectTrack track = tracks[ii];
+                    int id = track.getId();
+                    vector<Point> points = track.getTrack();
+                    if(id == obj.getID()){
+                        for(int iii = 0; iii < points.size(); iii++){
+                            Point point = points[iii];
+                            Point point2 = Point(point.x+pano.cols, point.y);
+                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            if(iii >= 1){
+                                Point point3 = points[iii-1];
+                                Point point4 = Point(point3.x+pano.cols, point3.y);
+                                line(mat,point,point3,obj.getColor(),1,8,0);
+                                line(mat,point2,point4,obj.getColor(),1,8,0);
+                            }
+                           // cv::cvtColor(mat, mat, CV_BGR2RGB);
                         }
-                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
