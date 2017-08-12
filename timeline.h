@@ -11,7 +11,10 @@ public:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
+    void keyPressEvent(QKeyEvent *);
     int position;
+
+
 private:
     class BackWindow* backWindow;
 

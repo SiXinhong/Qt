@@ -69,3 +69,25 @@ void TimeLine::mouseMoveEvent(QMouseEvent *event){//鼠标移动事件，是否是拖动需要
 void TimeLine::setPosition(int position){
     this->position = position;
 }
+
+void TimeLine::keyPressEvent(QKeyEvent *event){
+    if(event->key()== Qt::Key_Left){
+        if(position>=10){
+            position-=10;
+        }
+        else if(position<10){
+            position=0;
+        }
+    }
+    else if(event->key() == Qt::Key_Right){
+        if(position<=245){
+            position+=10;
+        }
+        else if(position>245){
+            position = 255;
+        }
+    }
+    update();
+    backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
+    backWindow->panoIndex=position*backWindow->filepano->count()/255;
+}

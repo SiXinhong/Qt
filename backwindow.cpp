@@ -9,7 +9,7 @@ BackWindow::BackWindow():MainWindow()
 }
 BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     setWindowTitle("回放");
-
+    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
     QString day=QString("./回放/")+date.toString("yyyy-MM-dd");
     QDir *dir=new QDir(day);
     QStringList filter;//创建过滤器，只看.dat结尾的文件
@@ -128,81 +128,116 @@ void BackWindow::selfTimerout(){
         return;
  }
 
-
-    if(isGaojing)
-    {
-    if(objs.size()> count){
-        this->sound->play();
-        count = objs.size();
-    }
-    }
-    count = objs.size();
-
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
     const int buttonSize=(screenRect.width()*0.7)/21.6;
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    if(isGaojing)
+    {
+    if(objs.size()> count){
+        this->sound->play();
+        int newObjCount=objs.size()-count;
+        for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
+            //connect(timerSysTime, SIGNAL(timeout()), SLOT(flash()));
+        }
+        count = objs.size();
+    }
+    }
+    count = objs.size();
+
+
     if(isGaojing)
     {
         if(count==0)
         {
-            light1->setPixmap(fitpixmap2);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap2);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
         }
         else if(count==1)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(count==2)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(count==3)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(count==4)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(count>= 5 )
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap1);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
       }
     }
     else
     {
-        light1->setPixmap(fitpixmap2);
-        light2->setPixmap(fitpixmap2);
-        light3->setPixmap(fitpixmap2);
-        light4->setPixmap(fitpixmap2);
-        light5->setPixmap(fitpixmap2);
+        lights[0]->setPixmap(fitpixmap2);
+        lights[1]->setPixmap(fitpixmap2);
+        lights[2]->setPixmap(fitpixmap2);
+        lights[3]->setPixmap(fitpixmap2);
+        lights[4]->setPixmap(fitpixmap2);
+//        light1->setPixmap(fitpixmap2);
+//        light2->setPixmap(fitpixmap2);
+//        light3->setPixmap(fitpixmap2);
+//        light4->setPixmap(fitpixmap2);
+//        light5->setPixmap(fitpixmap2);
    }
 
 //    for(int i=0;i<3;i++){
@@ -314,6 +349,7 @@ void BackWindow::selfTimerout(){
        //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
        //画轨迹
+       if(isMubiao){
        for(int ii = 0; ii < tracks.size(); ii++){
            MyObjectTrack track = tracks[ii];
            int id = track.getId();
@@ -334,7 +370,7 @@ void BackWindow::selfTimerout(){
                }
            }
        }
-
+}
        //画对象中心点的位置
        if(isMubiao){
            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -456,6 +492,10 @@ void BackWindow::selfTimerout(){
    widget6->setPano(newpano);
    widget6->setObjects(objs);
    widget6->draw();
+
+   timeLine->position= fileIndex*255/fileInfo->count();
+   timeLine->update();
+
 }
 
 void BackWindow::exitFunction(){
@@ -619,83 +659,124 @@ void BackWindow::addMyToolBar_backWindow()
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+   fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     vector<MyObject> vec = in.getObjs2();
 
-    light1=new QLabel(this);
-    light2=new QLabel(this);
-    light3=new QLabel(this);
-    light4=new QLabel(this);
-    light5=new QLabel(this);
-
+//    light1=new QLabel(this);
+//    light2=new QLabel(this);
+//    light3=new QLabel(this);
+//    light4=new QLabel(this);
+//    light5=new QLabel(this);
+    lights[0]=new QLabel(this);
+    lights[1]=new QLabel(this);
+    lights[2]=new QLabel(this);
+    lights[3]=new QLabel(this);
+    lights[4]=new QLabel(this);
         if(!isGaojing)
         {
-            light1->setPixmap(fitpixmap2);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap2);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap2);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else
         {
             if(vec.size()==0)
             {
-                light1->setPixmap(fitpixmap2);
-                light2->setPixmap(fitpixmap2);
-                light3->setPixmap(fitpixmap2);
-                light4->setPixmap(fitpixmap2);
-                light5->setPixmap(fitpixmap2);
+                lights[0]->setPixmap(fitpixmap2);
+                lights[1]->setPixmap(fitpixmap2);
+                lights[2]->setPixmap(fitpixmap2);
+                lights[3]->setPixmap(fitpixmap2);
+                lights[4]->setPixmap(fitpixmap2);
+//                light1->setPixmap(fitpixmap2);
+//                light2->setPixmap(fitpixmap2);
+//                light3->setPixmap(fitpixmap2);
+//                light4->setPixmap(fitpixmap2);
+//                light5->setPixmap(fitpixmap2);
             }
             else if(vec.size()==1)
             {
-                light1->setPixmap(fitpixmap1);
-                light2->setPixmap(fitpixmap2);
-                light3->setPixmap(fitpixmap2);
-                light4->setPixmap(fitpixmap2);
-                light5->setPixmap(fitpixmap2);
+                lights[0]->setPixmap(fitpixmap1);
+                lights[1]->setPixmap(fitpixmap2);
+                lights[2]->setPixmap(fitpixmap2);
+                lights[3]->setPixmap(fitpixmap2);
+                lights[4]->setPixmap(fitpixmap2);
+//                light1->setPixmap(fitpixmap1);
+//                light2->setPixmap(fitpixmap2);
+//                light3->setPixmap(fitpixmap2);
+//                light4->setPixmap(fitpixmap2);
+//                light5->setPixmap(fitpixmap2);
             }
             else if(vec.size()==2)
             {
-                light1->setPixmap(fitpixmap1);
-                light2->setPixmap(fitpixmap1);
-                light3->setPixmap(fitpixmap2);
-                light4->setPixmap(fitpixmap2);
-                light5->setPixmap(fitpixmap2);
+                lights[0]->setPixmap(fitpixmap1);
+                lights[1]->setPixmap(fitpixmap1);
+                lights[2]->setPixmap(fitpixmap2);
+                lights[3]->setPixmap(fitpixmap2);
+                lights[4]->setPixmap(fitpixmap2);
+//                light1->setPixmap(fitpixmap1);
+//                light2->setPixmap(fitpixmap1);
+//                light3->setPixmap(fitpixmap2);
+//                light4->setPixmap(fitpixmap2);
+//                light5->setPixmap(fitpixmap2);
             }
             else if(vec.size()==3)
             {
-                light1->setPixmap(fitpixmap1);
-                light2->setPixmap(fitpixmap1);
-                light3->setPixmap(fitpixmap1);
-                light4->setPixmap(fitpixmap2);
-                light5->setPixmap(fitpixmap2);
+
+                lights[0]->setPixmap(fitpixmap1);
+                lights[1]->setPixmap(fitpixmap1);
+                lights[2]->setPixmap(fitpixmap1);
+                lights[3]->setPixmap(fitpixmap2);
+                lights[4]->setPixmap(fitpixmap2);
+//                light1->setPixmap(fitpixmap1);
+//                light2->setPixmap(fitpixmap1);
+//                light3->setPixmap(fitpixmap1);
+//                light4->setPixmap(fitpixmap2);
+//                light5->setPixmap(fitpixmap2);
             }
             else if(vec.size()==4)
             {
-                light1->setPixmap(fitpixmap1);
-                light2->setPixmap(fitpixmap1);
-                light3->setPixmap(fitpixmap1);
-                light4->setPixmap(fitpixmap1);
-                light5->setPixmap(fitpixmap2);
+
+                lights[0]->setPixmap(fitpixmap1);
+                lights[1]->setPixmap(fitpixmap1);
+                lights[2]->setPixmap(fitpixmap1);
+                lights[3]->setPixmap(fitpixmap1);
+                lights[4]->setPixmap(fitpixmap2);
+//                light1->setPixmap(fitpixmap1);
+//                light2->setPixmap(fitpixmap1);
+//                light3->setPixmap(fitpixmap1);
+//                light4->setPixmap(fitpixmap1);
+//                light5->setPixmap(fitpixmap2);
             }
             else if(vec.size()>= 5 )
             {
-                light1->setPixmap(fitpixmap1);
-                light2->setPixmap(fitpixmap1);
-                light3->setPixmap(fitpixmap1);
-                light4->setPixmap(fitpixmap1);
-                light5->setPixmap(fitpixmap1);
+                lights[0]->setPixmap(fitpixmap1);
+                lights[1]->setPixmap(fitpixmap1);
+                lights[2]->setPixmap(fitpixmap1);
+                lights[3]->setPixmap(fitpixmap1);
+                lights[4]->setPixmap(fitpixmap1);
+//                light1->setPixmap(fitpixmap1);
+//                light2->setPixmap(fitpixmap1);
+//                light3->setPixmap(fitpixmap1);
+//                light4->setPixmap(fitpixmap1);
+//                light5->setPixmap(fitpixmap1);
             }
         }
 
 
-        vbox3->addWidget(light1);
-        vbox3->addWidget(light2);
-        vbox3->addWidget(light3);
-        vbox3->addWidget(light4);
-        vbox3->addWidget(light5);
+        vbox3->addWidget(lights[0]);
+        vbox3->addWidget(lights[1]);
+        vbox3->addWidget(lights[2]);
+        vbox3->addWidget(lights[3]);
+        vbox3->addWidget(lights[4]);
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);
@@ -855,3 +936,4 @@ void BackWindow::onTimerOut2(){
 
 
 }
+

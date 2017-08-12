@@ -23,6 +23,7 @@ public:
     void exitFunction();
     void addMyToolBar_backWindow();
 
+
     class TimeLine *timeLine;
     void timeLineFunction();
     void onTimerOut2();
