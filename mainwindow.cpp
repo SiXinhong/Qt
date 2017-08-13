@@ -143,6 +143,10 @@ MainWindow::MainWindow(QWidget *parent) :
     timerSysTime->start();
     connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
+    timerFlash = new QTimer();
+    timerFlash->setInterval(100);
+    connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
+
     // 创建工具栏
     addMyToolBar();
     //布局
@@ -1171,6 +1175,8 @@ void MainWindow::onTimerOut()
 //自定义接口定时器
 void MainWindow::selfTimerout(){
     //index=index+1;
+    timerFlash->stop();
+    qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
     QDir *todayDir=new QDir();
     bool exist=todayDir->exists(today);
@@ -1190,105 +1196,7 @@ void MainWindow::selfTimerout(){
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    if(isGaojing)
-    {
-        if(objs.size()>num_objs){
-            this->sound->play();
-            newObjCount=objs.size()-num_objs;
-            for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
-                connect(timerSysTime, SIGNAL(timeout()), SLOT(flash()));
-            }
-            num_objs = objs.size();
-        }
-        else
-            num_objs =objs.size();
-    }
 
-    if(isGaojing)
-    {
-        if(num_objs==0)
-        {
-            lights[0]->setPixmap(fitpixmap2);
-            lights[1]->setPixmap(fitpixmap2);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-        }
-        else if(num_objs==1)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap2);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap2);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(num_objs==2)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(num_objs==3)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(num_objs==4)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap1);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(num_objs>= 5 )
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap1);
-            lights[4]->setPixmap(fitpixmap1);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap1);
-      }
-    }
-    else
-    {
-        lights[0]->setPixmap(fitpixmap2);
-        lights[1]->setPixmap(fitpixmap2);
-        lights[2]->setPixmap(fitpixmap2);
-        lights[3]->setPixmap(fitpixmap2);
-        lights[4]->setPixmap(fitpixmap2);
-   }
 
     if(isJixu == true){
         for(int i=0;i<objs.size();i++){
@@ -1506,8 +1414,106 @@ void MainWindow::selfTimerout(){
     widget6->setPano(newpano);
     widget6->setObjects(objs);
     widget6->draw();
+ qDebug()<<QTime::currentTime().toString("hh:mm:ss");
 
+ if(isGaojing)
+ {
+     if(objs.size()>num_objs){
+         this->sound->play();
+         newObjCount=objs.size()-num_objs;
+         timerFlash->start();
 
+         num_objs = objs.size();
+     }
+     else
+         num_objs =objs.size();
+ }
+
+ if(isGaojing)
+ {
+     if(num_objs==0)
+     {
+         lights[0]->setPixmap(fitpixmap2);
+         lights[1]->setPixmap(fitpixmap2);
+         lights[2]->setPixmap(fitpixmap2);
+         lights[3]->setPixmap(fitpixmap2);
+         lights[4]->setPixmap(fitpixmap2);
+     }
+     else if(num_objs==1)
+     {
+         lights[0]->setPixmap(fitpixmap1);
+         lights[1]->setPixmap(fitpixmap2);
+         lights[2]->setPixmap(fitpixmap2);
+         lights[3]->setPixmap(fitpixmap2);
+         lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+     }
+     else if(num_objs==2)
+     {
+         lights[0]->setPixmap(fitpixmap1);
+         lights[1]->setPixmap(fitpixmap1);
+         lights[2]->setPixmap(fitpixmap2);
+         lights[3]->setPixmap(fitpixmap2);
+         lights[4]->setPixmap(fitpixmap2);
+
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+     }
+     else if(num_objs==3)
+     {
+         lights[0]->setPixmap(fitpixmap1);
+         lights[1]->setPixmap(fitpixmap1);
+         lights[2]->setPixmap(fitpixmap1);
+         lights[3]->setPixmap(fitpixmap2);
+         lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+     }
+     else if(num_objs==4)
+     {
+         lights[0]->setPixmap(fitpixmap1);
+         lights[1]->setPixmap(fitpixmap1);
+         lights[2]->setPixmap(fitpixmap1);
+         lights[3]->setPixmap(fitpixmap1);
+         lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
+     }
+     else if(num_objs>= 5 )
+     {
+         lights[0]->setPixmap(fitpixmap1);
+         lights[1]->setPixmap(fitpixmap1);
+         lights[2]->setPixmap(fitpixmap1);
+         lights[3]->setPixmap(fitpixmap1);
+         lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
+   }
+ }
+ else
+ {
+     lights[0]->setPixmap(fitpixmap2);
+     lights[1]->setPixmap(fitpixmap2);
+     lights[2]->setPixmap(fitpixmap2);
+     lights[3]->setPixmap(fitpixmap2);
+     lights[4]->setPixmap(fitpixmap2);
+}
 }
 
 //与金老师接口的定时器处理
@@ -3128,7 +3134,23 @@ void MainWindow :: timeLineFunction(){}
 
 
 void MainWindow::flash(){
-    lights[newObjCount+addOneLight]->setPixmap(fitpixmap1);
-    lights[newObjCount+addOneLight]->setPixmap(fitpixmap2);
-
+    static bool flag = false;
+    if(num_objs-newObjCount<5){
+        for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
+            if(num_objs+addOneLight-newObjCount>4)
+                break;
+            else{
+                if(flag)
+                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap1);
+                else
+                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap2);
+            }
+        }
+    }else{
+        if(flag)
+             lights[4]->setPixmap(fitpixmap1);
+        else
+             lights[4]->setPixmap(fitpixmap2);
+    }
+    flag = !flag;
 }

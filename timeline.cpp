@@ -44,8 +44,8 @@ void TimeLine::paintEvent(QPaintEvent *){
     p.drawLine(QPoint(5,20),QPoint(260,20));//中间的横线
     p.setPen(QPen(Qt::lightGray, 5));
     p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//竖线，标识亮度数值的位置
-    QTime nowTime=start.addMSecs(position*every);
-    p.drawText(265,25,QString("时间:")+nowTime.toString("HH:mm:ss"));
+    //QTime nowTime=start.addMSecs(position*every);
+    p.drawText(265,25,QString("时间:")+backWindow->currentFileTime.left(2)+":"+backWindow->currentFileTime.right(5).left(2)+":"+backWindow->currentFileTime.right(2));
 }
 
 void TimeLine:: mousePressEvent(QMouseEvent *){

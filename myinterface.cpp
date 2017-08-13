@@ -119,6 +119,7 @@ MyInterface::MyInterface(){
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
         sizeOfobjs=1;
+    // sizeOfobjs=1;
 }
 
 void MyInterface::fillObjs(){
@@ -652,6 +653,7 @@ void MyInterface::setObjs(vector<MyObject> os){
 }
 //生成随机个对象
 vector<MyObject> MyInterface::getRandomObjs(){
+    //sizeOfobjs++;
     if(this->panoImage.cols==0)
         return objs;
     if(sizeOfobjs!=objs.size())

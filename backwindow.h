@@ -19,10 +19,10 @@ public:
     QList<QFileInfo> *filepano;
     int fileIndex;
     int panoIndex;
-    int count;
+
     void exitFunction();
     void addMyToolBar_backWindow();
-
+    QString currentFileTime;
 
     class TimeLine *timeLine;
     void timeLineFunction();

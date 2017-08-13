@@ -188,7 +188,7 @@ public:
 
      QTimer *timer;
      QTimer *timerSysTime;
-
+     QTimer *timerFlash;
      //处理鼠标拖拽事件的变量
      boolean isDrag1;
      boolean isDrag2;

@@ -3,6 +3,7 @@
 #include <QToolBar>
 #include <map>
 #include "myobject.h"
+#include<QTimer>
 BackWindow::BackWindow():MainWindow()
 {
     setWindowTitle("回放");
@@ -42,7 +43,7 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
 
     delete dir2;
 
-    count =0;
+
     mainToolBar->clear();
     addMyToolBar_backWindow();
     timeLine=new TimeLine(this);
@@ -62,13 +63,14 @@ BackWindow::~BackWindow()
     }
 }
 void BackWindow::selfTimerout(){
+    timerFlash->stop();
     if(!isJixu){
     return;
     }
     vector<MyObject> objs;
 
 
-    QString currentFileTime;
+
     if(fileIndex<fileInfo->count()){
         currentFileTime=fileInfo->at(fileIndex).fileName().left(8);
        // qDebug()<<"filetime"<<currentFileTime;
@@ -136,109 +138,7 @@ void BackWindow::selfTimerout(){
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    if(isGaojing)
-    {
-    if(objs.size()> count){
-        this->sound->play();
-        int newObjCount=objs.size()-count;
-        for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
-            //connect(timerSysTime, SIGNAL(timeout()), SLOT(flash()));
-        }
-        count = objs.size();
-    }
-    }
-    count = objs.size();
 
-
-    if(isGaojing)
-    {
-        if(count==0)
-        {
-            lights[0]->setPixmap(fitpixmap2);
-            lights[1]->setPixmap(fitpixmap2);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-        }
-        else if(count==1)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap2);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap2);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(count==2)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(count==3)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(count==4)
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap1);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap2);
-        }
-        else if(count>= 5 )
-        {
-            lights[0]->setPixmap(fitpixmap1);
-            lights[1]->setPixmap(fitpixmap1);
-            lights[2]->setPixmap(fitpixmap1);
-            lights[3]->setPixmap(fitpixmap1);
-            lights[4]->setPixmap(fitpixmap1);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap1);
-      }
-    }
-    else
-    {
-        lights[0]->setPixmap(fitpixmap2);
-        lights[1]->setPixmap(fitpixmap2);
-        lights[2]->setPixmap(fitpixmap2);
-        lights[3]->setPixmap(fitpixmap2);
-        lights[4]->setPixmap(fitpixmap2);
-//        light1->setPixmap(fitpixmap2);
-//        light2->setPixmap(fitpixmap2);
-//        light3->setPixmap(fitpixmap2);
-//        light4->setPixmap(fitpixmap2);
-//        light5->setPixmap(fitpixmap2);
-   }
 
 //    for(int i=0;i<3;i++){
 //        if(fileIndex<fileInfo->count()){
@@ -339,7 +239,7 @@ void BackWindow::selfTimerout(){
    vector<MyObjectTrack> tracks = in.getTracks();
 
 
-   for (int i = 0; i < count;i++)
+   for (int i = 0; i < num_objs;i++)
    {
        //画对象的box
        MyObject obj = objs[i];
@@ -493,9 +393,108 @@ void BackWindow::selfTimerout(){
    widget6->setObjects(objs);
    widget6->draw();
 
-   timeLine->position= fileIndex*255/fileInfo->count();
-   timeLine->update();
+//   timeLine->position= fileIndex*255/fileInfo->count();
+//   timeLine->update();
+   if(isGaojing)
+   {
+   if(objs.size()> num_objs){
+       this->sound->play();
+       newObjCount=objs.size()-num_objs;
+        timerFlash->start();
+       num_objs = objs.size();
+   }
+   }
+   num_objs = objs.size();
 
+   if(isGaojing)
+   {
+       if(num_objs==0)
+       {
+           lights[0]->setPixmap(fitpixmap2);
+           lights[1]->setPixmap(fitpixmap2);
+           lights[2]->setPixmap(fitpixmap2);
+           lights[3]->setPixmap(fitpixmap2);
+           lights[4]->setPixmap(fitpixmap2);
+       }
+       else if(num_objs==1)
+       {
+           lights[0]->setPixmap(fitpixmap1);
+           lights[1]->setPixmap(fitpixmap2);
+           lights[2]->setPixmap(fitpixmap2);
+           lights[3]->setPixmap(fitpixmap2);
+           lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+       }
+       else if(num_objs==2)
+       {
+           lights[0]->setPixmap(fitpixmap1);
+           lights[1]->setPixmap(fitpixmap1);
+           lights[2]->setPixmap(fitpixmap2);
+           lights[3]->setPixmap(fitpixmap2);
+           lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+       }
+       else if(num_objs==3)
+       {
+           lights[0]->setPixmap(fitpixmap1);
+           lights[1]->setPixmap(fitpixmap1);
+           lights[2]->setPixmap(fitpixmap1);
+           lights[3]->setPixmap(fitpixmap2);
+           lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
+       }
+       else if(num_objs==4)
+       {
+           lights[0]->setPixmap(fitpixmap1);
+           lights[1]->setPixmap(fitpixmap1);
+           lights[2]->setPixmap(fitpixmap1);
+           lights[3]->setPixmap(fitpixmap1);
+           lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
+       }
+       else if(num_objs>= 5 )
+       {
+           lights[0]->setPixmap(fitpixmap1);
+           lights[1]->setPixmap(fitpixmap1);
+           lights[2]->setPixmap(fitpixmap1);
+           lights[3]->setPixmap(fitpixmap1);
+           lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
+     }
+   }
+   else
+   {
+       lights[0]->setPixmap(fitpixmap2);
+       lights[1]->setPixmap(fitpixmap2);
+       lights[2]->setPixmap(fitpixmap2);
+       lights[3]->setPixmap(fitpixmap2);
+       lights[4]->setPixmap(fitpixmap2);
+//        light1->setPixmap(fitpixmap2);
+//        light2->setPixmap(fitpixmap2);
+//        light3->setPixmap(fitpixmap2);
+//        light4->setPixmap(fitpixmap2);
+//        light5->setPixmap(fitpixmap2);
+  }
 }
 
 void BackWindow::exitFunction(){
@@ -794,7 +793,7 @@ void BackWindow::addMyToolBar_backWindow()
     QString backHour = datetime.right(14).left(2);
     QString backMinute= datetime.right(11).left(2);
     QString backSec = datetime.right(8).left(2);
-    systime->setText(backDate.append("  ").append(backHour).append(":").append(backMinute).append(":").append(backSec));
+    systime->setText(backDate.append("  ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
 
 
     //QString datetime = fileInfo->at(fileIndex).filePath();
@@ -922,18 +921,24 @@ void BackWindow :: timeLineFunction(){
 void BackWindow::onTimerOut2(){
     //systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 
-    if(fileIndex < fileInfo->count())
+    if(fileIndex < fileInfo->count()&&!currentFileTime.isEmpty())
     {
+
         QString datetime = fileInfo->at(fileIndex).filePath();
         QString backDate = datetime.right(datetime.length()-5).left(10);
-        QString backHour = datetime.right(14).left(2);
-        QString backMinute = datetime.right(11).left(2);
-        QString backSec = datetime.right(8).left(2);
+//      QString backHour = datetime.right(14).left(2);
+//      QString backMinute = datetime.right(11).left(2);
+//      QString backSec = datetime.right(8).left(2);
+        QString backHour = currentFileTime.left(2);
+        QString backMinute = currentFileTime.right(5).left(2);
+        QString backSec = currentFileTime.right(2);
         systime->setText(backDate.append(" ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
     }
     else
         systime->setText("       当前无回放      ");
 
-
+    timeLine->position= fileIndex*255/fileInfo->count();
+    timeLine->update();
 }
+
 
