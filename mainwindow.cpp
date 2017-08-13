@@ -124,8 +124,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
-    selfProcessing();
-    //this->jinProcessing();
+    //selfProcessing();
+    this->jinProcessing();
     //---------------------------------------------------------
 
     //临时性处理，将来被金老师SDK替换--------------------------------
@@ -209,7 +209,6 @@ void MainWindow::jinProcessing(){
         Mat pano2 = pano.clone();
         Mat mat;
         hconcat(pano1,pano2,mat);
-
         //在全景上画矩形，文字，轨迹等
         //Mat mat = in.getPano().clone();
         vector<MyObject> objs = in.getObjs();
@@ -286,6 +285,7 @@ void MainWindow::jinProcessing(){
         //    Mat image5 = CVUtil::QImageToMat(aa2);
         //    Mat image55 = Mat(dsize,CV_32S);
         //    cv::resize(image5, image55,dsize);
+
         if(this->isPseudo==true)
             mat=setPseudocolor(mat);
         updateBright(mat);
@@ -313,7 +313,6 @@ void MainWindow::jinProcessing(){
         widget1->setObjects(objs);
         widget1->setTracks(in.getTracks());
         widget1->draw();
-        //qDebug()<<s1;
         //图片2
         //图片1
         //    QString s1=in.getQJ1();
@@ -343,15 +342,14 @@ void MainWindow::jinProcessing(){
         widget2->setObjects(objs);
         widget2->setTracks(in.getTracks());
         widget2->draw();
-        //qDebug()<<s2;
         //drawUiLabel(mat2,2);
         //图片3
         //Mat mat3 =imread(imageurl);
         widget3->setPano(newpano);
         widget3->setTwoPanos(mat);
         widget3->setAllObjects(in.getObjs());
+        //qDebug()<<"here!!!!!";
         widget3->draw();
-        //drawUiLabelByCopy(mat3,3);
         //图片4
         //Mat mat4 =imread(imageurl2);
         //drawUiLabelByCopy(mat4,4);
@@ -1161,15 +1159,14 @@ void MainWindow::adjustment()
 
     //widget4->setPano(mat);
 
-
 }
 
 //定时器任务
 void MainWindow::onTimerOut()
 {
     //std::cout<<"ok1 "<<std::endl;
-    this->selfTimerout();
-    //this->jinTimerout();
+    //this->selfTimerout();
+    this->jinTimerout();
 }
 
 //自定义接口定时器
