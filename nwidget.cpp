@@ -413,7 +413,7 @@ void NWidget::draw(){
     //        cv::resize(image3, image33,dsize);
     //        setMat(image33);
               Mat image4;
-              mat1(Rect(1490,250,100,100)).copyTo(image4);//mw->QImageToMat(mw->aa);
+              mat1(Rect(0,0,mat1.cols/4,mat1.rows)).copyTo(image4);//mw->QImageToMat(mw->aa);
               Mat image44 = Mat(dsize,CV_32S);
               cv::resize(image4, image44,dsize);
               setMat(image44);

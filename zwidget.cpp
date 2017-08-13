@@ -559,7 +559,7 @@ void ZWidget::draw(){
 //        cv::resize(image3, image33,dsize);
 //        setMat(image33);
           Mat image3;
-          mat1(Rect(1490,250,100,100)).copyTo(image3);//mw->QImageToMat(mw->aa);
+          mat1(Rect(0,0,mat1.cols/4,mat1.rows)).copyTo(image3);//mw->QImageToMat(mw->aa);
           Mat image33 = Mat(dsize,CV_32S);
           cv::resize(image3, image33,dsize);
           setMat(image33);
