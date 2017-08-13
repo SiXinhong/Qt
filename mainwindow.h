@@ -88,6 +88,10 @@ public:
    int alpha_contrast;
    bool isPseudo;
    bool isVoice;
+   int newObjCount;
+   int addOneLight;
+   QPixmap fitpixmap1;
+   QPixmap fitpixmap2;
 //   Mat mat;
 //   Mat mat1, mat2;
    //HSL *hsl;
@@ -278,12 +282,14 @@ protected:
      QString light3Set;
      QString light4Set;
      QString light5Set;
-     QLabel *light1;
-     //QToolButton *light1;
-     QLabel *light2;
-     QLabel *light3;
-     QLabel *light4;
-     QLabel *light5;
+
+     QLabel *lights[5];
+//   QLabel *light1;
+////     //QToolButton *light1;
+//     QLabel *light2;
+//     QLabel *light3;
+//     QLabel *light4;
+//     QLabel *light5;
 
      //第四组，显示编号和系统当前时间
      QLabel *serialNumber;//编号
@@ -351,7 +357,7 @@ protected slots:
      void queDingFunction();
      void quXiaoFunction();
      virtual void timeLineFunction();
-
+     void flash();
 
 
 //private:

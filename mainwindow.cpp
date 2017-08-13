@@ -222,28 +222,27 @@ void MainWindow::jinProcessing(){
 
             //画轨迹
             if(isMubiao){
-                for(int ii = 0; ii < tracks.size(); ii++){
-                    MyObjectTrack track = tracks[ii];
-                    int id = track.getId();
-                    vector<Point> points = track.getTrack();
-                    if(id == obj.getID()){
-                        for(int iii = 0; iii < points.size(); iii++){
-                            Point point = points[iii];
-                            Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            if(iii >= 1){
-                                Point point3 = points[iii-1];
-                                Point point4 = Point(point3.x+pano.cols, point3.y);
-                                line(mat,point,point3,obj.getColor(),1,8,0);
-                                line(mat,point2,point4,obj.getColor(),1,8,0);
-                            }
-                            //cv::cvtColor(mat, mat, CV_BGR2RGB);
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
+                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-
+}
             //画对象中心点的位置
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -445,28 +444,27 @@ void MainWindow::selfProcessing(){
 
         //画轨迹
         if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
-                        }
-                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
+        for(int ii = 0; ii < tracks.size(); ii++){
+            MyObjectTrack track = tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    Point point2 = Point(point.x+pano.cols, point.y);
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        Point point3 = points[iii-1];
+                        Point point4 = Point(point3.x+pano.cols, point3.y);
+                        line(mat,point,point3,obj.getColor(),1,8,0);
+                        line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
+                   // cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-
+       }
         //画对象中心点的位置
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -826,81 +824,129 @@ void MainWindow::addMyToolBar()
     //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     vector<MyObject> vec = in.getObjs2();
 
-    light1=new QLabel(this);
-    light2=new QLabel(this);
-    light3=new QLabel(this);
-    light4=new QLabel(this);
-    light5=new QLabel(this);
+    lights[0]=new QLabel(this);
+    lights[1]=new QLabel(this);
+    lights[2]=new QLabel(this);
+    lights[3]=new QLabel(this);
+    lights[4]=new QLabel(this);
+
+//    light1=new QLabel(this);
+//    light2=new QLabel(this);
+//    light3=new QLabel(this);
+//    light4=new QLabel(this);
+//    light5=new QLabel(this);
 
     if(!isGaojing)
     {
-        light1->setPixmap(fitpixmap2);
-        light2->setPixmap(fitpixmap2);
-        light3->setPixmap(fitpixmap2);
-        light4->setPixmap(fitpixmap2);
-        light5->setPixmap(fitpixmap2);
+        lights[0]->setPixmap(fitpixmap2);
+        lights[1]->setPixmap(fitpixmap2);
+        lights[2]->setPixmap(fitpixmap2);
+        lights[3]->setPixmap(fitpixmap2);
+        lights[4]->setPixmap(fitpixmap2);
+//        light1->setPixmap(fitpixmap2);
+//        light2->setPixmap(fitpixmap2);
+//        light3->setPixmap(fitpixmap2);
+//        light4->setPixmap(fitpixmap2);
+//        light5->setPixmap(fitpixmap2);
     }
     else
     {
         if(vec.size()==0)
         {
-            light1->setPixmap(fitpixmap2);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+
+
+            lights[0]->setPixmap(fitpixmap2);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap2);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==1)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==2)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==3)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==4)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap2);
+
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()>= 5 )
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap1);
+
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
+
         }
     }
-            vbox3->addWidget(light1);
-            vbox3->addWidget(light2);
-            vbox3->addWidget(light3);
-            vbox3->addWidget(light4);
-            vbox3->addWidget(light5);
+    vbox3->addWidget(lights[0]);
+    vbox3->addWidget(lights[1]);
+    vbox3->addWidget(lights[2]);
+    vbox3->addWidget(lights[3]);
+    vbox3->addWidget(lights[4]);
 
     group3->setLayout(vbox3);
     mainToolBar->addWidget(group3);
@@ -1133,80 +1179,112 @@ void MainWindow::selfTimerout(){
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
 
-    if(isGaojing)
-    {
-    if(objs.size()>num_objs){
-        this->sound->play();
-        num_objs = objs.size();
-    }
-    else
-        num_objs =objs.size();
-    }
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
     const int buttonSize=(screenRect.width()*0.7)/21.6;
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+    if(isGaojing)
+    {
+        if(objs.size()>num_objs){
+            this->sound->play();
+            newObjCount=objs.size()-num_objs;
+            for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
+                connect(timerSysTime, SIGNAL(timeout()), SLOT(flash()));
+            }
+            num_objs = objs.size();
+        }
+        else
+            num_objs =objs.size();
+    }
+
     if(isGaojing)
     {
         if(num_objs==0)
         {
-            light1->setPixmap(fitpixmap2);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap2);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
         }
         else if(num_objs==1)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(num_objs==2)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(num_objs==3)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(num_objs==4)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(num_objs>= 5 )
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap1);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
       }
     }
     else
     {
-        light1->setPixmap(fitpixmap2);
-        light2->setPixmap(fitpixmap2);
-        light3->setPixmap(fitpixmap2);
-        light4->setPixmap(fitpixmap2);
-        light5->setPixmap(fitpixmap2);
+        lights[0]->setPixmap(fitpixmap2);
+        lights[1]->setPixmap(fitpixmap2);
+        lights[2]->setPixmap(fitpixmap2);
+        lights[3]->setPixmap(fitpixmap2);
+        lights[4]->setPixmap(fitpixmap2);
    }
 
     if(isJixu == true){
@@ -1285,28 +1363,27 @@ void MainWindow::selfTimerout(){
 
         //画轨迹
         if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
-                        }
-                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
+        for(int ii = 0; ii < tracks.size(); ii++){
+            MyObjectTrack track = tracks[ii];
+            int id = track.getId();
+            vector<Point> points = track.getTrack();
+            if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    Point point2 = Point(point.x+pano.cols, point.y);
+                    circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        Point point3 = points[iii-1];
+                        Point point4 = Point(point3.x+pano.cols, point3.y);
+                        line(mat,point,point3,obj.getColor(),1,8,0);
+                        line(mat,point2,point4,obj.getColor(),1,8,0);
                     }
+                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-
+}
         //画对象中心点的位置
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -1468,28 +1545,27 @@ void MainWindow::jinTimerout(){
 
             //画轨迹
             if(isMubiao){
-                for(int ii = 0; ii < tracks.size(); ii++){
-                    MyObjectTrack track = tracks[ii];
-                    int id = track.getId();
-                    vector<Point> points = track.getTrack();
-                    if(id == obj.getID()){
-                        for(int iii = 0; iii < points.size(); iii++){
-                            Point point = points[iii];
-                            Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            if(iii >= 1){
-                                Point point3 = points[iii-1];
-                                Point point4 = Point(point3.x+pano.cols, point3.y);
-                                line(mat,point,point3,obj.getColor(),1,8,0);
-                                line(mat,point2,point4,obj.getColor(),1,8,0);
-                            }
-                           // cv::cvtColor(mat, mat, CV_BGR2RGB);
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
                         }
+                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-
+}
             //画对象中心点的位置
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -2808,8 +2884,8 @@ void MainWindow::openCloseFunction()
     const int buttonSize=(screenRect.width()*0.7)/21.6;
     QPixmap pixmap1("./icon/16_1.png");
     QPixmap pixmap2("./icon/16_2.png");
-    QPixmap fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QPixmap fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     vector<MyObject> vec = in.getObjs2();
     if(isGaojing)
     {
@@ -2817,51 +2893,81 @@ void MainWindow::openCloseFunction()
         openClose->setToolTip("关闭告警");
         if(vec.size()==0)
         {
-            light1->setPixmap(fitpixmap2);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap2);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap2);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==1)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap2);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap2);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap2);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==2)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap2);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap2);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap2);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==3)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap2);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap2);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap2);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()==4)
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap2);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap2);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap2);
         }
         else if(vec.size()>= 5 )
         {
-            light1->setPixmap(fitpixmap1);
-            light2->setPixmap(fitpixmap1);
-            light3->setPixmap(fitpixmap1);
-            light4->setPixmap(fitpixmap1);
-            light5->setPixmap(fitpixmap1);
+            lights[0]->setPixmap(fitpixmap1);
+            lights[1]->setPixmap(fitpixmap1);
+            lights[2]->setPixmap(fitpixmap1);
+            lights[3]->setPixmap(fitpixmap1);
+            lights[4]->setPixmap(fitpixmap1);
+//            light1->setPixmap(fitpixmap1);
+//            light2->setPixmap(fitpixmap1);
+//            light3->setPixmap(fitpixmap1);
+//            light4->setPixmap(fitpixmap1);
+//            light5->setPixmap(fitpixmap1);
       }
     }
     else
@@ -2869,11 +2975,16 @@ void MainWindow::openCloseFunction()
         openClose->setIcon(QPixmap("./icon/11_2.png"));
         openClose->setToolTip("打开告警");
 
-        light1->setPixmap(fitpixmap2);
-        light2->setPixmap(fitpixmap2);
-        light3->setPixmap(fitpixmap2);
-        light4->setPixmap(fitpixmap2);
-        light5->setPixmap(fitpixmap2);
+        lights[0]->setPixmap(fitpixmap2);
+        lights[1]->setPixmap(fitpixmap2);
+        lights[2]->setPixmap(fitpixmap2);
+        lights[3]->setPixmap(fitpixmap2);
+        lights[4]->setPixmap(fitpixmap2);
+//        light1->setPixmap(fitpixmap2);
+//        light2->setPixmap(fitpixmap2);
+//        light3->setPixmap(fitpixmap2);
+//        light4->setPixmap(fitpixmap2);
+//        light5->setPixmap(fitpixmap2);
    }
 }
 //手动
@@ -3011,3 +3122,10 @@ void MainWindow::test()
 }
 
 void MainWindow :: timeLineFunction(){}
+
+
+void MainWindow::flash(){
+    lights[newObjCount+addOneLight]->setPixmap(fitpixmap1);
+    lights[newObjCount+addOneLight]->setPixmap(fitpixmap2);
+
+}
