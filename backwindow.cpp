@@ -43,7 +43,7 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
 
     delete dir2;
 
-
+    qDebug()<<"111111111111111111111111111111111111111111111111111111111111111111111111";
     mainToolBar->clear();
     addMyToolBar_backWindow();
     timeLine=new TimeLine(this);
@@ -104,7 +104,7 @@ void BackWindow::selfTimerout(){
         fileIndex++;
     }
 
-
+    qDebug()<<"222222222222222222222222222222222222222222222222222222222222";
     Mat pano;
     if(panoIndex<filepano->count()){
         QFile file(filepano->at(panoIndex).filePath());
@@ -129,7 +129,7 @@ void BackWindow::selfTimerout(){
         widget6->draw();
         return;
  }
-
+    qDebug()<<"77777777777777777777777777777777777777777777777777777777777777777777777777777777777";
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
     const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -236,10 +236,14 @@ void BackWindow::selfTimerout(){
     hconcat(pano1,pano2,mat);
 
    //vector<MyObject> objs = in.getObjs();
+
    vector<MyObjectTrack> tracks = in.getTracks();
-
-
-   for (int i = 0; i < num_objs;i++)
+   if(this->isPseudo==true)
+                       mat=setPseudocolor(mat);
+       updateBright(mat);
+       updateContrast(mat);
+       qDebug()<<"88888888888888888888888888888888888888888888888888888888888888888888888888888888888888";
+   for (int i = 0; i < objs.size();i++)
    {
        //画对象的box
        MyObject obj = objs[i];
@@ -289,7 +293,7 @@ void BackWindow::selfTimerout(){
       // cv::cvtColor(mat, mat, CV_BGR2RGB);
    }
  //  cv::cvtColor(mat, mat, CV_BGR2RGB);
-
+   qDebug()<<"999999999999999999999999999999999999999999999999999999999999999999999999999";
    //然后劈成2半
 
 //    Size dsize ;
@@ -309,11 +313,8 @@ void BackWindow::selfTimerout(){
 //    Mat image5 = CVUtil::QImageToMat(aa2);
 //    Mat image55 = Mat(dsize,CV_32S);
 //    cv::resize(image5, image55,dsize);
-   if(this->isPseudo==true)
-                       mat=setPseudocolor(mat);
-       updateBright(mat);
-       updateContrast(mat);
 
+   qDebug()<<"33333333333333333333333333333333333333333333333333333333";
        Mat mat1, mat2;
        mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
        mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
@@ -397,6 +398,7 @@ void BackWindow::selfTimerout(){
 //   timeLine->update();
    if(isGaojing)
    {
+       qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
    if(objs.size()> num_objs){
        this->sound->play();
        newObjCount=objs.size()-num_objs;
@@ -405,7 +407,7 @@ void BackWindow::selfTimerout(){
    }
    }
    num_objs = objs.size();
-
+   qDebug()<<"num_objs::"<<num_objs;
    if(isGaojing)
    {
        if(num_objs==0)
@@ -468,7 +470,7 @@ void BackWindow::selfTimerout(){
 //            light4->setPixmap(fitpixmap1);
 //            light5->setPixmap(fitpixmap2);
        }
-       else if(num_objs>= 5 )
+       else
        {
            lights[0]->setPixmap(fitpixmap1);
            lights[1]->setPixmap(fitpixmap1);
@@ -494,6 +496,7 @@ void BackWindow::selfTimerout(){
 //        light3->setPixmap(fitpixmap2);
 //        light4->setPixmap(fitpixmap2);
 //        light5->setPixmap(fitpixmap2);
+       qDebug()<<"4444444444444444444444444444444444444444444444444444444444444444";
   }
 }
 
@@ -605,7 +608,7 @@ void BackWindow::addMyToolBar_backWindow()
     vbox2->addWidget(autom);
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
     //vbox2->addWidget(new QLabel(" "));
-
+    qDebug()<<"5555555555555555555555555555555555555555555555555555555555555555555";
     //亮度
     brightness = new QToolButton(this);
     brightness->setToolTip(tr("亮度"));
@@ -939,6 +942,7 @@ void BackWindow::onTimerOut2(){
 
     timeLine->position= fileIndex*255/fileInfo->count();
     timeLine->update();
+    qDebug()<<"6666666666666666666666666666666666666666666666666666666666666666";
 }
 
 
