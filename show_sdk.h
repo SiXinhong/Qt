@@ -39,8 +39,7 @@ using cv::Mat;
 
 
 
-//数据结构体
-
+//目标数据结构体
 struct SmallTarget
 {
 
@@ -59,7 +58,9 @@ struct SmallTarget
     std::vector<Point> contours;            // 目标轮廓          !!
     Mat Snapshoot;                          // 目标快照
     Mat sihouette;                         // 目标剪影          !!
-
+    
+    double timeInfo;// = 0.0;                  //时间戳√ 新加
+	
     double targetScale; // = 0;                 // 目标尺度            !!
     double CenSueEintensity; //= 0;            // 中央周围对比度的响应强度      !!
     double SCRValue ; //= 0;                    // 目标背景信杂比                 !!
@@ -78,54 +79,48 @@ struct imageInfo
 
 };
 
-struct Time
-{
-	int year;
-	int month;
-	int day;
-	int hour;
-	int minute;
-	int seconds;
-	int millisecond;
-};
 
 
 
-//小目标描述结构体
-//struct SmallTarget
-//{
-
-//    int id;// = -1;
-//    cv::Point cenPoint;// = cv::Point(-1, -1);         // 目标中心坐标
-//    cv::Size blocksize;// = cv::Size(0, 0);            // 检测框大小
-//    double Velocity;// = 0;                    // 运动速率
-//    double MotionDerection;// = 0;             // 运动方向
-//    int area;// = 0;                           // 目标面积
-//    int horizontalAxisLength;// = 0;           // 水平轴长度
-//    int verticalAxisLength;// = 0;             // 竖直轴长度
-//    double absoluteIntensity;// = 0;           // 绝对强度
-//    double relativeIntensity;// = 0;           // 相对强度
-
-//	vector<cv::Point> contours;                 // 目标轮廓
-//	cv::Mat Snapshoot;                          // 目标快照
-//	cv::Mat sihouette;                          // 目标剪影
-
-//    double targetScale;// = 0;                 // 目标尺度
-//    double CenSueEintensity;// = 0;            // 中央周围对比度的响应强度
-//    double SCRValue;// = 0;                    // 目标背景信杂比
-//	vector<double> theFeatures;             // 13维的小目标特征向量
-
-//};
 
 //综合数据结构体
 struct IntegratedData
 {
-	Time time;
+    double timeinfo;//修改时间
 	cv::Mat panoImage;// 
 	vector< SmallTarget> targets;
 };
 
+//参数结构体
 
+//拼接参数
+struct StitchParmeters
+{
+    int ZERO_ANGLE;// = 165;//零点角度
+};
+
+StitchParmeters sp;
+struct DetectorParams
+{
+    size_t blurkersize;// =5;//5
+    double blurthresh;// = 3;
+    double spatialthresh;// = 2;
+
+    int contourSizeThresh;// = 10;
+
+    double targetSCRthresh;// = 1;
+    double hessianThresh;// = 10;
+    int disThresh;// = 10;//检测滤波算法阈值
+};//小目标检测参数
+DetectorParams dp;
+
+
+//track参数
+struct TrackingParameters
+{
+    int tracking_para;// = 80;
+};
+TrackingParameters tp;
 
 /*
   函数名：SetSystemPara
@@ -138,7 +133,7 @@ struct IntegratedData
           1.错误：具体错误类型见ERROR中定义
 		  2.成功：返回值为0
 */
-int SetSystemPara(int mode, const char *para_string, int id = 0);
+int SetSystemPara(int mode, const char *para_string, int id=0);
 
 
 
@@ -165,7 +160,7 @@ int GetSurveillanceData(int mode, IntegratedData  *&data);
         1.错误：具体错误类型见ERROR中定义
         2.成功：返回值为0
 */
-int GetSystemPara(int mode, char *&para_string, int id = 0);
+int GetSystemPara(int mode, char *&para_string, int id=0);
 
 
 #endif

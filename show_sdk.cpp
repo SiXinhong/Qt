@@ -23,36 +23,8 @@ int GetAlgorithmPara(char *&para_string);
 int GetControlPara(int id,char *&para_string);
 int GetCameraPara(int id, char *&para_string);
 
-void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target)
-{
-    realtime_target.clear();
-    int index = 0;
-    while(index<datalen)
-    {
-        SmallTarget temp;
-        temp.cenPointACS.x = buff[index] * (256 * 256 * 256) + buff[index + 1] * 256 * 256 + buff[index + 2] * 256 + buff[index + 3];
-
-
-        //temp.cenPointACS.y
-        index += 4;
-        temp.cenPointACS.y = buff[index] * (256 * 256 * 256) + buff[index + 1] * 256 * 256 + buff[index + 2] * 256 + buff[index + 3];
-
-
-        //blocksize
-        index += 4;
-
-        temp.blocksize.height = buff[index];
-        temp.blocksize.width = buff[index + 1];
-
-        //Snapshoot
-        index += 2;
-        cv::Mat ori = cv::Mat(12, 12, CV_8UC1, &buff[index]);
-        //memcpy(.data, &buff[index] temp.Snapshoot.rows*temp.Snapshoot.cols);
-        temp.Snapshoot = ori.clone();
-        index += 12 * 12;
-        realtime_target.push_back(temp);
-    }
-}
+int string_to_alg_para(char *data, int datalen);
+void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
 
 int SetSystemPara(int mode, const char *para_string, int id)
 {
@@ -68,7 +40,7 @@ int SetSystemPara(int mode, const char *para_string, int id)
 	switch (mode)
 	{
 	case 0:
-		return SetAlgorithmPara(para_string);
+		return SetAlgorithmPara(para_string);//ok
 		break;
 	case 1:
 		return SetControlPara(id,para_string);
@@ -84,7 +56,7 @@ int SetSystemPara(int mode, const char *para_string, int id)
 }
 
 
-int GetSurveillanceData(int mode, IntegratedData  *&data)
+int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 {
 	//检查输入
 	if (mode != 0 && mode != 1)
@@ -114,7 +86,7 @@ int GetSystemPara(int mode, char *&para_string, int id)
 	switch (mode)
 	{
 	case 0:
-		return GetAlgorithmPara(para_string);
+		return GetAlgorithmPara(para_string);//ok
 		break;
 	case 1:
 		return GetControlPara(id, para_string);
@@ -187,7 +159,7 @@ int SetCameraPara(int id, const char *para_string)
 	}
 }
 
-
+//更新，加入时间
 int  Getpanorama(IntegratedData *&data)
 {
 	if (data == NULL)
@@ -202,6 +174,7 @@ int  Getpanorama(IntegratedData *&data)
     datalen=0;
     if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
     {
+		data->timeinfo=(((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
         int rows_length = (((uchar)buff[13] * 256 + (uchar)buff[14]) * 256 + (uchar)buff[15]) * 256 + (uchar)buff[16];
         int cols_length = (((uchar)buff[17] * 256 + (uchar)buff[18]) * 256 + (uchar)buff[19]) * 256 + (uchar)buff[20];
         cv::Mat c= cv::Mat(rows_length,cols_length, CV_8UC1, &buff[21]).clone();
@@ -357,8 +330,11 @@ int  GetObjectFeature(IntegratedData *&data)
 
 int GetAlgorithmPara(char *&para_string)
 {
-	int result = MySend(hSocket, 5, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
-
+//    int result = MySend(hSocket, 5, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
+//    if(result==0)
+//    {
+//        string_to_alg_para(&data[5], frame_len-9);
+//    }
 	return GetParaSuccess;
 }
 
@@ -382,4 +358,110 @@ int GetCameraPara(int id,char *&para_string)
 	int result = MySend(hSocket,7, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
 
 	return GetParaSuccess;
+}
+
+
+/**************************************************************辅助子函数************************************************************************/
+//将数组转化为算法参数 更新算法参数
+int string_to_alg_para(char *data, int datalen)
+{
+	if (datalen != 40)
+	{
+		return 1;
+	}
+	//sp
+	int index = 0;
+	sp.ZERO_ANGLE = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	//std::cout << ".............." << sp.ZERO_ANGLE << std::endl;
+	//dp
+	//blurkersize 
+	index += 4;
+	dp.blurkersize = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	//std::cout << ".............." << dp.blurkersize << std::endl;
+	//blurthresh
+	index += 4;
+	int temp1 = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	index += 4;
+	int temp2 = (unsigned char)data[index];
+	dp.blurthresh = temp1 + temp2 / 10.0;
+	//std::cout << ".............." << dp.blurthresh << std::endl;
+	//spatialthresh 
+	index += 1;
+	temp1 = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	index += 4;
+	temp2 = (unsigned char)data[index];
+	dp.spatialthresh = temp1 + temp2 / 10.0;
+	//std::cout << ".............." << dp.spatialthresh << std::endl;
+	//contourSizeThresh 
+	index += 1;
+	dp.contourSizeThresh = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	//std::cout << ".............." << dp.contourSizeThresh << std::endl;
+	//targetSCRthresh
+	index += 4;
+	temp1 = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	index += 4;
+	temp2 = (unsigned char)data[index];
+	dp.targetSCRthresh = temp1 + temp2 / 10.0;
+	//std::cout << ".............." << dp.targetSCRthresh << std::endl;
+	//hessianThresh 
+	index += 1;
+	temp1 = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	index += 4;
+	temp2 = (unsigned char)data[index];
+	dp.hessianThresh = temp1 + temp2 / 10.0;
+	//std::cout << ".............." << dp.hessianThresh << std::endl;
+	//disThresh
+	index += 1;
+	dp.disThresh = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	//std::cout << ".............." << dp.disThresh << std::endl;
+	//tp
+	index += 4;
+	tp.tracking_para = (unsigned char)data[index] * (256 * 256 * 256) + (unsigned char)data[index + 1] * 256 * 256 + (unsigned char)data[index + 2] * 256 + (unsigned char)data[index + 3];
+	//std::cout << ".............." << tp.tracking_para << std::endl;
+	return 0;
+}
+
+
+//更新 将数组转换为目标集合 
+void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target)
+{
+    realtime_target.clear();
+		int index = 0;
+		while(index<datalen)
+		{
+						Target temp;
+			temp.cenPointACS.x = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+			
+
+			//temp.cenPointACS.y
+			index += 4;
+			temp.cenPointACS.y = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+			
+
+			//blocksize
+			index += 4;
+
+			temp.blocksize.height = (uchar)buff[index];
+			temp.blocksize.width = (uchar)buff[index + 1];
+
+			//area
+			index += 2;
+			temp.area = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
+			//horizontalAxisLength
+			index += 4;
+			temp.horizontalAxisLength = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
+			//verticalAxisLength 
+			index += 4;
+			temp.verticalAxisLength = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
+			//Snapshoot
+			index += 4;
+			cv::Mat ori = cv::Mat(12, 12, CV_8UC1, &buff[index]);
+			//memcpy(.data, &buff[index] temp.Snapshoot.rows*temp.Snapshoot.cols);
+			temp.Snapshoot = ori.clone();
+			index += 12 * 12;
+			realtime_target.push_back(temp);
+		}
 }

@@ -189,11 +189,11 @@ void MyInterface::setLD(QString l){
     this->ld = l;
 }
 
-void MyInterface::SetTime(Time t){
+void MyInterface::setTime(double t){
     this->timett = t;
 }
 
-Time MyInterface::getTime(){
+double MyInterface::getTime(){
     return this->timett;
 }
 
@@ -272,7 +272,7 @@ int MyInterface::getIntegratedData(){
         {
             //                cv::imshow("pano", data->panoImage);
             //                cv::waitKey(10);
-            this->timett = data->time;
+            this->timett = data->timeinfo;
             cv::Mat pano_temp=cv::Mat(data->panoImage.rows,data->panoImage.cols,CV_8UC3);
             vector<cv::Mat> v_mat(3);
             cv::split(pano_temp,v_mat);
