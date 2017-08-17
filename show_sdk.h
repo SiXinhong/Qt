@@ -4,6 +4,8 @@
   文件描述：显控端通信接口文件
   时间：2017.6.13
   作者：zc
+  更新：2017.8.15
+  注意：更新部分为注释中带有"注意："字样的。
 */
 
 #include <iostream>
@@ -38,9 +40,8 @@ using cv::Mat;
 
 
 
-
-//数据结构体
-
+///////////////////////////////////////注意：新加一个时间戳timeInfo 
+//目标数据结构体
 struct SmallTarget
 {
 
@@ -59,7 +60,9 @@ struct SmallTarget
     std::vector<Point> contours;            // 目标轮廓          !!
     Mat Snapshoot;                          // 目标快照
     Mat sihouette;                         // 目标剪影          !!
-
+    
+    double timeInfo ;//= 0.0;                  //时间戳√ 新加
+	
     double targetScale; // = 0;                 // 目标尺度            !!
     double CenSueEintensity; //= 0;            // 中央周围对比度的响应强度      !!
     double SCRValue ; //= 0;                    // 目标背景信杂比                 !!
@@ -78,67 +81,62 @@ struct imageInfo
 
 };
 
-struct Time
-{
-	int year;
-	int month;
-	int day;
-	int hour;
-	int minute;
-	int seconds;
-	int millisecond;
-};
 
-
-
-//小目标描述结构体
-//struct SmallTarget
-//{
-
-//    int id;// = -1;
-//    cv::Point cenPoint;// = cv::Point(-1, -1);         // 目标中心坐标
-//    cv::Size blocksize;// = cv::Size(0, 0);            // 检测框大小
-//    double Velocity;// = 0;                    // 运动速率
-//    double MotionDerection;// = 0;             // 运动方向
-//    int area;// = 0;                           // 目标面积
-//    int horizontalAxisLength;// = 0;           // 水平轴长度
-//    int verticalAxisLength;// = 0;             // 竖直轴长度
-//    double absoluteIntensity;// = 0;           // 绝对强度
-//    double relativeIntensity;// = 0;           // 相对强度
-
-//	vector<cv::Point> contours;                 // 目标轮廓
-//	cv::Mat Snapshoot;                          // 目标快照
-//	cv::Mat sihouette;                          // 目标剪影
-
-//    double targetScale;// = 0;                 // 目标尺度
-//    double CenSueEintensity;// = 0;            // 中央周围对比度的响应强度
-//    double SCRValue;// = 0;                    // 目标背景信杂比
-//	vector<double> theFeatures;             // 13维的小目标特征向量
-
-//};
-
+///////////////////////////////////////注意：timeinfo 类型的修改
 //综合数据结构体
 struct IntegratedData
 {
-	Time time;
+    double timeinfo;//修改时间
 	cv::Mat panoImage;// 
 	vector< SmallTarget> targets;
 };
 
+///////////////////////////////////////注意：算法参数添加
+//参数结构体
+
+//拼接参数
+struct StitchParmeters
+{
+	int ZERO_ANGLE;// = 165;//零点角度
+};
 
 
+struct DetectorParams
+{
+	size_t blurkersize;// =5;
+	double blurthresh;// = 3;
+	double spatialthresh;// = 2;
+
+	int contourSizeThresh;// = 10;
+
+	double targetSCRthresh;// = 1;
+	double hessianThresh;// = 10;
+	int disThresh;// = 10;//检测滤波算法阈值
+};//小目标检测参数
+
+
+
+
+//track参数
+struct TrackingParameters
+{
+	int tracking_para;// = 80;
+};
+
+
+///////////////////////////////////////注意：SetSystemPara接口改变
 /*
   函数名：SetSystemPara
   函数功能：设置参数接口
   函数输入:
           id：输入设备id，其值大小在MIN_ID和MAX_ID之间
 		  mode:设置参数的模式，0为算法参数(此时id为0),1为转台参数，2为摄像头参数
-		  para_string：以空格为分隔符的参数指令，例如“1 2 3”表示参数值分别为1，2 ，3
    函数返回：
           1.错误：具体错误类型见ERROR中定义
 		  2.成功：返回值为0
+   用法：设置算法参数时调用语句SetSystemPara（0）;
 */
-int SetSystemPara(int mode, const char *para_string, int id = 0);
+int SetSystemPara(int mode, int id = 0);
 
 
 
@@ -153,19 +151,18 @@ int SetSystemPara(int mode, const char *para_string, int id = 0);
 int GetSurveillanceData(int mode, IntegratedData  *&data);
 
 
-
+///////////////////////////////////////注意：GetSystemPara接口改变
 /*
   函数名：GetSystemPara
   函数功能：设置参数接口
   函数输入:
         id：输入设备id，其值大小在MIN_ID和MAX_ID之间
         mode:设置参数的模式，0为算法参数(此时id为0),1为转台参数，2为摄像头参数
-        para_string：以空格为分隔符的参数指令，例如“1 2 3”表示参数值分别为1，2 ，3
   函数返回：
         1.错误：具体错误类型见ERROR中定义
         2.成功：返回值为0
 */
-int GetSystemPara(int mode, char *&para_string, int id = 0);
+int GetSystemPara(int mode, int id = 0);
 
 
 #endif

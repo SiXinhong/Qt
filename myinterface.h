@@ -96,7 +96,7 @@ public:
 
     vector<MyObjectTrack> getTracks2();
 
-    Time timett;
+    double timett;
     cv::Mat panoImage;//
     vector< SmallTarget> targets;
 
@@ -112,8 +112,8 @@ public:
 
     void setLD(QString l);
 
-    void SetTime(Time t);
-    Time getTime();
+    void setTime(double t);
+    double getTime();
 
     void setPano(Mat pano);
     Mat getPano();

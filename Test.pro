@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     objectattributes.cpp \
     mixer.cpp \
     timeline.cpp \
-    socket.cpp
+    socket.cpp \
+    welcomewindow.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     objectAttributes.h \
     mixer.h \
     timeline.h \
-    socket.h
+    socket.h \
+    welcomewindow.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

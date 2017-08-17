@@ -21,6 +21,7 @@ INPUT(
 ./debug\mixer.o
 ./debug\timeline.o
 ./debug\socket.o
+./debug\welcomewindow.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
@@ -30,4 +31,5 @@ INPUT(
 ./debug\moc_qj1widget.o
 ./debug\moc_qj2widget.o
 ./debug\moc_objectAttributes.o
+./debug\moc_welcomewindow.o
 );

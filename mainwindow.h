@@ -60,7 +60,7 @@
 #include<QPushButton>
 #include <QDesktopWidget>
 #include "objectAttributes.h"
-
+#include "welcomewindow.h"
 using namespace cv;
 using namespace std;
 
@@ -77,6 +77,7 @@ public slots:
   virtual void onTimerOut2();
     
 public:
+  WelcomeWindow *welcome;
   int num_objs;
   CMixer * cmixer;
   MyObject myobjects;
@@ -100,7 +101,7 @@ public:
    void updateBright(Mat &mat1);
    void updateContrast(Mat &mat1);
     //QApplication a;
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(WelcomeWindow *welcome = 0,QWidget *parent = 0);
     ~MainWindow();
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
@@ -189,6 +190,7 @@ public:
      QTimer *timer;
      QTimer *timerSysTime;
      QTimer *timerFlash;
+     QTimer *timerInit;
      //处理鼠标拖拽事件的变量
      boolean isDrag1;
      boolean isDrag2;
@@ -358,7 +360,7 @@ protected slots:
      void quXiaoFunction();
      virtual void timeLineFunction();
      void flash();
-
+     void init();
 
 //private:
 public:

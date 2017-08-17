@@ -119,7 +119,6 @@ MyInterface::MyInterface(){
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
         sizeOfobjs=1;
-    // sizeOfobjs=1;
 }
 
 void MyInterface::fillObjs(){
@@ -135,6 +134,7 @@ void MyInterface::fillObjs(){
         int h=r.height;
         int x=qrand()%this->panoImage.cols;//初始值随机
         int y=qrand()%this->panoImage.rows;
+        mo1.color = CVUtil::getRandomColor();
         mo1.setRect(Rect(x,y,w,h));
         mo1.setCenPoint(Point(x+w/2, y+h/2));
         mo1.setID(mo1.getID()+1);
@@ -190,11 +190,11 @@ void MyInterface::setLD(QString l){
     this->ld = l;
 }
 
-void MyInterface::SetTime(Time t){
+void MyInterface::setTime(double t){
     this->timett = t;
 }
 
-Time MyInterface::getTime(){
+double MyInterface::getTime(){
     return this->timett;
 }
 
@@ -273,7 +273,7 @@ int MyInterface::getIntegratedData(){
         {
             //                cv::imshow("pano", data->panoImage);
             //                cv::waitKey(10);
-            this->timett = data->time;
+            this->timett = data->timeinfo;
             cv::Mat pano_temp=cv::Mat(data->panoImage.rows,data->panoImage.cols,CV_8UC3);
             vector<cv::Mat> v_mat(3);
             cv::split(pano_temp,v_mat);
@@ -349,13 +349,13 @@ int MyInterface::getIntegratedData(){
                     obj = objs[i];
                     if(obj.getID() == tar.id){
                         isObjExisted = true;
+                        break;
                     }
                 }
 
                 if(!isObjExisted){
                     obj = MyObject();
                 }
-
 
                 obj.setID(tar.id);
                 obj.setCenPoint(tar.cenPointACS);
@@ -379,7 +379,6 @@ int MyInterface::getIntegratedData(){
                 if(!isObjExisted){
                     this->objs.push_back(obj);
                 }
-
 
 
                 //设置轨迹
@@ -653,7 +652,6 @@ void MyInterface::setObjs(vector<MyObject> os){
 }
 //生成随机个对象
 vector<MyObject> MyInterface::getRandomObjs(){
-    //sizeOfobjs++;
     if(this->panoImage.cols==0)
         return objs;
     if(sizeOfobjs!=objs.size())
