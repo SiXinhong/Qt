@@ -8,6 +8,10 @@ extern WSANETWORKEVENTS netEvents;
 extern int datalen;
 
 int para_data_len = 40;
+
+DetectorParams dp;
+TrackingParameters tp;
+StitchParmeters sp;
 /*
    设置三种参数
    1.mode=0:算法参数，此时id默认为0，无意义
@@ -29,10 +33,10 @@ int string_to_alg_para(char *data, int datalen);
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
 int para_to_string(char *s, int &datalen);
 
-StitchParmeters sp;
-DetectorParams dp;
-TrackingParameters tp;
 
+int string_to_alg_para(char *data, int datalen);
+void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
+int para_to_string(char *s, int &datalen);
 
 /****************************************************************主接口**********************************************************************/
 int SetSystemPara(int mode, int id)

@@ -61,7 +61,7 @@ struct SmallTarget
     Mat Snapshoot;                          // 目标快照
     Mat sihouette;                         // 目标剪影          !!
     
-    double timeInfo;// = 0.0;                  //时间戳√ 新加
+    double timeInfo ;//= 0.0;                  //时间戳√ 新加
 	
     double targetScale; // = 0;                 // 目标尺度            !!
     double CenSueEintensity; //= 0;            // 中央周围对比度的响应强度      !!
@@ -114,8 +114,6 @@ struct DetectorParams
 	int disThresh;// = 10;//检测滤波算法阈值
 };//小目标检测参数
 //DetectorParams dp;
-
-
 
 //track参数
 struct TrackingParameters

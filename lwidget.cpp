@@ -138,7 +138,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
                    minDistance=distTmp;
                    minIndex=i;
                    maxIndex=prevI;
-                   qDebug()<<minIndex<<"<<"<<maxIndex<<"w="<<w<<"dist="<<distTmp;
+                  // qDebug()<<minIndex<<"<<"<<maxIndex<<"w="<<w<<"dist="<<distTmp;
                }
            }
        }
