@@ -4,6 +4,8 @@
   文件描述：显控端通信接口文件
   时间：2017.6.13
   作者：zc
+  更新：2017.8.15
+  注意：更新部分为注释中带有"注意："字样的。
 */
 
 #include <iostream>
@@ -38,7 +40,7 @@ using cv::Mat;
 
 
 
-
+///////////////////////////////////////注意：新加一个时间戳timeInfo 
 //目标数据结构体
 struct SmallTarget
 {
@@ -80,9 +82,7 @@ struct imageInfo
 };
 
 
-
-
-
+///////////////////////////////////////注意：timeinfo 类型的修改
 //综合数据结构体
 struct IntegratedData
 {
@@ -91,49 +91,52 @@ struct IntegratedData
 	vector< SmallTarget> targets;
 };
 
+///////////////////////////////////////注意：算法参数添加
 //参数结构体
 
 //拼接参数
 struct StitchParmeters
 {
-    int ZERO_ANGLE;// = 165;//零点角度
+	int ZERO_ANGLE;// = 165;//零点角度
 };
 
-StitchParmeters sp;
+//StitchParmeters sp;
 struct DetectorParams
 {
-    size_t blurkersize;// =5;//5
-    double blurthresh;// = 3;
-    double spatialthresh;// = 2;
+	size_t blurkersize;// =5;
+	double blurthresh;// = 3;
+	double spatialthresh;// = 2;
 
-    int contourSizeThresh;// = 10;
+	int contourSizeThresh;// = 10;
 
-    double targetSCRthresh;// = 1;
-    double hessianThresh;// = 10;
-    int disThresh;// = 10;//检测滤波算法阈值
+	double targetSCRthresh;// = 1;
+	double hessianThresh;// = 10;
+	int disThresh;// = 10;//检测滤波算法阈值
 };//小目标检测参数
-DetectorParams dp;
+//DetectorParams dp;
+
 
 
 //track参数
 struct TrackingParameters
 {
-    int tracking_para;// = 80;
+	int tracking_para;// = 80;
 };
-TrackingParameters tp;
+//TrackingParameters tp;
 
+///////////////////////////////////////注意：SetSystemPara接口改变
 /*
   函数名：SetSystemPara
   函数功能：设置参数接口
   函数输入:
           id：输入设备id，其值大小在MIN_ID和MAX_ID之间
 		  mode:设置参数的模式，0为算法参数(此时id为0),1为转台参数，2为摄像头参数
-		  para_string：以空格为分隔符的参数指令，例如“1 2 3”表示参数值分别为1，2 ，3
    函数返回：
           1.错误：具体错误类型见ERROR中定义
 		  2.成功：返回值为0
+   用法：设置算法参数时调用语句SetSystemPara（0）;
 */
-int SetSystemPara(int mode, const char *para_string, int id=0);
+int SetSystemPara(int mode, int id = 0);
 
 
 
@@ -148,19 +151,18 @@ int SetSystemPara(int mode, const char *para_string, int id=0);
 int GetSurveillanceData(int mode, IntegratedData  *&data);
 
 
-
+///////////////////////////////////////注意：GetSystemPara接口改变
 /*
   函数名：GetSystemPara
   函数功能：设置参数接口
   函数输入:
         id：输入设备id，其值大小在MIN_ID和MAX_ID之间
         mode:设置参数的模式，0为算法参数(此时id为0),1为转台参数，2为摄像头参数
-        para_string：以空格为分隔符的参数指令，例如“1 2 3”表示参数值分别为1，2 ，3
   函数返回：
         1.错误：具体错误类型见ERROR中定义
         2.成功：返回值为0
 */
-int GetSystemPara(int mode, char *&para_string, int id=0);
+int GetSystemPara(int mode, int id = 0);
 
 
 #endif

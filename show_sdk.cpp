@@ -6,31 +6,38 @@ extern SOCKET hSocket;
 extern char sendbuffer[SEND_BUFFER_SIZE];
 extern WSANETWORKEVENTS netEvents;
 extern int datalen;
+
+int para_data_len = 40;
 /*
    设置三种参数
    1.mode=0:算法参数，此时id默认为0，无意义
    2.mode=1:转台参数
    3.mode=3:摄像头参数
 */
-int SetAlgorithmPara(const char *para_string);
-int SetControlPara(int id, const char *para_string);
-int SetCameraPara(int id, const char *para_string);
+int SetAlgorithmPara();
+int SetControlPara(int id);
+int SetCameraPara(int id);
 
 int  Getpanorama(IntegratedData *&data);
 int  GetObjectFeature(IntegratedData *&data);
 
-int GetAlgorithmPara(char *&para_string);
-int GetControlPara(int id,char *&para_string);
-int GetCameraPara(int id, char *&para_string);
+int GetAlgorithmPara();
+int GetControlPara(int id);
+int GetCameraPara(int id);
 
 int string_to_alg_para(char *data, int datalen);
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
+int para_to_string(char *s, int &datalen);
 
-int SetSystemPara(int mode, const char *para_string, int id)
+StitchParmeters sp;
+DetectorParams dp;
+TrackingParameters tp;
+
+
+/****************************************************************主接口**********************************************************************/
+int SetSystemPara(int mode, int id)
 {
 	//检查输入参数
-	if (para_string == NULL)
-        return ERROR_SringIsNull;
 	if (mode != 0 && mode != 1 && mode != 2)
         return ERROR_MODE;
 	if (id<MIN_ID || id>MAX_ID)
@@ -40,13 +47,13 @@ int SetSystemPara(int mode, const char *para_string, int id)
 	switch (mode)
 	{
 	case 0:
-		return SetAlgorithmPara(para_string);//ok
+		return SetAlgorithmPara();//ok
 		break;
 	case 1:
-		return SetControlPara(id,para_string);
+		return SetControlPara(id);
 		break;
 	case 2:
-		return SetCameraPara(id, para_string);
+		return SetCameraPara(id);
 		break;
 	default:
         return ERROR_MODE;
@@ -77,7 +84,7 @@ int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 }
 
 
-int GetSystemPara(int mode, char *&para_string, int id)
+int GetSystemPara(int mode, int id)
 {
 	//输入检查
 	if (mode != 0 && mode != 1 && mode != 2)
@@ -86,13 +93,13 @@ int GetSystemPara(int mode, char *&para_string, int id)
 	switch (mode)
 	{
 	case 0:
-		return GetAlgorithmPara(para_string);//ok
+		return GetAlgorithmPara();//ok
 		break;
 	case 1:
-		return GetControlPara(id, para_string);
+		return GetControlPara(id);
 		break;
 	case 2:
-		return GetCameraPara(id, para_string);
+		return GetCameraPara(id);
 		break;
 	default:
         return ERROR_MODE;
@@ -103,13 +110,17 @@ int GetSystemPara(int mode, char *&para_string, int id)
 
 
 /**************************************************************调用子函数************************************************************************/
-int SetAlgorithmPara(const char *para_string)
+int SetAlgorithmPara()
 {
 	//检查输入参数
-	if (para_string == NULL)
-        return ERROR_SringIsNull;
+	
 	int result = 0;
-	result=MySend(hSocket, 0, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
+	char *data = (char *)malloc(para_data_len+1);
+	memset(data, 0, para_data_len + 1);
+	int datalen = 0;
+	para_to_string(data,datalen);
+	result=MySend(hSocket, 0, sendbuffer, SEND_BUFFER_SIZE, data, datalen);
+	free(data);
     //检查string的内容是否符合标准
 	if (result == 0){
 		return SetParaSuccess;
@@ -119,16 +130,14 @@ int SetAlgorithmPara(const char *para_string)
 	}
 }
 
-int SetControlPara(int id, const char *para_string)
+int SetControlPara(int id)
 {
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 	
-	if (para_string == NULL)
-        return ERROR_SringIsNull;
 	//检查string的内容是否符合标准
-	int result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
+	int result=0; //= MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
 	//检查string的内容是否符合标准
 	if (result == 0){
 		return SetParaSuccess;
@@ -139,17 +148,15 @@ int SetControlPara(int id, const char *para_string)
 	
 }
 
-int SetCameraPara(int id, const char *para_string)
+int SetCameraPara(int id)
 {
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 
-	if (para_string == NULL)
-        return ERROR_SringIsNull;
 	//检查string的内容是否符合标准
-	int result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
-	std::cout << "strlen(para_string) "<<strlen(para_string) << std::endl;
+	int result=0;// = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
+	//std::cout << "strlen(para_string) "<<strlen(para_string) << std::endl;
 	//检查string的内容是否符合标准
 	if (result == 0){
 		return SetParaSuccess;
@@ -328,17 +335,32 @@ int  GetObjectFeature(IntegratedData *&data)
 }
 
 
-int GetAlgorithmPara(char *&para_string)
+int GetAlgorithmPara()
 {
-//    int result = MySend(hSocket, 5, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
-//    if(result==0)
-//    {
-//        string_to_alg_para(&data[5], frame_len-9);
-//    }
+	char *buff = (char *)malloc(DATA_BUFFER_SIZE);
+	int result = MySend(hSocket, 5, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
+    if(result==0)
+	{
+		 if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
+        {
+		   string_to_alg_para(&buff[5], datalen-9);
+
+		   free(buff);
+		   return GetParaSuccess;
+	    }
+	   else
+	   {
+        free(buff);
+        return ERROR_GetFail;
+		//std::cout << "error " << std::endl;
+	   }
+		
+	}
+	free(buff);
 	return GetParaSuccess;
 }
 
-int GetControlPara(int id,char *&para_string)
+int GetControlPara(int id)
 {
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
@@ -349,7 +371,7 @@ int GetControlPara(int id,char *&para_string)
 	return GetParaSuccess;
 }
 
-int GetCameraPara(int id,char *&para_string)
+int GetCameraPara(int id)
 {
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
@@ -465,3 +487,93 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 			realtime_target.push_back(temp);
 		}
 }
+
+//将算法参数转化为数组形式
+int para_to_string(char *s, int &datalen)
+	{
+		//sp
+		int a = sp.ZERO_ANGLE;
+		int index = 0;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a/ (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		
+		int temp= s[index] * (256 * 256 * 256) + s[index + 1] * 256 * 256 + s[index + 2] * 256 +s[index + 3];
+		//std::cout << temp << std::endl;
+
+
+		//dp
+		a = dp.blurkersize;
+		index += 4;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		index += 4;
+
+		a = int(dp.blurthresh*10);
+		int b = a % 10;
+		a = a / 10;
+		
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		s[index + 4] = b;
+		index += 5;
+
+		a = int(dp.spatialthresh * 10);
+	    b = a % 10;
+		a = a / 10;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		s[index + 4] = b;
+		index += 5;
+
+		a = dp.contourSizeThresh;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		index += 4;
+
+		a = int(dp.targetSCRthresh* 10);
+		b = a % 10;
+		a = a / 10;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		s[index + 4] = b;
+
+		a = int(dp.hessianThresh * 10);
+		b = a % 10;
+		a = a / 10;
+		index += 5;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+		s[index + 4] = b;
+
+		a = dp.disThresh ;
+		index += 5;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+
+		//tp
+		a = tp.tracking_para;
+		index += 4;
+		s[index] = a / (256 * 256 * 256);;
+		s[index + 1] = (a / (256 * 256)) % 256;
+		s[index + 2] = (a / 256) % 256;
+		s[index + 3] = a % 256;
+
+		datalen = index + 4;
+		return 0;
+	}
