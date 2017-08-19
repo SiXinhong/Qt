@@ -4,6 +4,7 @@
 #include <QTime>
 #include <QFileInfo>
 #include "timeline.h"
+#include <map>
 class BackWindow :public MainWindow
 {
 public:
@@ -15,12 +16,18 @@ public:
     QTime start;
     QTime stop;
     QList<QFileInfo> *fileInfo;
+    QList<QFileInfo> *filepano;
     int fileIndex;
+    int panoIndex;
+
     void exitFunction();
     void addMyToolBar_backWindow();
+    QString currentFileTime;
 
     class TimeLine *timeLine;
     void timeLineFunction();
+    void onTimerOut2();
+    map<int,MyObject*> objmap;
 };
 
 #endif // BACKWINDOW_H

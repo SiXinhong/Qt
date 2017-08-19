@@ -1,4 +1,7 @@
 #include "socket.h"
+#include <QFile>
+#include <QByteArray>
+#include <QDebug>
 
 /****************************定义的全局变量***************************************/
 extern SOCKET hSocket;			//事件对象连接的套接字
@@ -172,7 +175,22 @@ int MySocketInitial(void){
 
 	memset(&servAdr, 0, sizeof(servAdr));
 	servAdr.sin_family = AF_INET;
-    servAdr.sin_addr.s_addr = inet_addr("192.168.1.1");
+    //////////////////////////////////////wangy/////////////////////
+
+    QFile file("./config/config.txt");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug()<<"Can't open the file!"<<endl;
+    }
+    const char* ipstr;
+    if(!file.atEnd()){
+        QByteArray ipba = file.readLine();
+        ipstr = ipba.data();
+        qDebug()<<ipstr;
+    }
+    servAdr.sin_addr.s_addr = inet_addr(ipstr);
+
+    //////////////////////////////////////wangy.end//////////////////
+    //servAdr.sin_addr.s_addr = inet_addr("192.168.1.1");
     servAdr.sin_port = htons(atoi("8080"));
 
 

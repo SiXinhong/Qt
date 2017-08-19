@@ -16,9 +16,10 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("system"));
     QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
 
-    MainWindow w;
+    WelcomeWindow *welcome=new WelcomeWindow();
+    MainWindow w(welcome);
     //w.setA(a);
     w.setWindowTitle("红外全景控制系统");
-    w.show();
+    //w.show();
     return a.exec();
 }

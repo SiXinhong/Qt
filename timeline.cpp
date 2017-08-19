@@ -32,7 +32,10 @@ void TimeLine:: mouseReleaseEvent(QMouseEvent *event){
 //    backWindow->bright_TimeLineValue=position;
 //    backWindow->adjustment();
     backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
+    backWindow->panoIndex=position*backWindow->filepano->count()/255;
+
 }
+
 
 
 void TimeLine::paintEvent(QPaintEvent *){
@@ -41,8 +44,8 @@ void TimeLine::paintEvent(QPaintEvent *){
     p.drawLine(QPoint(5,20),QPoint(260,20));//中间的横线
     p.setPen(QPen(Qt::lightGray, 5));
     p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//竖线，标识亮度数值的位置
-    QTime nowTime=start.addMSecs(position*every);
-    p.drawText(265,25,QString("时间:")+nowTime.toString("HH:mm:ss"));
+    //QTime nowTime=start.addMSecs(position*every);
+    p.drawText(265,25,QString("时间:")+backWindow->currentFileTime.left(2)+":"+backWindow->currentFileTime.right(5).left(2)+":"+backWindow->currentFileTime.right(2));
 }
 
 void TimeLine:: mousePressEvent(QMouseEvent *){
@@ -65,4 +68,26 @@ void TimeLine::mouseMoveEvent(QMouseEvent *event){//鼠标移动事件，是否是拖动需要
 
 void TimeLine::setPosition(int position){
     this->position = position;
+}
+
+void TimeLine::keyPressEvent(QKeyEvent *event){
+    if(event->key()== Qt::Key_Left){
+        if(position>=10){
+            position-=10;
+        }
+        else if(position<10){
+            position=0;
+        }
+    }
+    else if(event->key() == Qt::Key_Right){
+        if(position<=245){
+            position+=10;
+        }
+        else if(position>245){
+            position = 255;
+        }
+    }
+    update();
+    backWindow->fileIndex=position*backWindow->fileInfo->count()/255;
+    backWindow->panoIndex=position*backWindow->filepano->count()/255;
 }

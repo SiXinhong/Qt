@@ -30,6 +30,14 @@ Mat ZWidget::getPano(){
     return pano;
 }
 
+void ZWidget::setTwoPanos(Mat tps){
+    twopanos = tps;
+}
+
+Mat ZWidget::getTwoPanos(){
+    return twopanos;
+}
+
 void ZWidget::setRect(Rect r){
     this->rect = r;
 }
@@ -143,6 +151,51 @@ Rect ZWidget::getRectFromObjs(Rect r){
         }
     }
 
+    if((count > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
+        xtemp1 = pano.cols;
+        //ytemp1 = pano.rows;
+        //再找最大点
+        xtemp2 = 0;
+        //double ytemp2 = 0;
+        for(int i = 0; i < count; i++){
+            MyObject obj = objs[i];
+            if(obj.getRect().x > this->pano.cols/2){
+                if(xtemp1 > obj.getRect().x){
+                    xtemp1 = obj.getRect().x;
+                    //ytemp1 = obj.getRect().y;
+                }
+//                if(ytemp1 > obj.getRect().y){
+//                    ytemp1 = obj.getRect().y;
+//                }
+//                if(xtemp2 < (obj.getRect().x + obj.getRect().width)){
+//                    xtemp2 = obj.getRect().x + obj.getRect().width;
+//                    //ytemp2 = obj.getRect().y + obj.getRect().height;
+//                }
+//                if(ytemp2 < (obj.getRect().y + obj.getRect().height)){
+//                    ytemp2 = obj.getRect().y + obj.getRect().height;
+//                }
+            }
+            else{
+//                if(xtemp1 > obj.getRect().x+this->pano.cols){
+//                    xtemp1 = obj.getRect().x+this->pano.cols;
+//                    //ytemp1 = obj.getRect().y;
+//                }
+//                if(ytemp1 > obj.getRect().y){
+//                    ytemp1 = obj.getRect().y;
+//                }
+                if(xtemp2 < (obj.getRect().x + obj.getRect().width+this->pano.cols)){
+                    xtemp2 = obj.getRect().x + obj.getRect().width+this->pano.cols;
+                    //ytemp2 = obj.getRect().y + obj.getRect().height;
+                }
+//                if(ytemp2 < (obj.getRect().y + obj.getRect().height)){
+//                    ytemp2 = obj.getRect().y + obj.getRect().height;
+//                }
+            }
+        }
+//        qDebug()<<QString("xtemp2");
+//        qDebug()<<xtemp2;
+    }
+
     if (count > 0){
 //    if(rr.x < xtemp1-50){
 
@@ -170,12 +223,17 @@ Rect ZWidget::getRectFromObjs(Rect r){
 
 //    }
 //    else{
+//        qDebug()<<QString("xtemp2");
+//        qDebug()<<xtemp2;
         if(xtemp1-50 > 0){
             rr.width = xtemp2-rr.x+100;
         }
         else{
             rr.width = xtemp2-rr.x;
         }
+//        qDebug()<<QString("xtemp2");
+//        qDebug()<<xtemp2;
+//        qDebug()<<rr.x+rr.width;
 //    }
 //    if(rr.height > (ytemp2-rr.y+100)){
 
@@ -207,15 +265,15 @@ Rect ZWidget::getRectFromObjs(Rect r){
     if(rr.y<0){
         rr.y = 0;
     }
-    if(rr.x>=pano.cols){
-        rr.x=0;
-    }
+//    if(rr.x>=pano.cols){
+//        rr.x=0;
+//    }
     if(rr.y>=pano.rows){
         rr.y = 0;
     }
-    if(rr.x+rr.width > pano.cols){
-        rr.width = pano.cols - rr.x;
-    }
+//    if(rr.x+rr.width > pano.cols){
+//        rr.width = pano.cols - rr.x;
+//    }
     if(rr.y+rr.height > pano.rows){
         rr.height = pano.rows - rr.y;
     }
@@ -398,13 +456,15 @@ void ZWidget::draw(){
         rect.width = r2.width;
         rect.height = r2.height;
 //        qDebug()<<QString("here2!");
+//        qDebug()<<this->pano.cols;
+//        qDebug()<<this->rect.x + this->rect.width;
 //        qDebug()<<this->rect.x;
 //        qDebug()<<this->rect.y;
 //        qDebug()<<this->rect.width;
 //        qDebug()<<this->rect.height;
-        Mat mat1 = this->pano;
+        Mat mat1 = this->twopanos;
         Size dsize ;
-        double scale = 1;
+        double scale = 0.5;
         dsize = Size(mat1.cols*scale,mat1.rows*scale);
 //        Mat image11 = Mat(dsize,CV_32S);
 //        cv::resize(mat1, image11,dsize);
@@ -499,7 +559,7 @@ void ZWidget::draw(){
 //        cv::resize(image3, image33,dsize);
 //        setMat(image33);
           Mat image3;
-          mat1(Rect(1490,250,100,100)).copyTo(image3);//mw->QImageToMat(mw->aa);
+          mat1(Rect(0,0,mat1.cols/4,mat1.rows)).copyTo(image3);//mw->QImageToMat(mw->aa);
           Mat image33 = Mat(dsize,CV_32S);
           cv::resize(image3, image33,dsize);
           setMat(image33);
@@ -528,7 +588,7 @@ void ZWidget::draw(){
 
 
     mw->imgLabel3 = mw->MatToQImage(mat,mw->imgLabel3);
-    cv::cvtColor(mat,mat,CV_BGR2RGB);
+    //cv::cvtColor(mat,mat,CV_BGR2RGB);
     mw->loadPictureToLabel3();
 
 }
@@ -564,13 +624,13 @@ boolean ZWidget::isObjSelected(MyObject obj){
 vector<MyObject> ZWidget::getSelectedObjects(){
     vector<MyObject> os;
     int count = this->allobjs.size();
-    for(int i = 0; i < count; i++){
-        MyObject obj = allobjs[i];
-        if(isObjSelected(obj)){
-            os.push_back(obj);
-        }
+//    for(int i = 0; i < count; i++){
+//        MyObject obj = allobjs[i];
+//        if(isObjSelected(obj)){
+//            os.push_back(obj);
+//        }
 
-    }
+//    }
 
     for(int i = 0; i < count; i++){
         MyObject obj = allobjs[i];
@@ -607,9 +667,9 @@ double ZWidget::getDirectionX(double x){
 
 double ZWidget::getDirectionY(double y){
 
-    double yy = 20;
+    double yy = 10;
     //double y = this->rectan.y;
-    return yy*y/pano.rows;
+    return 10-yy*y/pano.rows;
 
 }
 
@@ -620,8 +680,8 @@ double ZWidget::getDirectionX2(){
 
 double ZWidget::getDirectionY2(){
 
-    double yy = 20;
+    double yy = 10;
     double y = this->rect.y+this->rect.height;
-    return yy*y/pano.rows;
+    return 10-yy*y/pano.rows;
 
 }

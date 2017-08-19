@@ -1,11 +1,11 @@
 #ifndef MYINTERFACE_H
 #define MYINTERFACE_H
 
-#include "myobject.h"
+
 #include "myobjecttrack.h"
 #include "show_sdk.h"
 #include "socket.h"
-
+#include "myobject.h"
 #include <QString>
 
 //OpenCV头文件
@@ -75,7 +75,7 @@ public:
 
     //对象集合
     vector<MyObject> objs;
-
+    int sizeOfobjs;
     //位于全景显示区1中的对象
     vector<MyObject> objs1;
 
@@ -96,7 +96,7 @@ public:
 
     vector<MyObjectTrack> getTracks2();
 
-    Time timett;
+    double timett;
     cv::Mat panoImage;//
     vector< SmallTarget> targets;
 
@@ -112,8 +112,8 @@ public:
 
     void setLD(QString l);
 
-    void SetTime(Time t);
-    Time getTime();
+    void setTime(double t);
+    double getTime();
 
     void setPano(Mat pano);
     Mat getPano();
@@ -128,7 +128,10 @@ public:
     void setObjs(vector<MyObject> os);
     //获得自定义的实验数据
     vector<MyObject> getObjs2();
-
+    //生成随机个对象
+    vector<MyObject> getRandomObjs();
+    //填充随机个obj初始化对象
+    void fillObjs();
     //获得全景显示区1中的对象
     vector<MyObject> getQj1Objs();
     //获得全景显示区2中的对象

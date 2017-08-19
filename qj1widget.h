@@ -61,9 +61,14 @@ public:
 
     Rect newrect;
     //QRect qrectan;
+    int x_position1;
+    int y_position1;
+    int x_position2;
+    int y_position2;
 
 
     explicit Qj1Widget(QWidget *parent = 0);
+
     void contextMenuEvent(QContextMenuEvent *);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);

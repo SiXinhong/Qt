@@ -60,7 +60,7 @@
 #include<QPushButton>
 #include <QDesktopWidget>
 #include "objectAttributes.h"
-
+#include "welcomewindow.h"
 using namespace cv;
 using namespace std;
 
@@ -74,9 +74,11 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 public slots:
   void onTimerOut();
-  void onTimerOut2();
+  virtual void onTimerOut2();
     
 public:
+  WelcomeWindow *welcome;
+  int num_objs;
   CMixer * cmixer;
   MyObject myobjects;
   ObjectAttributes *objectAttributes;
@@ -87,13 +89,19 @@ public:
    int alpha_contrast;
    bool isPseudo;
    bool isVoice;
+   int newObjCount;
+   int addOneLight;
+   QPixmap fitpixmap1;
+   QPixmap fitpixmap2;
+//   Mat mat;
+//   Mat mat1, mat2;
    //HSL *hsl;
    int color ;
   // int saturation1;
    void updateBright(Mat &mat1);
    void updateContrast(Mat &mat1);
     //QApplication a;
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(WelcomeWindow *welcome = 0,QWidget *parent = 0);
     ~MainWindow();
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *);
@@ -105,7 +113,7 @@ public:
     void paintCircle(Mat image,double x,double y);//画圆
     void paintScale(Mat image,double startw,double starth);//画标尺
 
-    cv::Mat QImageToMat(QImage image);
+   cv:: Mat QImageToMat(QImage image);
     static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
     //---xiaotian   加载图片到Label上。
@@ -181,7 +189,8 @@ public:
 
      QTimer *timer;
      QTimer *timerSysTime;
-
+     QTimer *timerFlash;
+     QTimer *timerInit;
      //处理鼠标拖拽事件的变量
      boolean isDrag1;
      boolean isDrag2;
@@ -275,12 +284,14 @@ protected:
      QString light3Set;
      QString light4Set;
      QString light5Set;
-     QLabel *light1;
-     //QToolButton *light1;
-     QLabel *light2;
-     QLabel *light3;
-     QLabel *light4;
-     QLabel *light5;
+
+     QLabel *lights[5];
+//   QLabel *light1;
+////     //QToolButton *light1;
+//     QLabel *light2;
+//     QLabel *light3;
+//     QLabel *light4;
+//     QLabel *light5;
 
      //第四组，显示编号和系统当前时间
      QLabel *serialNumber;//编号
@@ -343,13 +354,13 @@ protected slots:
      void closeEvent(QCloseEvent *event);
 
      //void lightFunction();
-     void adjustbrightness();
+    // void adjustbrightness();
      //回放所需函数
      void queDingFunction();
      void quXiaoFunction();
      virtual void timeLineFunction();
-
-
+     void flash();
+     void init();
 
 //private:
 public:
