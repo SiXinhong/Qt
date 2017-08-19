@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //目标属性是否跟随
     isMubiao = true;
     //系统编号
-    xtbh = QString("BJ036A站位");
+    xtbh = QString("BJ036A战位");
     //-------------------------------------------------------
     //判断窗口是否打开
     is_open=false;
@@ -196,6 +196,7 @@ void MainWindow::jinProcessing(){
         //std::cout<<"get data ok "<<std::endl;
         //在全景上画矩形，文字，轨迹等
         Mat mat = in.getPano();
+        Mat panoClone = mat.clone();
         vector<MyObject> objs = in.getObjs();
         vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -267,7 +268,7 @@ void MainWindow::jinProcessing(){
         widget4->setAllObjects(in.getObjs());
         widget4->draw();
 //        //图片5
-        widget5->setPano(in.getPano());
+        widget5->setPano(panoClone);
         QString imageurl5=in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
         widget5->setMat(mat5);
@@ -300,6 +301,7 @@ void MainWindow::selfProcessing(){
 
     //在全景上画矩形，文字，轨迹等
     Mat mat = in.getPano();
+    Mat panoClone = mat.clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -387,7 +389,7 @@ void MainWindow::selfProcessing(){
     widget4->setAllObjects(in.getObjs());
     widget4->draw();
     //图片5
-    widget5->setPano(in.getPano());
+    widget5->setPano(panoClone);
     QString imageurl5=in.getHD();
     Mat mat5 =imread(imageurl5.toStdString());
     widget5->setMat(mat5);
@@ -1046,6 +1048,7 @@ void MainWindow::selfTimerout(){
 
     //在全景上画矩形，文字，轨迹等
     Mat mat = in.getPano();
+    //Mat panoClone = mat.clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
