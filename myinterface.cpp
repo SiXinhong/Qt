@@ -332,12 +332,12 @@ int MyInterface::getIntegratedData(){
 
 
             //下面完成每个目标的构造
-            //this->objs.clear();
+            this->objs.clear();
             this->objs1.clear();
             this->objs2.clear();
             this->targets = data->targets;
             //qDebug()<<QString("target:");
-            //qDebug()<<data->targets.size();
+            qDebug()<<data->targets.size();
             int count = this->targets.size();
             for (int i = 0; i < count;i++)
             {
