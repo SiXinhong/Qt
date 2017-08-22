@@ -255,7 +255,6 @@ void MainWindow::jinProcessing(){
         Mat mat;
         hconcat(pano1,pano2,mat);
         //在全景上画矩形，文字，轨迹等
-        //Mat mat = in.getPano().clone();
         vector<MyObject> objs = in.getObjs();
         for(int i=0;i<objs.size();i++){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -467,7 +466,6 @@ void MainWindow::selfProcessing(){
     hconcat(pano1,pano2,mat);
 
     //在全景上画矩形，文字，轨迹等
-    //Mat mat = in.getPano().clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -1297,7 +1295,6 @@ void MainWindow::selfTimerout(){
     hconcat(pano1,pano2,mat);
 
     //在全景上画矩形，文字，轨迹等
-    //Mat mat = in.getPano().clone();
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
