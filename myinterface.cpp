@@ -85,6 +85,39 @@ MyInterface::MyInterface(){
     this->hd = "./0.png";
     this->ld = "./0.png";
 
+    //data = new IntegratedData;
+
+//    MyObject mo1 = MyObject();
+//    //int x1 = this->panoImage.cols-150;
+//    int x1=500;//为了不让x小于0
+//    int y1 = 10;
+//    int w = 30;
+//    int h = 30;
+
+//    mo1.setRect(Rect(x1,y1,w,h));
+//    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
+//    mo1.setID(12345);
+//    MyObject mo2 = MyObject();
+//    //int x2 = this->panoImage.cols-200;
+//    int x2=300;
+//    int y2 = 30;
+//    mo2.setRect(Rect(x2,y2,w,h));
+//    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
+
+
+//    mo2.setID(12346);
+//    MyObject mo3 = MyObject();
+//    mo3.setID(12348);
+//    //int x3 = this->panoImage.cols-300;
+//    int x3=100;
+//    int y3 = 40;
+
+//    mo3.setRect(Rect(x3,y3,w,h));
+//    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
+//    objs.push_back(mo1);
+//    objs.push_back(mo2);
+//    objs.push_back(mo3);
+
     MyObject mo1 = MyObject();
     //int x1 = this->panoImage.cols-150;
     int x1=500;//为了不让x小于0
@@ -119,6 +152,11 @@ MyInterface::MyInterface(){
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
         sizeOfobjs=1;
+}
+
+MyInterface::~MyInterface(){
+
+    //delete data;
 }
 
 void MyInterface::fillObjs(){
@@ -268,7 +306,7 @@ int MyInterface::getIntegratedData2(){
 
 //获得综合数据
 int MyInterface::getIntegratedData(){
-    IntegratedData  *data = new IntegratedData;
+    IntegratedData* data = new IntegratedData;
     int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
     isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
     if (isfail_getdata == 0)
@@ -482,6 +520,8 @@ int MyInterface::getIntegratedData(){
     }
     delete data;
     return isfail_getdata;
+
+    return 3;
 }
 
 ////设置系统参数

@@ -56,8 +56,11 @@ private:
     vector<QString> vc;
     //临时变量结束------------------------------
 
+    //IntegratedData  *data;
+
 public:
     MyInterface();
+    ~MyInterface();
 
     //全景显示区1的图片的URL
     QString qj1;
