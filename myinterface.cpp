@@ -85,36 +85,36 @@ MyInterface::MyInterface(){
     this->hd = "./0.png";
     this->ld = "./0.png";
 
-    MyObject mo1 = MyObject();
-    //int x1 = this->panoImage.cols-150;
-    int x1=500;//为了不让x小于0
-    int y1 = 10;
-    int w = 30;
-    int h = 30;
+//    MyObject mo1 = MyObject();
+//    //int x1 = this->panoImage.cols-150;
+//    int x1=500;//为了不让x小于0
+//    int y1 = 10;
+//    int w = 30;
+//    int h = 30;
 
-    mo1.setRect(Rect(x1,y1,w,h));
-    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
-    mo1.setID(12345);
-    MyObject mo2 = MyObject();
-    //int x2 = this->panoImage.cols-200;
-    int x2=300;
-    int y2 = 30;
-    mo2.setRect(Rect(x2,y2,w,h));
-    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
+//    mo1.setRect(Rect(x1,y1,w,h));
+//    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
+//    mo1.setID(12345);
+//    MyObject mo2 = MyObject();
+//    //int x2 = this->panoImage.cols-200;
+//    int x2=300;
+//    int y2 = 30;
+//    mo2.setRect(Rect(x2,y2,w,h));
+//    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
 
 
-    mo2.setID(12346);
-    MyObject mo3 = MyObject();
-    mo3.setID(12348);
-    //int x3 = this->panoImage.cols-300;
-    int x3=100;
-    int y3 = 40;
+//    mo2.setID(12346);
+//    MyObject mo3 = MyObject();
+//    mo3.setID(12348);
+//    //int x3 = this->panoImage.cols-300;
+//    int x3=100;
+//    int y3 = 40;
 
-    mo3.setRect(Rect(x3,y3,w,h));
-    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
-    objs.push_back(mo1);
-    objs.push_back(mo2);
-    objs.push_back(mo3);
+//    mo3.setRect(Rect(x3,y3,w,h));
+//    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
+//    objs.push_back(mo1);
+//    objs.push_back(mo2);
+//    objs.push_back(mo3);
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
@@ -223,7 +223,11 @@ Mat MyInterface::getQJ2Mat(){
 }
 
 vector<MyObject> MyInterface::getObjs(){
-    return this->objs;
+   // return this->objs;
+    vector<MyObject> ret;
+    ret.insert(ret.end(),objs1.begin(),objs1.end());
+    ret.insert(ret.end(),objs2.begin(),objs2.end());
+    return ret;
 }
 //获得全景显示区1中的对象
 vector<MyObject> MyInterface::getQj1Objs(){
@@ -276,11 +280,11 @@ int MyInterface::getIntegratedData(){
             this->timett = data->timeinfo;
             cv::Mat pano_temp=cv::Mat(data->panoImage.rows,data->panoImage.cols,CV_8UC3);
             vector<cv::Mat> v_mat(3);
-            cv::split(pano_temp,v_mat);
+            cv::split(pano_temp,v_mat);//把多通道分解成几个单通道
             v_mat[0]=data->panoImage.clone();
             v_mat[1]=data->panoImage.clone();
             v_mat[2]=data->panoImage.clone();
-            cv::merge(v_mat,pano_temp);
+            cv::merge(v_mat,pano_temp);//把几个单通道组合成一个多通道
             //cv::imshow(pano_image);
             data->panoImage=pano_temp;
 
@@ -337,57 +341,76 @@ int MyInterface::getIntegratedData(){
             this->objs2.clear();
             this->targets = data->targets;
             //qDebug()<<QString("target:");
-            //qDebug()<<data->targets.size();
+            //qDebug()<<"targets.size "<<data->targets.size();
             int count = this->targets.size();
             for (int i = 0; i < count;i++)
             {
                 SmallTarget tar = targets[i];
+                //临时给目标设置id，SDK传过来的id都是-1
+                tar.id = i;
+                //qDebug()<<"target id "<<tar.id;
                 //先判断目标是不是已经存在
                 boolean isObjExisted = false;
-                MyObject obj;
+                //MyObject obj;
+                int objIndex=-1;
                 for(int i = 0; i < this->objs.size(); i++){
-                    obj = objs[i];
-                    if(obj.getID() == tar.id){
+                    //obj = objs[i];
+                    if(objs[i].getID() == tar.id){
                         isObjExisted = true;
+                        objIndex=i;
                         break;
                     }
                 }
 
+
                 if(!isObjExisted){
-                    obj = MyObject();
+                    vector<int>::iterator it;
+                    it = find(idSets.begin(),idSets.end(),tar.id);
+                    if(it!=idSets.end()){
+                        objs[objIndex].setID(tar.id);
+                    }else{
+                        MyObject obj = MyObject();
+                        idSets.push_back(tar.id);
+                        obj.setID(tar.id);
+                        this->objs.push_back(obj);
+                        objIndex = objs.size() - 1;
+                    }
                 }
 
-                obj.setID(tar.id);
-                obj.setCenPoint(tar.cenPointACS);
-                obj.setBlockSize(tar.blocksize);
-                obj.setVelocity(tar.Velocity);
-                obj.setMotionDerection(tar.MotionDerection);
-                obj.setAbsoluteIntensity(tar.area);
-                obj.setHorizontalAxisLength(tar.horizontalAxisLength);
-                obj.setVerticalAxisLength(tar.verticalAxisLength);
-                obj.setAbsoluteIntensity(tar.absoluteIntensity);
-                obj.setRelativeIntensity(tar.relativeIntensity);
-                obj.setContours(tar.contours);
-                obj.setSnapshoot(tar.Snapshoot);
-                obj.setSihouette(tar.sihouette);
-                obj.setTargetScale(tar.targetScale);
-                obj.setCenSueEintensity(tar.CenSueEintensity);
-                obj.setSCRValue(tar.SCRValue);
-                obj.setTheFeatures(tar.theFeatures);
+                //obj.setID(tar.id);
+
+                objs[objIndex].setCenPoint(tar.cenPointACS);
+                //qDebug()<<"cenPointACS"<<tar.cenPointACS.x<<","<<tar.cenPointACS.y;
+                //qDebug()<<"after set cenpoint"<<objs[objIndex].cenPoint.x<<","<<objs[objIndex].cenPoint.y;
+                objs[objIndex].setBlockSize(tar.blocksize);
+                objs[objIndex].setVelocity(tar.Velocity);
+                objs[objIndex].setMotionDerection(tar.MotionDerection);
+                objs[objIndex].setAbsoluteIntensity(tar.area);
+                objs[objIndex].setHorizontalAxisLength(tar.horizontalAxisLength);
+                objs[objIndex].setVerticalAxisLength(tar.verticalAxisLength);
+                objs[objIndex].setAbsoluteIntensity(tar.absoluteIntensity);
+                objs[objIndex].setRelativeIntensity(tar.relativeIntensity);
+                objs[objIndex].setContours(tar.contours);
+                objs[objIndex].setSnapshoot(tar.Snapshoot);
+                objs[objIndex].setSihouette(tar.sihouette);
+                objs[objIndex].setTargetScale(tar.targetScale);
+                objs[objIndex].setCenSueEintensity(tar.CenSueEintensity);
+                objs[objIndex].setSCRValue(tar.SCRValue);
+                objs[objIndex].setTheFeatures(tar.theFeatures);
                 //设置矩形框
-                obj.setRect(Rect(obj.getCenPoint().x-obj.getBlockSize().width/2,obj.getCenPoint().y-obj.getBlockSize().height/2,obj.getBlockSize().width,obj.getBlockSize().height));
-                if(!isObjExisted){
-                    this->objs.push_back(obj);
-                }
+                objs[objIndex].setRect(Rect(objs[objIndex].getCenPoint().x-objs[objIndex].getBlockSize().width/2,objs[objIndex].getCenPoint().y-objs[objIndex].getBlockSize().height/2,objs[objIndex].getBlockSize().width,objs[objIndex].getBlockSize().height));
+//                if(!isObjExisted){
+//                    this->objs.push_back(obj);
+//                }
 
 
                 //设置轨迹
                 boolean isExisted = false;
                 for(int i = 0; i < this->tracks.size(); i++){
                     MyObjectTrack track = tracks[i];
-                    if(obj.getID() == track.getId()){
+                    if(objs[objIndex].getID() == track.getId()){
                         vector<Point> ps = track.getTrack();
-                        ps.push_back(obj.getCenPoint());
+                        ps.push_back(objs[objIndex].getCenPoint());
                         track.setTrack(ps);
                         isExisted = true;
                     }
@@ -395,22 +418,22 @@ int MyInterface::getIntegratedData(){
 
                 if(!isExisted){
                     MyObjectTrack track1 = MyObjectTrack();
-                    track1.setId(obj.getID());
+                    track1.setId(objs[objIndex].getID());
                     vector<Point> ps = track1.getTrack();
-                    ps.push_back(obj.getCenPoint());
+                    ps.push_back(objs[objIndex].getCenPoint());
                     track1.setTrack(ps);
                     tracks.push_back(track1);
                 }
 
-                if(obj.getCenPoint().y<this->panoImage.cols/2){
-                    this->objs1.push_back(obj);
+                if(objs[objIndex].getCenPoint().y<this->panoImage.cols/2){
+                    this->objs1.push_back(objs[objIndex]);
                     //设置轨迹
                     boolean isExisted1 = false;
                     for(int i = 0; i < this->tracks1.size(); i++){
                         MyObjectTrack track2 = tracks1[i];
-                        if(obj.getID() == track2.getId()){
+                        if(objs[objIndex].getID() == track2.getId()){
                             vector<Point> ps = track2.getTrack();
-                            ps.push_back(obj.getCenPoint());
+                            ps.push_back(objs[objIndex].getCenPoint());
                             track2.setTrack(ps);
                             isExisted1 = true;
                         }
@@ -418,22 +441,22 @@ int MyInterface::getIntegratedData(){
 
                     if(!isExisted1){
                         MyObjectTrack track3 = MyObjectTrack();
-                        track3.setId(obj.getID());
+                        track3.setId(objs[objIndex].getID());
                         vector<Point> ps = track3.getTrack();
-                        ps.push_back(obj.getCenPoint());
+                        ps.push_back(objs[objIndex].getCenPoint());
                         track3.setTrack(ps);
                         tracks1.push_back(track3);
                     }
                 }
                 else{
-                    this->objs2.push_back(obj);
+                    this->objs2.push_back(objs[objIndex]);
                     //设置轨迹
                     boolean isExisted2 = false;
                     for(int i = 0; i < this->tracks2.size(); i++){
                         MyObjectTrack track4 = tracks2[i];
-                        if(obj.getID() == track4.getId()){
+                        if(objs[objIndex].getID() == track4.getId()){
                             vector<Point> ps = track4.getTrack();
-                            ps.push_back(obj.getCenPoint());
+                            ps.push_back(objs[objIndex].getCenPoint());
                             track4.setTrack(ps);
                             isExisted2 = true;
                         }
@@ -441,9 +464,9 @@ int MyInterface::getIntegratedData(){
 
                     if(!isExisted2){
                         MyObjectTrack track5 = MyObjectTrack();
-                        track5.setId(obj.getID());
+                        track5.setId(objs[objIndex].getID());
                         vector<Point> ps = track5.getTrack();
-                        ps.push_back(obj.getCenPoint());
+                        ps.push_back(objs[objIndex].getCenPoint());
                         track5.setTrack(ps);
                         tracks2.push_back(track5);
                     }
@@ -452,7 +475,7 @@ int MyInterface::getIntegratedData(){
 
             cv::waitKey(0);
         }
-        //qDebug() << "Success to get data" << endl;
+        qDebug() << "Success to get data" << objs.size();
 
     }
     else

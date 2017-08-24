@@ -664,8 +664,8 @@ void BackWindow::addMyToolBar_backWindow()
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    vector<MyObject> vec = in.getObjs2();
-
+    //vector<MyObject> vec = in.getObjs2();
+   vector<MyObject> vec = in.getObjs();
 //    light1=new QLabel(this);
 //    light2=new QLabel(this);
 //    light3=new QLabel(this);
