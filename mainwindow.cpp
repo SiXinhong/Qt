@@ -164,7 +164,9 @@ void MainWindow::init(){
     connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
 
     // 创建工具栏
+    //qDebug()<<"addmytoolbar1";
     addMyToolBar();
+    //qDebug()<<"addmytoolbar2";
     //布局
     gridlayout = new QGridLayout;
     mainToolBar->setStyleSheet("background-color:#2E302D");
@@ -884,7 +886,7 @@ void MainWindow::addMyToolBar()
 //    light3=new QLabel(this);
 //    light4=new QLabel(this);
 //    light5=new QLabel(this);
-
+    num_objs=widget1->objs.size();
     if(!isGaojing)
     {
         lights[0]->setPixmap(fitpixmap2);
@@ -900,6 +902,7 @@ void MainWindow::addMyToolBar()
     }
     else
     {
+        //qDebug()<<num_objs;
         if(num_objs==0)
         {
 
@@ -1185,12 +1188,12 @@ void MainWindow::adjustment()
 
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
-   widget3->setAllObjects(in.getObjs());
+   widget3->setAllObjects(widget1->objs);
     widget3->draw();
 
     widget4->setPano(newpano);
     widget4->setTwoPanos(mat);
-    widget4->setAllObjects(in.getObjs());
+    widget4->setAllObjects(widget1->objs);
     widget4->draw();
 
   //  widget3->setPano(mat);
@@ -1585,7 +1588,6 @@ void MainWindow::jinTimerout(){
         delete todayDir;
 
         Mat pano = in.getPano();
-
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
@@ -1632,7 +1634,6 @@ void MainWindow::jinTimerout(){
             mat=setPseudocolor(mat);
         updateBright(mat);
         updateContrast(mat);
-
        num_objs = objs.size();
         for (int i = 0; i < num_objs;i++)
         {
@@ -1719,7 +1720,6 @@ void MainWindow::jinTimerout(){
         mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
         Mat newpano;
-
         hconcat(mat1,mat2,newpano);
 
         //Mat mat1 = image44;
@@ -1749,7 +1749,7 @@ void MainWindow::jinTimerout(){
         //Mat mat3 =imread(imageurl);
         widget3->setPano(newpano);
         widget3->setTwoPanos(mat);
-        widget3->setAllObjects(in.getObjs());
+        widget3->setAllObjects(widget1->objs);
         widget3->draw();
         //drawUiLabelByCopy(mat3,3);
         //图片4
@@ -1757,7 +1757,7 @@ void MainWindow::jinTimerout(){
         //drawUiLabelByCopy(mat4,4);
         widget4->setPano(newpano);
         widget4->setTwoPanos(mat);
-        widget4->setAllObjects(in.getObjs());
+        widget4->setAllObjects(widget1->objs);
         widget4->draw();
         //图片5
         //QString imageurl5=in.getHD();

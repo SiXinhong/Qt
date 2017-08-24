@@ -334,9 +334,8 @@ int MyInterface::getIntegratedData(){
             //                this->qj2mat = image55;
             //this->qj2mat = mat;
 
-
             //下面完成每个目标的构造
-            this->objs.clear();
+            //this->objs.clear();
             this->objs1.clear();
             this->objs2.clear();
             this->targets = data->targets;
@@ -376,9 +375,9 @@ int MyInterface::getIntegratedData(){
                         objIndex = objs.size() - 1;
                     }
                 }
-
+//                qDebug()<<objs.size();
+//                qDebug()<<objIndex ;
                 //obj.setID(tar.id);
-
                 objs[objIndex].setCenPoint(tar.cenPointACS);
                 //qDebug()<<"cenPointACS"<<tar.cenPointACS.x<<","<<tar.cenPointACS.y;
                 //qDebug()<<"after set cenpoint"<<objs[objIndex].cenPoint.x<<","<<objs[objIndex].cenPoint.y;
@@ -402,7 +401,6 @@ int MyInterface::getIntegratedData(){
 //                if(!isObjExisted){
 //                    this->objs.push_back(obj);
 //                }
-
 
                 //设置轨迹
                 boolean isExisted = false;
@@ -667,7 +665,7 @@ vector<MyObject> MyInterface::getObjs2(){
     objs_self.push_back(mo2);
     objs_self.push_back(mo3);
 
-    return objs;
+    return objs_self;
 }
 
 void MyInterface::setObjs(vector<MyObject> os){

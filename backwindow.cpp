@@ -42,8 +42,6 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     }
 
     delete dir2;
-
-    qDebug()<<"111111111111111111111111111111111111111111111111111111111111111111111111";
     mainToolBar->clear();
     addMyToolBar_backWindow();
     timeLine=new TimeLine(this);
@@ -103,8 +101,6 @@ void BackWindow::selfTimerout(){
         file.close();
         fileIndex++;
     }
-
-    qDebug()<<"222222222222222222222222222222222222222222222222222222222222";
     Mat pano;
     if(panoIndex<filepano->count()){
         QFile file(filepano->at(panoIndex).filePath());
@@ -129,7 +125,7 @@ void BackWindow::selfTimerout(){
         widget6->draw();
         return;
  }
-    qDebug()<<"77777777777777777777777777777777777777777777777777777777777777777777777777777777777";
+
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();
     const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -242,7 +238,7 @@ void BackWindow::selfTimerout(){
                        mat=setPseudocolor(mat);
        updateBright(mat);
        updateContrast(mat);
-       qDebug()<<"88888888888888888888888888888888888888888888888888888888888888888888888888888888888888";
+
    for (int i = 0; i < objs.size();i++)
    {
        //画对象的box
@@ -293,7 +289,7 @@ void BackWindow::selfTimerout(){
       // cv::cvtColor(mat, mat, CV_BGR2RGB);
    }
  //  cv::cvtColor(mat, mat, CV_BGR2RGB);
-   qDebug()<<"999999999999999999999999999999999999999999999999999999999999999999999999999";
+
    //然后劈成2半
 
 //    Size dsize ;
@@ -365,7 +361,7 @@ void BackWindow::selfTimerout(){
    widget3->setPano(newpano);
    widget3->setTwoPanos(mat);
    //widget3->setPano(mat);
-   widget3->setAllObjects(in.getObjs());
+   widget3->setAllObjects(in.getObjs2());
    widget3->draw();
    //drawUiLabelByCopy(mat3,3);
    //图片4
@@ -374,7 +370,7 @@ void BackWindow::selfTimerout(){
    //widget4->setPano(mat);
    widget4->setPano(newpano);
    widget4->setTwoPanos(mat);
-   widget4->setAllObjects(in.getObjs());
+   widget4->setAllObjects(in.getObjs2());
    widget4->draw();
    //图片5
    //QString imageurl5=in.getHD();
@@ -398,7 +394,7 @@ void BackWindow::selfTimerout(){
 //   timeLine->update();
    if(isGaojing)
    {
-       qDebug()<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+
    if(objs.size()> num_objs){
        this->sound->play();
        newObjCount=objs.size()-num_objs;
@@ -407,7 +403,7 @@ void BackWindow::selfTimerout(){
    }
    }
    num_objs = objs.size();
-   qDebug()<<"num_objs::"<<num_objs;
+
    if(isGaojing)
    {
        if(num_objs==0)
@@ -496,7 +492,7 @@ void BackWindow::selfTimerout(){
 //        light3->setPixmap(fitpixmap2);
 //        light4->setPixmap(fitpixmap2);
 //        light5->setPixmap(fitpixmap2);
-       qDebug()<<"4444444444444444444444444444444444444444444444444444444444444444";
+
   }
 }
 
@@ -506,7 +502,7 @@ void BackWindow::exitFunction(){
 
 void BackWindow::addMyToolBar_backWindow()
 {
-    qDebug()<<"---------------------------";
+
     //图标太大导致在小屏幕上显示不全，改为按照屏幕宽度自动调整图标的大小
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
@@ -942,7 +938,6 @@ void BackWindow::onTimerOut2(){
 
     timeLine->position= fileIndex*255/fileInfo->count();
     timeLine->update();
-    qDebug()<<"6666666666666666666666666666666666666666666666666666666666666666";
 }
 
 
