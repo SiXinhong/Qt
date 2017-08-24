@@ -85,6 +85,8 @@ MyInterface::MyInterface(){
     this->hd = "./0.png";
     this->ld = "./0.png";
 
+    //data = new IntegratedData;
+
 //    MyObject mo1 = MyObject();
 //    //int x1 = this->panoImage.cols-150;
 //    int x1=500;//为了不让x小于0
@@ -119,6 +121,11 @@ MyInterface::MyInterface(){
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
         sizeOfobjs=1;
+}
+
+MyInterface::~MyInterface(){
+
+    //delete data;
 }
 
 void MyInterface::fillObjs(){
@@ -268,7 +275,7 @@ int MyInterface::getIntegratedData2(){
 
 //获得综合数据
 int MyInterface::getIntegratedData(){
-    IntegratedData  *data = new IntegratedData;
+    #if 0
     int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
     isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
     if (isfail_getdata == 0)
@@ -482,8 +489,11 @@ int MyInterface::getIntegratedData(){
     {
         //qDebug()<< "fail to get data" << endl;
     }
-    delete data;
+    //delete data;
     return isfail_getdata;
+    #endif
+
+    return 3;
 }
 
 ////设置系统参数
