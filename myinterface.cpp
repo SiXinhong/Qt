@@ -336,7 +336,7 @@ int MyInterface::getIntegratedData(){
 
 
             //下面完成每个目标的构造
-            //this->objs.clear();
+            this->objs.clear();
             this->objs1.clear();
             this->objs2.clear();
             this->targets = data->targets;

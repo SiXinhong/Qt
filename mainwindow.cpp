@@ -313,12 +313,20 @@ void MainWindow::jinProcessing(){
                 QString ty = QString::number(y,10);
                 QString tstr = "x="+tx+",y="+ty;
                 string str = tstr.toStdString();
+                QString idstr = "id="+QString::number(obj.getID(),10);
+                string idst = idstr.toStdString();
                 //qDebug()<<tstr;
                 Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
                 Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
     
                 putText(mat,str,p,3,0.5,obj.getColor());
                 putText(mat,str,p2,3,0.5,obj.getColor());
+
+                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+
+                putText(mat,idst,p3,3,0.5,obj.getColor());
+                putText(mat,idst,p4,3,0.5,obj.getColor());
                         }
            // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
@@ -501,12 +509,20 @@ void MainWindow::selfProcessing(){
             QString ty = QString::number(y,10);
             QString tstr = "x="+tx+",y="+ty;
             string str = tstr.toStdString();
+            QString idstr = "id="+QString::number(obj.getID(),10);
+            string idst = idstr.toStdString();
             //qDebug()<<tstr;
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
             Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
             putText(mat,str,p,3,0.5,obj.getColor());
             putText(mat,str,p2,3,0.5,obj.getColor());
+
+            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+
+            putText(mat,idst,p3,3,0.5,obj.getColor());
+            putText(mat,idst,p4,3,0.5,obj.getColor());
                     }
        // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
@@ -1327,13 +1343,21 @@ void MainWindow::selfTimerout(){
             QString ty = QString::number(y,10);
             QString tstr = "x="+tx+",y="+ty;
             string str = tstr.toStdString();
+            QString idstr = "id="+QString::number(obj.getID(),10);
+            string idst = idstr.toStdString();
             //qDebug()<<tstr;
             Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
             Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
             putText(mat,str,p,3,0.5,obj.getColor());
             putText(mat,str,p2,3,0.5,obj.getColor());
-                    }
+
+            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+
+            putText(mat,idst,p3,3,0.5,obj.getColor());
+            putText(mat,idst,p4,3,0.5,obj.getColor());
+       }
        // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
    // cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -1651,13 +1675,21 @@ void MainWindow::jinTimerout(){
                 QString ty = QString::number(y,10);
                 QString tstr = "x="+tx+",y="+ty;
                 string str = tstr.toStdString();
+                QString idstr = "id="+QString::number(obj.getID(),10);
+                string idst = idstr.toStdString();
                 //qDebug()<<tstr;
                 Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
                 Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
-    
+
                 putText(mat,str,p,3,0.5,obj.getColor());
                 putText(mat,str,p2,3,0.5,obj.getColor());
-                        }
+
+                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+
+                putText(mat,idst,p3,3,0.5,obj.getColor());
+                putText(mat,idst,p4,3,0.5,obj.getColor());
+           }
            // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
       //  cv::cvtColor(mat, mat, CV_BGR2RGB);
