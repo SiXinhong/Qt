@@ -85,36 +85,36 @@ MyInterface::MyInterface(){
     this->hd = "./0.png";
     this->ld = "./0.png";
 
-//    MyObject mo1 = MyObject();
-//    //int x1 = this->panoImage.cols-150;
-//    int x1=500;//为了不让x小于0
-//    int y1 = 10;
-//    int w = 30;
-//    int h = 30;
+    MyObject mo1 = MyObject();
+    //int x1 = this->panoImage.cols-150;
+    int x1=500;//为了不让x小于0
+    int y1 = 10;
+    int w = 30;
+    int h = 30;
 
-//    mo1.setRect(Rect(x1,y1,w,h));
-//    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
-//    mo1.setID(12345);
-//    MyObject mo2 = MyObject();
-//    //int x2 = this->panoImage.cols-200;
-//    int x2=300;
-//    int y2 = 30;
-//    mo2.setRect(Rect(x2,y2,w,h));
-//    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
+    mo1.setRect(Rect(x1,y1,w,h));
+    mo1.setCenPoint(Point(x1+w/2, y1+h/2));
+    mo1.setID(12345);
+    MyObject mo2 = MyObject();
+    //int x2 = this->panoImage.cols-200;
+    int x2=300;
+    int y2 = 30;
+    mo2.setRect(Rect(x2,y2,w,h));
+    mo2.setCenPoint(Point(x2+w/2, y2+h/2));
 
 
-//    mo2.setID(12346);
-//    MyObject mo3 = MyObject();
-//    mo3.setID(12348);
-//    //int x3 = this->panoImage.cols-300;
-//    int x3=100;
-//    int y3 = 40;
+    mo2.setID(12346);
+    MyObject mo3 = MyObject();
+    mo3.setID(12348);
+    //int x3 = this->panoImage.cols-300;
+    int x3=100;
+    int y3 = 40;
 
-//    mo3.setRect(Rect(x3,y3,w,h));
-//    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
-//    objs.push_back(mo1);
-//    objs.push_back(mo2);
-//    objs.push_back(mo3);
+    mo3.setRect(Rect(x3,y3,w,h));
+    mo3.setCenPoint(Point(x3+w/2, y3+h/2));
+    objs_self.push_back(mo1);
+    objs_self.push_back(mo2);
+    objs_self.push_back(mo3);
     qsrand(QTime(0,0,0).secsTo(QTime::currentTime()));
     sizeOfobjs=qrand()%10;
     if(sizeOfobjs==0)
@@ -124,11 +124,11 @@ MyInterface::MyInterface(){
 void MyInterface::fillObjs(){
     if(sizeOfobjs == 3 || sizeOfobjs == 0)
         return;
-    while(objs.size()>sizeOfobjs)
-        objs.pop_back();
+    while(objs_self.size()>sizeOfobjs)
+        objs_self.pop_back();
 
-    while(objs.size()<sizeOfobjs){
-        MyObject mo1 = objs.back();
+    while(objs_self.size()<sizeOfobjs){
+        MyObject mo1 = objs_self.back();
         Rect r=mo1.getRect();
         int w=r.width;
         int h=r.height;
@@ -138,7 +138,7 @@ void MyInterface::fillObjs(){
         mo1.setRect(Rect(x,y,w,h));
         mo1.setCenPoint(Point(x+w/2, y+h/2));
         mo1.setID(mo1.getID()+1);
-        objs.push_back(mo1);
+        objs_self.push_back(mo1);
     }
 }
 
@@ -512,9 +512,9 @@ vector<MyObject> MyInterface::getObjs2(){
     //        index = 0;
     //    }
 
-    MyObject mo1 = (MyObject)objs[0];
-    MyObject mo2 = (MyObject)objs[1];
-    MyObject mo3 = (MyObject)objs[2];
+    MyObject mo1 = (MyObject)objs_self[0];
+    MyObject mo2 = (MyObject)objs_self[1];
+    MyObject mo3 = (MyObject)objs_self[2];
     int x1=mo1.getRect().x;// = this->panoImage.cols-150+indexx*15;
     int y1=mo1.getRect().y;// = 10+indexy*2;
     int w = 30;
@@ -662,10 +662,10 @@ vector<MyObject> MyInterface::getObjs2(){
     }
 
     //vector<MyObject> vc;
-    objs.clear();
-    objs.push_back(mo1);
-    objs.push_back(mo2);
-    objs.push_back(mo3);
+    objs_self.clear();
+    objs_self.push_back(mo1);
+    objs_self.push_back(mo2);
+    objs_self.push_back(mo3);
 
     return objs;
 }
@@ -676,14 +676,14 @@ void MyInterface::setObjs(vector<MyObject> os){
 //生成随机个对象
 vector<MyObject> MyInterface::getRandomObjs(){
     if(this->panoImage.cols==0)
-        return objs;
-    if(sizeOfobjs!=objs.size())
+        return objs_self;
+    if(sizeOfobjs!=objs_self.size())
         fillObjs();
     this->panoImage.cols;
     int indexx=10;
     const float y_increace_ratio=1.2;
-    for(int idx=0;idx<objs.size();idx++){
-        MyObject mo1 = (MyObject)objs[idx];
+    for(int idx=0;idx<objs_self.size();idx++){
+        MyObject mo1 = (MyObject)objs_self[idx];
         int x1=mo1.getRect().x;
         int y1=mo1.getRect().y;
         int w = 30;
@@ -723,7 +723,7 @@ vector<MyObject> MyInterface::getRandomObjs(){
         }
 
 
-        objs[idx]=mo1;
+        objs_self[idx]=mo1;
     }
-    return objs;
+    return objs_self;
 }

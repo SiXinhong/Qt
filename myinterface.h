@@ -75,6 +75,7 @@ public:
 
     //对象集合
     vector<MyObject> objs;
+    vector<MyObject> objs_self;
     int sizeOfobjs;
     //位于全景显示区1中的对象
     vector<MyObject> objs1;
