@@ -872,7 +872,7 @@ void MainWindow::addMyToolBar()
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     //vector<MyObject> vec = in.getObjs2();
-    vector<MyObject> vec = in.getObjs();
+    //vector<MyObject> vec = in.getObjs();
     lights[0]=new QLabel(this);
     lights[1]=new QLabel(this);
     lights[2]=new QLabel(this);
@@ -900,7 +900,7 @@ void MainWindow::addMyToolBar()
     }
     else
     {
-        if(vec.size()==0)
+        if(num_objs==0)
         {
 
 
@@ -915,7 +915,7 @@ void MainWindow::addMyToolBar()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==1)
+        else if(num_objs==1)
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap2);
@@ -928,7 +928,7 @@ void MainWindow::addMyToolBar()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==2)
+        else if(num_objs==2)
         {
 
             lights[0]->setPixmap(fitpixmap1);
@@ -942,7 +942,7 @@ void MainWindow::addMyToolBar()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==3)
+        else if(num_objs==3)
         {
 
             lights[0]->setPixmap(fitpixmap1);
@@ -956,7 +956,7 @@ void MainWindow::addMyToolBar()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==4)
+        else if(num_objs==4)
         {
 
             lights[0]->setPixmap(fitpixmap1);
@@ -970,7 +970,7 @@ void MainWindow::addMyToolBar()
 //            light4->setPixmap(fitpixmap1);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()>= 5 )
+        else if(num_objs>= 5 )
         {
 
             lights[0]->setPixmap(fitpixmap1);
@@ -985,7 +985,7 @@ void MainWindow::addMyToolBar()
 //            light5->setPixmap(fitpixmap1);
 
         }
-    }
+   }
     vbox3->addWidget(lights[0]);
     vbox3->addWidget(lights[1]);
     vbox3->addWidget(lights[2]);
@@ -1433,7 +1433,7 @@ void MainWindow::selfTimerout(){
     //Mat mat3 =imread(imageurl);
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
-    widget3->setAllObjects(in.getObjs());
+    widget3->setAllObjects(in.getObjs2());
     widget3->draw();
     //drawUiLabelByCopy(mat3,3);
     //图片4
@@ -1441,7 +1441,7 @@ void MainWindow::selfTimerout(){
     //drawUiLabelByCopy(mat4,4);
     widget4->setPano(newpano);
     widget4->setTwoPanos(mat);
-    widget4->setAllObjects(in.getObjs());
+    widget4->setAllObjects(in.getObjs2());
     widget4->draw();
     //图片5
     //QString imageurl5=in.getHD();
@@ -1633,7 +1633,7 @@ void MainWindow::jinTimerout(){
         updateBright(mat);
         updateContrast(mat);
 
-        int num_objs = objs.size();
+       num_objs = objs.size();
         for (int i = 0; i < num_objs;i++)
         {
             //画对象的box
@@ -2981,12 +2981,12 @@ void MainWindow::openCloseFunction()
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //vector<MyObject> vec = in.getObjs2();
-    vector<MyObject> vec = in.getObjs();
+   // vector<MyObject> vec = in.getObjs();
     if(isGaojing)
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));
         openClose->setToolTip("关闭告警");
-        if(vec.size()==0)
+        if(num_objs==0)
         {
             lights[0]->setPixmap(fitpixmap2);
             lights[1]->setPixmap(fitpixmap2);
@@ -2999,7 +2999,7 @@ void MainWindow::openCloseFunction()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==1)
+        else if(num_objs==1)
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap2);
@@ -3012,7 +3012,7 @@ void MainWindow::openCloseFunction()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==2)
+        else if(num_objs==2)
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap1);
@@ -3025,7 +3025,7 @@ void MainWindow::openCloseFunction()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==3)
+        else if(num_objs==3)
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap1);
@@ -3038,7 +3038,7 @@ void MainWindow::openCloseFunction()
 //            light4->setPixmap(fitpixmap2);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()==4)
+        else if(num_objs==4)
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap1);
@@ -3051,7 +3051,7 @@ void MainWindow::openCloseFunction()
 //            light4->setPixmap(fitpixmap1);
 //            light5->setPixmap(fitpixmap2);
         }
-        else if(vec.size()>= 5 )
+        else if(num_objs>= 5 )
         {
             lights[0]->setPixmap(fitpixmap1);
             lights[1]->setPixmap(fitpixmap1);
