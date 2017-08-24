@@ -871,8 +871,8 @@ void MainWindow::addMyToolBar()
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-    vector<MyObject> vec = in.getObjs2();
-
+    //vector<MyObject> vec = in.getObjs2();
+    vector<MyObject> vec = in.getObjs();
     lights[0]=new QLabel(this);
     lights[1]=new QLabel(this);
     lights[2]=new QLabel(this);
@@ -1154,11 +1154,11 @@ void MainWindow::adjustment()
 
     hconcat(mat1,mat2,newpano);
 
-    Mat w1 = widget1->getMat();
-    if(this->isPseudo==true)
-        mat=setPseudocolor(w1);
-    updateBright(w1);
-    updateContrast(w1);
+//    Mat w1 = widget1->getMat();
+//    if(this->isPseudo==true)
+//        mat=setPseudocolor(w1);
+//    updateBright(w1);
+//    updateContrast(w1);
    // widget1->setMat(w1);
 
     widget1->setMat(mat1);
@@ -1168,11 +1168,11 @@ void MainWindow::adjustment()
     widget1->setTracks(in.getTracks());
     widget1->draw();
 
-    Mat w2 = widget2->getMat();
-    if(this->isPseudo==true)
-        mat=setPseudocolor(w2);
-    updateBright(w2);
-    updateContrast(w2);
+//    Mat w2 = widget2->getMat();
+//    if(this->isPseudo==true)
+//        mat=setPseudocolor(w2);
+//    updateBright(w2);
+//    updateContrast(w2);
     //widget2->setMat(w2);
 
     //widget2->setPano(mat);
@@ -1612,6 +1612,7 @@ void MainWindow::jinTimerout(){
         //在全景上画矩形，文字，轨迹等
         //Mat mat = in.getPano().clone();
         vector<MyObject> objs = in.getObjs();
+        qDebug()<<"mainwindow objs.size "<<objs.size();
         if(isJixu == true){
             for(int i=0;i<objs.size();i++){
                 QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -1637,6 +1638,7 @@ void MainWindow::jinTimerout(){
         {
             //画对象的box
             MyObject obj = objs[i];
+            //qDebug()<<"obj.point"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
@@ -1734,6 +1736,7 @@ void MainWindow::jinTimerout(){
         widget1->setObjects(objs);
         widget1->setTracks(in.getTracks());
         widget1->draw();
+
         widget2->setPano(newpano);
         //widget2->setPano(mat);
         widget2->setMat(mat2);
@@ -1771,7 +1774,7 @@ void MainWindow::jinTimerout(){
         widget6->setPano(newpano);
         widget6->setObjects(objs);
         widget6->draw();
-     qDebug()<<QTime::currentTime().toString("hh:mm:ss");
+     //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     
      if(isGaojing)
      {
@@ -2245,11 +2248,12 @@ void MainWindow::paintEvent(QPaintEvent *){
 
 Mat MainWindow::setPseudocolor(Mat& image){
     Mat img_pseudocolor(image.rows, image.cols, CV_8UC3);
+    // qDebug()<<image.channels();
     for (int y = 0; y < image.rows; y++)//转为伪彩色图像的具体算法
     {
         for (int x = 0; x < image.cols; x++)
         {
-            int tmp = image.at<unsigned char>(y, x);
+            int tmp = image.at<unsigned char>(y, x)  ;
             img_pseudocolor.at<Vec3b>(y, x)[0] = abs(255 - tmp); //blue
             img_pseudocolor.at<Vec3b>(y, x)[1] = abs(127 - tmp); //green
             img_pseudocolor.at<Vec3b>(y, x)[2] = abs(0 - tmp); //red
@@ -2976,7 +2980,8 @@ void MainWindow::openCloseFunction()
     QPixmap pixmap2("./icon/16_2.png");
     fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    vector<MyObject> vec = in.getObjs2();
+    //vector<MyObject> vec = in.getObjs2();
+    vector<MyObject> vec = in.getObjs();
     if(isGaojing)
     {
         openClose->setIcon(QPixmap("./icon/11_1.png"));

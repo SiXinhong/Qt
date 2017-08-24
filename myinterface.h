@@ -140,6 +140,8 @@ public:
     int getIntegratedData();
 
     int getIntegratedData2();
+    //存储ID
+    vector<int> idSets;
 //    //设置系统参数
 //    int SetSysPara(int mode, const char *para_string, int id = 0);
 //    //获得系统参数
