@@ -22,6 +22,7 @@ INPUT(
 ./release\timeline.o
 ./release\socket.o
 ./release\welcomewindow.o
+./release\nwidget2.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o
@@ -32,4 +33,5 @@ INPUT(
 ./release\moc_qj2widget.o
 ./release\moc_objectAttributes.o
 ./release\moc_welcomewindow.o
+./release\moc_nwidget2.o
 );

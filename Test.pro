@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     mixer.cpp \
     timeline.cpp \
     socket.cpp \
-    welcomewindow.cpp
+    welcomewindow.cpp \
+    nwidget2.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     mixer.h \
     timeline.h \
     socket.h \
-    welcomewindow.h
+    welcomewindow.h \
+    nwidget2.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

@@ -11,6 +11,7 @@
 #include "qj2widget.h"
 #include "zwidget.h"
 #include "nwidget.h"
+#include "nwidget2.h"
 #include "hwidget.h"
 #include "lwidget.h"
 #include "myinterface.h"
@@ -130,6 +131,8 @@ public:
     void loadPictureToLabel5();
     //加载图片到Label6上
     void loadPictureToLabel6();
+    // 加载图片到Label7上
+    void loadPictureToLabel7();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
     void drawRecOnPic(Mat image,vector<Rectan> rectan);
     //绘制鼠标选取的矩形
@@ -170,6 +173,7 @@ public:
      QLabel *label4;
      QLabel *label5;
      QLabel *label6;
+     QLabel *label7;
 
      //加载到6个QLabel上的6个QImage
      QImage imgLabel1;
@@ -178,6 +182,7 @@ public:
      QImage imgLabel4;
      QImage imgLabel5;
      QImage imgLabel6;
+     QImage imgLabel7;
 
 
      Qj1Widget* widget1;
@@ -186,6 +191,7 @@ public:
      NWidget* widget4;
      HWidget* widget5;
      LWidget* widget6;
+     NWidget2* widget7;//辅助显示区2
 
      QTimer *timer;
      QTimer *timerSysTime;
@@ -369,6 +375,23 @@ class TrackBar* trackBar;
 class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
 
+private slots:
+void on_action_triggered();
+void on_action_2_triggered();
+void on_action_3_triggered();
+void on_action_4_triggered();
+void on_action_5_triggered();
+void on_action_6_triggered();
+void on_action_7_triggered();
+void on_action_8_triggered();
+void on_action_9_triggered();
+void on_action_10_triggered();
+void on_action_11_triggered();
+void on_action_13_triggered();
+void on_action_14_triggered();
+void on_action_15_triggered();
+void on_action_16_triggered();
+void on_action_17_triggered();
 };
 #include"backwindow.h"
 #endif // MAINWINDOW_H

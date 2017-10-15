@@ -120,14 +120,16 @@ void MainWindow::init(){
     widget3 = new ZWidget(new QWidget(this));
     widget4 = new NWidget(new QWidget(this));
     widget5 = new HWidget(new QWidget(this));
-    widget6 = new LWidget(new QWidget(this));
+    //widget6 = new LWidget(new QWidget(this));
+    widget7=new NWidget2(new QWidget(this));
 
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
     label3=new QLabel(widget3);
     label4=new QLabel(widget4);
     label5=new QLabel(widget5);
-    label6=new QLabel(widget6);
+    //label6=new QLabel(widget6);
+    label7=new QLabel(widget7);
 
     //鼠标拖拽控制变量赋初值
     isDrag1 = false;
@@ -151,17 +153,17 @@ void MainWindow::init(){
     timer=new QTimer();
     timer->setInterval(3000);
     timer->start();
-    connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
+    //connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
     //定时器，获取系统时间
 
     timerSysTime=new QTimer();
     timerSysTime->setInterval(1000);
     timerSysTime->start();
-    connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
+    //connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
-    connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
+    //connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
 
     // 创建工具栏
     //qDebug()<<"addmytoolbar1";
@@ -176,7 +178,8 @@ void MainWindow::init(){
     gridlayout->addWidget(widget3,3,0,1,3);
     gridlayout->addWidget(widget4,4,0);
     gridlayout->addWidget(widget5,4,1);
-    gridlayout->addWidget(widget6,4,2);
+    //gridlayout->addWidget(widget6,4,2);
+    gridlayout->addWidget(widget7,4,2);
 
     gridlayout->setRowStretch(0, 1);
     gridlayout->setRowStretch(1, 1);
@@ -184,9 +187,9 @@ void MainWindow::init(){
     gridlayout->setRowStretch(3, 6);
     gridlayout->setRowStretch(4, 5);
 
-    gridlayout->setColumnStretch(0,3);
+    gridlayout->setColumnStretch(0,2);
     gridlayout->setColumnStretch(1,1);
-    gridlayout->setColumnStretch(2,1);
+    gridlayout->setColumnStretch(2,2);
 
 
     widget->setLayout(gridlayout);
@@ -195,7 +198,7 @@ void MainWindow::init(){
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
-
+    this->menuBar()->raise();//menu前两个不能操作，可能是别的东西覆盖了这一块，把menuBar提升到顶层
     if(welcome!=0){
         welcome->close();
         delete welcome;
@@ -400,12 +403,16 @@ void MainWindow::jinProcessing(){
         widget5->setObjects(objs);
         widget5->draw();
         //图片6
-        QString imageurl6= in.getLD();
-        Mat mat6 =imread(imageurl6.toStdString());
-        widget6->setMat(mat6);
-        widget6->setPano(pano);
-        widget6->setObjects(objs);
-        widget6->draw();
+//        QString imageurl6= in.getLD();
+//        Mat mat6 =imread(imageurl6.toStdString());
+//        widget6->setMat(mat6);
+//        widget6->setPano(pano);
+//        widget6->setObjects(objs);
+//        widget6->draw();
+        widget7->setPano(newpano);
+        widget7->setTwoPanos(mat);
+        widget7->setAllObjects(in.getObjs());
+        widget7->draw();
     }
     else{
         QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
@@ -630,12 +637,16 @@ void MainWindow::selfProcessing(){
     widget5->setObjects(objs);
     widget5->draw();
     //图片6
-    QString imageurl6= in.getLD();
-    Mat mat6 =imread(imageurl6.toStdString());
-    widget6->setMat(mat6);
-    widget6->setPano(pano);
-    widget6->setObjects(objs);
-    widget6->draw();
+//    QString imageurl6= in.getLD();
+//    Mat mat6 =imread(imageurl6.toStdString());
+//    widget6->setMat(mat6);
+//    widget6->setPano(pano);
+//    widget6->setObjects(objs);
+//    widget6->draw();
+    widget7->setPano(newpano);
+    widget7->setTwoPanos(mat);
+    widget7->setAllObjects(in.getObjs());
+    widget7->draw();
 
 }
 //----------------------------------------------------------
@@ -1196,6 +1207,10 @@ void MainWindow::adjustment()
     widget4->setAllObjects(widget1->objs);
     widget4->draw();
 
+    widget7->setPano(newpano);
+    widget7->setTwoPanos(mat);
+    widget7->setAllObjects(widget1->objs);
+    widget7->draw();
   //  widget3->setPano(mat);
 
 
@@ -1458,9 +1473,13 @@ void MainWindow::selfTimerout(){
     //QString imageurl6= in.getLD();
     //Mat mat6 =imread(imageurl6.toStdString());
     //widget6->setMat(mat6);
-    widget6->setPano(newpano);
-    widget6->setObjects(objs);
-    widget6->draw();
+//    widget6->setPano(newpano);
+//    widget6->setObjects(objs);
+//    widget6->draw();
+    widget7->setPano(newpano);
+    widget7->setTwoPanos(mat);
+    widget7->setAllObjects(in.getObjs2());
+    widget7->draw();
 // qDebug()<<QTime::currentTime().toString("hh:mm:ss");
 
  if(isGaojing)
@@ -1771,9 +1790,14 @@ void MainWindow::jinTimerout(){
         //QString imageurl6= in.getLD();
         //Mat mat6 =imread(imageurl6.toStdString());
         //widget6->setMat(mat6);
-        widget6->setPano(newpano);
-        widget6->setObjects(objs);
-        widget6->draw();
+//        widget6->setPano(newpano);
+//        widget6->setObjects(objs);
+//        widget6->draw();
+
+        widget7->setPano(newpano);
+        widget7->setTwoPanos(mat);
+        widget7->setAllObjects(widget1->objs);
+        widget7->draw();
      //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     
      if(isGaojing)
@@ -1924,24 +1948,33 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
         isMove = true;
         //e->accept();
     }
+    e->ignore();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
+
     //判断目的点落在主显示区的标志变量
     boolean target3 = false;
     boolean target4 = false;
+    boolean target7 = false;
     QPoint position2 = e->pos();//e->globalPos() - this->pos();
-
     //判断目的点落在主显示区的情况
     if((position2.x() <= this->widget3->pos().x()+this->widget3->width()) &&(position2.x() >= this->widget3->pos().x()) && (position2.y() <= this->widget3->pos().y()+this->widget3->height()) &&(position2.y() >= this->widget3->pos().y())){
         target3 = true;
         target4 = false;
+        target7 = false;
     }
     //判断目的点落在凝视显示区的情况
     else if((position2.x() <= this->widget4->pos().x()+this->widget4->width()) &&(position2.x() >= this->widget4->pos().x()) && (position2.y() <= this->widget4->pos().y()+this->widget4->height()) &&(position2.y() >= this->widget4->pos().y())){
         target4 = true;
         target3 = false;
+        target7 = false;
+    }
+    else if((position2.x() <= this->widget7->pos().x()+this->widget7->width()) &&(position2.x() >= this->widget7->pos().x()) && (position2.y() <= this->widget7->pos().y()+this->widget7->height()) &&(position2.y() >= this->widget7->pos().y())){
+        target4 = false;
+        target3 = false;
+        target7 = true;
     }
     else{
         isDrag1 = false;
@@ -2228,9 +2261,145 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setMat(image44);
         widget4->draw();
     }
+
+    if(isDrag1 && isMove && target7){
+        //widget1->rectan = widget1->newrect;
+        widget1->isTo7 = true;
+        widget2->isTo7 = false;
+
+        if(widget1->newrect.width<0){
+            widget1->rectan7.width = -widget1->newrect.width;
+            widget1->rectan7.height= -widget1->newrect.height;
+            widget1->rectan7.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan7.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else if(widget1->newrect.height<0){
+            widget1->rectan7.width = -widget1->newrect.width;
+            widget1->rectan7.height= -widget1->newrect.height;
+            widget1->rectan7.x = widget1->newrect.x+widget1->newrect.width;
+            widget1->rectan7.y = widget1->newrect.y+widget1->newrect.height;
+        }
+        else{
+            widget1->rectan7.x = widget1->newrect.x;
+            widget1->rectan7.y = widget1->newrect.y;
+            widget1->rectan7.width = widget1->newrect.width;
+            widget1->rectan7.height = widget1->newrect.height;
+        }
+        widget1->isRect = false;
+
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        //widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
+
+        //更新主显示区所包含的目标
+        vector<MyObject> objs4;
+        int num_objs = widget1->objs.size();
+        for(int i = 0; i < num_objs; i++){
+            MyObject obj = widget1->objs[i];
+            if(widget1->isObjSelected7(obj)){
+                objs4.push_back(obj);
+            }
+        }
+
+        widget7->setObjects(objs4);
+
+        widget7->setFrom(1);
+
+        widget7->setRect(widget1->getQRectan7());
+
+        Mat mat = widget1->getPano();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget1->getQRectan4());
+        //        Mat image4 = QImageToMat(aa);
+        //        Mat image44 = Mat(dsize,CV_32S);
+        //        cv::resize(image4, image44,dsize);
+        //        widget4->setMat(image44);
+        //        widget4->draw();
+        Mat image4;
+        mat(widget1->rectan7).copyTo(image4);//mw->QImageToMat(mw->aa);
+        Mat image44 = Mat(dsize,CV_32S);
+        cv::resize(image4, image44,dsize);
+        widget7->setMat(image44);
+        widget7->draw();
+    }
+    //4. 如果出发点是全景显示区2，并且全景显示区2中有选择框，并且目的是凝视显示区，则拷贝全景显示区2选择框内的图像到凝视显示区
+    if(isDrag2 && isMove && target7){
+
+        widget1->isTo7 = false;
+        widget2->isTo7 = true;
+
+        //widget2->rectan = widget2->newrect;
+        if(widget2->newrect.width<0){
+            widget2->rectan7.width = -widget2->newrect.width;
+            widget2->rectan7.height= -widget2->newrect.height;
+            widget2->rectan7.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan7.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else if(widget2->newrect.height<0){
+            widget2->rectan7.width = -widget2->newrect.width;
+            widget2->rectan7.height= -widget2->newrect.height;
+            widget2->rectan7.x = widget2->newrect.x+widget2->newrect.width;
+            widget2->rectan7.y = widget2->newrect.y+widget2->newrect.height;
+        }
+        else{
+            widget2->rectan7.x = widget2->newrect.x;
+            widget2->rectan7.y = widget2->newrect.y;
+            widget2->rectan7.width = widget2->newrect.width;
+            widget2->rectan7.height = widget2->newrect.height;
+        }
+        widget2->isRect = false;
+
+        //调整所选的矩形框，以使得在主显示区中的显示不变形
+        //widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
+
+        //更新主显示区所包含的目标
+        vector<MyObject> objs4;
+        int num_objs = widget2->objs.size();
+        for(int i = 0; i < num_objs; i++){
+            MyObject obj = widget2->objs[i];
+            if(widget2->isObjSelected7(obj)){
+                objs4.push_back(obj);
+            }
+        }
+
+        widget7->setObjects(objs4);
+
+        widget7->setFrom(2);
+
+        widget7->setRect(widget2->getQRectan7());
+
+        Mat mat = widget2->getPano();
+        Size dsize ;
+        double scale = 1;
+        dsize = Size(mat.cols*scale,mat.rows*scale);
+        //        Mat image11 = Mat(dsize,CV_32S);
+        //        cv::resize(mat, image11,dsize);
+        //        img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+        //        //vector<Rectan> rectans;
+        //        aa=(&img)->copy(widget2->getQRectan4());
+        //        Mat image4 = QImageToMat(aa);
+        //        Mat image44 = Mat(dsize,CV_32S);
+        //        cv::resize(image4, image44,dsize);
+        //        widget4->setMat(image44);
+        //        widget4->draw();
+        Mat image4;
+        mat(widget2->getQRectan7()).copyTo(image4);//mw->QImageToMat(mw->aa);
+        Mat image44 = Mat(dsize,CV_32S);
+        cv::resize(image4, image44,dsize);
+        widget7->setMat(image44);
+        widget7->draw();
+    }
     isDrag1 = false;
     isDrag2 = false;
     isMove = false;
+    e->ignore();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *){
@@ -2239,7 +2408,8 @@ void MainWindow::resizeEvent(QResizeEvent *){
     label3->resize(widget3->size());
     label4->resize(widget4->size());
     label5->resize(widget5->size());
-    label6->resize(widget6->size());
+    //label6->resize(widget6->size());
+    label7->resize(widget7->size());
 }
 
 void MainWindow::paintEvent(QPaintEvent *){
@@ -2514,6 +2684,9 @@ void MainWindow::loadPictureToLabel6(){
     loadPictureToLabel(label6,imgLabel6);
 }
 
+void MainWindow::loadPictureToLabel7(){
+    loadPictureToLabel(label7,imgLabel7);
+}
 //---xiaotian   图像上绘制矩形框
 void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。
@@ -3239,4 +3412,100 @@ void MainWindow::flash(){
              lights[4]->setPixmap(fitpixmap2);
     }
     flag = !flag;
+}
+
+//文件->连接
+void MainWindow::on_action_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->断开
+void MainWindow::on_action_2_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->打开
+void MainWindow::on_action_3_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->回放
+void MainWindow::on_action_4_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->关闭（关闭回放的文件窗口，返回实时）
+void MainWindow::on_action_5_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->最近视频
+void MainWindow::on_action_6_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->切换用户
+void MainWindow::on_action_7_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->启动安装向导
+void MainWindow::on_action_8_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//文件->退出
+void MainWindow::on_action_9_triggered()
+{
+    QApplication::closeAllWindows();
+}
+
+//选项->配置
+void MainWindow::on_action_10_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//选项->保存当前配置
+void MainWindow::on_action_11_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//选项->创建或编辑区域
+void MainWindow::on_action_13_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//工具->屏幕截图
+void MainWindow::on_action_14_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//工具->清洗镜头
+void MainWindow::on_action_15_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//隐藏报警信息
+void MainWindow::on_action_16_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
+}
+
+//显示报警信息
+void MainWindow::on_action_17_triggered()
+{
+    QMessageBox::information(this,tr("该功能有待实现。"),tr("继续努力。"));
 }

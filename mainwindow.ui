@@ -14,6 +14,143 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1400</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
+    <addaction name="action_4"/>
+    <addaction name="action_5"/>
+    <addaction name="action_6"/>
+    <addaction name="action_7"/>
+    <addaction name="action_8"/>
+    <addaction name="action_9"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>选项</string>
+    </property>
+    <addaction name="action_10"/>
+    <addaction name="action_11"/>
+    <addaction name="separator"/>
+    <addaction name="action_13"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <addaction name="action_14"/>
+    <addaction name="action_15"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>显示</string>
+    </property>
+    <addaction name="action_16"/>
+    <addaction name="action_17"/>
+   </widget>
+   <widget class="QMenu" name="menu_5">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+   <addaction name="menu_5"/>
+  </widget>
+  <action name="action">
+   <property name="text">
+    <string>连接</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>断开</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>打开</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>回放</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>最近视频</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>切换用户</string>
+   </property>
+  </action>
+  <action name="action_8">
+   <property name="text">
+    <string>启动安装向导</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>配置</string>
+   </property>
+  </action>
+  <action name="action_11">
+   <property name="text">
+    <string>保存当前设置</string>
+   </property>
+  </action>
+  <action name="action_13">
+   <property name="text">
+    <string>创建或编辑区域</string>
+   </property>
+  </action>
+  <action name="action_14">
+   <property name="text">
+    <string>屏幕截图</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>清洗镜头</string>
+   </property>
+  </action>
+  <action name="action_16">
+   <property name="text">
+    <string>隐藏报警信息</string>
+   </property>
+  </action>
+  <action name="action_17">
+   <property name="text">
+    <string>显示报警信息</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

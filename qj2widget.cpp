@@ -16,18 +16,22 @@ Qj2Widget::Qj2Widget(QWidget *parent) :
 
     isTo3 = false;
     isTo4 = true;
+    isTo7 = false;
 
     Cancel_Select = new QAction(tr("取消选择"),this);
     To_Zhu= new QAction(tr("到主显示区"), this);
     To_Ningshi = new QAction(tr("到凝视显示区"), this);
+    To_Ningshi2 = new QAction(tr("到辅助显示区2"), this);
     //To_Tanchu = new QAction(tr("到弹出窗口"),this);
     connect(Cancel_Select, SIGNAL(triggered()), this, SLOT(CancelSelect()));
     connect(To_Zhu, SIGNAL(triggered()), this, SLOT(ToZhu()));
     connect(To_Ningshi, SIGNAL(triggered()), this, SLOT(ToNingshi()));
+    connect(To_Ningshi2, SIGNAL(triggered()), this, SLOT(ToNingshi2()));
     //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
 
     rectan3 = Rect(1490,250,100,100);
     rectan4 = Rect(1490,250,100,100);
+    rectan7 = Rect(1490,250,100,100);
     newrect = Rect(1490,250,100,100);
     //paint=new QPainter;
 }
@@ -81,6 +85,7 @@ void Qj2Widget::contextMenuEvent(QContextMenuEvent *){
     menu->addAction(Cancel_Select); //添加菜单项1
     menu->addAction(To_Zhu); //添加菜单项1
     menu->addAction(To_Ningshi); //添加菜单项2
+    menu->addAction(To_Ningshi2); //添加菜单项3
     //menu->addAction(To_Tanchu);//添加菜单项3
     menu->exec(cur.pos()); //关联到光标
 }
@@ -187,6 +192,33 @@ boolean Qj2Widget::isObjSelected4(MyObject obj){
         }
         if((obj.getRect().y+obj.getRect().height)>(this->rectan4.y+this->rectan4.height)){
             this->rectan4.height = this->rectan4.height + obj.getRect().y + obj.getRect().height- this->rectan4.y+ 5;
+            //this->rectan4.y = obj.getRect().y +obj.getRect().height+ 5;
+        }
+
+        isSelected = true;
+    }
+    return isSelected;
+}
+
+boolean Qj2Widget::isObjSelected7(MyObject obj){
+    boolean isSelected = false;
+    if(this->rectan7.contains(Point(obj.getCenPoint().x-mat.cols,obj.getCenPoint().y))){
+        //调整选择框以使得目标的box在选择框之内
+        if(obj.getRect().x-mat.cols<this->rectan7.x){
+            this->rectan7.x = obj.getRect().x-mat.cols - 5;
+            this->rectan7.width += this->rectan7.x - (obj.getRect().x-mat.cols) + 5;
+        }
+        if(obj.getRect().y<this->rectan7.y){
+            this->rectan7.y = obj.getRect().y - 5;
+            this->rectan7.height += this->rectan7.y - obj.getRect().y + 5;
+        }
+        if((obj.getRect().x-mat.cols+obj.getRect().width)>(this->rectan7.x+this->rectan7.width)){
+            //this->rectan4.x = obj.getRect().x +obj.getRect().width + 5;
+
+            this->rectan7.width = obj.getRect().x-mat.cols + obj.getRect().width - this->rectan7.x + 5;
+        }
+        if((obj.getRect().y+obj.getRect().height)>(this->rectan7.y+this->rectan7.height)){
+            this->rectan7.height = this->rectan7.height + obj.getRect().y + obj.getRect().height- this->rectan7.y+ 5;
             //this->rectan4.y = obj.getRect().y +obj.getRect().height+ 5;
         }
 
@@ -348,6 +380,79 @@ void Qj2Widget::ToNingshi()
     mw->widget4->draw();
     isRect = false;
 }
+
+void Qj2Widget::ToNingshi2()
+{
+    //qDebug()<<"到主显示区。";
+
+    this->isTo7 = true;
+
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    mw->widget1->isTo7 = false;
+
+    if(this->newrect.width<0){
+        this->rectan7.width = -this->newrect.width;
+        this->rectan7.height= -this->newrect.height;
+        this->rectan7.x = this->newrect.x+this->newrect.width;
+        this->rectan7.y = this->newrect.y+this->newrect.height;
+    }
+    else if(this->newrect.height<0){
+        this->rectan7.width = -this->newrect.width;
+        this->rectan7.height= -this->newrect.height;
+        this->rectan7.x = this->newrect.x+this->newrect.width;
+        this->rectan7.y = this->newrect.y+this->newrect.height;
+    }
+    else{
+        this->rectan7.x = this->newrect.x;
+        this->rectan7.y = this->newrect.y;
+        this->rectan7.width = this->newrect.width;
+        this->rectan7.height = this->newrect.height;
+    }
+
+    //调整所选的矩形框，以使得在凝视显示区中的显示不变形
+    //this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
+
+    //更新凝视显示区所包含的目标
+
+    vector<MyObject> objs4;
+    int count = this->objs.size();
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(isObjSelected7(obj)){
+            objs4.push_back(obj);
+        }
+    }
+
+    mw->widget7->setObjects(objs4);
+
+    mw->widget7->setFrom(2);
+
+    mw->widget7->setRect(this->getQRectan4());
+
+    Mat mat = getPano();
+    Size dsize ;
+    double scale = 1;
+    dsize = Size(mat.cols*scale,mat.rows*scale);
+//    Mat image11 = Mat(dsize,CV_32S);
+//    cv::resize(mat, image11,dsize);
+//    mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+
+//    //vector<Rectan> rectans;
+//    mw->aa=(&(mw->img))->copy(getQRectan4());
+//    Mat image4 = mw->QImageToMat(mw->aa);
+//    Mat image44 = Mat(dsize,CV_32S);
+//    cv::resize(image4, image44,dsize);
+//    mw->widget4->setMat(image44);
+    Mat image4;
+    mat(getQRectan4()).copyTo(image4);//mw->QImageToMat(mw->aa);
+    Mat image44 = Mat(dsize,CV_32S);
+    cv::resize(image4, image4,dsize);
+    mw->widget7->setMat(image44);
+    mw->widget7->draw();
+    isRect = false;
+}
+
 //到弹出窗口显示菜单处理事件
 //void ToTanchu(){
 //    qDebug()<<"到弹出窗口。";
@@ -493,8 +598,16 @@ Rect Qj2Widget::getRectan4(){
     return this->rectan4;
 }
 
+Rect Qj2Widget::getRectan7(){
+    return this->rectan7;
+}
+
 Rect Qj2Widget::getQRectan4(){
     return Rect(rectan4.x+mat.cols,rectan4.y,rectan4.width,rectan4.height);
+}
+
+Rect Qj2Widget::getQRectan7(){
+    return Rect(rectan7.x+mat.cols,rectan7.y,rectan7.width,rectan7.height);
 }
 
 //由Widget坐标的X获得图像中的X
@@ -556,6 +669,19 @@ double Qj2Widget::getDirectionY4(){
 
 }
 
+double Qj2Widget::getDirectionX7(){
+    double x = this->rectan7.x;
+    return 180*(x)/mat.cols +90;
+}
+
+double Qj2Widget::getDirectionY7(){
+
+    double yy = 20;
+    double y = this->rectan7.y;
+    return yy*y/mat.rows;
+
+}
+
 double Qj2Widget::getDirectionX32(){
     double x = this->rectan3.x+this->rectan3.width;
     return 180*(x)/mat.cols +90;
@@ -578,6 +704,19 @@ double Qj2Widget::getDirectionY42(){
 
     double yy = 20;
     double y = this->rectan4.y+this->rectan4.height;
+    return yy*y/mat.rows;
+
+}
+
+double Qj2Widget::getDirectionX72(){
+    double x = this->rectan7.x+this->rectan7.width;
+    return 180*(x)/mat.cols +90;
+}
+
+double Qj2Widget::getDirectionY72(){
+
+    double yy = 20;
+    double y = this->rectan7.y+this->rectan7.height;
     return yy*y/mat.rows;
 
 }
@@ -639,6 +778,44 @@ vector<MyObject> Qj2Widget::getSelectedObjects4(){
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
         vector<MyObject> aos = mw->widget4->objs;
+        for(int j = 0; j < aos.size(); j++){
+            MyObject aobj = aos[j];
+            if(obj.getID() == aobj.getID()){
+                boolean all = false;
+                for(int k = 0; k < os.size(); k++){
+                    MyObject bobj = os[k];
+                    if(aobj.getID() == bobj.getID()){
+                        all = true;
+                    }
+                }
+                if(!all){
+                    os.push_back(obj);
+                    all = false;
+                }
+            }
+        }
+    }
+
+    return os;
+}
+
+vector<MyObject> Qj2Widget::getSelectedObjects7(){
+    vector<MyObject> os;
+    int count = this->objs.size();
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+        if(isObjSelected7(obj)){
+            os.push_back(obj);
+        }
+    }
+
+    for(int i = 0; i < count; i++){
+        MyObject obj = objs[i];
+
+        //已经出现过的，也跟上
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+        vector<MyObject> aos = mw->widget7->objs;
         for(int j = 0; j < aos.size(); j++){
             MyObject aobj = aos[j];
             if(obj.getID() == aobj.getID()){

@@ -32,6 +32,7 @@ private:
 QAction* Cancel_Select;
 QAction* To_Zhu;
 QAction* To_Ningshi;
+QAction* To_Ningshi2;
 //QPainter * paint;
 QRect qrect;
 //QAction* To_Tanchu;
@@ -55,9 +56,11 @@ public:
     boolean isRect;
     Rect rectan3;
     Rect rectan4;
+    Rect rectan7;//辅助显示区2
 
     boolean isTo3;
     boolean isTo4;
+    boolean isTo7;
 
     Rect newrect;
     //QRect qrectan;
@@ -91,7 +94,9 @@ public:
     Rect getQRectan3();
 
     Rect getRectan4();
+    Rect getRectan7();
     Rect getQRectan4();
+    Rect getQRectan7();
 
     double getMatX(double x);
 
@@ -109,6 +114,10 @@ public:
 
     double getDirectionY4();
 
+    double getDirectionX7();
+
+    double getDirectionY7();
+
     double getDirectionX(double x);
 
     double getDirectionY(double y);
@@ -121,15 +130,23 @@ public:
 
     double getDirectionY42();
 
+    double getDirectionX72();
+
+    double getDirectionY72();
+
     void draw();
 
     boolean isObjSelected3(MyObject obj);
 
     boolean isObjSelected4(MyObject obj);
 
+    boolean isObjSelected7(MyObject obj);
+
     vector<MyObject> getSelectedObjects3();
 
     vector<MyObject> getSelectedObjects4();
+
+    vector<MyObject> getSelectedObjects7();
 
 signals:
 
@@ -140,6 +157,7 @@ public slots:
     void ToZhu();
     //到凝视显示区显示菜单处理事件
     void ToNingshi();
+    void ToNingshi2();
     //到弹出窗口显示菜单处理事件
     //void ToTanchu();
 };
