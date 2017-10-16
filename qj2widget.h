@@ -69,6 +69,7 @@ public:
     boolean isTo4;
     boolean isTo6;
 
+
     Rect newrect;
     //QRect qrectan;
 
@@ -101,6 +102,7 @@ public:
 
     Rect getRectan6();
     Rect getQRectan6();
+
 
     double getMatX(double x);
 

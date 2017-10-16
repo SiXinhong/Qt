@@ -94,7 +94,9 @@ public:
     Rect getQRectan3();
 
     Rect getRectan4();
+    Rect getRectan7();
     Rect getQRectan4();
+    Rect getQRectan7();
 
     Rect getRectan6();
     Rect getQRectan6();

@@ -430,7 +430,6 @@ void NWidget2::draw(){
     mw->imgLabel6 = mw->MatToQImage(mat,mw->imgLabel6);
  //   cv::cvtColor(mat,mat,CV_BGR2RGB);
     mw->loadPictureToLabel6();
-
 }
 boolean NWidget2::isObjSelected(MyObject obj){
     boolean isSelected = false;

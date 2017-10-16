@@ -130,6 +130,7 @@ void MainWindow::init(){
     label4=new QLabel(widget4);
     label5=new QLabel(widget5);
     label6=new QLabel(widget6);
+    //label7=new QLabel(widget7);
 
     //鼠标拖拽控制变量赋初值
     isDrag1 = false;
@@ -159,7 +160,7 @@ void MainWindow::init(){
     timerSysTime=new QTimer();
     timerSysTime->setInterval(1000);
     timerSysTime->start();
-    connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
+    //connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
@@ -184,6 +185,7 @@ void MainWindow::init(){
     gridlayout->addWidget(widget6,5,2);
 
     //gridlayout->setRowStretch(0, 1);
+
     gridlayout->setRowStretch(2, 1);
     gridlayout->setRowStretch(3, 1);
     gridlayout->setRowStretch(4, 6);
@@ -200,7 +202,7 @@ void MainWindow::init(){
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
-
+    this->menuBar()->raise();//menu前两个不能操作，可能是别的东西覆盖了这一块，把menuBar提升到顶层
     if(welcome!=0){
         welcome->close();
         delete welcome;
@@ -718,6 +720,7 @@ void MainWindow::tempProcessing(){
 void MainWindow::addMyMenuBar(){
     FileMenu = new QMenu("文件");
     OptionMenu = new QMenu("选项");
+    ToolMenu = new QMenu("工具");
     DisplayMenu = new QMenu("显示");
     HelpMenu = new QMenu("帮助");
 
@@ -764,7 +767,7 @@ void MainWindow::addMyMenuBar(){
     OptionMenu->addAction(configuration);
     OptionMenu->addAction(saveconfiguration);
     OptionMenu->addAction(region);
-    OptionMenu->addAction(figure);
+    ToolMenu->addAction(figure);
 
     connect(configuration,SIGNAL(triggered()),this,SLOT(configurationClicked()));
     connect(saveconfiguration,SIGNAL(triggered()),this,SLOT(saveconfigurationClicked()));
@@ -1189,12 +1192,6 @@ void MainWindow::adjustment()
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(widget1->objs);
     widget6->draw();
-  //  widget3->setPano(mat);
-
-
-
-    //widget4->setPano(mat);
-
 }
 
 //定时器任务
@@ -1925,16 +1922,17 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
         isMove = true;
         //e->accept();
     }
+    e->ignore();
 }
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
+
     //判断目的点落在主显示区的标志变量
     boolean target3 = false;
     boolean target4 = false;
     boolean target6 = false;
     QPoint position2 = e->pos();//e->globalPos() - this->pos();
-
     //判断目的点落在主显示区的情况
     if((position2.x() <= this->widget3->pos().x()+this->widget3->width()) &&(position2.x() >= this->widget3->pos().x()) && (position2.y() <= this->widget3->pos().y()+this->widget3->height()) &&(position2.y() >= this->widget3->pos().y())){
         target3 = true;
@@ -1953,6 +1951,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         target3 = false;
         target4 = false;
     }
+
     else{
         isDrag1 = false;
         isDrag2 = false;
@@ -2264,6 +2263,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
             widget1->rectan6.y = widget1->newrect.y;
             widget1->rectan6.width = widget1->newrect.width;
             widget1->rectan6.height = widget1->newrect.height;
+
         }
         widget1->isRect = false;
 
@@ -2379,6 +2379,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     isDrag1 = false;
     isDrag2 = false;
     isMove = false;
+    e->ignore();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *){
@@ -2388,6 +2389,7 @@ void MainWindow::resizeEvent(QResizeEvent *){
     label4->resize(widget4->size());
     label5->resize(widget5->size());
     label6->resize(widget6->size());
+    //label7->resize(widget7->size());
 }
 
 void MainWindow::paintEvent(QPaintEvent *){
@@ -2662,6 +2664,9 @@ void MainWindow::loadPictureToLabel6(){
     loadPictureToLabel(label6,imgLabel6);
 }
 
+void MainWindow::loadPictureToLabel7(){
+    loadPictureToLabel(label7,imgLabel7);
+}
 //---xiaotian   图像上绘制矩形框
 void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
     //在图像上画矩形。

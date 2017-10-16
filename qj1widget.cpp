@@ -218,6 +218,7 @@ boolean Qj1Widget::isObjSelected6(MyObject obj){
         }
         if((obj.getRect().y+obj.getRect().height)>(this->rectan6.y+this->rectan6.height)){
             this->rectan6.height = this->rectan6.height + obj.getRect().y + obj.getRect().height- this->rectan6.y+ 5;
+
             //this->rectan4.y = obj.getRect().y +obj.getRect().height+ 5;
         }
 
@@ -408,6 +409,7 @@ void Qj1Widget::ToNingshi2()
         this->rectan6.y = this->newrect.y;
         this->rectan6.width = this->newrect.width;
         this->rectan6.height = this->newrect.height;
+
     }
 
     //调整所选的矩形框，以使得在凝视显示区中的显示不变形
@@ -428,6 +430,7 @@ void Qj1Widget::ToNingshi2()
     mw->widget6->setFrom(1);
 
     mw->widget6->setRect(rectan6);
+
 
     Mat mat = getPano();
     Size dsize ;
@@ -451,6 +454,7 @@ void Qj1Widget::ToNingshi2()
     mw->widget6->draw();
     isRect = false;
 }
+
 //到弹出窗口显示菜单处理事件
 //void ToTanchu(){
 //    qDebug()<<"到弹出窗口。";
@@ -644,6 +648,7 @@ Rect Qj1Widget::getRectan6(){
 
 Rect Qj1Widget::getQRectan6(){
     return Rect(rectan6.x,rectan6.y,rectan6.width,rectan6.height);
+
 }
 
 //由Widget坐标的X获得图像中的X
@@ -714,6 +719,7 @@ double Qj1Widget::getDirectionY6(){
 
     double yy = 20;
     double y = this->rectan6.y;
+
     return yy*y/mat.rows;
 
 }
@@ -753,6 +759,7 @@ double Qj1Widget::getDirectionY62(){
 
     double yy = 20;
     double y = this->rectan6.y+this->rectan6.height;
+
     return yy*y/mat.rows;
 
 }

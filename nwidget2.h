@@ -112,3 +112,4 @@ public slots:
 };
 
 #endif // NWIDGET2_H
+

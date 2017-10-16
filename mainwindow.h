@@ -134,6 +134,8 @@ public:
     void loadPictureToLabel5();
     //加载图片到Label6上
     void loadPictureToLabel6();
+    // 加载图片到Label7上
+    void loadPictureToLabel7();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
     void drawRecOnPic(Mat image,vector<Rectan> rectan);
     //绘制鼠标选取的矩形
@@ -174,6 +176,7 @@ public:
      QLabel *label4;
      QLabel *label5;
      QLabel *label6;
+     QLabel *label7;
 
      //加载到6个QLabel上的6个QImage
      QImage imgLabel1;
@@ -182,6 +185,7 @@ public:
      QImage imgLabel4;
      QImage imgLabel5;
      QImage imgLabel6;
+     QImage imgLabel7;
 
 
      Qj1Widget* widget1;
@@ -349,6 +353,7 @@ protected:
 
      QMenu* FileMenu;
      QMenu* OptionMenu;
+     QMenu* ToolMenu;
      QMenu* DisplayMenu;
      QMenu* HelpMenu;
 
@@ -368,6 +373,7 @@ protected:
      QAction* configuration;
      QAction* saveconfiguration;
      QAction* region;
+
      QAction* figure;
 
      QAction* openalert;
@@ -439,6 +445,8 @@ public:
 class TrackBar* trackBar;
 class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
+
+private slots:
 
 };
 #include"backwindow.h"
