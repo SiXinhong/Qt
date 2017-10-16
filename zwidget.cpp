@@ -478,6 +478,7 @@ void ZWidget::draw(){
             Mat image33 = Mat(dsize,CV_32S);
             cv::resize(image3, image33,dsize);
             setMat(image33);
+            rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
         }
         else{
@@ -490,6 +491,7 @@ void ZWidget::draw(){
             Mat image33 = Mat(dsize,CV_32S);
             cv::resize(image3, image33,dsize);
             setMat(image33);
+            rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
 
@@ -559,10 +561,13 @@ void ZWidget::draw(){
 //        cv::resize(image3, image33,dsize);
 //        setMat(image33);
           Mat image3;
-          mat1(Rect(0,0,mat1.cols/4,mat1.rows)).copyTo(image3);//mw->QImageToMat(mw->aa);
+          Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
+          mat1(trect).copyTo(image3);//mw->QImageToMat(mw->aa);
           Mat image33 = Mat(dsize,CV_32S);
           cv::resize(image3, image33,dsize);
           setMat(image33);
+          rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
+          CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
     }
 
 //    int count = objs.size();

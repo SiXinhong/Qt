@@ -32,7 +32,8 @@ class Qj2Widget : public QWidget
 private:
 QAction* Cancel_Select;
 QAction* To_Zhu;
-QAction* To_Ningshi;
+QAction* To_Ningshi1;
+QAction* To_Ningshi2;
 //QPainter * paint;
 QRect qrect;
 
@@ -62,9 +63,11 @@ public:
     boolean isRect;
     Rect rectan3;
     Rect rectan4;
+    Rect rectan6;
 
     boolean isTo3;
     boolean isTo4;
+    boolean isTo6;
 
     Rect newrect;
     //QRect qrectan;
@@ -96,6 +99,9 @@ public:
     Rect getRectan4();
     Rect getQRectan4();
 
+    Rect getRectan6();
+    Rect getQRectan6();
+
     double getMatX(double x);
 
     double getMatY(double y);
@@ -112,6 +118,10 @@ public:
 
     double getDirectionY4();
 
+    double getDirectionX6();
+
+    double getDirectionY6();
+
     double getDirectionX(double x);
 
     double getDirectionY(double y);
@@ -124,15 +134,23 @@ public:
 
     double getDirectionY42();
 
+    double getDirectionX62();
+
+    double getDirectionY62();
+
     void draw();
 
     boolean isObjSelected3(MyObject obj);
 
     boolean isObjSelected4(MyObject obj);
 
+    boolean isObjSelected6(MyObject obj);
+
     vector<MyObject> getSelectedObjects3();
 
     vector<MyObject> getSelectedObjects4();
+
+    vector<MyObject> getSelectedObjects6();
 
 signals:
 
@@ -142,7 +160,9 @@ public slots:
     //到主显示区显示菜单处理事件
     void ToZhu();
     //到凝视显示区显示菜单处理事件
-    void ToNingshi();
+    void ToNingshi1();
+
+    void ToNingshi2();
     //到弹出窗口显示菜单处理事件
     //void ToTanchu();
 };

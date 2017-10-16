@@ -75,6 +75,14 @@ vector<MyObject> HWidget::getObjects4(){
     return this->objs4;
 }
 
+void HWidget::setObjects6(vector<MyObject> os6){
+    this->objs6 = os6;
+}
+
+vector<MyObject> HWidget::getObjects6(){
+    return this->objs6;
+}
+
 //计算在环带显示区的坐标，输入是运动目标在全景图像中的位置
 double HWidget::getDirectionX(double x, double y){
     //顺时针旋转90度
@@ -135,7 +143,7 @@ Point HWidget::getPoint2(Point p){
     return Point(xaa,yaa);
 }
 
-//凝视显示区的，获得画多边形的八个点，需要计算主显示区所关注的对象集合的坐标来确定。
+//辅助显示区1的，获得画多边形的八个点，需要计算辅助显示区1所关注的对象集合的坐标来确定。
 void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -294,6 +302,165 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     //return ps;
 }
 
+//辅助显示区2的，获得画多边形的八个点，需要计算辅助显示区2所关注的对象集合的坐标来确定。
+void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
+    if(sobjs.size()==0)
+           return;
+       int size=sobjs.size();
+       int maxIndex,minIndex;
+       vector<MyObject> newsobjs;
+       if(size == 1){
+           maxIndex=0;
+           minIndex=0;
+           newsobjs.push_back(sobjs[0]);
+       }else{
+           for(int j=0;j<size;j++){
+               int min=0;
+               for(int i=1;i<sobjs.size();i++){
+                   if(sobjs[i].getCenPoint().x<sobjs[min].getCenPoint().x){
+                       min=i;
+
+                   }
+               }
+               newsobjs.push_back(sobjs[min]);
+               sobjs.erase(sobjs.begin()+min);
+           }
+           int w=pano.cols;
+           double minDistance=w;
+           for(int i=0;i<size;i++){
+               int prevI=(i-1+size)%size;
+               double distBetweenIandPrevI=newsobjs[i].getCenPoint().x-newsobjs[prevI].getCenPoint().x;
+               if(distBetweenIandPrevI<0)
+                   distBetweenIandPrevI+=w;
+               double distTmp=w-distBetweenIandPrevI;
+               if(distTmp<minDistance){
+                   minDistance=distTmp;
+                   minIndex=i;
+                   maxIndex=prevI;
+                   //qDebug()<<minIndex<<"<<"<<maxIndex<<"w="<<w<<"dist="<<distTmp;
+               }
+           }
+       }
+       double xtemp1 = newsobjs[minIndex].getCenPoint().x;
+       double ytemp1 = newsobjs[minIndex].getCenPoint().y;
+
+       double xtemp2 = newsobjs[maxIndex].getCenPoint().x;
+       double ytemp2 = newsobjs[maxIndex].getCenPoint().y;
+
+       xtemp1-=150;
+       if(xtemp1<0)
+           xtemp1+=pano.cols;
+       xtemp2+=150;
+       if(xtemp2>pano.cols)
+           xtemp2-=pano.cols;
+
+
+       Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
+       Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
+
+//    //找出对象集合中最左边的点，和最右边的点，就是x的最小点和最大点
+//    //先找最小点
+//    //qDebug()<<QString("xuanzhong");
+//    //qDebug()<<sobjs.size();
+//    double xtemp1 = this->pano.cols;
+//    double ytemp1 = this->pano.rows;
+//    //再找最大点
+//    double xtemp2 = 0;
+//    double ytemp2 = 0;
+
+//    for(int i = 0; i < sobjs.size(); i++){
+//        MyObject obj = sobjs[i];
+//        if(xtemp1 > obj.getCenPoint().x){
+//            xtemp1 = obj.getCenPoint().x;
+//            ytemp1 = obj.getCenPoint().y;
+//        }
+//        if(xtemp2 < obj.getCenPoint().x){
+//            xtemp2 = obj.getCenPoint().x;
+//            ytemp2 = obj.getCenPoint().y;
+//        }
+//    }
+//    //再向左上靠靠
+//    if(xtemp1-5>=0 && ytemp1-5 >= 0){
+//        xtemp1 -= 5;
+//        ytemp1 -= 5;
+//    }
+//    //再向右下靠靠
+//    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
+//        xtemp2 += 5;
+//        ytemp2 += 5;
+//    }
+//    //重新找最小点
+//    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
+//        xtemp1 = 0;
+
+//        for(int i = 0; i < sobjs.size(); i++){
+//            MyObject obj = objs[i];
+//            if(obj.getRect().x > this->pano.cols/2){
+
+//            }
+//            else{
+//                if(xtemp1 < obj.getCenPoint().x){
+//                    xtemp1 = obj.getCenPoint().x;
+//                    ytemp1 = obj.getCenPoint().y;
+//                }
+
+//            }
+//        }
+//    }
+
+
+//    Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
+//    Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
+    Point p3 = Point(x0, y0);
+
+    Point p11 = this->getPoint1(p1);
+    Point p12 = this->getPoint2(p1);
+
+    Point p21 = this->getPoint1(p2);
+    Point p22 = this->getPoint2(p2);
+
+    line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
+
+    line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1+=360;
+    }
+
+    ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));
+
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
+   // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
+
+//    vector<Point> ps;
+//    cv::Point point1(75,60);
+//    cv::Point point2(110,40);
+//    cv::Point point3(75,60);
+//    cv::Point point4(125,118);
+//    cv::Point point5(125,118);
+//    cv::Point point6(130,114);
+//    cv::Point point7(130,114);
+//    cv::Point point8(110,40);
+//    ps.push_back(p11);
+//    ps.push_back(p21);
+//    ps.push_back(p11);
+//    ps.push_back(p12);
+//    ps.push_back(p12);
+//    ps.push_back(p22);
+//    ps.push_back(p22);
+//    ps.push_back(p21);
+    //return ps;
+}
+
 //主显示区的，获得画多边形的八个点，需要计算主显示区所关注的对象集合的坐标来确定。
 void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
@@ -413,9 +580,9 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     Point p21 = this->getPoint1(p2);
     Point p22 = this->getPoint2(p2);
 
-    line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
+    line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
 
-    line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
+    line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
@@ -436,9 +603,9 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
          angle1+=360;
     }
 
-    ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(0,0,255));
 
-    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(0,0,255));
    // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 
 //    vector<Point> ps;
@@ -481,6 +648,10 @@ void HWidget::draw(){
 
     if(mw->widget4->getObjects().size() > 0){
         this->drawArc4(mw->widget4->getObjects(),tmat);
+    }
+
+    if(mw->widget6->getObjects().size() > 0){
+        this->drawArc6(mw->widget6->getObjects(),tmat);
     }
     //在图像上画圆点
     int count = objs.size();

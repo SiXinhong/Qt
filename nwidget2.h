@@ -1,5 +1,5 @@
-#ifndef NWIDGET_H
-#define NWIDGET_H
+#ifndef NWIDGET2_H
+#define NWIDGET2_H
 
 #include "rectan.h"
 #include "myobject.h"
@@ -22,7 +22,7 @@
 using namespace cv;
 using namespace std;
 
-class NWidget : public QWidget
+class NWidget2 : public QWidget
 {
     Q_OBJECT
 
@@ -50,7 +50,7 @@ public:
 
     int from;
 
-    explicit NWidget(QWidget *parent = 0);
+    explicit NWidget2(QWidget *parent = 0);
 
     void setFrom(int f);
 
@@ -111,4 +111,4 @@ public slots:
 
 };
 
-#endif // NWIDGET_H
+#endif // NWIDGET2_H

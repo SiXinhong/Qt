@@ -10,7 +10,8 @@
 #include "qj1widget.h"
 #include "qj2widget.h"
 #include "zwidget.h"
-#include "nwidget.h"
+#include "nwidget1.h"
+#include "nwidget2.h"
 #include "hwidget.h"
 #include "lwidget.h"
 #include "myinterface.h"
@@ -59,6 +60,9 @@
 #include<QTimeEdit>
 #include<QPushButton>
 #include <QDesktopWidget>
+#include <QMenu>
+#include <QMenuBar>
+#include <QAction>
 #include "objectAttributes.h"
 #include "welcomewindow.h"
 using namespace cv;
@@ -91,8 +95,8 @@ public:
    bool isVoice;
    int newObjCount;
    int addOneLight;
-   QPixmap fitpixmap1;
-   QPixmap fitpixmap2;
+   //QPixmap fitpixmap1;
+   //QPixmap fitpixmap2;
 //   Mat mat;
 //   Mat mat1, mat2;
    //HSL *hsl;
@@ -183,9 +187,10 @@ public:
      Qj1Widget* widget1;
      Qj2Widget* widget2;
      ZWidget* widget3;
-     NWidget* widget4;
+     NWidget1* widget4;
      HWidget* widget5;
-     LWidget* widget6;
+     //LWidget* widget6;
+     NWidget2* widget6;
 
      QTimer *timer;
      QTimer *timerSysTime;
@@ -237,6 +242,7 @@ protected:
 
      double getDirectionY(double y, Mat mat);
 
+     void addMyMenuBar();
      //工具条需要的变量
      void addMyToolBar();
      //临时性处理
@@ -255,11 +261,11 @@ protected:
      QToolBar *mainToolBar;
      //第一组按钮：监控和后退，还有回放
      //QLabel *listLabel1;
-     QString startStopSet;
+     //QString startStopSet;
      QString mstopSet;
      QString backSet;
      //QString openSet;
-     QToolButton *startStop;//打开/暂停
+     //QToolButton *startStop;//打开/暂停
      QToolButton *mstop;//暂停
      QToolButton *back;
      //回放
@@ -267,25 +273,31 @@ protected:
      QToolButton *open;//打开
      //第二组按钮，图像
      //QLabel *listLabel3;
+     QString chexiaoDuibidu;
      QString automSet;
-     QString brightnessSet;
-     QString saturationSet;
+     QString addBrightnessSet;
+     QString reduceBrightnessSet;
+     QString addSaturationSet;
+     QString reduceSaturationSet;
      QString pseudoColorSet;
-     QString serialNumberSet;
-     QString timeSet;
+//     QString serialNumberSet;
+//     QString timeSet;
+     QToolButton *chexiao;
      QToolButton *autom;//自动
-     QToolButton *brightness;//亮度
-     QToolButton *saturation;//饱和度
+     QToolButton *addbrightness;//亮度
+     QToolButton *reducebrightness;
+     QToolButton *addsaturation;//饱和度
+     QToolButton *reducesaturation;
      QToolButton *pseudoColor;//伪彩色
 
      //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
-     QString light1Set;
-     QString light2Set;
-     QString light3Set;
-     QString light4Set;
-     QString light5Set;
+//     QString light1Set;
+//     QString light2Set;
+//     QString light3Set;
+//     QString light4Set;
+//     QString light5Set;
 
-     QLabel *lights[5];
+//     QLabel *lights[5];
 //   QLabel *light1;
 ////     //QToolButton *light1;
 //     QLabel *light2;
@@ -294,26 +306,29 @@ protected:
 //     QLabel *light5;
 
      //第四组，显示编号和系统当前时间
-     QLabel *serialNumber;//编号
-     QLabel *systime;//时间
+//     QLabel *serialNumber;//编号
+//     QLabel *systime;//时间
      //告警
      //QLabel *listLabel4;
-     QString openCloseSet;
-     QString objectAttributeSet;
-     QString manualSet;
-     QString objectSet;
-     QString attributeSet;
+     QString objectAttributeSet;//显示点击处位置
+     QString manualSet;//增加标签
+
+     QToolButton *objectAttribute;//显示点击处位置
+     QToolButton *manual;//增加标签
+
+
+     QString openCloseSet;//启动关闭告警
+     QString objectSet;//调整探测灵敏度等级
      QString voiceSet;
-     QString exitSet;
+     QString lightSet;
+     //QString exitSet;
 
      QToolButton *openClose;//开/关
-     QToolButton *objectAttribute;//对象属性
-     QToolButton *manual;//手动
      QToolButton *objects;//目标对象的属性是否跟随目标
-     QToolButton *attribute;//属性
-     //QToolButton *setUp;//设置
      QToolButton *voice;//声音
-     QToolButton *exitButton;//退出按钮
+     QToolButton *light;//属性
+     //QToolButton *setUp;//设置
+     //QToolButton *exitButton;//退出按钮
      //QToolButton *light;//指示灯
      //对话框需要的变量
      //QLineEdit *fileLineEdit;
@@ -332,26 +347,82 @@ protected:
      QDateEdit *dateEdit;
      QGridLayout *gridLayout;
 
+     QMenu* FileMenu;
+     QMenu* OptionMenu;
+     QMenu* DisplayMenu;
+     QMenu* HelpMenu;
+
+     QMenuBar* menubar;
+
+     QAction* connection;
+     QAction* connectionplus;
+     QAction* disconnection;
+     QAction* openplus;
+     QAction* backplus;
+     QAction* closeaction;
+     QAction* recentvidio;
+     QAction* changeuser;
+     QAction* installation;
+     QAction* exit;
+
+     QAction* configuration;
+     QAction* saveconfiguration;
+     QAction* region;
+     QAction* figure;
+
+     QAction* openalert;
+     QAction* closealert;
+
+     QAction* help;
+     QAction* about;
+
 protected slots:
      void startStopFunction();
      void mstopFunction();
-
      void backFunction();
      void openFunction();
-     void automFunction();
-     void brightnessFunction();
 
-     void saturationFunction();
+     void chexiaoFunction();
+     void automFunction();
+     void addBrightnessFunction();
+     void reduceBrightnessFunction();
+     void addSaturationFunction();
+     void reduceSaturationFunction();
      void pseudoColorFunction();
+
      void openCloseFunction();
      void objectAttributeFunction();
      void manualFunction();
      void objectsFunction();
-
-     void attributeFunction();
+     void lightFunction();
      void voiceFunction();
+
      virtual void exitFunction();
+
      void closeEvent(QCloseEvent *event);
+
+     //菜单栏槽函数
+     void connectionClicked();
+     void connectionplusClicked();
+     void disconnectionClicked();
+     void openplusClicked();
+     void backplusClicked();
+     void closeClicked();
+     void recentvidioClicked();
+     void changeuserClicked();
+     void installationClicked();
+     void exitClicked();
+
+     void configurationClicked();
+     void saveconfigurationClicked();
+     void regionClicked();
+     void figureClicked();
+
+     void openalertClicked();
+     void closealertClicked();
+
+     void helpClicked();
+     void aboutClicked();
 
      //void lightFunction();
     // void adjustbrightness();

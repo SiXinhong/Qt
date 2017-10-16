@@ -126,13 +126,13 @@ void BackWindow::selfTimerout(){
         return;
  }
 
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();
-    const int buttonSize=(screenRect.width()*0.7)/21.6;
-    QPixmap pixmap1("./icon/16_1.png");
-    QPixmap pixmap2("./icon/16_2.png");
-    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//    QDesktopWidget* desktopWidget = QApplication::desktop();
+//    QRect screenRect = desktopWidget->screenGeometry();
+//    const int buttonSize=(screenRect.width()*0.7)/21.6;
+//    QPixmap pixmap1("./icon/16_1.png");
+//    QPixmap pixmap2("./icon/16_2.png");
+//    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
 
 
@@ -404,96 +404,96 @@ void BackWindow::selfTimerout(){
    }
    num_objs = objs.size();
 
-   if(isGaojing)
-   {
-       if(num_objs==0)
-       {
-           lights[0]->setPixmap(fitpixmap2);
-           lights[1]->setPixmap(fitpixmap2);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==1)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap2);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap2);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==2)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==3)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==4)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap1);
-           lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap2);
-       }
-       else
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap1);
-           lights[4]->setPixmap(fitpixmap1);
-//            light1->setPixmap(fitpixmap1);
-//            light2->setPixmap(fitpixmap1);
-//            light3->setPixmap(fitpixmap1);
-//            light4->setPixmap(fitpixmap1);
-//            light5->setPixmap(fitpixmap1);
-     }
-   }
-   else
-   {
-       lights[0]->setPixmap(fitpixmap2);
-       lights[1]->setPixmap(fitpixmap2);
-       lights[2]->setPixmap(fitpixmap2);
-       lights[3]->setPixmap(fitpixmap2);
-       lights[4]->setPixmap(fitpixmap2);
-//        light1->setPixmap(fitpixmap2);
-//        light2->setPixmap(fitpixmap2);
-//        light3->setPixmap(fitpixmap2);
-//        light4->setPixmap(fitpixmap2);
-//        light5->setPixmap(fitpixmap2);
+//   if(isGaojing)
+//   {
+//       if(num_objs==0)
+//       {
+//           lights[0]->setPixmap(fitpixmap2);
+//           lights[1]->setPixmap(fitpixmap2);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==1)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap2);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+////            light1->setPixmap(fitpixmap1);
+////            light2->setPixmap(fitpixmap2);
+////            light3->setPixmap(fitpixmap2);
+////            light4->setPixmap(fitpixmap2);
+////            light5->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==2)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+////            light1->setPixmap(fitpixmap1);
+////            light2->setPixmap(fitpixmap1);
+////            light3->setPixmap(fitpixmap2);
+////            light4->setPixmap(fitpixmap2);
+////            light5->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==3)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+////            light1->setPixmap(fitpixmap1);
+////            light2->setPixmap(fitpixmap1);
+////            light3->setPixmap(fitpixmap1);
+////            light4->setPixmap(fitpixmap2);
+////            light5->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==4)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap1);
+//           lights[4]->setPixmap(fitpixmap2);
+////            light1->setPixmap(fitpixmap1);
+////            light2->setPixmap(fitpixmap1);
+////            light3->setPixmap(fitpixmap1);
+////            light4->setPixmap(fitpixmap1);
+////            light5->setPixmap(fitpixmap2);
+//       }
+//       else
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap1);
+//           lights[4]->setPixmap(fitpixmap1);
+////            light1->setPixmap(fitpixmap1);
+////            light2->setPixmap(fitpixmap1);
+////            light3->setPixmap(fitpixmap1);
+////            light4->setPixmap(fitpixmap1);
+////            light5->setPixmap(fitpixmap1);
+//     }
+//   }
+//   else
+//   {
+//       lights[0]->setPixmap(fitpixmap2);
+//       lights[1]->setPixmap(fitpixmap2);
+//       lights[2]->setPixmap(fitpixmap2);
+//       lights[3]->setPixmap(fitpixmap2);
+//       lights[4]->setPixmap(fitpixmap2);
+////        light1->setPixmap(fitpixmap2);
+////        light2->setPixmap(fitpixmap2);
+////        light3->setPixmap(fitpixmap2);
+////        light4->setPixmap(fitpixmap2);
+////        light5->setPixmap(fitpixmap2);
 
-  }
+//  }
 }
 
 void BackWindow::exitFunction(){
@@ -504,35 +504,35 @@ void BackWindow::addMyToolBar_backWindow()
 {
 
     //图标太大导致在小屏幕上显示不全，改为按照屏幕宽度自动调整图标的大小
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
-    int screenWidth=screenRect.width();
-    const int buttonSize=(screenWidth*0.7)/21.6;
+//    QDesktopWidget* desktopWidget = QApplication::desktop();
+//    QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
+//    int screenWidth=screenRect.width();
+//    const int buttonSize=(screenWidth*0.7)/21.6;
 
     QGroupBox *group1=new QGroupBox(this);
     QGroupBox *group2=new QGroupBox(this);
     QGroupBox *group3=new QGroupBox(this);
     QGroupBox *group4=new QGroupBox(this);
-    QGroupBox *group5=new QGroupBox(this);
-    QGroupBox *group6=new QGroupBox(this);
+    //QGroupBox *group5=new QGroupBox(this);
+    //QGroupBox *group6=new QGroupBox(this);
 
     QHBoxLayout *vbox1 = new QHBoxLayout;
     QHBoxLayout *vbox2 = new QHBoxLayout;
     QHBoxLayout *vbox3 = new QHBoxLayout;
-    QVBoxLayout *vbox4 = new QVBoxLayout;
-    QHBoxLayout *vbox5 = new QHBoxLayout;
-     QHBoxLayout *vbox6 = new QHBoxLayout;
+    QHBoxLayout *vbox4 = new QHBoxLayout;
+    //QHBoxLayout *vbox5 = new QHBoxLayout;
+    //QHBoxLayout *vbox6 = new QHBoxLayout;
 
     //mainToolBar = addToolBar("monitoring");
 
     //加图标
     //mainToolBar->addWidget(new QLabel(""));
-    QPixmap pixmap3("./icon/fujirui.png");
-    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.8,buttonSize*1.8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    QLabel *tuBiao=new QLabel(this);
-    tuBiao->setPixmap(fitpixmap3);
-    mainToolBar->addWidget(tuBiao);
-    mainToolBar->addWidget(new QLabel(" "));
+//    QPixmap pixmap3("./icon/fujirui.png");
+//    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.8,buttonSize*1.8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//    QLabel *tuBiao=new QLabel(this);
+//    tuBiao->setPixmap(fitpixmap3);
+//    mainToolBar->addWidget(tuBiao);
+//    mainToolBar->addWidget(new QLabel(" "));
 
     //回放文字
     QLabel *text = new QLabel(this);
@@ -544,31 +544,31 @@ void BackWindow::addMyToolBar_backWindow()
 
     //第一组按钮：回放时间线,回放暂停,回放
     //回放时间线
-    startStop = new QToolButton(this);
-    startStop->setToolTip(tr("时间线"));
-    startStop->setMinimumHeight(buttonSize);
-    startStop->setMaximumHeight(buttonSize);
-    startStop->setMinimumWidth(buttonSize);
-    startStop->setMaximumWidth(buttonSize);
-    startStop->setStyleSheet("border-style:flat;background-color:2E302D");
-    startStopSet="./icon/时间线.png";
-    startStop->setIcon(QPixmap(startStopSet));
-    startStop->setIconSize(QSize(buttonSize,buttonSize));
-    vbox1->addWidget(startStop);
-    connect(startStop,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
-    //vbox1->addWidget(new QLabel(" "));
+//    startStop = new QToolButton(this);
+//    startStop->setToolTip(tr("时间线"));
+//    //startStop->setMinimumHeight(buttonSize);
+//    //startStop->setMaximumHeight(buttonSize);
+//    //startStop->setMinimumWidth(buttonSize);
+//    //startStop->setMaximumWidth(buttonSize);
+//    //startStop->setStyleSheet("border-style:flat;background-color:2E302D");
+//    startStopSet="./icon/时间线.png";
+//    startStop->setIcon(QPixmap(startStopSet));
+//    //startStop->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox1->addWidget(startStop);
+//    connect(startStop,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
+//    //vbox1->addWidget(new QLabel(" "));
 
     //回放暂停
     mstop = new QToolButton(this);
     mstop->setToolTip(tr("暂停"));
-    mstop->setMinimumHeight(buttonSize);
-    mstop->setMaximumHeight(buttonSize);
-    mstop->setMinimumWidth(buttonSize);
-    mstop->setMaximumWidth(buttonSize);
-    mstop->setStyleSheet("border-style:flat;background-color:2E302D");
+    //mstop->setMinimumHeight(buttonSize);
+    //mstop->setMaximumHeight(buttonSize);
+    //mstop->setMinimumWidth(buttonSize);
+    //mstop->setMaximumWidth(buttonSize);
+    //mstop->setStyleSheet("border-style:flat;background-color:2E302D");
     mstopSet="./icon/2_1.png";
     mstop->setIcon(QPixmap(mstopSet));
-    mstop->setIconSize(QSize(buttonSize,buttonSize));
+    //mstop->setIconSize(QSize(buttonSize,buttonSize));
     vbox1->addWidget(mstop);
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
    // vbox1->addWidget(new QLabel(" "));
@@ -590,318 +590,518 @@ void BackWindow::addMyToolBar_backWindow()
     mainToolBar->addWidget(group1);
     //mainToolBar->addWidget(new QLabel("    "));
     //第二组按钮：图像
+
+    //撤销手动对比度参数
+    chexiao = new QToolButton(this);
+    chexiao->setToolTip(tr("撤销手动对比度参数"));
+    chexiaoDuibidu ="./icon/8_1.png";
+    chexiao->setIcon(QPixmap(chexiaoDuibidu));
+    vbox2->addWidget(chexiao);
+    connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
+
     //自动
     autom = new QToolButton(this);
-    autom->setToolTip(tr("自动"));
-    autom->setMinimumHeight(buttonSize);
-    autom->setMaximumHeight(buttonSize);
-    autom->setMinimumWidth(buttonSize);
-    autom->setMaximumWidth(buttonSize);
-    autom->setStyleSheet("border-style:flat;background-color:2E302D");
+    autom->setToolTip(tr("应用自动对比度"));
+    //autom->setMinimumHeight(buttonSize);
+    //autom->setMaximumHeight(buttonSize);
+    //autom->setMinimumWidth(buttonSize);
+    //autom->setMaximumWidth(buttonSize);
+    //autom->setStyleSheet("border-style:flat;background-color:2E302D");
     automSet="./icon/6_1.png";
     autom->setIcon(QPixmap(automSet));
-    autom->setIconSize(QSize(buttonSize,buttonSize));
+    //autom->setIconSize(QSize(buttonSize,buttonSize));
     vbox2->addWidget(autom);
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
     //vbox2->addWidget(new QLabel(" "));
-    qDebug()<<"5555555555555555555555555555555555555555555555555555555555555555555";
-    //亮度
-    brightness = new QToolButton(this);
-    brightness->setToolTip(tr("亮度"));
-    brightness->setMinimumHeight(buttonSize);
-    brightness->setMaximumHeight(buttonSize);
-    brightness->setMinimumWidth(buttonSize);
-    brightness->setMaximumWidth(buttonSize);
-    brightness->setStyleSheet("border-style:flat;background-color:2E302D");
-    brightnessSet="./icon/7_1.png";
-    brightness->setIcon(QPixmap(brightnessSet));
-    brightness->setIconSize(QSize(buttonSize,buttonSize));
-    vbox2->addWidget(brightness);
-    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
+
+    //增加亮度
+    addbrightness = new QToolButton(this);
+    addbrightness->setToolTip(tr("增加亮度"));
+    //brightness->setMinimumHeight(buttonSize);
+    //brightness->setMaximumHeight(buttonSize);
+    //brightness->setMinimumWidth(buttonSize);
+    //brightness->setMaximumWidth(buttonSize);
+    //brightness->setStyleSheet("border-style:flat;background-color:2E302D");
+    addBrightnessSet="./icon/7_1.png";
+    addbrightness->setIcon(QPixmap(addBrightnessSet));
+    //brightness->setIconSize(QSize(buttonSize,buttonSize));
+    vbox2->addWidget(addbrightness);
+    connect(addbrightness,SIGNAL(clicked()),this,SLOT(addBrightnessFunction()));
     //vbox2->addWidget(new QLabel(" "));
 
-    //对比度
-    saturation = new QToolButton(this);
-    saturation->setToolTip(tr("对比度"));
-    saturation->setMinimumHeight(buttonSize);
-    saturation->setMaximumHeight(buttonSize);
-    saturation->setMinimumWidth(buttonSize);
-    saturation->setMaximumWidth(buttonSize);
-    saturation->setStyleSheet("border-style:flat;background-color:2E302D");
-    saturationSet="./icon/8_1.png";
-    saturation->setIcon(QPixmap(saturationSet));
-    saturation->setIconSize(QSize(buttonSize,buttonSize));
-    vbox2->addWidget(saturation);
-    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
+    //降低亮度
+    reducebrightness = new QToolButton(this);
+    reducebrightness->setToolTip(tr("降低亮度"));
+    //brightness->setMinimumHeight(buttonSize);
+    //brightness->setMaximumHeight(buttonSize);
+    //brightness->setMinimumWidth(buttonSize);
+    //brightness->setMaximumWidth(buttonSize);
+    //brightness->setStyleSheet("border-style:flat;background-color:2E302D");
+    reduceBrightnessSet="./icon/7_1.png";
+    reducebrightness->setIcon(QPixmap(reduceBrightnessSet));
+    //brightness->setIconSize(QSize(buttonSize,buttonSize));
+    vbox2->addWidget(reducebrightness);
+    connect(reducebrightness,SIGNAL(clicked()),this,SLOT(reduceBrightnessFunction()));
+    //vbox2->addWidget(new QLabel(" "));
+
+    //增加对比度
+    addsaturation = new QToolButton(this);
+    addsaturation->setToolTip(tr("增加对比度"));
+    //saturation->setMinimumHeight(buttonSize);
+    //saturation->setMaximumHeight(buttonSize);
+    //saturation->setMinimumWidth(buttonSize);
+    //saturation->setMaximumWidth(buttonSize);
+    //saturation->setStyleSheet("border-style:flat;background-color:2E302D");
+    addSaturationSet="./icon/8_1.png";
+    addsaturation->setIcon(QPixmap(addSaturationSet));
+    //saturation->setIconSize(QSize(buttonSize,buttonSize));
+    vbox2->addWidget(addsaturation);
+    connect(addsaturation,SIGNAL(clicked()),this,SLOT(addSaturationFunction()));
+    //vbox2->addWidget(new QLabel(" "));
+
+    //降低对比度
+    reducesaturation = new QToolButton(this);
+    reducesaturation->setToolTip(tr("增加对比度"));
+    //saturation->setMinimumHeight(buttonSize);
+    //saturation->setMaximumHeight(buttonSize);
+    //saturation->setMinimumWidth(buttonSize);
+    //saturation->setMaximumWidth(buttonSize);
+    //saturation->setStyleSheet("border-style:flat;background-color:2E302D");
+    reduceSaturationSet="./icon/8_1.png";
+    reducesaturation->setIcon(QPixmap(reduceSaturationSet));
+    //saturation->setIconSize(QSize(buttonSize,buttonSize));
+    vbox2->addWidget(reducesaturation);
+    connect(reducesaturation,SIGNAL(clicked()),this,SLOT(reduceSaturationFunction()));
     //vbox2->addWidget(new QLabel(" "));
 
     //伪彩色
     pseudoColor = new QToolButton(this);
     pseudoColor->setToolTip(tr("伪彩色"));
-    pseudoColor->setMinimumHeight(buttonSize);
-    pseudoColor->setMaximumHeight(buttonSize);
-    pseudoColor->setMinimumWidth(buttonSize);
-    pseudoColor->setMaximumWidth(buttonSize);
-    pseudoColor->setStyleSheet("border-style:flat;background-color:2E302D");
+    //pseudoColor->setMinimumHeight(buttonSize);
+    //pseudoColor->setMaximumHeight(buttonSize);
+    //pseudoColor->setMinimumWidth(buttonSize);
+    //pseudoColor->setMaximumWidth(buttonSize);
+    //pseudoColor->setStyleSheet("border-style:flat;background-color:2E302D");
     pseudoColorSet="./icon/9_1.png";
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
-    pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
+    //pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
     vbox2->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
 
     group2->setLayout(vbox2);
     mainToolBar->addWidget(group2);
-    //mainToolBar->addWidget(new QLabel("    "));
 
-
-    //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
-    QPixmap pixmap1("./icon/16_1.png");
-    QPixmap pixmap2("./icon/16_2.png");
-    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-   fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-
-    //vector<MyObject> vec = in.getObjs2();
-  // vector<MyObject> vec = in.getObjs();
-//    light1=new QLabel(this);
-//    light2=new QLabel(this);
-//    light3=new QLabel(this);
-//    light4=new QLabel(this);
-//    light5=new QLabel(this);
-    lights[0]=new QLabel(this);
-    lights[1]=new QLabel(this);
-    lights[2]=new QLabel(this);
-    lights[3]=new QLabel(this);
-    lights[4]=new QLabel(this);
-//        if(!isGaojing)
-//        {
-            lights[0]->setPixmap(fitpixmap2);
-            lights[1]->setPixmap(fitpixmap2);
-            lights[2]->setPixmap(fitpixmap2);
-            lights[3]->setPixmap(fitpixmap2);
-            lights[4]->setPixmap(fitpixmap2);
-//            light1->setPixmap(fitpixmap2);
-//            light2->setPixmap(fitpixmap2);
-//            light3->setPixmap(fitpixmap2);
-//            light4->setPixmap(fitpixmap2);
-//            light5->setPixmap(fitpixmap2);
-//        }
-//        else
-//        {
-//            if(vec.size()==0)
-//            {
-//                lights[0]->setPixmap(fitpixmap2);
-//                lights[1]->setPixmap(fitpixmap2);
-//                lights[2]->setPixmap(fitpixmap2);
-//                lights[3]->setPixmap(fitpixmap2);
-//                lights[4]->setPixmap(fitpixmap2);
-////                light1->setPixmap(fitpixmap2);
-////                light2->setPixmap(fitpixmap2);
-////                light3->setPixmap(fitpixmap2);
-////                light4->setPixmap(fitpixmap2);
-////                light5->setPixmap(fitpixmap2);
-//            }
-//            else if(vec.size()==1)
-//            {
-//                lights[0]->setPixmap(fitpixmap1);
-//                lights[1]->setPixmap(fitpixmap2);
-//                lights[2]->setPixmap(fitpixmap2);
-//                lights[3]->setPixmap(fitpixmap2);
-//                lights[4]->setPixmap(fitpixmap2);
-////                light1->setPixmap(fitpixmap1);
-////                light2->setPixmap(fitpixmap2);
-////                light3->setPixmap(fitpixmap2);
-////                light4->setPixmap(fitpixmap2);
-////                light5->setPixmap(fitpixmap2);
-//            }
-//            else if(vec.size()==2)
-//            {
-//                lights[0]->setPixmap(fitpixmap1);
-//                lights[1]->setPixmap(fitpixmap1);
-//                lights[2]->setPixmap(fitpixmap2);
-//                lights[3]->setPixmap(fitpixmap2);
-//                lights[4]->setPixmap(fitpixmap2);
-////                light1->setPixmap(fitpixmap1);
-////                light2->setPixmap(fitpixmap1);
-////                light3->setPixmap(fitpixmap2);
-////                light4->setPixmap(fitpixmap2);
-////                light5->setPixmap(fitpixmap2);
-//            }
-//            else if(vec.size()==3)
-//            {
-
-//                lights[0]->setPixmap(fitpixmap1);
-//                lights[1]->setPixmap(fitpixmap1);
-//                lights[2]->setPixmap(fitpixmap1);
-//                lights[3]->setPixmap(fitpixmap2);
-//                lights[4]->setPixmap(fitpixmap2);
-////                light1->setPixmap(fitpixmap1);
-////                light2->setPixmap(fitpixmap1);
-////                light3->setPixmap(fitpixmap1);
-////                light4->setPixmap(fitpixmap2);
-////                light5->setPixmap(fitpixmap2);
-//            }
-//            else if(vec.size()==4)
-//            {
-
-//                lights[0]->setPixmap(fitpixmap1);
-//                lights[1]->setPixmap(fitpixmap1);
-//                lights[2]->setPixmap(fitpixmap1);
-//                lights[3]->setPixmap(fitpixmap1);
-//                lights[4]->setPixmap(fitpixmap2);
-////                light1->setPixmap(fitpixmap1);
-////                light2->setPixmap(fitpixmap1);
-////                light3->setPixmap(fitpixmap1);
-////                light4->setPixmap(fitpixmap1);
-////                light5->setPixmap(fitpixmap2);
-//            }
-//            else if(vec.size()>= 5 )
-//            {
-//                lights[0]->setPixmap(fitpixmap1);
-//                lights[1]->setPixmap(fitpixmap1);
-//                lights[2]->setPixmap(fitpixmap1);
-//                lights[3]->setPixmap(fitpixmap1);
-//                lights[4]->setPixmap(fitpixmap1);
-////                light1->setPixmap(fitpixmap1);
-////                light2->setPixmap(fitpixmap1);
-////                light3->setPixmap(fitpixmap1);
-////                light4->setPixmap(fitpixmap1);
-////                light5->setPixmap(fitpixmap1);
-//            }
-//        }
-
-
-        vbox3->addWidget(lights[0]);
-        vbox3->addWidget(lights[1]);
-        vbox3->addWidget(lights[2]);
-        vbox3->addWidget(lights[3]);
-        vbox3->addWidget(lights[4]);
-
-    group3->setLayout(vbox3);
-    mainToolBar->addWidget(group3);
-    //mainToolBar->addWidget(new QLabel("    "));
-
-    //第四组，显示编号和系统当前时间
-    serialNumber=new QLabel("    位置："+xtbh);//编号
-    serialNumber->setStyleSheet("color:White");
-    vbox4->addWidget(serialNumber);
-    //vbox4->addWidget(new QLabel("   "));
-    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
-
-    QString datetime = fileInfo->at(fileIndex).filePath();
-    QString backDate = datetime.right(datetime.length()-5).left(10);
-    QString backHour = datetime.right(14).left(2);
-    QString backMinute= datetime.right(11).left(2);
-    QString backSec = datetime.right(8).left(2);
-    systime->setText(backDate.append("  ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
-
-
-    //QString datetime = fileInfo->at(fileIndex).filePath();
-    //qDebug()<<datetime.length();
-    systime->setStyleSheet("color:White");
-    vbox4->addWidget(systime);
-    //vbox4->addWidget(new QLabel("   "));
-
-    group4->setLayout(vbox4);
-    mainToolBar->addWidget(group4);
-    //mainToolBar->addWidget(new QLabel("    "));
-
-    //第五组，告警
-    //关闭告警
-    openClose = new QToolButton(this);
-    openClose->setToolTip(tr("关闭告警"));
-    openClose->setMinimumHeight(buttonSize);
-    openClose->setMaximumHeight(buttonSize);
-    openClose->setMinimumWidth(buttonSize);
-    openClose->setMaximumWidth(buttonSize);
-    openClose->setStyleSheet("border-style:flat;background-color:2E302D");
-    openCloseSet="./icon/11_1.png";
-    openClose->setIcon(QPixmap(openCloseSet));
-    openClose->setIconSize(QSize(buttonSize,buttonSize));
-    vbox5->addWidget(openClose);
-    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
-    //vbox5->addWidget(new QLabel(" "));
-
-    //对象属性
+    //第三组
+    //显示点击处的位置信息
     objectAttribute = new QToolButton(this);
-    objectAttribute->setToolTip(tr("对象属性"));
-    objectAttribute->setMinimumHeight(buttonSize);
-    objectAttribute->setMaximumHeight(buttonSize);
-    objectAttribute->setMinimumWidth(buttonSize);
-    objectAttribute->setMaximumWidth(buttonSize);
-    objectAttribute->setStyleSheet("border-style:flat;background-color:2E302D");
+    objectAttribute->setToolTip(tr("显示点击处的位置信息"));
+    //objectAttribute->setMinimumHeight(buttonSize);
+    //objectAttribute->setMaximumHeight(buttonSize);
+    //objectAttribute->setMinimumWidth(buttonSize);
+    //objectAttribute->setMaximumWidth(buttonSize);
+    //objectAttribute->setStyleSheet("border-style:flat;background-color:2E302D");
     objectAttributeSet="./icon/17_1.png";
     objectAttribute->setIcon(QPixmap(objectAttributeSet));
-    objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
-    vbox5->addWidget(objectAttribute);
+    //objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
+    vbox3->addWidget(objectAttribute);
     connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
     //vbox5->addWidget(new QLabel(" "));
 
+    //增加标签
+    manual = new QToolButton(this);
+    manual->setToolTip(tr("增加标签"));
+    //manual->setMinimumHeight(buttonSize);
+    //manual->setMaximumHeight(buttonSize);
+    //manual->setMinimumWidth(buttonSize);
+    //manual->setMaximumWidth(buttonSize);
+    //manual->setStyleSheet("border-style:flat;background-color:2E302D");
+    manualSet="./icon/12_1.png";
+    manual->setIcon(QPixmap(manualSet));
+    //manual->setIconSize(QSize(buttonSize,buttonSize));
+    vbox3->addWidget(manual);
+    connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
+    //vbox5->addWidget(new QLabel(" "));
+    group3->setLayout(vbox3);
+    mainToolBar->addWidget(group3);
 
-    //关闭目标属性跟随
-    objects = new QToolButton(this);
-    objects->setToolTip(tr("关闭目标属性跟随"));
-    objects->setMinimumHeight(buttonSize);
-    objects->setMaximumHeight(buttonSize);
-    objects->setMinimumWidth(buttonSize);
-    objects->setMaximumWidth(buttonSize);
-    objects->setStyleSheet("border-style:flat;background-color:2E302D");
-    objectSet="./icon/13_1.png";
-    objects->setIcon(QPixmap(objectSet));
-    objects->setIconSize(QSize(buttonSize,buttonSize));
-    vbox5->addWidget(objects);
-    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
+    //第四组，告警
+    //启动/禁用探测功能
+    openClose = new QToolButton(this);
+    openClose->setToolTip(tr("禁用探测功能"));
+    //openClose->setMinimumHeight(buttonSize);
+    //openClose->setMaximumHeight(buttonSize);
+    //openClose->setMinimumWidth(buttonSize);
+    //openClose->setMaximumWidth(buttonSize);
+    //openClose->setStyleSheet("border-style:flat;background-color:2E302D");
+    openCloseSet="./icon/11_1.png";
+    openClose->setIcon(QPixmap(openCloseSet));
+    //openClose->setIconSize(QSize(buttonSize,buttonSize));
+    vbox4->addWidget(openClose);
+    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
     //vbox5->addWidget(new QLabel(" "));
 
-    //设置
-//    attribute = new QToolButton(this);
-//    attribute->setToolTip(tr("设置"));
-//    attribute->setMinimumHeight(buttonSize);
-//    attribute->setMaximumHeight(buttonSize);
-//    attribute->setMinimumWidth(buttonSize);
-//    attribute->setMaximumWidth(buttonSize);
-//    attribute->setStyleSheet("border-style:flat;background-color:2E302D");
-//    attributeSet="./icon/14_1.png";
-//    attribute->setIcon(QPixmap(attributeSet));
-//    attribute->setIconSize(QSize(buttonSize,buttonSize));
-//    vbox5->addWidget(attribute);
-//    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
-//    //vbox5->addWidget(new QLabel(" "));
+    //调整探测灵敏度等级
+    objects = new QToolButton(this);
+    objects->setToolTip(tr("调整探测灵敏度等级"));
+    //objects->setMinimumHeight(buttonSize);
+    //objects->setMaximumHeight(buttonSize);
+    //objects->setMinimumWidth(buttonSize);
+    //objects->setMaximumWidth(buttonSize);
+    //objects->setStyleSheet("border-style:flat;background-color:2E302D");
+    objectSet="./icon/13_1.png";
+    objects->setIcon(QPixmap(objectSet));
+    //objects->setIconSize(QSize(buttonSize,buttonSize));
+    vbox4->addWidget(objects);
+    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
+    //vbox5->addWidget(new QLabel(" "));
 
     //关闭声音
     voice = new QToolButton(this);
     voice->setToolTip(tr("关闭声音"));
-    voice->setMinimumHeight(buttonSize);
-    voice->setMaximumHeight(buttonSize);
-    voice->setMinimumWidth(buttonSize);
-    voice->setMaximumWidth(buttonSize);
-    voice->setStyleSheet("border-style:flat;background-color:2E302D");
+    //voice->setMinimumHeight(buttonSize);
+    //voice->setMaximumHeight(buttonSize);
+    //voice->setMinimumWidth(buttonSize);
+    //voice->setMaximumWidth(buttonSize);
+    //voice->setStyleSheet("border-style:flat;background-color:2E302D");
     voiceSet="./icon/15_1.png";
     voice->setIcon(QPixmap(voiceSet));
-    voice->setIconSize(QSize(buttonSize,buttonSize));
-    vbox5->addWidget(voice);
+    //voice->setIconSize(QSize(buttonSize,buttonSize));
+    vbox4->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
-    group5->setLayout(vbox5);
-    mainToolBar->addWidget(group5);
+
     //mainToolBar->addWidget(new QLabel("   "));
 
-    //第六组
-    exitButton = new QToolButton(this);
-    exitButton->setToolTip(tr("退出"));
-    exitButton->setMinimumHeight(buttonSize);
-    exitButton->setMaximumHeight(buttonSize);
-    exitButton->setMinimumWidth(buttonSize);
-    exitButton->setMaximumWidth(buttonSize);
-    exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
-    exitSet="./icon/18.png";
-    exitButton->setIcon(QPixmap(exitSet));
-    exitButton->setIconSize(QSize(buttonSize,buttonSize));
-   // mainToolBar->addWidget(exitButton);
-      vbox6->addWidget(exitButton);
-    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+    //告警指示
+    light = new QToolButton(this);
+    light->setToolTip(tr("告警指示"));
+    //attribute->setMinimumHeight(buttonSize);
+    //attribute->setMaximumHeight(buttonSize);
+    //attribute->setMinimumWidth(buttonSize);
+    //attribute->setMaximumWidth(buttonSize);
+    //attribute->setStyleSheet("border-style:flat;background-color:2E302D");
+    lightSet="./icon/16_1.png";
+    light->setIcon(QPixmap(lightSet));
+    //attribute->setIconSize(QSize(buttonSize,buttonSize));
+    vbox4->addWidget(light);
+    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
+    //vbox5->addWidget(new QLabel(" "));
+    group4->setLayout(vbox4);
+    mainToolBar->addWidget(group4);
 
-    mainToolBar->addWidget(group6);
-    group6->setLayout(vbox6);
+
+//    //自动
+//    autom = new QToolButton(this);
+//    autom->setToolTip(tr("自动"));
+//    //autom->setMinimumHeight(buttonSize);
+//    //autom->setMaximumHeight(buttonSize);
+//    //autom->setMinimumWidth(buttonSize);
+//    //autom->setMaximumWidth(buttonSize);
+//    //autom->setStyleSheet("border-style:flat;background-color:2E302D");
+//    automSet="./icon/6_1.png";
+//    autom->setIcon(QPixmap(automSet));
+//    //autom->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox2->addWidget(autom);
+//    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
+//    //vbox2->addWidget(new QLabel(" "));
+//    qDebug()<<"5555555555555555555555555555555555555555555555555555555555555555555";
+//    //亮度
+//    brightness = new QToolButton(this);
+//    brightness->setToolTip(tr("亮度"));
+//    //brightness->setMinimumHeight(buttonSize);
+//    //brightness->setMaximumHeight(buttonSize);
+//    //brightness->setMinimumWidth(buttonSize);
+//    //brightness->setMaximumWidth(buttonSize);
+//    //brightness->setStyleSheet("border-style:flat;background-color:2E302D");
+//    brightnessSet="./icon/7_1.png";
+//    brightness->setIcon(QPixmap(brightnessSet));
+//    //brightness->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox2->addWidget(brightness);
+//    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
+//    //vbox2->addWidget(new QLabel(" "));
+
+//    //对比度
+//    saturation = new QToolButton(this);
+//    saturation->setToolTip(tr("对比度"));
+//    //saturation->setMinimumHeight(buttonSize);
+//    //saturation->setMaximumHeight(buttonSize);
+//    //saturation->setMinimumWidth(buttonSize);
+//    //saturation->setMaximumWidth(buttonSize);
+//    //saturation->setStyleSheet("border-style:flat;background-color:2E302D");
+//    saturationSet="./icon/8_1.png";
+//    saturation->setIcon(QPixmap(saturationSet));
+//    //saturation->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox2->addWidget(saturation);
+//    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
+//    //vbox2->addWidget(new QLabel(" "));
+
+//    //伪彩色
+//    pseudoColor = new QToolButton(this);
+//    pseudoColor->setToolTip(tr("伪彩色"));
+//    //pseudoColor->setMinimumHeight(buttonSize);
+//    //pseudoColor->setMaximumHeight(buttonSize);
+//    //pseudoColor->setMinimumWidth(buttonSize);
+//    //pseudoColor->setMaximumWidth(buttonSize);
+//    //pseudoColor->setStyleSheet("border-style:flat;background-color:2E302D");
+//    pseudoColorSet="./icon/9_1.png";
+//    pseudoColor->setIcon(QPixmap(pseudoColorSet));
+//    //pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox2->addWidget(pseudoColor);
+//    connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
+
+//    group2->setLayout(vbox2);
+//    mainToolBar->addWidget(group2);
+//    //mainToolBar->addWidget(new QLabel("    "));
+
+
+//    //第三组按钮，指示灯，五盏，一个目标一盏红灯；二个目标二盏红灯；三个目标三盏红灯；四个目标四盏红灯；五个目标及以上，五盏红灯
+//    QPixmap pixmap1("./icon/16_1.png");
+//    QPixmap pixmap2("./icon/16_2.png");
+//    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//   fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+//    //vector<MyObject> vec = in.getObjs2();
+//  // vector<MyObject> vec = in.getObjs();
+////    light1=new QLabel(this);
+////    light2=new QLabel(this);
+////    light3=new QLabel(this);
+////    light4=new QLabel(this);
+////    light5=new QLabel(this);
+//    lights[0]=new QLabel(this);
+//    lights[1]=new QLabel(this);
+//    lights[2]=new QLabel(this);
+//    lights[3]=new QLabel(this);
+//    lights[4]=new QLabel(this);
+////        if(!isGaojing)
+////        {
+//            lights[0]->setPixmap(fitpixmap2);
+//            lights[1]->setPixmap(fitpixmap2);
+//            lights[2]->setPixmap(fitpixmap2);
+//            lights[3]->setPixmap(fitpixmap2);
+//            lights[4]->setPixmap(fitpixmap2);
+////            light1->setPixmap(fitpixmap2);
+////            light2->setPixmap(fitpixmap2);
+////            light3->setPixmap(fitpixmap2);
+////            light4->setPixmap(fitpixmap2);
+////            light5->setPixmap(fitpixmap2);
+////        }
+////        else
+////        {
+////            if(vec.size()==0)
+////            {
+////                lights[0]->setPixmap(fitpixmap2);
+////                lights[1]->setPixmap(fitpixmap2);
+////                lights[2]->setPixmap(fitpixmap2);
+////                lights[3]->setPixmap(fitpixmap2);
+////                lights[4]->setPixmap(fitpixmap2);
+//////                light1->setPixmap(fitpixmap2);
+//////                light2->setPixmap(fitpixmap2);
+//////                light3->setPixmap(fitpixmap2);
+//////                light4->setPixmap(fitpixmap2);
+//////                light5->setPixmap(fitpixmap2);
+////            }
+////            else if(vec.size()==1)
+////            {
+////                lights[0]->setPixmap(fitpixmap1);
+////                lights[1]->setPixmap(fitpixmap2);
+////                lights[2]->setPixmap(fitpixmap2);
+////                lights[3]->setPixmap(fitpixmap2);
+////                lights[4]->setPixmap(fitpixmap2);
+//////                light1->setPixmap(fitpixmap1);
+//////                light2->setPixmap(fitpixmap2);
+//////                light3->setPixmap(fitpixmap2);
+//////                light4->setPixmap(fitpixmap2);
+//////                light5->setPixmap(fitpixmap2);
+////            }
+////            else if(vec.size()==2)
+////            {
+////                lights[0]->setPixmap(fitpixmap1);
+////                lights[1]->setPixmap(fitpixmap1);
+////                lights[2]->setPixmap(fitpixmap2);
+////                lights[3]->setPixmap(fitpixmap2);
+////                lights[4]->setPixmap(fitpixmap2);
+//////                light1->setPixmap(fitpixmap1);
+//////                light2->setPixmap(fitpixmap1);
+//////                light3->setPixmap(fitpixmap2);
+//////                light4->setPixmap(fitpixmap2);
+//////                light5->setPixmap(fitpixmap2);
+////            }
+////            else if(vec.size()==3)
+////            {
+
+////                lights[0]->setPixmap(fitpixmap1);
+////                lights[1]->setPixmap(fitpixmap1);
+////                lights[2]->setPixmap(fitpixmap1);
+////                lights[3]->setPixmap(fitpixmap2);
+////                lights[4]->setPixmap(fitpixmap2);
+//////                light1->setPixmap(fitpixmap1);
+//////                light2->setPixmap(fitpixmap1);
+//////                light3->setPixmap(fitpixmap1);
+//////                light4->setPixmap(fitpixmap2);
+//////                light5->setPixmap(fitpixmap2);
+////            }
+////            else if(vec.size()==4)
+////            {
+
+////                lights[0]->setPixmap(fitpixmap1);
+////                lights[1]->setPixmap(fitpixmap1);
+////                lights[2]->setPixmap(fitpixmap1);
+////                lights[3]->setPixmap(fitpixmap1);
+////                lights[4]->setPixmap(fitpixmap2);
+//////                light1->setPixmap(fitpixmap1);
+//////                light2->setPixmap(fitpixmap1);
+//////                light3->setPixmap(fitpixmap1);
+//////                light4->setPixmap(fitpixmap1);
+//////                light5->setPixmap(fitpixmap2);
+////            }
+////            else if(vec.size()>= 5 )
+////            {
+////                lights[0]->setPixmap(fitpixmap1);
+////                lights[1]->setPixmap(fitpixmap1);
+////                lights[2]->setPixmap(fitpixmap1);
+////                lights[3]->setPixmap(fitpixmap1);
+////                lights[4]->setPixmap(fitpixmap1);
+//////                light1->setPixmap(fitpixmap1);
+//////                light2->setPixmap(fitpixmap1);
+//////                light3->setPixmap(fitpixmap1);
+//////                light4->setPixmap(fitpixmap1);
+//////                light5->setPixmap(fitpixmap1);
+////            }
+////        }
+
+
+//        vbox3->addWidget(lights[0]);
+//        vbox3->addWidget(lights[1]);
+//        vbox3->addWidget(lights[2]);
+//        vbox3->addWidget(lights[3]);
+//        vbox3->addWidget(lights[4]);
+
+//    group3->setLayout(vbox3);
+//    mainToolBar->addWidget(group3);
+//    //mainToolBar->addWidget(new QLabel("    "));
+
+//    //第四组，显示编号和系统当前时间
+//    serialNumber=new QLabel("    位置："+xtbh);//编号
+//    serialNumber->setStyleSheet("color:White");
+//    vbox4->addWidget(serialNumber);
+//    //vbox4->addWidget(new QLabel("   "));
+//    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+
+//    QString datetime = fileInfo->at(fileIndex).filePath();
+//    QString backDate = datetime.right(datetime.length()-5).left(10);
+//    QString backHour = datetime.right(14).left(2);
+//    QString backMinute= datetime.right(11).left(2);
+//    QString backSec = datetime.right(8).left(2);
+//    systime->setText(backDate.append("  ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
+
+
+//    //QString datetime = fileInfo->at(fileIndex).filePath();
+//    //qDebug()<<datetime.length();
+//    systime->setStyleSheet("color:White");
+//    vbox4->addWidget(systime);
+//    //vbox4->addWidget(new QLabel("   "));
+
+//    group4->setLayout(vbox4);
+//    mainToolBar->addWidget(group4);
+//    //mainToolBar->addWidget(new QLabel("    "));
+
+//    //第五组，告警
+//    //关闭告警
+//    openClose = new QToolButton(this);
+//    openClose->setToolTip(tr("关闭告警"));
+//    //openClose->setMinimumHeight(buttonSize);
+//    //openClose->setMaximumHeight(buttonSize);
+//    //openClose->setMinimumWidth(buttonSize);
+//    //openClose->setMaximumWidth(buttonSize);
+//    //openClose->setStyleSheet("border-style:flat;background-color:2E302D");
+//    openCloseSet="./icon/11_1.png";
+//    openClose->setIcon(QPixmap(openCloseSet));
+//    //openClose->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox5->addWidget(openClose);
+//    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
+//    //vbox5->addWidget(new QLabel(" "));
+
+//    //对象属性
+//    objectAttribute = new QToolButton(this);
+//    objectAttribute->setToolTip(tr("对象属性"));
+//    //objectAttribute->setMinimumHeight(buttonSize);
+//    //objectAttribute->setMaximumHeight(buttonSize);
+//    //objectAttribute->setMinimumWidth(buttonSize);
+//    //objectAttribute->setMaximumWidth(buttonSize);
+//    //objectAttribute->setStyleSheet("border-style:flat;background-color:2E302D");
+//    objectAttributeSet="./icon/17_1.png";
+//    objectAttribute->setIcon(QPixmap(objectAttributeSet));
+//    //objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox5->addWidget(objectAttribute);
+//    connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
+//    //vbox5->addWidget(new QLabel(" "));
+
+
+//    //关闭目标属性跟随
+//    objects = new QToolButton(this);
+//    objects->setToolTip(tr("关闭目标属性跟随"));
+//    //objects->setMinimumHeight(buttonSize);
+//    //objects->setMaximumHeight(buttonSize);
+//    //objects->setMinimumWidth(buttonSize);
+//    //objects->setMaximumWidth(buttonSize);
+//    //objects->setStyleSheet("border-style:flat;background-color:2E302D");
+//    objectSet="./icon/13_1.png";
+//    objects->setIcon(QPixmap(objectSet));
+//    //objects->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox5->addWidget(objects);
+//    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
+//    //vbox5->addWidget(new QLabel(" "));
+
+//    //设置
+////    attribute = new QToolButton(this);
+////    attribute->setToolTip(tr("设置"));
+////    attribute->setMinimumHeight(buttonSize);
+////    attribute->setMaximumHeight(buttonSize);
+////    attribute->setMinimumWidth(buttonSize);
+////    attribute->setMaximumWidth(buttonSize);
+////    attribute->setStyleSheet("border-style:flat;background-color:2E302D");
+////    attributeSet="./icon/14_1.png";
+////    attribute->setIcon(QPixmap(attributeSet));
+////    attribute->setIconSize(QSize(buttonSize,buttonSize));
+////    vbox5->addWidget(attribute);
+////    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
+////    //vbox5->addWidget(new QLabel(" "));
+
+//    //关闭声音
+//    voice = new QToolButton(this);
+//    voice->setToolTip(tr("关闭声音"));
+//    //voice->setMinimumHeight(buttonSize);
+//    //voice->setMaximumHeight(buttonSize);
+//    //voice->setMinimumWidth(buttonSize);
+//    //voice->setMaximumWidth(buttonSize);
+//    //voice->setStyleSheet("border-style:flat;background-color:2E302D");
+//    voiceSet="./icon/15_1.png";
+//    voice->setIcon(QPixmap(voiceSet));
+//    //voice->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox5->addWidget(voice);
+//    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+
+//    group5->setLayout(vbox5);
+//    mainToolBar->addWidget(group5);
+//    //mainToolBar->addWidget(new QLabel("   "));
+
+//    //第六组
+//    exitButton = new QToolButton(this);
+//    exitButton->setToolTip(tr("退出"));
+//    exitButton->setMinimumHeight(buttonSize);
+//    exitButton->setMaximumHeight(buttonSize);
+//    exitButton->setMinimumWidth(buttonSize);
+//    exitButton->setMaximumWidth(buttonSize);
+//    exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
+//    exitSet="./icon/18.png";
+//    exitButton->setIcon(QPixmap(exitSet));
+//    exitButton->setIconSize(QSize(buttonSize,buttonSize));
+//   // mainToolBar->addWidget(exitButton);
+//      vbox6->addWidget(exitButton);
+//    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+
+//    mainToolBar->addWidget(group6);
+//    group6->setLayout(vbox6);
 
 }
 
@@ -920,24 +1120,24 @@ void BackWindow :: timeLineFunction(){
 void BackWindow::onTimerOut2(){
     //systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 
-    if(fileIndex < fileInfo->count()&&!currentFileTime.isEmpty())
-    {
+//    if(fileIndex < fileInfo->count()&&!currentFileTime.isEmpty())
+//    {
 
-        QString datetime = fileInfo->at(fileIndex).filePath();
-        QString backDate = datetime.right(datetime.length()-5).left(10);
-//      QString backHour = datetime.right(14).left(2);
-//      QString backMinute = datetime.right(11).left(2);
-//      QString backSec = datetime.right(8).left(2);
-        QString backHour = currentFileTime.left(2);
-        QString backMinute = currentFileTime.right(5).left(2);
-        QString backSec = currentFileTime.right(2);
-        systime->setText(backDate.append(" ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
-    }
-    else
-        systime->setText("       当前无回放      ");
+//        QString datetime = fileInfo->at(fileIndex).filePath();
+//        QString backDate = datetime.right(datetime.length()-5).left(10);
+////      QString backHour = datetime.right(14).left(2);
+////      QString backMinute = datetime.right(11).left(2);
+////      QString backSec = datetime.right(8).left(2);
+//        QString backHour = currentFileTime.left(2);
+//        QString backMinute = currentFileTime.right(5).left(2);
+//        QString backSec = currentFileTime.right(2);
+//        systime->setText(backDate.append(" ").append(backHour).append(":").append(backMinute).append(":").append(backSec).append(" ").append(date.toString("ddd")));
+//    }
+//    else
+//        systime->setText("       当前无回放      ");
 
-    timeLine->position= fileIndex*255/fileInfo->count();
-    timeLine->update();
+//    timeLine->position= fileIndex*255/fileInfo->count();
+//    timeLine->update();
 }
 
 

@@ -1,11 +1,11 @@
-#include "nwidget.h"
+#include "nwidget1.h"
 #include "mainwindow.h"
 #include "myobject.h"
-
+#include "cvutil.h"
 using namespace cv;
 using namespace std;
 
-NWidget::NWidget(QWidget *parent) :
+NWidget1::NWidget1(QWidget *parent) :
     QWidget(parent){
 
     this->from = 0;
@@ -20,64 +20,64 @@ NWidget::NWidget(QWidget *parent) :
 
 }
 
-void NWidget::setTwoPanos(Mat tps){
+void NWidget1::setTwoPanos(Mat tps){
     twopanos = tps;
 }
 
-Mat NWidget::getTwoPanos(){
+Mat NWidget1::getTwoPanos(){
     return twopanos;
 }
 
-void NWidget::setPano(Mat p){
+void NWidget1::setPano(Mat p){
     pano = p;
 }
 
-Mat NWidget::getPano(){
+Mat NWidget1::getPano(){
     return pano;
 }
 
-void NWidget::setRect(Rect r){
+void NWidget1::setRect(Rect r){
     this->rect = r;
 }
 
-Rect NWidget::getRect(){
+Rect NWidget1::getRect(){
     return this->rect;
 }
 
 
-void NWidget::setMat(Mat m){
+void NWidget1::setMat(Mat m){
     mat = m;
 }
 
-Mat NWidget::getMat(){
+Mat NWidget1::getMat(){
     return mat;
 }
 
-void NWidget::setObjects(vector<MyObject> os){
+void NWidget1::setObjects(vector<MyObject> os){
     this->objs = os;
 }
 
-vector<MyObject> NWidget::getObjects(){
+vector<MyObject> NWidget1::getObjects(){
     return this->objs;
 }
 
-void NWidget::setFrom(int f){
+void NWidget1::setFrom(int f){
     this->from = f;
 }
 
-int NWidget::getFrom(){
+int NWidget1::getFrom(){
     return this->from;
 }
 
-void NWidget::Yuanxuanze(){
+void NWidget1::Yuanxuanze(){
     isYuan = true;
 }
 
-void NWidget::Wubianxing(){
+void NWidget1::Wubianxing(){
     isYuan = false;
 }
 
-void NWidget::contextMenuEvent(QContextMenuEvent *){
+void NWidget1::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
     menu->addAction(Yuan_Xuanze); //添加菜单项1
@@ -86,7 +86,7 @@ void NWidget::contextMenuEvent(QContextMenuEvent *){
 }
 
 //实现目标的跟踪，因为不同的目标的运动速度不同，所以原先设定的选择框需要动态调整
-Rect NWidget::getRectFromObjs(Rect r){
+Rect NWidget1::getRectFromObjs(Rect r){
     Rect rr;
     rr.x = r.x;
     rr.y = r.y;
@@ -287,15 +287,15 @@ Rect NWidget::getRectFromObjs(Rect r){
    return rr;
 }
 
-void NWidget::setAllObjects(vector<MyObject> aos){
+void NWidget1::setAllObjects(vector<MyObject> aos){
     this->allobjs = aos;
 }
 
-vector<MyObject> NWidget::getAllObjects(){
+vector<MyObject> NWidget1::getAllObjects(){
     return this->allobjs;
 }
 
-void NWidget::draw(){
+void NWidget1::draw(){
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         //qDebug()<<this->getFrom();
         //根据矩形框的变化，重新从全景显示区1或者全景显示区2拷贝获得mat。
@@ -333,7 +333,8 @@ void NWidget::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                //CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
+                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+                CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
             }
             else{
                 Rect trect;
@@ -345,7 +346,8 @@ void NWidget::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                //CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+                CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
             }
         }
     //    else if(this->getFrom() == 2){
@@ -413,10 +415,13 @@ void NWidget::draw(){
     //        cv::resize(image3, image33,dsize);
     //        setMat(image33);
               Mat image4;
-              mat1(Rect(0,0,mat1.cols/4,mat1.rows)).copyTo(image4);//mw->QImageToMat(mw->aa);
+              Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
+              mat1(trect).copyTo(image4);//mw->QImageToMat(mw->aa);
               Mat image44 = Mat(dsize,CV_32S);
               cv::resize(image4, image44,dsize);
               setMat(image44);
+              rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+              CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
 
 
@@ -426,7 +431,7 @@ void NWidget::draw(){
     mw->loadPictureToLabel4();
 
 }
-boolean NWidget::isObjSelected(MyObject obj){
+boolean NWidget1::isObjSelected(MyObject obj){
     boolean isSelected = false;
         if(this->rect.contains(obj.getCenPoint())){
             //调整选择框以使得目标的box在选择框之内
@@ -454,7 +459,7 @@ boolean NWidget::isObjSelected(MyObject obj){
 }
 
 //选择的目标不能捎上，只能减少
-vector<MyObject> NWidget::getSelectedObjects(){
+vector<MyObject> NWidget1::getSelectedObjects(){
     vector<MyObject> os;
     int count = this->allobjs.size();
 //    for(int i = 0; i < count; i++){
@@ -493,12 +498,12 @@ vector<MyObject> NWidget::getSelectedObjects(){
     return os;
 }
 
-double NWidget::getDirectionX(double x){
+double NWidget1::getDirectionX(double x){
     //double x = this->rectan.x;
     return 360*x/pano.cols -90;
 }
 
-double NWidget::getDirectionY(double y){
+double NWidget1::getDirectionY(double y){
 
     double yy = 20;
     //double y = this->rectan.y;
@@ -506,12 +511,12 @@ double NWidget::getDirectionY(double y){
 
 }
 
-double NWidget::getDirectionX2(){
+double NWidget1::getDirectionX2(){
     double x = this->rect.x+this->rect.width;
     return 360*x/pano.cols -90;
 }
 
-double NWidget::getDirectionY2(){
+double NWidget1::getDirectionY2(){
 
     double yy = 20;
     double y = this->rect.y+this->rect.height;

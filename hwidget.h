@@ -49,6 +49,8 @@ public:
 
     vector<MyObject> objs4;
 
+    vector<MyObject> objs6;
+
     void setObjects(vector<MyObject> os);
 
     vector<MyObject> getObjects();
@@ -60,6 +62,10 @@ public:
     void setObjects4(vector<MyObject> os4);
 
     vector<MyObject> getObjects4();
+
+    void setObjects6(vector<MyObject> os6);
+
+    vector<MyObject> getObjects6();
 
     explicit HWidget(QWidget *parent = 0);
 
@@ -87,7 +93,7 @@ public:
 
     void drawArc4(vector<MyObject> sobjs, Mat tmat);
 
-
+    void drawArc6(vector<MyObject> sobjs, Mat tmat);
 signals:
 
 public slots:

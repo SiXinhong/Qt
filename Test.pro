@@ -18,7 +18,6 @@ SOURCES += main.cpp\
     mylabel.cpp \
     rectan.cpp \
     zwidget.cpp \
-    nwidget.cpp \
     hwidget.cpp \
     lwidget.cpp \
     qj1widget.cpp \
@@ -36,13 +35,14 @@ SOURCES += main.cpp\
     mixer.cpp \
     timeline.cpp \
     socket.cpp \
-    welcomewindow.cpp
+    welcomewindow.cpp \
+    nwidget1.cpp \
+    nwidget2.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
     rectan.h \
     zwidget.h \
-    nwidget.h \
     hwidget.h \
     lwidget.h \
     qj1widget.h \
@@ -62,7 +62,9 @@ HEADERS  += mainwindow.h \
     mixer.h \
     timeline.h \
     socket.h \
-    welcomewindow.h
+    welcomewindow.h \
+    nwidget1.h \
+    nwidget2.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

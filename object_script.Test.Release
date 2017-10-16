@@ -4,7 +4,6 @@ INPUT(
 ./release\mylabel.o
 ./release\rectan.o
 ./release\zwidget.o
-./release\nwidget.o
 ./release\hwidget.o
 ./release\lwidget.o
 ./release\qj1widget.o
@@ -22,14 +21,17 @@ INPUT(
 ./release\timeline.o
 ./release\socket.o
 ./release\welcomewindow.o
+./release\nwidget1.o
+./release\nwidget2.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o
-./release\moc_nwidget.o
 ./release\moc_hwidget.o
 ./release\moc_lwidget.o
 ./release\moc_qj1widget.o
 ./release\moc_qj2widget.o
 ./release\moc_objectAttributes.o
 ./release\moc_welcomewindow.o
+./release\moc_nwidget1.o
+./release\moc_nwidget2.o
 );
