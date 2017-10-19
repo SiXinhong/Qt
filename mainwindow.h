@@ -81,6 +81,7 @@ public slots:
   virtual void onTimerOut2();
     
 public:
+  QDir *directory;
   WelcomeWindow *welcome;
   int num_objs;
   CMixer * cmixer;
@@ -153,7 +154,7 @@ public:
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
-
+    // void init();
     //添加属性设置中的变量
     //启动还是停止
     boolean isQidong;
@@ -437,7 +438,7 @@ protected slots:
      void quXiaoFunction();
      virtual void timeLineFunction();
      void flash();
-     void init();
+    void init();
 
 //private:
 public:

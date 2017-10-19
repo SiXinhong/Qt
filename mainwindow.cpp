@@ -80,6 +80,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 }
 
 void MainWindow::init(){
+    directory = new QDir();
     widgetNew=NULL;
     //this->setWindowFlags(Qt::FramelessWindowHint);
    // this->objectAttributes=new ObjectAttributes(&this->in);
@@ -153,7 +154,7 @@ void MainWindow::init(){
     //定时器
     timer=new QTimer();
     timer->setInterval(3000);
-    timer->start();
+  timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
     //定时器，获取系统时间
 
@@ -203,9 +204,10 @@ void MainWindow::init(){
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
     this->menuBar()->raise();//menu前两个不能操作，可能是别的东西覆盖了这一块，把menuBar提升到顶层
+
     if(welcome!=0){
         welcome->close();
-        delete welcome;
+
         this->show();//BackWindow的show是由mainwindow中指定代码调用的
     }
 }
@@ -219,6 +221,8 @@ MainWindow::~MainWindow(){
         delete objectAttributes;
     delete cmixer;
     delete sound;
+    delete welcome;
+    delete directory;
     //cv::pointPolygonTest()//判断点是不是落在多边形之内的函数
     //cv::polylines()//绘制多边形
 }
@@ -235,12 +239,12 @@ void MainWindow::jinProcessing(){
         //在全景上画矩形，文字，轨迹等
         //在两个全景上画矩形，文字，轨迹等
         QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-        QDir *todayDir=new QDir();
-        bool exist=todayDir->exists(today);
+       // QDir *todayDir=new QDir();
+        bool exist=directory->exists(today);
         if(!exist){
-            todayDir->mkdir(today);
+            directory->mkdir(today);
         }
-        delete todayDir;
+      // delete todayDir;
 
         Mat pano = in.getPano();
         if(isJixu == true){
@@ -429,13 +433,18 @@ void MainWindow::jinProcessing(){
 
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::selfProcessing(){
+    //QDir *todayDir=new QDir();
+    QString huiFile = QString("./回放");
     QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-    QDir *todayDir=new QDir();
-    bool exist=todayDir->exists(today);
+    bool exist = directory->exists(huiFile);
     if(!exist){
-        todayDir->mkdir(today);
+        directory->mkdir(huiFile);
     }
-    delete todayDir;
+    exist=directory->exists(today);
+    if(!exist){
+        directory->mkdir(today);
+    }
+
 
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
@@ -726,16 +735,21 @@ void MainWindow::addMyMenuBar(){
 
     menubar = new QMenuBar(this);
 
-    connection = new QAction("连接（CTRL+D）",this);
+    connection = new QAction("连接",this);
     connectionplus = new QAction("连接...",this);
     disconnection = new QAction("断开",this);
     openplus = new QAction("打开...",this);
     backplus = new QAction("回放",this);
     closeaction = new QAction("关闭",this);
     recentvidio = new QAction("最近视频",this);
-    changeuser = new QAction("切换用户（F11）",this);
+    changeuser = new QAction("切换用户",this);
     installation = new QAction("启动安装向导",this);
     exit = new QAction("退出",this);
+
+    //增加热键
+    changeuser->setShortcut(Qt::Key_F11);
+    connection->setShortcut(Qt::CTRL+Qt::Key_D);
+
 
     FileMenu->addAction(connection);
     FileMenu->addAction(connectionplus);
@@ -761,8 +775,11 @@ void MainWindow::addMyMenuBar(){
 
     configuration = new QAction("配置...",this);
     saveconfiguration = new QAction("保存当前设置",this);
-    region = new QAction("创建或编辑区域（F12）",this);
-    figure = new QAction("屏幕截图（F7）",this);
+    region = new QAction("创建或编辑区域",this);
+    figure = new QAction("屏幕截图",this);
+
+    region->setShortcut(Qt::Key_F12);
+    figure->setShortcut(Qt::Key_F7);
 
     OptionMenu->addAction(configuration);
     OptionMenu->addAction(saveconfiguration);
@@ -774,8 +791,11 @@ void MainWindow::addMyMenuBar(){
     connect(region,SIGNAL(triggered()),this,SLOT(regionClicked()));
     connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
 
-    openalert = new QAction("显示报警信息（F3）",this);
-    closealert = new QAction("关闭报警信息（F9）",this);
+    openalert = new QAction("显示报警信息",this);
+    closealert = new QAction("关闭报警信息",this);
+
+    openalert->setShortcut(Qt::Key_F3);
+    closealert->setShortcut(Qt::Key_F9);
 
     DisplayMenu->addAction(openalert);
     DisplayMenu->addAction(closealert);
@@ -794,6 +814,7 @@ void MainWindow::addMyMenuBar(){
 
     menubar->addMenu(FileMenu);
     menubar->addMenu(OptionMenu);
+    menubar->addMenu(ToolMenu);
     menubar->addMenu(DisplayMenu);
     menubar->addMenu(HelpMenu);
 
@@ -1208,12 +1229,12 @@ void MainWindow::selfTimerout(){
     timerFlash->stop();
   //  qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-    QDir *todayDir=new QDir();
-    bool exist=todayDir->exists(today);
+   // QDir *todayDir=new QDir();
+    bool exist= directory->exists(today);
     if(!exist){
-        todayDir->mkdir(today);
+        directory->mkdir(today);
     }
-    delete todayDir;
+
 
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
@@ -1572,14 +1593,14 @@ void MainWindow::jinTimerout(){
         //在全景上画矩形，文字，轨迹等
         //在两个全景上画矩形，文字，轨迹等
         timerFlash->stop();
-        qDebug()<<QTime::currentTime().toString("hh:mm:ss");
+        //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
         QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-        QDir *todayDir=new QDir();
-        bool exist=todayDir->exists(today);
+        //QDir *todayDir=new QDir();
+        bool exist=directory->exists(today);
         if(!exist){
-            todayDir->mkdir(today);
+            directory->mkdir(today);
         }
-        delete todayDir;
+        //delete todayDir;
 
         Mat pano = in.getPano();
         if(isJixu == true){
@@ -3063,12 +3084,14 @@ void MainWindow::updateBright(Mat &mat1 )
 //增加亮度
 void MainWindow::addBrightnessFunction()
 {
-    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-    trackBar->setWindowTitle("亮度");
-    trackBar->show();
+    bright_TrackbarValue+=20;
+    adjustment();
+    //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+   // trackBar->setWindowTitle("亮度");
+    //trackBar->show();
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //trackBar->activateWindow();
-    trackBar->move(trackBar->x(),trackBar->y());
+    //trackBar->move(trackBar->x(),trackBar->y());
 //    if(brightnessSet=="./icon/7_1.png")
 //    {
 //        brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -3084,12 +3107,14 @@ void MainWindow::addBrightnessFunction()
 //降低亮度
 void MainWindow::reduceBrightnessFunction()
 {
-    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-    trackBar->setWindowTitle("亮度");
-    trackBar->show();
-    //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-    //trackBar->activateWindow();
-    trackBar->move(trackBar->x(),trackBar->y());
+    bright_TrackbarValue-=20;
+    adjustment();
+//    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+//    trackBar->setWindowTitle("亮度");
+//    trackBar->show();
+
+//    //trackBar->activateWindow();
+//    trackBar->move(trackBar->x(),trackBar->y());
 //    if(brightnessSet=="./icon/7_1.png")
 //    {
 //        brightness->setIcon(QPixmap("./icon/7_1.png"));
@@ -3125,11 +3150,14 @@ void MainWindow::updateContrast(Mat &mat1){
 //增加对比度
 void MainWindow::addSaturationFunction()
 {
-    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-    strackBar->setWindowTitle("对比度");
-    strackBar->show();
-    strackBar->activateWindow();
-    strackBar->move(strackBar->x(),strackBar->y());
+    alpha_contrast+=20;
+    adjustment();
+//    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+//    strackBar->setWindowTitle("对比度");
+//    strackBar->show();
+//    strackBar->activateWindow();
+//    strackBar->move(strackBar->x(),strackBar->y());
+
 //    if(saturationSet=="./icon/8_1.png")
 //    {
 //        saturation->setIcon(QPixmap("./icon/8_1.png"));
@@ -3145,11 +3173,14 @@ void MainWindow::addSaturationFunction()
 //降低对比度
 void MainWindow::reduceSaturationFunction()
 {
-    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-    strackBar->setWindowTitle("对比度");
-    strackBar->show();
-    strackBar->activateWindow();
-    strackBar->move(strackBar->x(),strackBar->y());
+    alpha_contrast-=20;
+    adjustment();
+//    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+//    strackBar->setWindowTitle("对比度");
+//    strackBar->show();
+//    strackBar->activateWindow();
+//    strackBar->move(strackBar->x(),strackBar->y());
+
 //    if(saturationSet=="./icon/8_1.png")
 //    {
 //        saturation->setIcon(QPixmap("./icon/8_1.png"));
@@ -3484,7 +3515,8 @@ void MainWindow::recentvidioClicked(){
 }
 
 void MainWindow::changeuserClicked(){
-    QMessageBox::information(this,tr("切换用户菜单项"),tr("支持用户登录，有用户登录界面，替代原有的欢迎界面，设置默认用户名/口令。继续努力。"));
+    welcome->show();
+    //QMessageBox::information(this,tr("切换用户菜单项"),tr("支持用户登录，有用户登录界面，替代原有的欢迎界面，设置默认用户名/口令。继续努力。"));
 
 }
 
@@ -3514,8 +3546,18 @@ void MainWindow::regionClicked(){
 }
 
 void MainWindow::figureClicked(){
-    QMessageBox::information(this,tr("屏幕截图菜单项"),tr("屏幕截图，保存为常见图片文件格式。继续努力。"));
+    QString capture = QString("./屏幕截图");
+    bool exist = directory->exists(capture);
+    if(!exist){
+        directory->mkdir(capture);
+    }
+    QString filename = QString("./屏幕截图/")+QDateTime::currentDateTime().toString("yyyy年MM月dd日hh时mm分ss秒")+".bmp";
 
+    QPixmap pix;
+    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
+    if(pix.save(filename,"bmp")){
+        QMessageBox::information(this,"屏幕截图","截屏保存成功！",QMessageBox::Ok);
+    }
 }
 
 void MainWindow::openalertClicked(){
