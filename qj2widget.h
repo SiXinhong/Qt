@@ -4,6 +4,8 @@
 #include "rectan.h"
 #include "myobject.h"
 #include "myobjecttrack.h"
+#include "region.h"
+#include "regiongroup.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -34,6 +36,15 @@ QAction* Cancel_Select;
 QAction* To_Zhu;
 QAction* To_Ningshi1;
 QAction* To_Ningshi2;
+
+QAction* Define_Rect;
+QAction* Define_Poly;
+
+QAction* Cancel_RDefining;
+QAction* Cancel_RGDefining;
+QAction* Complete_RDefining;
+QAction* Complete_RGDefining;
+
 //QPainter * paint;
 QRect qrect;
 
@@ -72,6 +83,19 @@ public:
 
     Rect newrect;
     //QRect qrectan;
+    //定义矩形监控区域的变量
+    Rect rectRegion;
+    //定义多边形监控区域的变量
+    vector<Point> points;
+    //临时存储本次定义的监控区域
+    vector<Region> rs;
+    //定义的监控区域所属的监控区域组
+    RegionGroup rg;
+
+    //判断是不是第一次鼠标点击事件，用于矩形监控区域的绘制
+    boolean isFirstDoubleClick;
+    QPoint position11;
+    QPoint position22;
 
 
     explicit Qj2Widget(QWidget *parent = 0);
@@ -80,6 +104,7 @@ public:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     //void paintEvent(QPaintEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *e);
 
 
     void setMat(Mat m);
@@ -167,6 +192,21 @@ public slots:
     void ToNingshi2();
     //到弹出窗口显示菜单处理事件
     //void ToTanchu();
+    //定义矩形监控区域
+    void DefineRect();
+    //定义多边形监控区域
+    void DefinePoly();
+
+    //取消监控区域定义
+    void CancelRDefining();
+
+    //取消监控区域组定义
+    void CancelRGDefining();
+    //完成监控区域定义
+    void CompleteRDefining();
+    //完成监控区域组定义
+    void CompleteRGDefining();
+
 };
 
 #endif // QJ2WIDGET_H

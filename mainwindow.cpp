@@ -110,7 +110,12 @@ void MainWindow::init(){
     //-------------------------------------------------------
     //判断窗口是否打开
     is_open=false;
-
+    //判断是否处于定义监控区域的状态
+    this->isDefiningRegion = false;
+    this->isDefiningRectRegion = true;
+    //临时的，监控区域的定义需要由定义监控区域的界面来打开
+    rg = RegionGroup(QString("Test-"), Scalar(0,255,0));
+    rgs.push_back(rg);
 
     ui->setupUi(this);
     QWidget* widget = new QWidget(this);
@@ -221,6 +226,37 @@ MainWindow::~MainWindow(){
     delete sound;
     //cv::pointPolygonTest()//判断点是不是落在多边形之内的函数
     //cv::polylines()//绘制多边形
+}
+
+//处理告警，当有目标进入监控区域的时候，亮红灯
+void MainWindow::alertProcessing(vector<MyObject> os){
+    //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
+    boolean alert = false;
+    for(int i = 0; i < os.size(); i++){
+        MyObject mo = os[i];
+        for(int j = 0; j < this->rgs.size(); j++){
+            RegionGroup rg = rgs[j];
+            if(rg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
+                alert = true;
+                break;
+            }
+        }
+        if(alert){
+            break;
+        }
+    }
+    if(alert && isGaojing){
+        QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
+    }
+    //
+//    if(alert){
+//        lightSet="./icon/16_1.png";
+//        light->setIcon(QPixmap(lightSet));
+//    }
+//    else{
+//        lightSet="./icon/16_2.png";
+//        light->setIcon(QPixmap(lightSet));
+//    }
 }
 
 //与金老师的接口处理
@@ -343,6 +379,12 @@ void MainWindow::jinProcessing(){
         }
        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
+        //画告警区域
+        for(int iii = 0; iii < this->rgs.size(); iii++){
+            RegionGroup rg = rgs[iii];
+            rg.draw(mat);
+        }
+
         //然后劈成2半
 
         //    Size dsize ;
@@ -419,6 +461,7 @@ void MainWindow::jinProcessing(){
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(in.getObjs());
         widget6->draw();
+        this->alertProcessing(in.getObjs());
     }
     else{
         QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
@@ -543,6 +586,12 @@ void MainWindow::selfProcessing(){
     }
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
+    //画告警区域
+    for(int iii = 0; iii < this->rgs.size(); iii++){
+        RegionGroup rg = rgs[iii];
+        rg.draw(mat);
+    }
+
     //然后劈成2半
 
     //    Size dsize ;
@@ -653,6 +702,7 @@ void MainWindow::selfProcessing(){
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(in.getObjs());
     widget6->draw();
+    this->alertProcessing(objs);
 }
 //----------------------------------------------------------
 
@@ -1355,6 +1405,12 @@ void MainWindow::selfTimerout(){
     }
    // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
+    //画告警区域
+    for(int iii = 0; iii < this->rgs.size(); iii++){
+        RegionGroup rg = rgs[iii];
+        rg.draw(mat);
+    }
+
     //然后劈成2半
 
     //    Size dsize ;
@@ -1456,6 +1512,7 @@ void MainWindow::selfTimerout(){
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(in.getObjs2());
     widget6->draw();
+    this->alertProcessing(in.getObjs2());
 
 // if(isGaojing)
 // {
@@ -1689,6 +1746,12 @@ void MainWindow::jinTimerout(){
         }
       //  cv::cvtColor(mat, mat, CV_BGR2RGB);
 
+        //画告警区域
+        for(int iii = 0; iii < this->rgs.size(); iii++){
+            RegionGroup rg = rgs[iii];
+            rg.draw(mat);
+        }
+
         //然后劈成2半
 
         //    Size dsize ;
@@ -1772,6 +1835,7 @@ void MainWindow::jinTimerout(){
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(widget1->objs);
         widget6->draw();
+        this->alertProcessing(objs);
      //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     
 //     if(isGaojing)
@@ -2370,7 +2434,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         //        widget4->setMat(image44);
         //        widget4->draw();
         Mat image6;
-        mat(widget2->rectan6).copyTo(image6);//mw->QImageToMat(mw->aa);
+        mat(widget2->getQRectan6()).copyTo(image6);//mw->QImageToMat(mw->aa);
         Mat image66 = Mat(dsize,CV_32S);
         cv::resize(image6, image66,dsize);
         widget6->setMat(image66);
@@ -2616,42 +2680,126 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 }
 
 //加载图片到Label1上
-void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect){
+void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label,imgLabel1);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel1);
+    QPainter painter(&pixmap1);
     if(isRect){
-        QPainter painter(&pixmap1);
+
         painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
         //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
         painter.drawRect(qrect);
+    }
+    if(isDefiningRegion){
+        QColor qc = QColor();
+        qc.setRed(co.val[2]);
+        qc.setGreen(co.val[1]);
+        qc.setBlue(co.val[0]);
+        QPen pen;
+        pen.setColor(qc);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        if(rectRegion.width() > 0){
+            painter.drawRect(rectRegion);
+        }
+        for(int i = 0; i < ps.size() - 1; i++){
+            QPoint p1 = QPoint(ps[i].x, ps[i].y);
+            QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
+            painter.drawLine(p1,p2);
+        }
     }
     label->setScaledContents(true);
     label->setPixmap(pixmap1);
 }
 
 //加载图片到Label2上
-void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect){
+void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label2,imgLabel2);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel2);
-
+    QPainter painter(&pixmap1);
     if(isRect){
-        QPainter painter(&pixmap1);
+
         painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //设置画笔形式
         //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //设置画刷形式
         painter.drawRect(qrect);
+
+    }
+    if(isDefiningRegion){
+        QColor qc = QColor();
+        qc.setRed(co.val[2]);
+        qc.setGreen(co.val[1]);
+        qc.setBlue(co.val[0]);
+        QPen pen;
+        pen.setColor(qc);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        if(rectRegion.width() > 0){
+            painter.drawRect(rectRegion);
+        }
+        for(int i = 0; i < ps.size() - 1; i++){
+            QPoint p1 = QPoint(ps[i].x, ps[i].y);
+            QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
+            painter.drawLine(p1,p2);
+        }
     }
     label2->setScaledContents(true);
     label2->setPixmap(pixmap1);
 }
 
 //加载图片到Label3上
-void MainWindow::loadPictureToLabel3(){
-    loadPictureToLabel(label3,imgLabel3);
+void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps){
+    //loadPictureToLabel(label3,imgLabel3);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel3);
+    QPainter painter(&pixmap1);
+    if(isDefiningRegion){
+        QColor qc = QColor();
+        qc.setRed(co.val[2]);
+        qc.setGreen(co.val[1]);
+        qc.setBlue(co.val[0]);
+        QPen pen;
+        pen.setColor(qc);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        if(rectRegion.width() > 0){
+            painter.drawRect(rectRegion);
+        }
+        for(int i = 0; i < ps.size() - 1; i++){
+            QPoint p1 = QPoint(ps[i].x, ps[i].y);
+            QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
+            painter.drawLine(p1,p2);
+        }
+    }
+    label3->setScaledContents(true);
+    label3->setPixmap(pixmap1);
+
 }
 
 //加载图片到Label4上
-void MainWindow::loadPictureToLabel4(){
-    loadPictureToLabel(label4,imgLabel4);
+void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps){
+    //loadPictureToLabel(label4,imgLabel4);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel4);
+    QPainter painter(&pixmap1);
+    if(isDefiningRegion){
+        QColor qc = QColor();
+        qc.setRed(co.val[2]);
+        qc.setGreen(co.val[1]);
+        qc.setBlue(co.val[0]);
+        QPen pen;
+        pen.setColor(qc);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        if(rectRegion.width() > 0){
+            painter.drawRect(rectRegion);
+        }
+        for(int i = 0; i < ps.size() - 1; i++){
+            QPoint p1 = QPoint(ps[i].x, ps[i].y);
+            QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
+            painter.drawLine(p1,p2);
+        }
+    }
+    label4->setScaledContents(true);
+    label4->setPixmap(pixmap1);
+
 }
 
 //加载图片到Label5上
@@ -2660,8 +2808,29 @@ void MainWindow::loadPictureToLabel5(){
 }
 
 //加载图片到Label6上
-void MainWindow::loadPictureToLabel6(){
-    loadPictureToLabel(label6,imgLabel6);
+void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps){
+    //loadPictureToLabel(label6,imgLabel6);
+    QPixmap pixmap1 = QPixmap::fromImage(imgLabel6);
+    QPainter painter(&pixmap1);
+    if(isDefiningRegion){
+        QColor qc = QColor();
+        qc.setRed(co.val[2]);
+        qc.setGreen(co.val[1]);
+        qc.setBlue(co.val[0]);
+        QPen pen;
+        pen.setColor(qc);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        painter.drawRect(rectRegion);
+        for(int i = 0; i < ps.size() - 1; i++){
+            QPoint p1 = QPoint(ps[i].x, ps[i].y);
+            QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
+            painter.drawLine(p1,p2);
+        }
+    }
+    label6->setScaledContents(true);
+    label6->setPixmap(pixmap1);
+
 }
 
 void MainWindow::loadPictureToLabel7(){

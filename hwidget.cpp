@@ -143,7 +143,42 @@ Point HWidget::getPoint2(Point p){
     return Point(xaa,yaa);
 }
 
+void HWidget::drawArc4(Mat tmat, Rect re){
+
+    Point p11 = getDirectionPoint(Point(re.x, re.y));
+    Point p12 = getDirectionPoint(Point(re.x, re.y + re.height));
+    Point p21 = getDirectionPoint(Point(re.x + re.width, re.y));
+    Point p22 = getDirectionPoint(Point(re.x + re.width, re.y + re.height));
+
+    Point p3 = Point(x0, y0);
+
+    line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
+
+    line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1+=360;
+    }
+
+    double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
+    double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
+
+    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,255,0));
+
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,255,0));
+}
+
 //辅助显示区1的，获得画多边形的八个点，需要计算辅助显示区1所关注的对象集合的坐标来确定。
+
 void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -302,6 +337,41 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     //return ps;
 }
 
+
+void HWidget::drawArc6(Mat tmat, Rect re){
+
+    Point p11 = getDirectionPoint(Point(re.x, re.y));
+    Point p12 = getDirectionPoint(Point(re.x, re.y + re.height));
+    Point p21 = getDirectionPoint(Point(re.x + re.width, re.y));
+    Point p22 = getDirectionPoint(Point(re.x + re.width, re.y + re.height));
+
+    Point p3 = Point(x0, y0);
+
+    line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
+
+    line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1+=360;
+    }
+
+    double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
+    double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
+
+    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,0,0));
+
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,0,0));
+}
+
 //辅助显示区2的，获得画多边形的八个点，需要计算辅助显示区2所关注的对象集合的坐标来确定。
 void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
@@ -436,6 +506,7 @@ void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
         angle1+=360;
     }
 
+
     ellipse(tmat,p3,Size(r1, r1),0,angle1,angle2,Scalar(255,0,0));
 
     ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
@@ -459,6 +530,40 @@ void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
 //    ps.push_back(p22);
 //    ps.push_back(p21);
     //return ps;
+}
+
+void HWidget::drawArc3(Mat tmat, Rect re){
+
+    Point p11 = getDirectionPoint(Point(re.x, re.y));
+    Point p12 = getDirectionPoint(Point(re.x, re.y + re.height));
+    Point p21 = getDirectionPoint(Point(re.x + re.width, re.y));
+    Point p22 = getDirectionPoint(Point(re.x + re.width, re.y + re.height));
+
+    Point p3 = Point(x0, y0);
+
+    line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
+
+    line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
+    //p11和p22之间是一段圆弧
+    double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
+    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
+
+    if(p22.x<x0){
+        angle1+=180;
+    }
+    if(p11.x<x0){
+        angle2+=180;
+    }
+    if(angle1<0 && angle2>180){
+        angle1+=360;
+    }
+
+    double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
+    double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
+
+    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(0,0,255));
+
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(0,0,255));
 }
 
 //主显示区的，获得画多边形的八个点，需要计算主显示区所关注的对象集合的坐标来确定。
@@ -642,17 +747,28 @@ void HWidget::draw(){
 //        cv::Point point2 = points[i+1];
 //        line(mat,point1,point2,Scalar(255,255,0),1,8,0);
 //    }
-    if(mw->widget3->getObjects().size() > 0){
-        this->drawArc3(mw->widget3->getObjects(),tmat);
-    }
+//    if(mw->widget3->getObjects().size() > 0){
+//        this->drawArc3(mw->widget3->getObjects(),tmat);
+//    }
 
-    if(mw->widget4->getObjects().size() > 0){
-        this->drawArc4(mw->widget4->getObjects(),tmat);
-    }
+//    if(mw->widget4->getObjects().size() > 0){
+//        this->drawArc4(mw->widget4->getObjects(),tmat);
+//    }
 
-    if(mw->widget6->getObjects().size() > 0){
-        this->drawArc6(mw->widget6->getObjects(),tmat);
-    }
+//    if(mw->widget6->getObjects().size() > 0){
+//        this->drawArc6(mw->widget6->getObjects(),tmat);
+//    }
+//    if(mw->widget3->getObjects().size() > 0){
+        this->drawArc3(tmat, mw->widget3->rect);
+//    }
+
+//    if(mw->widget4->getObjects().size() > 0){
+        this->drawArc4(tmat, mw->widget4->rect);
+//    }
+
+//    if(mw->widget6->getObjects().size() > 0){
+        this->drawArc6(tmat, mw->widget6->rect);
+//    }
     //在图像上画圆点
     int count = objs.size();
     for (int i = 0; i < count; i++){

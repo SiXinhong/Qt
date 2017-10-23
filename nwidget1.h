@@ -3,6 +3,8 @@
 
 #include "rectan.h"
 #include "myobject.h"
+#include "region.h"
+#include "regiongroup.h"
 
 #include <QWidget>
 #include <QMenu>
@@ -34,6 +36,16 @@ public:
     QAction* Yuan_Xuanze;
     QAction* Wu_Bianxing;
 
+    QAction* Define_Rect;
+    QAction* Define_Poly;
+
+    QAction* Cancel_RDefining;
+    QAction* Cancel_RGDefining;
+    QAction* Complete_RDefining;
+    QAction* Complete_RGDefining;
+    QAction* Zoom_In;
+    QAction* Zoom_Out;
+
     boolean isYuan;
 
     Rect rect;
@@ -49,6 +61,21 @@ public:
     vector<MyObject> objs;
 
     int from;
+
+    //定义矩形监控区域的变量
+    Rect rectRegion;
+    //定义多边形监控区域的变量
+    vector<Point> points;
+    //临时存储本次定义的监控区域
+    vector<Region> rs;
+    //定义的监控区域所属的监控区域组
+    RegionGroup rg;
+
+    //判断是不是第一次鼠标点击事件，用于矩形监控区域的绘制
+    boolean isFirstDoubleClick;
+    QPoint position11;
+    QPoint position22;
+
 
     explicit NWidget1(QWidget *parent = 0);
 
@@ -71,6 +98,15 @@ public:
     void setRect(Rect r);
 
     Rect getRect();
+
+    double getMatX(double x);
+
+    double getMatY(double y);
+
+    double getWidgetX(double x);
+
+    double getWidgetY(double y);
+
 
     double getDirectionX(double x);
 
@@ -95,6 +131,7 @@ public:
     void draw();
 
     void contextMenuEvent(QContextMenuEvent *);
+    void mouseDoubleClickEvent(QMouseEvent *e);
 
     boolean isObjSelected(MyObject obj);
 
@@ -108,6 +145,26 @@ public slots:
     void Yuanxuanze();
 
     void Wubianxing();
+
+    //定义矩形监控区域
+    void DefineRect();
+    //定义多边形监控区域
+    void DefinePoly();
+
+    //取消监控区域定义
+    void CancelRDefining();
+
+    //取消监控区域组定义
+    void CancelRGDefining();
+    //完成监控区域定义
+    void CompleteRDefining();
+    //完成监控区域组定义
+    void CompleteRGDefining();
+
+    //放大
+    void ZoomIn();
+    //缩小
+    void ZoomOut();
 
 };
 

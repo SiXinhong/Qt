@@ -37,7 +37,9 @@ SOURCES += main.cpp\
     socket.cpp \
     welcomewindow.cpp \
     nwidget1.cpp \
-    nwidget2.cpp
+    nwidget2.cpp \
+    region.cpp \
+    regiongroup.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -64,7 +66,9 @@ HEADERS  += mainwindow.h \
     socket.h \
     welcomewindow.h \
     nwidget1.h \
-    nwidget2.h
+    nwidget2.h \
+    region.h \
+    regiongroup.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

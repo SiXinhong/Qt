@@ -6,6 +6,8 @@
 #include <QImage>
 #include <QPixmap>
 #include <QLabel>
+#include "region.h"
+#include "regiongroup.h"
 #include "mylabel.h"
 #include "qj1widget.h"
 #include "qj2widget.h"
@@ -123,17 +125,17 @@ public:
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
     //加载图片到Label1上
-    void loadPictureToLabel1(boolean isRect, QRect qrect);
+    void loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
     //加载图片到Label2上
-    void loadPictureToLabel2(boolean isRect, QRect qrect);
+    void loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
     //加载图片到Label3上
-    void loadPictureToLabel3();
+    void loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps);
     //加载图片到Label4上
-    void loadPictureToLabel4();
+    void loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps);
     //加载图片到Label5上
     void loadPictureToLabel5();
     //加载图片到Label6上
-    void loadPictureToLabel6();
+    void loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps);
     // 加载图片到Label7上
     void loadPictureToLabel7();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
@@ -169,6 +171,16 @@ public:
     QString xtbh;
     //判断窗口是否打开
     bool is_open;
+    //判断是否处于定义监控区域的状态
+    boolean isDefiningRegion;
+    //判断是否是定义矩形监控区域的状态
+    boolean isDefiningRectRegion;
+    //临时存储本次定义的监控区域
+    vector<Region> rs;
+    //定义的监控区域所属的监控区域组
+    RegionGroup rg;
+
+    vector<RegionGroup> rgs;
 
      QLabel *label;
      QLabel *label2;
@@ -261,6 +273,8 @@ protected:
 
      //与金老师接口的定时器处理
      void jinTimerout();
+     //处理告警
+     void alertProcessing(vector<MyObject> objs);
 
      QToolBar *mainToolBar;
      //第一组按钮：监控和后退，还有回放

@@ -4,7 +4,8 @@
 #include "myobject.h"
 #include "myobjecttrack.h"
 #include "cvutil.h"
-
+#include "region.h"
+#include "regiongroup.h"
 
 using namespace cv;
 using namespace std;
@@ -19,16 +20,40 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
         isTo4 = false;
         isTo6 = false;
 
+        isFirstDoubleClick = false;
+
         Cancel_Select = new QAction(tr("取消选择"),this);
         To_Zhu= new QAction(tr("到主显示区"), this);
         To_Ningshi1 = new QAction(tr("到辅助显示区1"), this);
         To_Ningshi2 = new QAction(tr("到辅助显示区2"), this);
         //To_Tanchu = new QAction(tr("到弹出窗口"),this);
+
+        Define_Rect = new QAction(tr("定义矩形监控区域"), this);
+        Define_Poly = new QAction(tr("定义多边形监控区域"), this);
+
+        Cancel_RDefining = new QAction(tr("取消监控区域定义"), this);
+        Cancel_RGDefining = new QAction(tr("取消监控区域组定义"), this);
+        Complete_RDefining = new QAction(tr("完成监控区域定义"), this);
+        Complete_RGDefining = new QAction(tr("完成监控区域组定义"), this);
+
         connect(Cancel_Select, SIGNAL(triggered()), this, SLOT(CancelSelect()));
         connect(To_Zhu, SIGNAL(triggered()), this, SLOT(ToZhu()));
         connect(To_Ningshi1, SIGNAL(triggered()), this, SLOT(ToNingshi1()));
         connect(To_Ningshi2, SIGNAL(triggered()), this, SLOT(ToNingshi2()));
         //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
+
+        connect(Define_Rect, SIGNAL(triggered()), this, SLOT(DefineRect()));
+        connect(Define_Poly, SIGNAL(triggered()), this, SLOT(DefinePoly()));
+
+        connect(Cancel_RDefining, SIGNAL(triggered()), this, SLOT(CancelRDefining()));
+        connect(Cancel_RGDefining, SIGNAL(triggered()), this, SLOT(CancelRGDefining()));
+        connect(Complete_RDefining, SIGNAL(triggered()), this, SLOT(CompleteRDefining()));
+        connect(Complete_RGDefining, SIGNAL(triggered()), this, SLOT(CompleteRGDefining()));
+
+        this->rectRegion = Rect(0,0,0,0);
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        this->rg = mw->rg;
+        this->rs = mw->rs;
 
         rectan3 = Rect(1490,250,100,100);
         rectan4 = Rect(1490,250,100,100);
@@ -52,7 +77,7 @@ void Qj1Widget::setMat(Mat m){
 //        isRect = true;
 //    }
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    mw->loadPictureToLabel1(isRect, qrect);
+    mw->loadPictureToLabel1(isRect, qrect, rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 }
 
 Mat Qj1Widget::getMat(){
@@ -92,6 +117,14 @@ void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
     menu->addAction(To_Ningshi1); //添加菜单项2
     menu->addAction(To_Ningshi2); //添加菜单项2
     //menu->addAction(To_Tanchu);//添加菜单项3
+    menu->addSeparator();
+    menu->addAction(Define_Rect);
+    menu->addAction(Define_Poly);
+    menu->addSeparator();
+    menu->addAction(Cancel_RDefining);
+    menu->addAction(Cancel_RGDefining);
+    menu->addAction(Complete_RDefining);
+    menu->addAction(Complete_RGDefining);
     menu->exec(cur.pos()); //关联到光标
 }
 
@@ -142,7 +175,7 @@ void Qj1Widget::draw(){
 
     mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
-    mw->loadPictureToLabel1(isRect, qrect);
+    mw->loadPictureToLabel1(isRect, qrect, rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 }
 
 boolean Qj1Widget::isObjSelected3(MyObject obj){
@@ -464,6 +497,218 @@ void Qj1Widget::ToNingshi2()
 
 //}
 
+//定义矩形监控区域
+void Qj1Widget::DefineRect(){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(!mw->isDefiningRectRegion){
+
+        this->points.clear();
+        this->rectRegion.x = 0;
+        this->rectRegion.y = 0;
+        this->rectRegion.width = 0;
+        this->rectRegion.height = 0;
+        mw->isDefiningRectRegion = true;
+        this->isFirstDoubleClick = false;
+    }
+    else{
+
+    }
+}
+
+//定义多边形监控区域
+void Qj1Widget::DefinePoly(){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
+    if(mw->isDefiningRectRegion){
+        this->points.clear();
+        this->rectRegion.x = 0;
+        this->rectRegion.y = 0;
+        this->rectRegion.width = 0;
+        this->rectRegion.height = 0;
+        mw->isDefiningRectRegion = false;
+        this->isFirstDoubleClick = false;
+    }
+    else{
+
+    }
+}
+
+//取消监控区域定义
+void Qj1Widget::CancelRDefining(){
+    this->rectRegion.x = 0;
+    this->rectRegion.y = 0;
+    this->rectRegion.width = 0;
+    this->rectRegion.height = 0;
+    this->points.clear();
+    this->isFirstDoubleClick = false;
+}
+
+//取消监控区域组定义
+void Qj1Widget::CancelRGDefining(){
+    this->rectRegion.x = 0;
+    this->rectRegion.y = 0;
+    this->rectRegion.width = 0;
+    this->rectRegion.height = 0;
+    this->points.clear();
+    this->rs.clear();
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    mw->isDefiningRegion = false;
+    this->isFirstDoubleClick = false;
+}
+
+//完成监控区域定义
+void Qj1Widget::CompleteRDefining(){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(mw->isDefiningRectRegion && this->rectRegion.width == 0){
+        QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
+    }
+    else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
+        QString name = rg.name + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+        Region r = Region(name, rg.color, this->rectRegion.x, this->rectRegion.y, this->rectRegion.width, this->rectRegion.height);
+        this->rs.push_back(r);
+        this->rectRegion.x = 0;
+        this->rectRegion.y = 0;
+        this->rectRegion.width = 0;
+        this->rectRegion.height = 0;
+        this->isFirstDoubleClick = false;
+    }
+    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)){
+        QMessageBox::information(this,tr("监控区域定义"),tr("多边形监控区域的定义尚未完成，至少需要定义三个顶点"));
+        this->isFirstDoubleClick = false;
+    }
+    else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
+        QString name = rg.name + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+        vector<Point> points1;
+        for(int i = 0; i < points.size(); i++){
+            Point pp = points[i];
+            Point pp2 = Point(pp.x, pp.y);
+            points1.push_back(pp2);
+        }
+        Region r = Region(name, rg.color, points1);
+        this->rs.push_back(r);
+        this->points.clear();
+        this->isFirstDoubleClick = false;
+    }
+    else{
+
+    }
+}
+
+//完成监控区域组定义
+void Qj1Widget::CompleteRGDefining(){
+    this->CompleteRDefining();
+    for(int i = 0; i < rs.size(); i++){
+        Region r = rs[i];
+        rg.addRegion(r);
+    }
+    rs.clear();
+}
+
+void Qj1Widget::mouseDoubleClickEvent(QMouseEvent *e){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    Rect nrect;
+    if(e->button() == Qt::LeftButton && mw->isDefiningRectRegion && !isFirstDoubleClick){
+       isFirstDoubleClick = true;
+       position11 = e->pos();
+    }
+    else if(e->button() == Qt::LeftButton && mw->isDefiningRectRegion && isFirstDoubleClick){
+        isFirstDoubleClick = false;
+        int posX = e->x();
+        int posY = e->y();
+        int x_position22;
+        int y_position22;
+        if(posX>this->width())
+        {
+            x_position22 = e->x();
+        }
+        else if( posX< 0)
+        {
+            x_position22 =0;
+        }
+        else
+        {
+            x_position22 = e->x();
+        }
+        if( posY>this->height())
+        {
+            y_position22 = e->y();
+        }
+
+        else if ( posY < 0)
+        {
+            y_position22=0;
+        }
+        else
+        {
+            y_position22=posY;
+        }
+        if(x_position22<=this->width() && y_position22<=this->height()){
+            if(position11.x()<x_position22 && position11.y()<y_position22)
+            {
+                nrect.x=getMatX(position11.x());
+                nrect.y=getMatY(position11.y());
+                nrect.width=getMatX(x_position22)-getMatX(position11.x());
+                nrect.height=getMatY(y_position22)-getMatY(position11.y());
+            }
+            else if(position11.x()<x_position22 && position11.y()> y_position22)
+            {
+                nrect.x=getMatX(position11.x());
+                nrect.y=getMatY(y_position22);
+                nrect.width=getMatX(x_position22)-getMatX(position11.x());
+                nrect.height=getMatY(position11.y())-getMatY(y_position22);
+            }
+            else if(position11.x()>x_position22 && position11.y()< y_position22)
+            {
+                nrect.x=getMatX(x_position22);
+                nrect.y=getMatY(position11.y());
+                nrect.width=getMatX(position11.x())-getMatX(x_position22);
+                nrect.height=getMatY(y_position22)-getMatY(position11.y());
+            }
+            else if(position11.x()>x_position22 && position11.y()> y_position22)
+            {
+                nrect.x=getMatX(x_position22);
+                nrect.y=getMatY(y_position22);
+                nrect.width=getMatX(position11.x())-getMatX(x_position22);
+                nrect.height=getMatY(position11.y())-getMatY(y_position22);
+            }
+        }
+        if(nrect.width<0){
+            this->rectRegion.width = -nrect.width;
+            this->rectRegion.height= -nrect.height;
+            this->rectRegion.x = nrect.x+nrect.width;
+            this->rectRegion.y = nrect.y+nrect.height;
+        }
+        else if(nrect.height<0){
+            this->rectRegion.width = -nrect.width;
+            this->rectRegion.height= -nrect.height;
+            this->rectRegion.x = nrect.x+nrect.width;
+            this->rectRegion.y = nrect.y+nrect.height;
+        }
+        else{
+            this->rectRegion.x = nrect.x;
+            this->rectRegion.y = nrect.y;
+            this->rectRegion.width = nrect.width;
+            this->rectRegion.height = nrect.height;
+
+        }
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        mw->loadPictureToLabel1(isRect, qrect, rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    }
+    else if(e->button() == Qt::LeftButton && !mw->isDefiningRectRegion){
+        QPoint qp = e->pos();
+        Point p = Point(getMatX(qp.x()),getMatY(qp.y()));
+        this->points.push_back(p);
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        mw->loadPictureToLabel1(isRect, qrect, rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    }
+    else{
+
+    }
+
+
+    e->ignore();
+}
+
 void Qj1Widget::mousePressEvent(QMouseEvent *e)
 {
     //qDebug()<<"鼠标压下事件来自qj1widget";
@@ -600,7 +845,7 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
 //            rectangle(mat,newrect,Scalar(0,0,255),1,1,0);
 //            cv::cvtColor(mat, mat, CV_BGR2RGB);
             isRect = true;
-            mw->loadPictureToLabel1(isRect, qrect);
+            mw->loadPictureToLabel1(isRect, qrect, rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 
         }
         else if(isRect){

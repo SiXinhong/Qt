@@ -94,6 +94,12 @@ public:
     void drawArc4(vector<MyObject> sobjs, Mat tmat);
 
     void drawArc6(vector<MyObject> sobjs, Mat tmat);
+
+    void drawArc3(Mat tmat, Rect r);
+
+    void drawArc4(Mat tmat, Rect r);
+
+    void drawArc6(Mat tmat, Rect r);
 signals:
 
 public slots:

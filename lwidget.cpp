@@ -480,6 +480,6 @@ void LWidget::draw(){
    // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     mw->imgLabel6 = mw->MatToQImage(tmat, mw->imgLabel6);
    // cv::cvtColor(tmat, tmat, CV_BGR2RGB);
-    mw->loadPictureToLabel6();
+    //mw->loadPictureToLabel6();
 
 }
