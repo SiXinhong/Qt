@@ -13,6 +13,7 @@
 WelcomeWindow::WelcomeWindow(QWidget *parent) :
     QWidget(parent)
 {
+    start = false;
     this->setWindowFlags(Qt::FramelessWindowHint);
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
@@ -31,7 +32,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
     exit->setText(QString("ÍË³ö"));
     connect(exit,SIGNAL(clicked()),this,SLOT(exitClicked()));
     connect(logIn,SIGNAL(clicked()),this,SLOT(loginClicked()));
-   // mainwindow = new MainWindow(this);
+    mainwindow = new MainWindow(this);
 //    usernameInput->setGeometry(150,425,90,30);
 //    passwordInput->setGeometry(150,515,90,30);
 //    logIn->setGeometry(80,590,60,25);
@@ -79,9 +80,18 @@ void WelcomeWindow::exitClicked(){
 }
 
 void WelcomeWindow::loginClicked(){
-    //mainwindow->init();
+    if(!start){
+         mainwindow->init();
+         start =true;
+    }
+    else{
+        mainwindow->show();
+        this->close();
+//        delete mainwindow;
+//        MainWindow *mainwindow1 = new MainWindow(this);
+//        mainwindow1->init();
+
+    }
 }
 
-//void WelcomeWindow::setMainwindow(MainWindow mainwindow){
-//    this->mainwindow = mainwindow
-//}
+

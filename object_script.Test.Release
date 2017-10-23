@@ -23,6 +23,8 @@ INPUT(
 ./release\welcomewindow.o
 ./release\nwidget1.o
 ./release\nwidget2.o
+./release\region.o
+./release\regiongroup.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o

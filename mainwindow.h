@@ -66,7 +66,11 @@
 #include <QMenuBar>
 #include <QAction>
 #include "objectAttributes.h"
+class MainWindow;
 #include "welcomewindow.h"
+#include <QQueue>
+#include<QMap>
+
 using namespace cv;
 using namespace std;
 
@@ -83,6 +87,13 @@ public slots:
   virtual void onTimerOut2();
     
 public:
+
+   QQueue<QTime> video;
+   QQueue<QTime> videoEnd;//recent
+   QQueue<QDate> videoDate;//recent
+   void flushRecentVideo();//recent
+   QAction* videoAction[6];//recent
+ // QMap<QTime,QTime> video;
   QDir *directory;
   WelcomeWindow *welcome;
   int num_objs;
@@ -98,8 +109,8 @@ public:
    bool isVoice;
    int newObjCount;
    int addOneLight;
-   //QPixmap fitpixmap1;
-   //QPixmap fitpixmap2;
+   QPixmap fitpixmap1;
+   QPixmap fitpixmap2;
 //   Mat mat;
 //   Mat mat1, mat2;
    //HSL *hsl;
@@ -316,13 +327,13 @@ protected:
 //     QString light4Set;
 //     QString light5Set;
 
-//     QLabel *lights[5];
-//   QLabel *light1;
+    QLabel *lights[5];
+   QLabel *light1;
 ////     //QToolButton *light1;
-//     QLabel *light2;
-//     QLabel *light3;
-//     QLabel *light4;
-//     QLabel *light5;
+     QLabel *light2;
+     QLabel *light3;
+     QLabel *light4;
+     QLabel *light5;
 
      //第四组，显示编号和系统当前时间
 //     QLabel *serialNumber;//编号
@@ -340,14 +351,14 @@ protected:
      QString objectSet;//调整探测灵敏度等级
      QString voiceSet;
      QString lightSet;
-     //QString exitSet;
+     QString exitSet;
 
      QToolButton *openClose;//开/关
      QToolButton *objects;//目标对象的属性是否跟随目标
      QToolButton *voice;//声音
      QToolButton *light;//属性
      //QToolButton *setUp;//设置
-     //QToolButton *exitButton;//退出按钮
+     QToolButton *exitButton;//退出按钮
      //QToolButton *light;//指示灯
      //对话框需要的变量
      //QLineEdit *fileLineEdit;
@@ -371,6 +382,7 @@ protected:
      QMenu* ToolMenu;
      QMenu* DisplayMenu;
      QMenu* HelpMenu;
+     QMenu* videoMenu;
 
      QMenuBar* menubar;
 
@@ -380,7 +392,7 @@ protected:
      QAction* openplus;
      QAction* backplus;
      QAction* closeaction;
-     QAction* recentvidio;
+     QMenu* recentvidio;//recent
      QAction* changeuser;
      QAction* installation;
      QAction* exit;
@@ -398,6 +410,7 @@ protected:
      QAction* about;
 
 protected slots:
+     void videoClick();//recent
      void startStopFunction();
      void mstopFunction();
      void backFunction();
@@ -452,6 +465,8 @@ protected slots:
      void quXiaoFunction();
      virtual void timeLineFunction();
      void flash();
+
+public slots:
     void init();
 
 //private:

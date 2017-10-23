@@ -6,7 +6,8 @@
 #include<QGridLayout>
 #include<QLineEdit>
 #include<QToolButton>
-//#include "mainwindow.h"
+class WelcomeWindow;
+#include "mainwindow.h"
 
 class WelcomeWindow : public QWidget
 {
@@ -19,7 +20,8 @@ public:
     QLineEdit *passwordInput;
     QToolButton *logIn;
     QToolButton *exit;
-   // MainWindow *mainwindow;
+    MainWindow *mainwindow;
+    bool start;
 
 signals:
     

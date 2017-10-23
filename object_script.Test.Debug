@@ -23,6 +23,8 @@ INPUT(
 ./debug\welcomewindow.o
 ./debug\nwidget1.o
 ./debug\nwidget2.o
+./debug\region.o
+./debug\regiongroup.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
