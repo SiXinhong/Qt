@@ -1167,19 +1167,19 @@ void MainWindow::addMyToolBar()
     //mainToolBar->addWidget(new QLabel("   "));
 
     //告警指示
-    light = new QToolButton(this);
-    light->setToolTip(tr("告警指示"));
-    light->setMinimumHeight(buttonSize);
-    light->setMaximumHeight(buttonSize);
-    light->setMinimumWidth(buttonSize);
-    light->setMaximumWidth(buttonSize);
-    light->setStyleSheet("border-style:flat;background-color:2E302D");
-    lightSet="./icon/16_1.png";
-    light->setIcon(QPixmap(lightSet));
-    light->setIconSize(QSize(buttonSize,buttonSize));
-    vbox4->addWidget(light);
-    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
-    vbox5->addWidget(new QLabel(" "));
+//    light = new QToolButton(this);
+//    light->setToolTip(tr("告警指示"));
+//    light->setMinimumHeight(buttonSize);
+//    light->setMaximumHeight(buttonSize);
+//    light->setMinimumWidth(buttonSize);
+//    light->setMaximumWidth(buttonSize);
+//    light->setStyleSheet("border-style:flat;background-color:2E302D");
+//    lightSet="./icon/16_1.png";
+//    light->setIcon(QPixmap(lightSet));
+//    light->setIconSize(QSize(buttonSize,buttonSize));
+//    vbox4->addWidget(light);
+//    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
+//    vbox5->addWidget(new QLabel(" "));
     group4->setLayout(vbox4);
     mainToolBar->addWidget(group4);
 
