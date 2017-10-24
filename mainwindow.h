@@ -310,7 +310,7 @@ protected:
      QString addSaturationSet;
      QString reduceSaturationSet;
      QString pseudoColorSet;
-//     QString serialNumberSet;
+   //  QString serialNumberSet;
 //     QString timeSet;
      QToolButton *chexiao;
      QToolButton *autom;//自动
@@ -336,8 +336,8 @@ protected:
      QLabel *light5;
 
      //第四组，显示编号和系统当前时间
-//     QLabel *serialNumber;//编号
-//     QLabel *systime;//时间
+    QLabel *serialNumber;//编号
+     QLabel *systime;//时间
      //告警
      //QLabel *listLabel4;
      QString objectAttributeSet;//显示点击处位置

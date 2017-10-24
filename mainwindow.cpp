@@ -108,7 +108,7 @@ void MainWindow::init(){
     //目标属性是否跟随
     isMubiao = true;
     //系统编号
-    xtbh = QString("BJ036A战位");
+    //xtbh = QString("BJ036A战位");
     //-------------------------------------------------------
     //判断窗口是否打开
     is_open=false;
@@ -167,7 +167,7 @@ void MainWindow::init(){
     timerSysTime=new QTimer();
     timerSysTime->setInterval(1000);
     timerSysTime->start();
-    //connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
+    connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
@@ -896,6 +896,7 @@ void MainWindow::addMyToolBar()
     QGroupBox *group4=new QGroupBox(this);
     QGroupBox* group5=new QGroupBox(this);
     QGroupBox *group6=new QGroupBox(this);
+    QGroupBox *group7=new QGroupBox(this);
 
     QHBoxLayout *vbox1 = new QHBoxLayout;
     QHBoxLayout *vbox2 = new QHBoxLayout;
@@ -903,6 +904,7 @@ void MainWindow::addMyToolBar()
     QHBoxLayout *vbox4 = new QHBoxLayout;
     QHBoxLayout *vbox5 = new QHBoxLayout;
     QHBoxLayout *vbox6 = new QHBoxLayout;
+    QHBoxLayout *vbox7 = new QHBoxLayout;
 
     mainToolBar = addToolBar("monitoring");
 
@@ -1268,8 +1270,12 @@ void MainWindow::addMyToolBar()
 
         group5->setLayout(vbox5);
         mainToolBar->addWidget(group5);
-
-
+//时间组
+        systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+        systime->setStyleSheet("color:Black");
+        vbox6->addWidget(systime);
+        group6->setLayout(vbox6);
+        mainToolBar->addWidget(group6);
 
 
     //第六组
@@ -1284,17 +1290,15 @@ void MainWindow::addMyToolBar()
     exitButton->setIcon(QPixmap(exitSet));
     exitButton->setIconSize(QSize(buttonSize,buttonSize));
     //mainToolBar->addWidget(exitButton);
-        vbox6->addWidget(exitButton);
+    vbox7->addWidget(exitButton);
     connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
-
-    group6->setLayout(vbox6);
-
-    mainToolBar->addWidget(group6);
+    group7->setLayout(vbox7);
+    mainToolBar->addWidget(group7);
 }
 
 //获取系统当前时间定时器
 void MainWindow::onTimerOut2(){
-    //systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 }
 
 void MainWindow::adjustment()
@@ -2064,12 +2068,7 @@ void MainWindow::jinTimerout(){
         //QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
         this->selfTimerout();
     }
-    //    }
-    //    else
-    //    {
-    //    std::cout<<"no ok"<<std::endl;
-    //    }
-    //    #endif
+
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
