@@ -501,6 +501,7 @@ void NWidget2::ZoomOut(){
 //定义矩形监控区域
 void NWidget2::DefineRect(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    mw->isDefiningRegion =true;
     if(!mw->isDefiningRectRegion){
 
         this->points.clear();
@@ -519,7 +520,7 @@ void NWidget2::DefineRect(){
 //定义多边形监控区域
 void NWidget2::DefinePoly(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-
+    mw->isDefiningRegion = true;
     if(mw->isDefiningRectRegion){
         this->points.clear();
         this->rectRegion.x = 0;
@@ -536,12 +537,14 @@ void NWidget2::DefinePoly(){
 
 //取消监控区域定义
 void NWidget2::CancelRDefining(){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     this->rectRegion.x = 0;
     this->rectRegion.y = 0;
     this->rectRegion.width = 0;
     this->rectRegion.height = 0;
     this->points.clear();
     this->isFirstDoubleClick = false;
+    mw->isDefiningRegion =false;
 }
 
 //取消监控区域组定义
@@ -593,6 +596,7 @@ void NWidget2::CompleteRDefining(){
     else{
 
     }
+    mw->isDefiningRegion = false;
 }
 
 //完成监控区域组定义

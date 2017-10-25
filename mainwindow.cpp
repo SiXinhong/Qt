@@ -159,13 +159,13 @@ void MainWindow::init(){
     //---------------------------------------------------------
     //定时器
     timer=new QTimer();
-    timer->setInterval(3000);
-  timer->start();
+    timer->setInterval(1000);
+    timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
     //定时器，获取系统时间
 
     timerSysTime=new QTimer();
-    timerSysTime->setInterval(1000);
+    timerSysTime->setInterval(3000);
     timerSysTime->start();
     connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
@@ -2824,7 +2824,9 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
         if(rectRegion.width() > 0){
             painter.drawRect(rectRegion);
         }
-        for(int i = 0; i < ps.size() - 1; i++){
+
+        int size  = ps.size();
+        for(int i = 0; i < size - 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
@@ -2858,7 +2860,9 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
         if(rectRegion.width() > 0){
             painter.drawRect(rectRegion);
         }
-        for(int i = 0; i < ps.size() - 1; i++){
+
+        int size = ps.size();
+        for(int i = 0; i < size - 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
@@ -2885,7 +2889,8 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
         if(rectRegion.width() > 0){
             painter.drawRect(rectRegion);
         }
-        for(int i = 0; i < ps.size() - 1; i++){
+        int size = ps.size();
+        for(int i = 0; i < size - 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
@@ -2913,7 +2918,9 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
         if(rectRegion.width() > 0){
             painter.drawRect(rectRegion);
         }
-        for(int i = 0; i < ps.size() - 1; i++){
+
+        int size = ps.size();
+        for(int i = 0; i < size- 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
@@ -2944,7 +2951,9 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         painter.drawRect(rectRegion);
-        for(int i = 0; i < ps.size() - 1; i++){
+
+        int size = ps.size();
+        for(int i = 0; i < size- 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
