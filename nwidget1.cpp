@@ -10,6 +10,7 @@ using namespace std;
 
 NWidget1::NWidget1(QWidget *parent) :
     QWidget(parent){
+    setStyleSheet(QString::fromUtf8("border:2px solid #00FFFF"));
 
     this->from = 0;
    // completeRDefine = false;
@@ -388,7 +389,7 @@ void NWidget1::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+                //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
                 CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
             }
         }
@@ -462,7 +463,7 @@ void NWidget1::draw(){
               Mat image44 = Mat(dsize,CV_32S);
               cv::resize(image4, image44,dsize);
               setMat(image44);
-              rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+            //  rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
               CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
 
         }

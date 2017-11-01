@@ -81,6 +81,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 
 void MainWindow::init(){
     setWindowTitle("红外全景控制系统");
+    location = false;
     directory = new QDir();
     widgetNew=NULL;
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -2819,6 +2820,7 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
+         pen.setWidth(5);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2878,6 +2880,7 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
+        pen.setWidth(5);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2929,6 +2932,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
+         pen.setWidth(5);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2980,6 +2984,7 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
         qc.setGreen(co.val[1]);
         qc.setBlue(co.val[0]);
         QPen pen;
+         pen.setWidth(5);
         pen.setColor(qc);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
@@ -3040,6 +3045,7 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
+         pen.setWidth(5);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         painter.drawRect(rectRegion);
@@ -3681,7 +3687,8 @@ void MainWindow::objectAttributeFunction()
 //    //    this->objectAttributes->show();
 //    this->objectAttributes->show();
 
-    QMessageBox::information(this,tr("显示点击处位置"),tr("鼠标在条带显示区左键点击时，显示位置信息，需要定位或标定？继续努力。"));
+    location = !location;
+    //QMessageBox::information(this,tr("显示点击处位置"),tr("鼠标在条带显示区左键点击时，显示位置信息，需要定位或标定？继续努力。"));
 }
 //增加标签
 void MainWindow::manualFunction()

@@ -87,7 +87,7 @@ public slots:
   virtual void onTimerOut2();
     
 public:
-
+    bool location;
    QQueue<QTime> video;
    QQueue<QTime> videoEnd;//recent
    QQueue<QDate> videoDate;//recent

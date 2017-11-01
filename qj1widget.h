@@ -96,6 +96,10 @@ public:
     QPoint position11;
     QPoint position22;
 
+    //获得全景图中任意一点的坐标
+    double locationX;
+    double locationY;
+
     explicit Qj1Widget(QWidget *parent = 0);
 
     void contextMenuEvent(QContextMenuEvent *);
@@ -178,6 +182,8 @@ public:
     vector<MyObject> getSelectedObjects4();
 
     vector<MyObject> getSelectedObjects6();
+
+    void locationPrint();
 
 signals:
 
