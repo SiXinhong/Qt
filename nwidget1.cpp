@@ -12,7 +12,7 @@ NWidget1::NWidget1(QWidget *parent) :
     QWidget(parent){
 
     this->from = 0;
-
+   // completeRDefine = false;
     isYuan = true;
     isFirstDoubleClick = false;
 
@@ -76,7 +76,6 @@ void NWidget1::setMat(Mat m){
     mat = m;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->loadPictureToLabel4(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
-
 }
 
 Mat NWidget1::getMat(){
@@ -465,7 +464,29 @@ void NWidget1::draw(){
               setMat(image44);
               rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
               CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+
         }
+
+       for(int j = 0;j<rg.rs.size();j++){
+
+               int sizeOfPoints = rg.rs.at(j).poly.size();
+               if(sizeOfPoints == 0){
+                   rectangle(mat,Rect(rg.rs.at(j).rect.x,rg.rs.at(j).rect.y,rg.rs.at(j).rect.width,rg.rs.at(j).rect.height),rg.color,1,8,0);
+
+           }
+               else{
+                   Point pp[sizeOfPoints];
+                   for(int i = 0; i < sizeOfPoints; i++){
+                       pp[i] = Point(rg.rs.at(j).poly[i].x, rg.rs.at(j).poly[i].y);
+
+                   }
+                   const Point *pt[1] ={ pp};
+                   int npt[1] = {sizeOfPoints};
+
+                   polylines(mat,pt,npt,1,true,rg.color,1,8,0);
+
+              }
+}
 
 
 
@@ -563,8 +584,9 @@ void NWidget1::CancelRGDefining(){
 
 //完成监控区域定义
 void NWidget1::CompleteRDefining(){
+    //this->completeRDefine = true;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    if(mw->isDefiningRectRegion && this->rectRegion.width == 0){
+    if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
         QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
     }
     else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
@@ -577,7 +599,7 @@ void NWidget1::CompleteRDefining(){
         this->rectRegion.height = 0;
         this->isFirstDoubleClick = false;
     }
-    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)){
+    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2&&isFirstDoubleClick)){
         QMessageBox::information(this,tr("监控区域定义"),tr("多边形监控区域的定义尚未完成，至少需要定义三个顶点"));
         this->isFirstDoubleClick = false;
     }
@@ -589,6 +611,7 @@ void NWidget1::CompleteRDefining(){
             Point pp2 = Point(pp.x+this->rect.x, pp.y+this->rect.y);
             points1.push_back(pp2);
         }
+
         Region r = Region(name, rg.color, this->points);
         this->rs.push_back(r);
         this->points.clear();
@@ -597,17 +620,19 @@ void NWidget1::CompleteRDefining(){
     else{
 
     }
-    mw->isDefiningRegion = false;
 }
 
 //完成监控区域组定义
 void NWidget1::CompleteRGDefining(){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+   // mw->imgLabel4 = mw->label4->pixmap()->toImage();
     this->CompleteRDefining();
     for(int i = 0; i < rs.size(); i++){
         Region r = rs[i];
         rg.addRegion(r);
     }
     rs.clear();
+    mw->isDefiningRegion = false;
 }
 
 void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){
@@ -699,6 +724,7 @@ void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){
         }
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         mw->loadPictureToLabel4(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+
     }
     else if(e->button() == Qt::LeftButton && !mw->isDefiningRectRegion){
         QPoint qp = e->pos();
@@ -706,6 +732,7 @@ void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){
         this->points.push_back(p);
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         mw->loadPictureToLabel4(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+
     }
     else{
 

@@ -159,13 +159,13 @@ void MainWindow::init(){
     //---------------------------------------------------------
     //定时器
     timer=new QTimer();
-    timer->setInterval(1000);
+    timer->setInterval(3000);
     timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
     //定时器，获取系统时间
 
     timerSysTime=new QTimer();
-    timerSysTime->setInterval(3000);
+    timerSysTime->setInterval(1000);
     timerSysTime->start();
     connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
 
@@ -2831,6 +2831,29 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
+
+//        if(size>2&&widget1->completeRDefine == true){
+//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+//        }
+
+        for(int j = 0;j<widget1->rs.size();j++){
+            int sizeOfPoints = widget1->rs.at(j).poly.size();
+            if(sizeOfPoints == 0){
+                painter.drawRect(QRect(widget1->rs.at(j).rect.x,widget1->rs.at(j).rect.y,widget1->rs.at(j).rect.width,widget1->rs.at(j).rect.height));
+        }else{
+
+                for(int i = 0; i < sizeOfPoints; i++){
+                    QPoint p1 = QPoint(widget1->rs.at(j).poly[i].x, widget1->rs.at(j).poly[i].y);
+                    QPoint p2 = QPoint(widget1->rs.at(j).poly[i+1].x, widget1->rs.at(j).poly[i+1].y);
+                    painter.drawLine(p1,p2);
+                }
+                if(sizeOfPoints>2){
+                    painter.drawLine(QPoint(widget1->rs.at(j).poly[0].x, widget1->rs.at(j).poly[0].y),QPoint(widget1->rs.at(j).poly[sizeOfPoints-1].x, widget1->rs.at(j).poly[sizeOfPoints-1].y));
+                }
+            }
+
+        }
+
     }
     label->setScaledContents(true);
     label->setPixmap(pixmap1);
@@ -2867,6 +2890,28 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
+
+//        if(size>2&&widget2->completeRDefine == true){
+//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+//        }
+
+        for(int j = 0;j<widget2->rs.size();j++){
+            int sizeOfPoints = widget2->rs.at(j).poly.size();
+            if(sizeOfPoints == 0){
+                painter.drawRect(QRect(widget2->rs.at(j).rect.x,widget2->rs.at(j).rect.y,widget2->rs.at(j).rect.width,widget2->rs.at(j).rect.height));
+        }else{
+
+                for(int i = 0; i < sizeOfPoints; i++){
+                    QPoint p1 = QPoint(widget2->rs.at(j).poly[i].x, widget2->rs.at(j).poly[i].y);
+                    QPoint p2 = QPoint(widget2->rs.at(j).poly[i+1].x, widget2->rs.at(j).poly[i+1].y);
+                    painter.drawLine(p1,p2);
+                }
+                if(sizeOfPoints>2){
+                    painter.drawLine(QPoint(widget2->rs.at(j).poly[0].x, widget2->rs.at(j).poly[0].y),QPoint(widget2->rs.at(j).poly[sizeOfPoints-1].x, widget2->rs.at(j).poly[sizeOfPoints-1].y));
+                }
+            }
+
+        }
     }
     label2->setScaledContents(true);
     label2->setPixmap(pixmap1);
@@ -2895,6 +2940,29 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
+
+//        if(size>2&&widget3->completeRDefine == true){
+//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+//        }
+
+        for(int j = 0;j<widget3->rs.size();j++){
+            int sizeOfPoints = widget3->rs.at(j).poly.size();
+            if(sizeOfPoints == 0){
+                painter.drawRect(QRect(widget3->rs.at(j).rect.x,widget3->rs.at(j).rect.y,widget3->rs.at(j).rect.width,widget3->rs.at(j).rect.height));
+        }else{
+                for(int i = 0; i < sizeOfPoints; i++){
+                    QPoint p1 = QPoint(widget3->rs.at(j).poly[i].x, widget3->rs.at(j).poly[i].y);
+                    QPoint p2 = QPoint(widget3->rs.at(j).poly[i+1].x, widget3->rs.at(j).poly[i+1].y);
+                    painter.drawLine(p1,p2);
+                }
+                if(sizeOfPoints>2){
+                    painter.drawLine(QPoint(widget3->rs.at(j).poly[0].x, widget3->rs.at(j).poly[0].y),QPoint(widget3->rs.at(j).poly[sizeOfPoints-1].x, widget3->rs.at(j).poly[sizeOfPoints-1].y));
+                }
+            }
+
+        }
+
+
     }
     label3->setScaledContents(true);
     label3->setPixmap(pixmap1);
@@ -2917,15 +2985,38 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
         painter.setPen(pen);
         if(rectRegion.width() > 0){
             painter.drawRect(rectRegion);
-        }
 
+        }
         int size = ps.size();
         for(int i = 0; i < size- 1; i++){
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
+//        if(size>2&&widget4->completeRDefine == true){
+//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+//        }
+
+        for(int j = 0;j<widget4->rs.size();j++){
+            int sizeOfPoints = widget4->rs.at(j).poly.size();
+            //qDebug()<<"j:"<<j<<" size:"<<sizeOfPoints;
+            if(sizeOfPoints == 0){
+                painter.drawRect(QRect(widget4->rs.at(j).rect.x,widget4->rs.at(j).rect.y,widget4->rs.at(j).rect.width,widget4->rs.at(j).rect.height));
+        }else{
+
+                for(int i = 0; i < sizeOfPoints; i++){
+                    QPoint p1 = QPoint(widget4->rs.at(j).poly[i].x, widget4->rs.at(j).poly[i].y);
+                    QPoint p2 = QPoint(widget4->rs.at(j).poly[i+1].x, widget4->rs.at(j).poly[i+1].y);
+                    painter.drawLine(p1,p2);
+                }
+                if(sizeOfPoints>2){
+                    painter.drawLine(QPoint(widget4->rs.at(j).poly[0].x, widget4->rs.at(j).poly[0].y),QPoint(widget4->rs.at(j).poly[sizeOfPoints-1].x, widget4->rs.at(j).poly[sizeOfPoints-1].y));
+                }
+            }
+
+        }
     }
+
     label4->setScaledContents(true);
     label4->setPixmap(pixmap1);
 
@@ -2941,6 +3032,7 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
     //loadPictureToLabel(label6,imgLabel6);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel6);
     QPainter painter(&pixmap1);
+
     if(isDefiningRegion){
         QColor qc = QColor();
         qc.setRed(co.val[2]);
@@ -2958,6 +3050,32 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
+
+
+//        if(size>2&&widget6->completeRDefine == true){
+//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+//        }
+
+        for(int j = 0;j<widget6->rs.size();j++){
+            int sizeOfPoints = widget6->rs.at(j).poly.size();
+            //qDebug()<<"j:"<<j<<" size:"<<sizeOfPoints;
+            if(sizeOfPoints == 0){
+                painter.drawRect(QRect(widget6->rs.at(j).rect.x,widget6->rs.at(j).rect.y,widget6->rs.at(j).rect.width,widget6->rs.at(j).rect.height));
+        }else{
+
+                for(int i = 0; i < sizeOfPoints; i++){
+                    QPoint p1 = QPoint(widget6->rs.at(j).poly[i].x, widget6->rs.at(j).poly[i].y);
+                    QPoint p2 = QPoint(widget6->rs.at(j).poly[i+1].x, widget6->rs.at(j).poly[i+1].y);
+                    painter.drawLine(p1,p2);
+                }
+                if(sizeOfPoints>2){
+                    painter.drawLine(QPoint(widget6->rs.at(j).poly[0].x, widget6->rs.at(j).poly[0].y),QPoint(widget6->rs.at(j).poly[sizeOfPoints-1].x, widget6->rs.at(j).poly[sizeOfPoints-1].y));
+                }
+            }
+
+
+    }
+
     }
     label6->setScaledContents(true);
     label6->setPixmap(pixmap1);
@@ -2979,6 +3097,7 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
         rect.width = rectans[i].getWidth();
         rect.height = rectans[i].getHeight();
         rectangle(image,rect,Scalar(0,0,255),4,1,0);
+
       //  cv::cvtColor(image, image, CV_BGR2RGB);
     }
    // cv::cvtColor(image,image,CV_BGR2RGB);

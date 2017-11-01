@@ -50,6 +50,7 @@ QRect qrect;
 //QAction* To_Tanchu;
 
 public:
+    //bool completeRDefine;
 
     Mat mat;
 

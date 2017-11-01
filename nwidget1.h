@@ -32,7 +32,7 @@ private:
 
 
 public:
-
+  //  bool completeRDefine;
     QAction* Yuan_Xuanze;
     QAction* Wu_Bianxing;
 

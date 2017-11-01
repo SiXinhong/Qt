@@ -10,7 +10,7 @@ ZWidget::ZWidget(QWidget *parent) :
     QWidget(parent){
 
     this->from = 0;
-
+  //  completeRDefine = false;
     isYuan = true;
     isFirstDoubleClick = false;
 
@@ -629,6 +629,26 @@ void ZWidget::draw(){
 //        CVUtil::paintScale(mat, mw->widget1->getDirectionX3(), mw->widget1->getDirectionY3(), mw->widget1->getDirectionX32(), mw->widget1->getDirectionY32());
 //    }
 
+    for(int j = 0;j<rg.rs.size();j++){
+
+            int sizeOfPoints = rg.rs.at(j).poly.size();
+            if(sizeOfPoints == 0){
+                rectangle(mat,Rect(rg.rs.at(j).rect.x,rg.rs.at(j).rect.y,rg.rs.at(j).rect.width,rg.rs.at(j).rect.height),rg.color,1,8,0);
+
+        }
+            else{
+                Point pp[sizeOfPoints];
+                for(int i = 0; i < sizeOfPoints; i++){
+                    pp[i] = Point(rg.rs.at(j).poly[i].x, rg.rs.at(j).poly[i].y);
+
+                }
+                const Point *pt[1] ={ pp};
+                int npt[1] = {sizeOfPoints};
+
+                polylines(mat,pt,npt,1,true,rg.color,1,8,0);
+
+           }
+}
 
 
 
@@ -726,8 +746,9 @@ void ZWidget::CancelRGDefining(){
 
 //完成监控区域定义
 void ZWidget::CompleteRDefining(){
+   // this->completeRDefine = true;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    if(mw->isDefiningRectRegion && this->rectRegion.width == 0){
+    if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
         QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
     }
     else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
@@ -740,7 +761,7 @@ void ZWidget::CompleteRDefining(){
         this->rectRegion.height = 0;
         this->isFirstDoubleClick = false;
     }
-    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)){
+    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)&&isFirstDoubleClick){
         QMessageBox::information(this,tr("监控区域定义"),tr("多边形监控区域的定义尚未完成，至少需要定义三个顶点"));
         this->isFirstDoubleClick = false;
     }
@@ -760,11 +781,13 @@ void ZWidget::CompleteRDefining(){
     else{
 
     }
-    mw->isDefiningRegion = false;
+
 }
 
 //完成监控区域组定义
 void ZWidget::CompleteRGDefining(){
+     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+     mw->isDefiningRegion = false;
     this->CompleteRDefining();
     for(int i = 0; i < rs.size(); i++){
         Region r = rs[i];

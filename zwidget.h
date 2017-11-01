@@ -32,6 +32,8 @@ private:
 
 
 public:
+   // bool completeRDefine;
+
     QAction* Define_Rect;
     QAction* Define_Poly;
 

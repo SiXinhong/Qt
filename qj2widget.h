@@ -51,6 +51,7 @@ QRect qrect;
 //QAction* To_Tanchu;
 
 public:
+    //bool completeRDefine;
 
     int x_position1;
     int y_position1;
