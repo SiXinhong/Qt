@@ -786,10 +786,11 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
     locationY = this->getMatY(position1.y());
         QPixmap pixmap1 = QPixmap::fromImage(mw->imgLabel1);
         QPainter p(&pixmap1);
-
-        QFont font("Times", 80, QFont::Bold);
+        QPen pen;
+        pen.setColor(QColor(255,255,255,255));
+        QFont font("свт╡", 80, QFont::Bold);
         p.setFont(font);
-
+        p.setPen(pen);
         //p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
         p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
 

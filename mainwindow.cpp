@@ -1091,7 +1091,7 @@ void MainWindow::addMyToolBar()
     //第三组
     //显示点击处的位置信息
     objectAttribute = new QToolButton(this);
-    objectAttribute->setToolTip(tr("显示点击处的位置信息"));
+     objectAttribute->setToolTip(tr("开启显示点击处的位置信息"));
     objectAttribute->setMinimumHeight(buttonSize);
     objectAttribute->setMaximumHeight(buttonSize);
     objectAttribute->setMinimumWidth(buttonSize);
@@ -3688,6 +3688,12 @@ void MainWindow::objectAttributeFunction()
 //    this->objectAttributes->show();
 
     location = !location;
+    if(location){
+        objectAttribute->setToolTip(tr("关闭显示点击处的位置信息"));
+    }
+    if(!location){
+         objectAttribute->setToolTip(tr("开启显示点击处的位置信息"));
+    }
     //QMessageBox::information(this,tr("显示点击处位置"),tr("鼠标在条带显示区左键点击时，显示位置信息，需要定位或标定？继续努力。"));
 }
 //增加标签
