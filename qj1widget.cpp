@@ -779,13 +779,22 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
     }
 //    qDebug()<<position1.x();
 //    qDebug()<<position1.y();
-
+    //QLabel *label = new QLabel(this);
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->location){
-        this->locationPrint();
-        QPainter p(this);
-        p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
-        p.drawText(position1.x()-2,position1.y()+2,QString("x:").append(QString::number(this->locationX)).append(QString("y:")).append(QString::number(this->locationY)));
+    locationX = this->getMatX(position1.x());
+    locationY = this->getMatY(position1.y());
+        QPixmap pixmap1 = QPixmap::fromImage(mw->imgLabel1);
+        QPainter p(&pixmap1);
+
+        QFont font("Times", 80, QFont::Bold);
+        p.setFont(font);
+
+        //p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
+        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
+
+        mw->label->setScaledContents(true);
+        mw->label->setPixmap(pixmap1);
     }
     e->ignore();//这个东西非常重要，使得父类的事件处理函数可以被执行
 }
@@ -1167,10 +1176,6 @@ vector<MyObject> Qj1Widget::getSelectedObjects6(){
     return os;
 }
 
-void Qj1Widget::locationPrint(){
-    this->locationX  = this->getWidgetX(position1.x());
-    this->locationY  = this->getWidgetY(position1.y());
 
-}
 
 

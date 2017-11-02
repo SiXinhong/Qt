@@ -2820,7 +2820,7 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(5);
+         pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2844,7 +2844,7 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
                 painter.drawRect(QRect(widget1->rs.at(j).rect.x,widget1->rs.at(j).rect.y,widget1->rs.at(j).rect.width,widget1->rs.at(j).rect.height));
         }else{
 
-                for(int i = 0; i < sizeOfPoints; i++){
+                for(int i = 0; i < sizeOfPoints-1; i++){
                     QPoint p1 = QPoint(widget1->rs.at(j).poly[i].x, widget1->rs.at(j).poly[i].y);
                     QPoint p2 = QPoint(widget1->rs.at(j).poly[i+1].x, widget1->rs.at(j).poly[i+1].y);
                     painter.drawLine(p1,p2);
@@ -2880,7 +2880,7 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-        pen.setWidth(5);
+        pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2904,7 +2904,7 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
                 painter.drawRect(QRect(widget2->rs.at(j).rect.x,widget2->rs.at(j).rect.y,widget2->rs.at(j).rect.width,widget2->rs.at(j).rect.height));
         }else{
 
-                for(int i = 0; i < sizeOfPoints; i++){
+                for(int i = 0; i < sizeOfPoints-1; i++){
                     QPoint p1 = QPoint(widget2->rs.at(j).poly[i].x, widget2->rs.at(j).poly[i].y);
                     QPoint p2 = QPoint(widget2->rs.at(j).poly[i+1].x, widget2->rs.at(j).poly[i+1].y);
                     painter.drawLine(p1,p2);
@@ -2932,7 +2932,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(5);
+         pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -2954,7 +2954,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
             if(sizeOfPoints == 0){
                 painter.drawRect(QRect(widget3->rs.at(j).rect.x,widget3->rs.at(j).rect.y,widget3->rs.at(j).rect.width,widget3->rs.at(j).rect.height));
         }else{
-                for(int i = 0; i < sizeOfPoints; i++){
+                for(int i = 0; i < sizeOfPoints-1; i++){
                     QPoint p1 = QPoint(widget3->rs.at(j).poly[i].x, widget3->rs.at(j).poly[i].y);
                     QPoint p2 = QPoint(widget3->rs.at(j).poly[i+1].x, widget3->rs.at(j).poly[i+1].y);
                     painter.drawLine(p1,p2);
@@ -2984,7 +2984,7 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
         qc.setGreen(co.val[1]);
         qc.setBlue(co.val[0]);
         QPen pen;
-         pen.setWidth(5);
+         pen.setWidth(4);
         pen.setColor(qc);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
@@ -3009,7 +3009,7 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
                 painter.drawRect(QRect(widget4->rs.at(j).rect.x,widget4->rs.at(j).rect.y,widget4->rs.at(j).rect.width,widget4->rs.at(j).rect.height));
         }else{
 
-                for(int i = 0; i < sizeOfPoints; i++){
+                for(int i = 0; i < sizeOfPoints-1; i++){
                     QPoint p1 = QPoint(widget4->rs.at(j).poly[i].x, widget4->rs.at(j).poly[i].y);
                     QPoint p2 = QPoint(widget4->rs.at(j).poly[i+1].x, widget4->rs.at(j).poly[i+1].y);
                     painter.drawLine(p1,p2);
@@ -3045,7 +3045,7 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(5);
+         pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         painter.drawRect(rectRegion);
@@ -3069,7 +3069,7 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
                 painter.drawRect(QRect(widget6->rs.at(j).rect.x,widget6->rs.at(j).rect.y,widget6->rs.at(j).rect.width,widget6->rs.at(j).rect.height));
         }else{
 
-                for(int i = 0; i < sizeOfPoints; i++){
+                for(int i = 0; i < sizeOfPoints-1; i++){
                     QPoint p1 = QPoint(widget6->rs.at(j).poly[i].x, widget6->rs.at(j).poly[i].y);
                     QPoint p2 = QPoint(widget6->rs.at(j).poly[i+1].x, widget6->rs.at(j).poly[i+1].y);
                     painter.drawLine(p1,p2);
@@ -4006,6 +4006,7 @@ void MainWindow::saveconfigurationClicked(){
 }
 
 void MainWindow::regionClicked(){
+
     QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
 
 }

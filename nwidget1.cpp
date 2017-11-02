@@ -10,7 +10,7 @@ using namespace std;
 
 NWidget1::NWidget1(QWidget *parent) :
     QWidget(parent){
-    setStyleSheet(QString::fromUtf8("border:2px solid #00FFFF"));
+    setStyleSheet(QString::fromUtf8("border:3px solid #00FFFF"));
 
     this->from = 0;
    // completeRDefine = false;
@@ -110,6 +110,7 @@ void NWidget1::Wubianxing(){
 void NWidget1::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
+      menu->setStyleSheet(QString::fromUtf8("border:opx"));
     menu->addAction(Yuan_Xuanze); //添加菜单项1
     menu->addAction(Wu_Bianxing); //添加菜单项1
     menu->addSeparator();

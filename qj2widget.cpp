@@ -605,7 +605,8 @@ void Qj2Widget::CompleteRDefining(){
         vector<Point> points1;
         for(int i = 0; i < points.size(); i++){
             Point pp = points[i];
-            Point pp2 = Point(pp.x + this->mat.cols, pp.y);
+            //Point pp2 = Point(pp.x + this->mat.cols, pp.y);
+             Point pp2 = Point(pp.x , pp.y);
             points1.push_back(pp2);
         }
         Region r = Region(name, rg.color, points1);
@@ -748,6 +749,24 @@ void Qj2Widget::mousePressEvent(QMouseEvent *e)
         //e->accept();
         qDebug()<<position1;
     }
+
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(mw->location){
+    double locationX,locationY;
+    locationX = this->getMatX(position1.x());
+    locationY = this->getMatY(position1.y());
+        QPixmap pixmap1 = QPixmap::fromImage(mw->imgLabel2);
+        QPainter p(&pixmap1);
+
+        QFont font("Times", 80, QFont::Bold);
+        p.setFont(font);
+
+        //p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
+        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(locationX)).append("  ").append(QString("y:")).append(QString::number(locationY)));
+
+        mw->label->setScaledContents(true);
+        mw->label->setPixmap(pixmap1);
+        }
     e->ignore();//这个东西非常重要，使得父类的事件处理函数可以被执行
 }
 

@@ -11,7 +11,7 @@ using namespace std;
 
 NWidget2::NWidget2(QWidget *parent) :
     QWidget(parent){
-    setStyleSheet(QString::fromUtf8("border:2px solid blue"));
+    setStyleSheet(QString::fromUtf8("border:3px solid blue"));
 
     this->from = 0;
    //completeRDefine = false;
@@ -112,6 +112,8 @@ void NWidget2::Wubianxing(){
 void NWidget2::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
+
+      menu->setStyleSheet(QString::fromUtf8("border:opx"));
     menu->addAction(Yuan_Xuanze); //添加菜单项1
     menu->addAction(Wu_Bianxing); //添加菜单项1
     menu->addSeparator();

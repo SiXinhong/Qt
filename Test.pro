@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     nwidget1.cpp \
     nwidget2.cpp \
     region.cpp \
-    regiongroup.cpp
+    regiongroup.cpp \
+    monitor.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -68,7 +69,8 @@ HEADERS  += mainwindow.h \
     nwidget1.h \
     nwidget2.h \
     region.h \
-    regiongroup.h
+    regiongroup.h \
+    monitor.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

@@ -108,7 +108,6 @@ public:
     void mouseReleaseEvent(QMouseEvent *e);
     void mouseDoubleClickEvent(QMouseEvent *e);
 
-    //void paintEvent(QPaintEvent *);
 
     void setMat(Mat m);
     Mat getMat();
@@ -182,8 +181,6 @@ public:
     vector<MyObject> getSelectedObjects4();
 
     vector<MyObject> getSelectedObjects6();
-
-    void locationPrint();
 
 signals:
 
