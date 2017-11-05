@@ -50,6 +50,7 @@ public slots:
     void isActive();
     void attributesModify();
     void exitFunction();
+    void onClickName();
     
 };
 

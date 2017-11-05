@@ -4021,6 +4021,7 @@ void MainWindow::saveconfigurationClicked(){
 }
 
 void MainWindow::regionClicked(){
+    isDefiningRegion = true;
     if(monitor == NULL){
         monitor = new Monitor(this);
     }

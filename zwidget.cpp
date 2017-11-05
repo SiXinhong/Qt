@@ -642,7 +642,7 @@ void ZWidget::draw(){
                 int sizeOfPoints = ite.value().at(k).poly.size();
                 if(sizeOfPoints == 0){
                     //rectangle(mat,Rect(rg.rss.value((QString)((char)j)).at(k).rect.x,rg.rss.value((QString)((char)j)).at(k).rect.y,rg.rss.value((QString)((char)j)).at(k).rect.width,rg.rss.value((QString)((char)j)).at(k).rect.height),rg.color,1,8,0);
-                    rectangle(mat,Rect(ite.value().at(k).rect.x,ite.value().at(k).rect.y,ite.value().at(k).rect.width,ite.value().at(k).rect.height),rg.color,1,8,0);
+                    rectangle(mat,Rect(ite.value().at(k).rect.x,ite.value().at(k).rect.y,ite.value().at(k).rect.width,ite.value().at(k).rect.height),ite.value().at(k).color,1,8,0);
             }
                 else{
                     Point pp[sizeOfPoints];
@@ -654,7 +654,7 @@ void ZWidget::draw(){
                     const Point *pt[1] ={ pp};
                     int npt[1] = {sizeOfPoints};
 
-                    polylines(mat,pt,npt,1,true,rg.color,1,8,0);
+                    polylines(mat,pt,npt,1,true,ite.value().at(0).color,1,8,0);
 
                }
     }
@@ -827,6 +827,7 @@ void ZWidget::CompleteRGDefining(){
     rs.clear();
     int sizeOfGroup = rg.rss.size();
     char name  = 'a'+sizeOfGroup;
+    rg.rs[0].name=(QString)name;
     rg.addRegionGroup((QString)name,rg.rs);
     rg.rs.clear();
 }
@@ -1050,4 +1051,23 @@ double ZWidget::getWidgetY(double y){
 
 void ZWidget::alertProcessing(vector<MyObject> os){
 
+    boolean alert = false;
+    for(int i = 0; i < os.size(); i++){
+        MyObject mo = os[i];
+        QMap<QString,vector<Region> > ::iterator ite = rg.rss.begin();
+        for(; ite!= rg.rss.end(); ite++){
+            RegionGroup rgg;
+            rgg.rs = ite.value();
+            if(rgg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
+                alert = true;
+                break;
+            }
+        }
+        if(alert){
+            break;
+        }
+    }
+    if(alert && isGaojing){
+        QMessageBox::information(this,tr("告警"),tr("主显示区：有目标进入监控区域！"));
+    }
 }

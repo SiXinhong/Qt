@@ -1,4 +1,7 @@
 #include "monitor.h"
+#include <QColorDialog>
+#include <QColor>
+#include <QInputDialog>
 
 Monitor::Monitor(MainWindow *mw) :
     QMainWindow()
@@ -89,7 +92,7 @@ void Monitor::widgetShow(){
         end = n1->rg.rss.end();
         widget = 4;
         size = n1->rg.rss.size();
-    }else if(tipOfButton ==" n2"){
+    }else if(tipOfButton =="n2"){
         ite = n2->rg.rss.begin();
         end = n2->rg.rss.end();
         widget = 5;
@@ -113,18 +116,26 @@ void Monitor::widgetShow(){
 
     int i=0;
     for(;ite!=end;ite++){
-        QLabel *label=new QLabel(QString("监控区域组：").append(QString(ite.key())),cenWidget);
+        //不使用QLabel的原因是QLabel没有click信号
+        QToolButton *label=new QToolButton(cenWidget);
+        label->setText(QString("监控区域组：").append(ite.value()[0].name));
+        label->setStyleSheet("border-style: flat;");//去掉边框，看起来像label，而不是按钮
+        label->setToolTip(ite.key());
+        connect(label,SIGNAL(clicked()),this,SLOT(onClickName()));
 
         QToolButton *regionGroup = new QToolButton(cenWidget);
-        regionGroup->setText(QString("显示"));
+        regionGroup->setText(QString("隐藏该监控区域组"));
         connect(regionGroup,SIGNAL(clicked()),this,SLOT(groupShow()));
 
         QToolButton *active = new QToolButton(cenWidget);
-        active->setText(QString("激活"));
+        active->setText(QString("报警"));
         connect(active,SIGNAL(clicked()),this,SLOT(isActive()));
 
         QToolButton *attributes = new QToolButton(cenWidget);
-        attributes->setText(QString("修改属性"));
+        attributes->setText(QString("颜色"));
+        attributes->setToolTip(ite.key());
+        Scalar color=ite.value().at(0).color;
+        attributes->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
         connect(attributes,SIGNAL(clicked()),this,SLOT(attributesModify()));
 
         layout->addWidget(label,i,0);
@@ -150,6 +161,15 @@ void Monitor::widgetShow(){
 }
 
 void Monitor::groupShow(){
+
+    QObject* obj = sender();
+       QToolButton* button = dynamic_cast<QToolButton*>(obj);
+       if( button->text()== "隐藏该监控区域组"){
+            button->setText("显示该监控区域组");
+       }else if(button->text()=="显示该监控区域组"){
+           button->setText("隐藏该监控区域组");
+       }
+
     if(widget ==1){
         qj1->isShow = !qj1->isShow;
     }else if(widget ==2){
@@ -164,6 +184,15 @@ void Monitor::groupShow(){
 }
 
 void Monitor::isActive(){
+
+    QObject* obj = sender();
+       QToolButton* button = dynamic_cast<QToolButton*>(obj);
+       if( button->text()== "取消报警"){
+            button->setText("报警");
+       }else if(button->text()=="报警"){
+           button->setText("取消报警");
+       }
+
     if(widget ==1){
         qj1->isGaojing = !qj1->isGaojing;
     }else if(widget ==2){
@@ -178,9 +207,62 @@ void Monitor::isActive(){
 }
 
 void Monitor::attributesModify(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    QString tipOfButton=button->toolTip();
+    QColor color = QColorDialog::getColor(Qt::black,this);
 
+    button->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+
+    QMap< QString,vector<Region> > ::iterator iter;
+    if(1 == widget){
+        iter = qj1->rg.rss.find(tipOfButton);
+    }else if(2 == widget){
+        iter = qj2->rg.rss.find(tipOfButton);
+    }else if(3 == widget){
+        iter = z->rg.rss.find(tipOfButton);
+    }else if(4 == widget){
+        iter = n1->rg.rss.find(tipOfButton);
+    }else if(5 == widget){
+        iter = n2->rg.rss.find(tipOfButton);
+    }
+    Scalar c(color.blue(),color.green(),color.red());
+    for(int i=0;i<iter.value().size();i++){
+        iter.value()[i].color = c;
+    }
 }
 
 void Monitor::exitFunction(){
     this->close();
+    mw->isDefiningRegion = false;
+}
+
+void Monitor::onClickName(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    QString tipOfButton=button->toolTip();
+
+    QString newName = QInputDialog::getText(this,QString("请输入新的组监控名字，按确定修改"),QString("新名字"));
+
+    if(newName == "" || newName == tipOfButton){
+        return;
+    }
+    button->setText(QString("监控区域组：").append(newName));
+    QMap< QString,vector<Region> > ::iterator iter;
+    if(1 == widget){
+        iter = qj1->rg.rss.find(tipOfButton);
+        iter.value()[0].name=newName;
+    }else if(2 == widget){
+        iter = qj2->rg.rss.find(tipOfButton);
+        iter.value()[0].name=newName;
+    }else if(3 == widget){
+        iter = z->rg.rss.find(tipOfButton);
+        iter.value()[0].name=newName;
+    }else if(4 == widget){
+        iter = n1->rg.rss.find(tipOfButton);
+        iter.value()[0].name=newName;
+    }else if(5 == widget){
+        iter = n2->rg.rss.find(tipOfButton);
+        iter.value()[0].name=newName;
+    }
 }
