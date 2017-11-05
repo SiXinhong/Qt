@@ -32,6 +32,8 @@ private:
 
 
 public:
+    bool isGaojing;
+    bool isShow;
   //  bool completeRDefine;
     QAction* Yuan_Xuanze;
     QAction* Wu_Bianxing;
@@ -78,6 +80,8 @@ public:
 
 
     explicit NWidget1(QWidget *parent = 0);
+
+    void alertProcessing(vector<MyObject> os);
 
     void setFrom(int f);
 

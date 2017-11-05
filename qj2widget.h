@@ -52,7 +52,8 @@ QRect qrect;
 
 public:
     //bool completeRDefine;
-
+    bool isGaojing;
+     bool isShow;
     int x_position1;
     int y_position1;
     int x_position2;
@@ -107,6 +108,7 @@ public:
     //void paintEvent(QPaintEvent *);
     void mouseDoubleClickEvent(QMouseEvent *e);
 
+    void alertProcessing(vector<MyObject> os);
 
     void setMat(Mat m);
     Mat getMat();

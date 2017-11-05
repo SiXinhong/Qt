@@ -33,7 +33,8 @@ private:
 
 public:
    // bool completeRDefine;
-
+    bool isGaojing;
+     bool isShow;
     QAction* Define_Rect;
     QAction* Define_Poly;
 
@@ -79,6 +80,8 @@ public:
     QPoint position22;
 
     explicit ZWidget(QWidget *parent = 0);
+
+    void alertProcessing(vector<MyObject> os);
 
     void setFrom(int f);
 

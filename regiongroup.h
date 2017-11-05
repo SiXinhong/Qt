@@ -2,6 +2,7 @@
 #define REGIONGROUP_H
 //OpenCV头文件
 #include <vector>
+#include <QMap>
 #include <highgui.h>
 #include <cv.h>
 #include <opencv2/core/core.hpp>
@@ -34,6 +35,8 @@ public:
     //多边形
     vector<Region> rs;
 
+    QMap < QString,vector<Region> > rss;
+
     void draw(Mat mat);
 
     boolean isInner(Point2f p);
@@ -41,6 +44,9 @@ public:
     vector<Region> hasObjects();
 
     void addRegion(Region r);
+
+    void addRegionGroup(QString name,vector<Region> rs);
+
 
 };
 #endif // REGIONGROUP_H

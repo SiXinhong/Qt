@@ -70,3 +70,8 @@ vector<Region> RegionGroup::hasObjects(){
 void RegionGroup::addRegion(Region r){
     this->rs.push_back(r);
 }
+
+void RegionGroup::addRegionGroup(QString name,vector<Region> rs){
+    this->rss.insert(name,rs);
+
+}

@@ -33,6 +33,10 @@ private:
 
 public:
   //  bool completeRDefine;
+     bool isShow;
+
+     bool isGaojing;
+
     QAction* Yuan_Xuanze;
     QAction* Wu_Bianxing;
 
@@ -78,6 +82,9 @@ public:
     QPoint position22;
 
     explicit NWidget2(QWidget *parent = 0);
+
+    void alertProcessing(vector<MyObject> os);
+
 
     void setFrom(int f);
 
