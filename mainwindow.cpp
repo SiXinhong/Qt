@@ -226,6 +226,8 @@ MainWindow::~MainWindow(){
     delete trackBar;
     if( objectAttributes)
         delete objectAttributes;
+    if(monitor)
+        delete monitor;
     delete cmixer;
     delete sound;
     delete welcome;
@@ -237,22 +239,29 @@ MainWindow::~MainWindow(){
 //处理告警，当有目标进入监控区域的时候，亮红灯
 void MainWindow::alertProcessing(vector<MyObject> os){
     //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
-    boolean alert = false;
-    for(int i = 0; i < os.size(); i++){
-        MyObject mo = os[i];
-        for(int j = 0; j < this->rgs.size(); j++){
-            RegionGroup rg = rgs[j];
-            if(rg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
-                alert = true;
-                break;
-            }
-        }
-        if(alert){
-            break;
-        }
-    }
-    if(alert && isGaojing){
-        QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
+//    boolean alert = false;
+//    for(int i = 0; i < os.size(); i++){
+//        MyObject mo = os[i];
+//        for(int j = 0; j < this->rgs.size(); j++){
+//            RegionGroup rg = rgs[j];
+//            if(rg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
+//                alert = true;
+//                break;
+//            }
+//        }
+//        if(alert){
+//            break;
+//        }
+//    }
+//    if(alert && isGaojing){
+//        QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
+//    }
+    if(isGaojing){
+        widget1->alertProcessing(os);
+        widget2->alertProcessing(os);
+        widget3->alertProcessing(os);
+        widget4->alertProcessing(os);
+        widget6->alertProcessing(os);
     }
     //
 //    if(alert){
@@ -4149,8 +4158,21 @@ void MainWindow::saveconfigurationClicked(){
 }
 
 void MainWindow::regionClicked(){
+    isDefiningRegion = true;
+    if(monitor == NULL){
+        monitor = new Monitor(this);
+    }
 
-    QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
+    this->monitor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
+    this->monitor->setWindowTitle("编辑监控区域");
+    this->monitor->activateWindow();
+    QDesktopWidget *desktop= QApplication::desktop();
+    QRect screenRect = desktop->screenGeometry();
+    int width = screenRect.width();
+    int height = screenRect.height();
+    this->monitor->setGeometry(width/4,height/4,width/3,height/3);
+    this->monitor->show();
+   // QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
 
 }
 

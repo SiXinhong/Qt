@@ -70,6 +70,7 @@ class MainWindow;
 #include "welcomewindow.h"
 #include <QQueue>
 #include<QMap>
+#include "monitor.h"
 
 using namespace cv;
 using namespace std;
@@ -87,6 +88,7 @@ public slots:
   virtual void onTimerOut2();
     
 public:
+  Monitor *monitor;
     bool location;
    QQueue<QTime> video;
    QQueue<QTime> videoEnd;//recent

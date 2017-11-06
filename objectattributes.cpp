@@ -191,6 +191,7 @@ void ObjectAttributes::objectsShow()
     QObject* obj = sender();
     // 把基类对象强制转换成子类对象
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
+
     QString textOfButton=button->text();//根据button显示的内容看是第几个
     if(textOfButton.length()<4)
         return;
