@@ -17,6 +17,7 @@ NWidget2::NWidget2(QWidget *parent) :
    //completeRDefine = false;
     isYuan = true;
     isFirstDoubleClick = false;
+    isClicked = false;
 
     Yuan_Xuanze = new QAction(tr("原选择"),this);
     Wu_Bianxing = new QAction(tr("无变形"), this);
@@ -47,6 +48,15 @@ NWidget2::NWidget2(QWidget *parent) :
     this->rg = mw->rg;
     this->rs = mw->rs;
 
+    this->color  = Scalar(255,0,0);
+}
+
+void NWidget2::setColor(Scalar c){
+    this->color = c;
+}
+
+Scalar NWidget2::getColor(){
+    return this->color;
 }
 
 void NWidget2::setTwoPanos(Mat tps){
@@ -380,7 +390,7 @@ void NWidget2::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
+                //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
                 CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
             }
             else{
@@ -393,7 +403,7 @@ void NWidget2::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
+                //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
                 CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
             }
         }
@@ -666,6 +676,25 @@ void NWidget2::CompleteRGDefining(){
     rg.rs.clear();
     mw->isDefiningRegion = false;
 }
+
+void NWidget2::mousePressEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void NWidget2::mouseMoveEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void NWidget2::mouseReleaseEvent(QMouseEvent *e){
+    if(e->button() == Qt::LeftButton){
+        this->isClicked = true;
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        mw->widget3->isClicked = false;
+        mw->widget4->isClicked = false;
+    }
+    e->ignore();
+}
+
 
 void NWidget2::mouseDoubleClickEvent(QMouseEvent *e){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();

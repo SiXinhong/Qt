@@ -42,13 +42,23 @@ NWidget1::NWidget1(QWidget *parent) :
     connect(Zoom_In, SIGNAL(triggered()), this, SLOT(ZoomIn()));
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
 
+    isClicked = false;
+
     this->rectRegion = Rect(0,0,0,0);
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     this->rg = mw->rg;
     this->rs = mw->rs;
 
+    color = Scalar(255,255,0);
 }
 
+void NWidget1::setColor(Scalar c){
+    this->color = c;
+}
+
+Scalar NWidget1::getColor(){
+    return this->color;
+}
 void NWidget1::setTwoPanos(Mat tps){
     twopanos = tps;
 }
@@ -378,7 +388,7 @@ void NWidget1::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
-                rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
+                //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
                 CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
             }
             else{
@@ -645,6 +655,24 @@ void NWidget1::CompleteRGDefining(){
     rg.addRegionGroup((QString)name,rg.rs);
     rg.rs.clear();
     mw->isDefiningRegion = false;
+}
+
+void NWidget1::mousePressEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void NWidget1::mouseMoveEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void NWidget1::mouseReleaseEvent(QMouseEvent *e){
+    if(e->button() == Qt::LeftButton){
+        this->isClicked = true;
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        mw->widget3->isClicked = false;
+        mw->widget6->isClicked = false;
+    }
+    e->ignore();
 }
 
 void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){

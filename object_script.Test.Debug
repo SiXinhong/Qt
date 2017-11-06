@@ -37,5 +37,4 @@ INPUT(
 ./debug\moc_welcomewindow.o
 ./debug\moc_nwidget1.o
 ./debug\moc_nwidget2.o
-./debug\moc_monitor.o
 );

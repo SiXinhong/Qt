@@ -49,6 +49,7 @@ public:
     QAction* Zoom_Out;
 
     boolean isYuan;
+    boolean isClicked;
 
     Rect rect;
 
@@ -57,6 +58,8 @@ public:
     Mat pano;
 
     Mat mat;
+
+    Scalar color;
 
     vector<MyObject> allobjs;
 
@@ -99,6 +102,10 @@ public:
 
     Mat getPano();
 
+    void setColor(Scalar c);
+
+    Scalar getColor();
+
     void setRect(Rect r);
 
     Rect getRect();
@@ -136,6 +143,9 @@ public:
 
     void contextMenuEvent(QContextMenuEvent *);
     void mouseDoubleClickEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void mouseReleaseEvent(QMouseEvent *e);
 
     boolean isObjSelected(MyObject obj);
 
