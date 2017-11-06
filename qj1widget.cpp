@@ -18,9 +18,10 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
         isMove = false;
         isRect = false;
 
-        isTo3 = true;
+        isTo3 = false;
         isTo4 = false;
         isTo6 = false;
+        isClicked = false;
 
         isFirstDoubleClick = false;
 
@@ -94,6 +95,13 @@ Mat Qj1Widget::getPano(){
     return this->pano;
 }
 
+void Qj1Widget::setTwoPano(Mat tp){
+    this->twoPano = tp;
+}
+
+Mat Qj1Widget::getTwoPano(){
+    return this->twoPano;
+}
 
 void Qj1Widget::setObjects(vector<MyObject> os){
     this->objs = os;
@@ -818,6 +826,7 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
 {
     int posX = e->x();
     int posY = e->y();
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
     if(isDrag && isMove){
 
@@ -885,7 +894,7 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
                 qrect = QRect(newrect.x,newrect.y,newrect.width,newrect.height);
             }
 
-            MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
             //mw->test();
 
             //mw->drawRecOnPic2(mat,newrect);
@@ -901,6 +910,141 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
         else{
             isDrag = false;
             isMove = false;
+        }
+    }
+    else if((!mw->isDefiningRegion) && (e->button() == Qt::LeftButton)){
+        this->isClicked = true;
+        mw->widget2->isClicked = false;
+        if(mw->widget3->isClicked){
+            this->isTo3 = true;
+            mw->widget2->isTo3 = false;
+            int xx = this->getMatX(posX);
+            int yy = this->getMatY(posY);
+            int height = this->mat.rows;
+            int width = height * mw->widget3->width() / mw->widget3->height();
+            int xx2, yy2;
+            if(xx-width/2 >= 0){
+                xx2 = xx- width/2;
+                yy2 = 0;
+            }
+            else{
+                xx2 = xx- width/2 + this->pano.cols;
+                yy2 = 0;
+            }
+            this->rectan3 = Rect(xx2, yy2, width, height);
+
+            mw->widget3->setFrom(1);
+
+            mw->widget3->setRect(rectan3);
+
+            Mat mat1 = getTwoPano();
+            Size dsize ;
+            double scale = 1;
+            dsize = Size(mat1.cols*scale,mat1.rows*scale);
+            Mat image3;
+            mat1(rectan3).copyTo(image3);//mw->QImageToMat(mw->aa);
+            Mat image33 = Mat(dsize,CV_32S);
+            cv::resize(image3, image33,dsize);
+            mw->widget3->setMat(image33);
+            mw->widget3->draw();
+
+            mw->widget3->isClicked =false;
+            mw->widget4->isClicked = false;
+            mw->widget6->isClicked = false;
+        }
+        else if(mw->widget4->isClicked){
+            this->isTo4 = true;
+            mw->widget2->isTo4 = false;
+            int xx = this->getMatX(posX);
+            int yy = this->getMatY(posY);
+            int height = this->mat.rows/2;
+            int width = height * mw->widget4->width() / mw->widget4->height();
+            int xx2, yy2;
+            if(xx-width/2 >= 0){
+                xx2 = xx- width/2;
+                //yy2 = 0;
+            }
+            else{
+                xx2 = xx- width/2 + this->pano.cols;
+                //yy2 = 0;
+            }
+            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                yy2 = yy - height / 2;
+            }
+            else if(yy - height/2 <=0){
+                yy2 = 0;
+            }
+            else if(yy + height/2 >= mat.rows){
+                yy2 = mat.rows / 2;
+            }
+            this->rectan4 = Rect(xx2, yy2, width, height);
+
+            mw->widget4->setFrom(1);
+
+            mw->widget4->setRect(rectan4);
+
+            Mat mat1 = getTwoPano();
+            Size dsize ;
+            double scale = 1;
+            dsize = Size(mat1.cols*scale,mat1.rows*scale);
+            Mat image4;
+            mat1(rectan4).copyTo(image4);//mw->QImageToMat(mw->aa);
+            Mat image44 = Mat(dsize,CV_32S);
+            cv::resize(image4, image44,dsize);
+            mw->widget4->setMat(image44);
+            mw->widget4->draw();
+
+            mw->widget3->isClicked =false;
+            mw->widget4->isClicked = false;
+            mw->widget6->isClicked = false;
+        }
+        else if(mw->widget6->isClicked){
+            this->isTo6 = true;
+            mw->widget2->isTo6 = false;
+            int xx = this->getMatX(posX);
+            int yy = this->getMatY(posY);
+            int height = this->mat.rows/2;
+            int width = height * mw->widget6->width() / mw->widget6->height();
+            int xx2, yy2;
+            if(xx-width/2 >= 0){
+                xx2 = xx- width/2;
+                //yy2 = 0;
+            }
+            else{
+                xx2 = xx- width/2 + this->pano.cols;
+                //yy2 = 0;
+            }
+            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                yy2 = yy - height / 2;
+            }
+            else if(yy - height/2 <=0){
+                yy2 = 0;
+            }
+            else if(yy + height/2 >= mat.rows){
+                yy2 = mat.rows / 2;
+            }
+            this->rectan6 = Rect(xx2, yy2, width, height);
+
+            mw->widget6->setFrom(1);
+
+            mw->widget6->setRect(rectan6);
+
+            Mat mat1 = getTwoPano();
+            Size dsize ;
+            double scale = 1;
+            dsize = Size(mat1.cols*scale,mat1.rows*scale);
+            Mat image6;
+            mat1(rectan6).copyTo(image6);//mw->QImageToMat(mw->aa);
+            Mat image66 = Mat(dsize,CV_32S);
+            cv::resize(image6, image66,dsize);
+            mw->widget6->setMat(image66);
+            mw->widget6->draw();
+            mw->widget3->isClicked =false;
+            mw->widget4->isClicked = false;
+            mw->widget6->isClicked = false;
+        }
+        else{
+
         }
     }
     qDebug()<<x_position2;

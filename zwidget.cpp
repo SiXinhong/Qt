@@ -14,6 +14,7 @@ ZWidget::ZWidget(QWidget *parent) :
   //  completeRDefine = false;
     isYuan = true;
     isFirstDoubleClick = false;
+    isClicked = false;
 
     Yuan_Xuanze = new QAction(tr("原选择"),this);
     Wu_Bianxing = new QAction(tr("无变形"), this);
@@ -45,7 +46,15 @@ ZWidget::ZWidget(QWidget *parent) :
     this->rg = mw->rg;
     this->rs = mw->rs;
 
+    color = Scalar(0,0,255);
+}
 
+void ZWidget::setColor(Scalar c){
+    this->color = c;
+}
+
+Scalar ZWidget::getColor(){
+    return this->color;
 }
 
 void ZWidget::setPano(Mat p){
@@ -521,7 +530,7 @@ void ZWidget::draw(){
             Mat image33 = Mat(dsize,CV_32S);
             cv::resize(image3, image33,dsize);
             setMat(image33);
-            rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
+            //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
         }
         else{
@@ -534,7 +543,7 @@ void ZWidget::draw(){
             Mat image33 = Mat(dsize,CV_32S);
             cv::resize(image3, image33,dsize);
             setMat(image33);
-            rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
+            //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
 
@@ -903,6 +912,26 @@ void ZWidget::mouseDoubleClickEvent(QMouseEvent *e){
 
     e->ignore();
 }
+
+void ZWidget::mousePressEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void ZWidget::mouseMoveEvent(QMouseEvent *e){
+    e->ignore();
+}
+
+void ZWidget::mouseReleaseEvent(QMouseEvent *e){
+    if(e->button() == Qt::LeftButton){
+        this->isClicked = true;
+        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        mw->widget4->isClicked = false;
+        mw->widget6->isClicked = false;
+    }
+    e->ignore();
+    //qDebug()<<"isClicked:"<<isClicked;
+}
+
 boolean ZWidget::isObjSelected(MyObject obj){
     boolean isSelected = false;
         if(this->rect.contains(obj.getCenPoint())){

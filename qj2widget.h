@@ -62,6 +62,8 @@ public:
 
     Mat pano;
 
+    Mat twoPano;
+
     //全景1所包含的运动目标
     vector<MyObject> objs;
 
@@ -80,6 +82,7 @@ public:
     boolean isTo3;
     boolean isTo4;
     boolean isTo6;
+    boolean isClicked;
 
 
     Rect newrect;
@@ -113,6 +116,9 @@ public:
 
     void setPano(Mat p);
     Mat getPano();
+
+    void setTwoPano(Mat tp);
+    Mat getTwoPano();
 
     void setObjects(vector<MyObject> os);
     vector<MyObject> getObjects();
