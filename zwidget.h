@@ -53,6 +53,7 @@ public:
 
     Rect rect;
 
+    Rect realRect;//从全景显示区复制时真实使用的rect
     Mat twopanos;
 
     Mat pano;

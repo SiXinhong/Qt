@@ -1649,7 +1649,7 @@ void MainWindow::selfTimerout(){
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(in.getObjs2());
     widget6->draw();
-    this->alertProcessing(in.getObjs2());
+    this->alertProcessing(objs);
 
 // if(isGaojing)
 // {
