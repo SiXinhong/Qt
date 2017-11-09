@@ -385,6 +385,7 @@ void NWidget1::draw(){
             Mat image4;
             if(isYuan){
                 mat1(rect).copyTo(image4);//mw->QImageToMat(mw->aa);
+                realRect = rect;
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
@@ -398,6 +399,7 @@ void NWidget1::draw(){
                 trect.height = rect.height;
                 trect.width = trect.height * this->width() / this->height();
                 mat1(trect).copyTo(image4);
+                realRect = trect;
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
@@ -472,6 +474,7 @@ void NWidget1::draw(){
               Mat image4;
               Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
               mat1(trect).copyTo(image4);//mw->QImageToMat(mw->aa);
+              realRect = trect;
               Mat image44 = Mat(dsize,CV_32S);
               cv::resize(image4, image44,dsize);
               setMat(image44);
@@ -896,13 +899,15 @@ double NWidget1::getWidgetY(double y){
 
 void NWidget1::alertProcessing(vector<MyObject> os){
     boolean alert = false;
+    double xRatio = mat.cols/realRect.width;
+    double yRatio = mat.rows/realRect.height;
     for(int i = 0; i < os.size(); i++){
         MyObject mo = os[i];
         QMap<QString,vector<Region> > ::iterator ite = rg.rss.begin();
         for(; ite!= rg.rss.end(); ite++){
             RegionGroup rgg;
             rgg.rs = ite.value();
-            if(rgg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
+            if(rgg.isInner(Point2f((mo.cenPoint.x-realRect.x)*xRatio, (mo.cenPoint.y-realRect.y)*yRatio))){
                 alert = true;
                 break;
             }

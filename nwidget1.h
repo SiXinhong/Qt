@@ -53,6 +53,8 @@ public:
 
     Rect rect;
 
+    Rect realRect;
+
     Mat twopanos;
 
     Mat pano;

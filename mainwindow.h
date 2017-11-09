@@ -113,6 +113,12 @@ public:
    int addOneLight;
    QPixmap fitpixmap1;
    QPixmap fitpixmap2;
+   QPixmap fitpixmap3;
+   QPixmap fitpixmap4;
+   QPixmap fitpixmap5;
+   QPixmap fitpixmap6;
+   QPixmap fitpixmap7;
+   QPixmap fitpixmap8;
 //   Mat mat;
 //   Mat mat1, mat2;
    //HSL *hsl;
@@ -294,6 +300,7 @@ protected:
      //第一组按钮：监控和后退，还有回放
      //QLabel *listLabel1;
      //QString startStopSet;
+     QLabel *backLabel;
      QString mstopSet;
      QString backSet;
      //QString openSet;
@@ -305,6 +312,7 @@ protected:
      QToolButton *open;//打开
      //第二组按钮，图像
      //QLabel *listLabel3;
+     QLabel *photo;
      QString chexiaoDuibidu;
      QString automSet;
      QString addBrightnessSet;
@@ -329,8 +337,9 @@ protected:
 //     QString light4Set;
 //     QString light5Set;
 
+
     QLabel *lights[5];
-   QLabel *light1;
+    QLabel *light1;
 ////     //QToolButton *light1;
      QLabel *light2;
      QLabel *light3;
@@ -338,22 +347,30 @@ protected:
      QLabel *light5;
 
      //第四组，显示编号和系统当前时间
+      QLabel *currentTime;
     QLabel *serialNumber;//编号
      QLabel *systime;//时间
      //告警
      //QLabel *listLabel4;
+     QLabel *setup;
+     QLabel *alarm;
+     QLabel *position;
+     QLabel *zhanweiLabel;
+
      QString objectAttributeSet;//显示点击处位置
      QString manualSet;//增加标签
 
      QToolButton *objectAttribute;//显示点击处位置
      QToolButton *manual;//增加标签
+     QToolButton *stability;
 
-
+     QString stabilityset;
      QString openCloseSet;//启动关闭告警
      QString objectSet;//调整探测灵敏度等级
      QString voiceSet;
      QString lightSet;
      QString exitSet;
+     QString zhanwei;
 
      QToolButton *openClose;//开/关
      QToolButton *objects;//目标对象的属性是否跟随目标
@@ -432,6 +449,7 @@ protected slots:
      void objectsFunction();
      void lightFunction();
      void voiceFunction();
+     void stabilityFunction();
 
      virtual void exitFunction();
 

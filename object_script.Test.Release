@@ -37,4 +37,5 @@ INPUT(
 ./release\moc_welcomewindow.o
 ./release\moc_nwidget1.o
 ./release\moc_nwidget2.o
+./release\moc_monitor.o
 );
