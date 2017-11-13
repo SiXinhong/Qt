@@ -117,9 +117,12 @@ void MainWindow::init(){
     //判断是否处于定义监控区域的状态
     this->isDefiningRegion = false;
     this->isDefiningRectRegion = true;
+    readRgs();
     //临时的，监控区域的定义需要由定义监控区域的界面来打开
-    rg = RegionGroup(QString("Test-"), Scalar(0,255,0));
+    char name  = 'a'+rgs.size();
+    rg = RegionGroup((QString)name, Scalar(0,255,0));
     rgs.push_back(rg);
+    rgsIndex = rgs.size()-1;
 
     ui->setupUi(this);
     QWidget* widget = new QWidget(this);
@@ -240,29 +243,23 @@ MainWindow::~MainWindow(){
 //处理告警，当有目标进入监控区域的时候，亮红灯
 void MainWindow::alertProcessing(vector<MyObject> os){
     //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
-//    boolean alert = false;
-//    for(int i = 0; i < os.size(); i++){
-//        MyObject mo = os[i];
-//        for(int j = 0; j < this->rgs.size(); j++){
-//            RegionGroup rg = rgs[j];
-//            if(rg.isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
-//                alert = true;
-//                break;
-//            }
-//        }
-//        if(alert){
-//            break;
-//        }
-//    }
-//    if(alert && isGaojing){
-//        QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
-//    }
+
     if(isGaojing){
-        widget1->alertProcessing(os);
-        widget2->alertProcessing(os);
-        widget3->alertProcessing(os);
-        widget4->alertProcessing(os);
-        widget6->alertProcessing(os);
+        boolean alert = false;
+        for(int i = 0; i < os.size(); i++){
+            MyObject mo = os[i];
+            for(int j = 0; j < this->rgs.size(); j++){
+                if(rgs[j].isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
+                    alert = true;
+                    break;
+                }
+            }
+            if(alert){
+                break;
+            }
+        }
+        if(alert)
+            QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
     }
     //
 //    if(alert){
@@ -3061,23 +3058,6 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
 //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
 //        }
 
-        for(int j = 0;j<widget1->rs.size();j++){
-            int sizeOfPoints = widget1->rs.at(j).poly.size();
-            if(sizeOfPoints == 0){
-                painter.drawRect(QRect(widget1->rs.at(j).rect.x,widget1->rs.at(j).rect.y,widget1->rs.at(j).rect.width,widget1->rs.at(j).rect.height));
-        }else{
-
-                for(int i = 0; i < sizeOfPoints-1; i++){
-                    QPoint p1 = QPoint(widget1->rs.at(j).poly[i].x, widget1->rs.at(j).poly[i].y);
-                    QPoint p2 = QPoint(widget1->rs.at(j).poly[i+1].x, widget1->rs.at(j).poly[i+1].y);
-                    painter.drawLine(p1,p2);
-                }
-                if(sizeOfPoints>2){
-                    painter.drawLine(QPoint(widget1->rs.at(j).poly[0].x, widget1->rs.at(j).poly[0].y),QPoint(widget1->rs.at(j).poly[sizeOfPoints-1].x, widget1->rs.at(j).poly[sizeOfPoints-1].y));
-                }
-            }
-
-        }
 
     }
     label->setScaledContents(true);
@@ -3121,23 +3101,6 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
 //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
 //        }
 
-        for(int j = 0;j<widget2->rs.size();j++){
-            int sizeOfPoints = widget2->rs.at(j).poly.size();
-            if(sizeOfPoints == 0){
-                painter.drawRect(QRect(widget2->rs.at(j).rect.x,widget2->rs.at(j).rect.y,widget2->rs.at(j).rect.width,widget2->rs.at(j).rect.height));
-        }else{
-
-                for(int i = 0; i < sizeOfPoints-1; i++){
-                    QPoint p1 = QPoint(widget2->rs.at(j).poly[i].x, widget2->rs.at(j).poly[i].y);
-                    QPoint p2 = QPoint(widget2->rs.at(j).poly[i+1].x, widget2->rs.at(j).poly[i+1].y);
-                    painter.drawLine(p1,p2);
-                }
-                if(sizeOfPoints>2){
-                    painter.drawLine(QPoint(widget2->rs.at(j).poly[0].x, widget2->rs.at(j).poly[0].y),QPoint(widget2->rs.at(j).poly[sizeOfPoints-1].x, widget2->rs.at(j).poly[sizeOfPoints-1].y));
-                }
-            }
-
-        }
     }
     label2->setScaledContents(true);
     label2->setPixmap(pixmap1);
@@ -3172,22 +3135,6 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
 //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
 //        }
 
-        for(int j = 0;j<widget3->rs.size();j++){
-            int sizeOfPoints = widget3->rs.at(j).poly.size();
-            if(sizeOfPoints == 0){
-                painter.drawRect(QRect(widget3->rs.at(j).rect.x,widget3->rs.at(j).rect.y,widget3->rs.at(j).rect.width,widget3->rs.at(j).rect.height));
-        }else{
-                for(int i = 0; i < sizeOfPoints-1; i++){
-                    QPoint p1 = QPoint(widget3->rs.at(j).poly[i].x, widget3->rs.at(j).poly[i].y);
-                    QPoint p2 = QPoint(widget3->rs.at(j).poly[i+1].x, widget3->rs.at(j).poly[i+1].y);
-                    painter.drawLine(p1,p2);
-                }
-                if(sizeOfPoints>2){
-                    painter.drawLine(QPoint(widget3->rs.at(j).poly[0].x, widget3->rs.at(j).poly[0].y),QPoint(widget3->rs.at(j).poly[sizeOfPoints-1].x, widget3->rs.at(j).poly[sizeOfPoints-1].y));
-                }
-            }
-
-        }
 
 
     }
@@ -3225,24 +3172,6 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
 //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
 //        }
 
-        for(int j = 0;j<widget4->rs.size();j++){
-            int sizeOfPoints = widget4->rs.at(j).poly.size();
-            //qDebug()<<"j:"<<j<<" size:"<<sizeOfPoints;
-            if(sizeOfPoints == 0){
-                painter.drawRect(QRect(widget4->rs.at(j).rect.x,widget4->rs.at(j).rect.y,widget4->rs.at(j).rect.width,widget4->rs.at(j).rect.height));
-        }else{
-
-                for(int i = 0; i < sizeOfPoints-1; i++){
-                    QPoint p1 = QPoint(widget4->rs.at(j).poly[i].x, widget4->rs.at(j).poly[i].y);
-                    QPoint p2 = QPoint(widget4->rs.at(j).poly[i+1].x, widget4->rs.at(j).poly[i+1].y);
-                    painter.drawLine(p1,p2);
-                }
-                if(sizeOfPoints>2){
-                    painter.drawLine(QPoint(widget4->rs.at(j).poly[0].x, widget4->rs.at(j).poly[0].y),QPoint(widget4->rs.at(j).poly[sizeOfPoints-1].x, widget4->rs.at(j).poly[sizeOfPoints-1].y));
-                }
-            }
-
-        }
     }
 
     label4->setScaledContents(true);
@@ -3285,25 +3214,6 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
 //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
 //        }
 
-        for(int j = 0;j<widget6->rs.size();j++){
-            int sizeOfPoints = widget6->rs.at(j).poly.size();
-            //qDebug()<<"j:"<<j<<" size:"<<sizeOfPoints;
-            if(sizeOfPoints == 0){
-                painter.drawRect(QRect(widget6->rs.at(j).rect.x,widget6->rs.at(j).rect.y,widget6->rs.at(j).rect.width,widget6->rs.at(j).rect.height));
-        }else{
-
-                for(int i = 0; i < sizeOfPoints-1; i++){
-                    QPoint p1 = QPoint(widget6->rs.at(j).poly[i].x, widget6->rs.at(j).poly[i].y);
-                    QPoint p2 = QPoint(widget6->rs.at(j).poly[i+1].x, widget6->rs.at(j).poly[i+1].y);
-                    painter.drawLine(p1,p2);
-                }
-                if(sizeOfPoints>2){
-                    painter.drawLine(QPoint(widget6->rs.at(j).poly[0].x, widget6->rs.at(j).poly[0].y),QPoint(widget6->rs.at(j).poly[sizeOfPoints-1].x, widget6->rs.at(j).poly[sizeOfPoints-1].y));
-                }
-            }
-
-
-    }
 
     }
     label6->setScaledContents(true);
@@ -4129,8 +4039,7 @@ void MainWindow::exitFunction(){
 //退出系统事件
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-
-
+      writeRgs();
 }
 
 //void MainWindow::adjustbrightness()
@@ -4226,6 +4135,7 @@ void MainWindow::installationClicked(){
 }
 
 void MainWindow::exitClicked(){
+    writeRgs();
     QApplication::closeAllWindows();
 
 }
@@ -4246,7 +4156,7 @@ void MainWindow::regionClicked(){
         monitor = new Monitor(this);
     }
 
-    this->monitor->setWindowFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
+    //this->monitor->setWindowFlags(/*Qt::WindowStaysOnTopHint|*/Qt::FramelessWindowHint);
     this->monitor->setWindowTitle("编辑监控区域");
     this->monitor->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
@@ -4255,6 +4165,7 @@ void MainWindow::regionClicked(){
     int height = screenRect.height();
     this->monitor->setGeometry(width/4,height/4,width/3,height/3);
     this->monitor->show();
+    this->monitor->widgetShow();
    // QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
 
 }
@@ -4293,3 +4204,93 @@ void MainWindow::aboutClicked(){
     QMessageBox::information(this,tr("关于菜单项"),tr("富吉瑞公司及本产品简介。继续努力。"));
 
 }
+void MainWindow::readRgs(){
+    QFile file(QString("./config/rgs.config"));
+    if(!file.exists())
+        return;
+
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+    int size;
+    in>>size;
+    for(int i=0;i<size;i++){
+        RegionGroup *rg = new RegionGroup();
+        Scalar color;
+        in>>color.val[0];
+        in>>color.val[1];
+        in>>color.val[2];
+        in>>rg->name;
+        in>>rg->isActive;
+        in>>rg->isAlert;
+
+        int regionSize;
+        in>>regionSize;
+        for(int j=0;j<regionSize;j++){
+            Region *r = new Region();
+            in>>r->name;
+            in>>r->hasObjects;
+            in>>r->isActive;
+            in>>r->isRect;
+            if(r->isRect){
+                in>>r->rect.x;
+                in>>r->rect.y;
+                in>>r->rect.width;
+                in>>r->rect.height;
+            }else{
+                int polySize;
+                in>>polySize;
+                for(int k=0;k<polySize;k++){
+                    Point p;
+                    in>>p.x;
+                    in>>p.y;
+                    r->poly.push_back(p);
+                }
+            }
+            rg->addRegion(*r);
+        }
+        rg->setColor(color);
+        rgs.push_back(*rg);
+    }
+    file.close();
+}
+
+void MainWindow::writeRgs(){
+    int size = rgs.size();//最后一个是未完成的监控组
+    if(size <= 1)
+        return;
+    QFile file(QString("./config/rgs.config"));
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+
+    out<<size-1;
+    for(int i=0;i < size-1;i++){
+        out<<rgs[i].color.val[0];
+        out<<rgs[i].color.val[1];
+        out<<rgs[i].color.val[2];
+        out<<rgs[i].name;
+        out<<rgs[i].isActive;
+        out<<rgs[i].isAlert;
+        out<<rgs[i].rs.size();
+        for(int j=0;j<rgs[i].rs.size();j++){
+            out<<rgs[i].rs[j].name;
+            out<<rgs[i].rs[j].hasObjects;
+            out<<rgs[i].rs[j].isActive;
+            out<<rgs[i].rs[j].isRect;
+            if(rgs[i].rs[j].isRect){
+                out<<rgs[i].rs[j].rect.x;
+                out<<rgs[i].rs[j].rect.y;
+                out<<rgs[i].rs[j].rect.width;
+                out<<rgs[i].rs[j].rect.height;
+            }else{
+                out<<rgs[i].rs[j].poly.size();
+                for(int k=0;k<rgs[i].rs[j].poly.size();k++){
+                    out<<rgs[i].rs[j].poly[k].x;
+                    out<<rgs[i].rs[j].poly[k].y;
+                }
+            }
+        }
+    }
+    file.flush();
+    file.close();
+}
+

@@ -44,9 +44,6 @@ NWidget2::NWidget2(QWidget *parent) :
     connect(Zoom_In, SIGNAL(triggered()), this, SLOT(ZoomIn()));
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
     this->rectRegion = Rect(0,0,0,0);
-    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    this->rg = mw->rg;
-    this->rs = mw->rs;
 
     this->color  = Scalar(255,0,0);
 }
@@ -87,7 +84,7 @@ Rect NWidget2::getRect(){
 void NWidget2::setMat(Mat m){
     mat = m;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    mw->loadPictureToLabel6(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 
 }
 
@@ -483,33 +480,7 @@ void NWidget2::draw(){
             //  rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
               CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
-        if(isShow){
-           QMap<QString, vector<Region> >::iterator ite = rg.rss.begin();
-           for(;ite!=rg.rss.end();ite++){
-             //  for(int k = 0;k<rg.rss.value((QString)((char)j)).size();k++){
-               for(int k = 0;k<ite.value().size();k++){
-                   //int sizeOfPoints = rg.rss.value((QString)((char)j)).at(k).poly.size();
-                   int sizeOfPoints = ite.value().at(k).poly.size();
-                   if(sizeOfPoints == 0){
-                       //rectangle(mat,Rect(rg.rss.value((QString)((char)j)).at(k).rect.x,rg.rss.value((QString)((char)j)).at(k).rect.y,rg.rss.value((QString)((char)j)).at(k).rect.width,rg.rss.value((QString)((char)j)).at(k).rect.height),rg.color,1,8,0);
-                       rectangle(mat,Rect(ite.value().at(k).rect.x,ite.value().at(k).rect.y,ite.value().at(k).rect.width,ite.value().at(k).rect.height),ite.value().at(k).color,1,8,0);
-               }
-                   else{
-                       Point pp[sizeOfPoints];
-                       for(int i = 0; i < sizeOfPoints; i++){
-                          // pp[i] = Point(rg.rss.value((QString)((char)j)).at(k).poly[i].x, rg.rss.value((QString)((char)j)).at(k).poly[i].y);
-                           pp[i] = Point(ite.value().at(k).poly[i].x,ite.value().at(k).poly[i].y);
 
-                       }
-                       const Point *pt[1] ={ pp};
-                       int npt[1] = {sizeOfPoints};
-
-                       polylines(mat,pt,npt,1,true,ite.value().at(0).color,1,8,0);
-
-                  }
-    }
-    }
-}
 //        for(int j = 0;j<rg.rs.size();j++){
 
 //                int sizeOfPoints = rg.rs.at(j).poly.size();
@@ -531,11 +502,13 @@ void NWidget2::draw(){
 //               }
 // }
 
-
+        for(int j=0;j<this->rs.size();j++){
+            this->rs[j].draw1Time(mat);
+        }
     mw->imgLabel6 = mw->MatToQImage(mat,mw->imgLabel6);
  //   cv::cvtColor(mat,mat,CV_BGR2RGB);
     //mw->loadPictureToLabel6();
-    mw->loadPictureToLabel6(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 
 }
 void NWidget2::ZoomIn(){
@@ -616,68 +589,82 @@ void NWidget2::CancelRGDefining(){
     this->rectRegion.width = 0;
     this->rectRegion.height = 0;
     this->points.clear();
-    this->rs.clear();
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    mw->rs.clear();
+    this->rs.clear();
     mw->isDefiningRegion = false;
     this->isFirstDoubleClick = false;
 }
 
 //完成监控区域定义
 void NWidget2::CompleteRDefining(){
-   // this->completeRDefine = true;
-    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
-        QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
-    }
-    else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
-        QString name = rg.name + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
-        Region r = Region(name, rg.color, this->rectRegion.x+this->rect.x, this->rectRegion.y+this->rect.y, this->rectRegion.width, this->rectRegion.height);
-        this->rs.push_back(r);
-        this->rectRegion.x = 0;
-        this->rectRegion.y = 0;
-        this->rectRegion.width = 0;
-        this->rectRegion.height = 0;
-        this->isFirstDoubleClick = false;
-    }
-    else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)&&isFirstDoubleClick){
-        QMessageBox::information(this,tr("监控区域定义"),tr("多边形监控区域的定义尚未完成，至少需要定义三个顶点"));
-        this->isFirstDoubleClick = false;
-    }
-    else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
-        QString name = rg.name + QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
-        vector<Point> points1;
-        for(int i = 0; i < points.size(); i++){
-            Point pp = points[i];
-            Point pp2 = Point(pp.x+this->rect.x, pp.y+this->rect.y);
-            points1.push_back(pp2);
-        }
-        Region r = Region(name, rg.color, this->points);
-        this->rs.push_back(r);
-        this->points.clear();
-        this->isFirstDoubleClick = false;
-    }
-    else{
+    // this->completeRDefine = true;
+     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+     if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
+         QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
+     }
+     else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
+         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+         Region r = Region(name, mw->rgs[mw->rgsIndex].color, convertToOriginX(rectRegion.x), convertToOriginY(rectRegion.y), convertToOriginWidth(rectRegion.width), convertToOriginHeight(rectRegion.height));
+         mw->rs.push_back(r);
+         //为了在点完成监控区域后，timerout刷新画面时，还能显示刚刚画的区域，先保存在临时rs中，因为尚未完成组，所以不能在主mat中画
+         this->rs.push_back(Region(name,mw->rgs[mw->rgsIndex].color,rectRegion));
+         this->rectRegion.x = 0;
+         this->rectRegion.y = 0;
+         this->rectRegion.width = 0;
+         this->rectRegion.height = 0;
+         this->isFirstDoubleClick = false;
+         qDebug()<<"realrect.x:"<<realRect.x<<"realrect.y:"<<realRect.y<<"w:"<<realRect.width<<"h"<<realRect.height;
+         qDebug()<<"region.x:"<<r.rect.x<<"region.y:"<<r.rect.y<<"w:"<<r.rect.width<<"h"<<r.rect.height;
+     }
+     else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)&&isFirstDoubleClick){
+         QMessageBox::information(this,tr("监控区域定义"),tr("多边形监控区域的定义尚未完成，至少需要定义三个顶点"));
+         this->isFirstDoubleClick = false;
+     }
+     else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
+         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+         vector<Point> points1;
+         for(int i = 0; i < points.size(); i++){
+             Point pp2 = Point(convertToOriginX(points[i].x), convertToOriginY(points[i].y));
+             points1.push_back(pp2);
+         }
+         Region r = Region(name, mw->rgs[mw->rgsIndex].color, points1);
+         mw->rs.push_back(r);
+         this->rs.push_back(Region(name, mw->rgs[mw->rgsIndex].color, points));
+         this->points.clear();
+         this->isFirstDoubleClick = false;
+     }
+     else{
 
-    }
+     }
 
 }
 
 //完成监控区域组定义
 void NWidget2::CompleteRGDefining(){
-     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-     mw->isDefiningRegion = false;
-    this->CompleteRDefining();
-    for(int i = 0; i < rs.size(); i++){
-        Region r = rs[i];
-        rg.addRegion(r);
-    }
-    rs.clear();
-    int sizeOfGroup = rg.rss.size();
-    char name  = 'a'+sizeOfGroup;
-    rg.rs[0].name=(QString)name;
-    rg.addRegionGroup((QString)name,rg.rs);
-    rg.rs.clear();
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(mw->isDefiningRegion == false)
+        return;
     mw->isDefiningRegion = false;
+   this->CompleteRDefining();
+    if(mw->rs.size() == 0)
+        return;
+   for(int i = 0; i < mw->rs.size(); i++){
+       mw->rgs[mw->rgsIndex].addRegion(mw->rs[i]);
+   }
+
+   mw->rs.clear();
+   this->rs.clear();
+   //两种情况：自然的编辑，完成一个添加一个组，index总是最后一个组
+   //第二种情况是从配置界面选择一个组进行编辑，那么index指向这个组，并且rgs最后一个还未完成编辑
+   if(mw->rgsIndex + 1 == mw->rgs.size()){
+       mw->rgsIndex++;
+       char name  = 'a' + mw->rgsIndex;
+       RegionGroup *rg = new RegionGroup((QString)name, Scalar(0,255,0));
+       mw->rgs.push_back(*rg);
+   }else{
+       mw->rgsIndex = mw->rgs.size()-1;
+   }
 }
 
 void NWidget2::mousePressEvent(QMouseEvent *e){
@@ -787,14 +774,14 @@ void NWidget2::mouseDoubleClickEvent(QMouseEvent *e){
 
         }
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel6(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
     }
     else if(e->button() == Qt::LeftButton && !mw->isDefiningRectRegion){
         QPoint qp = e->pos();
         Point p = Point(getMatX(qp.x()),getMatY(qp.y()));
         this->points.push_back(p);
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel6(rg.color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
     }
     else{
 
@@ -916,26 +903,25 @@ double NWidget2::getWidgetY(double y){
     return y*this->height()/mat.rows;
 }
 
-void NWidget2::alertProcessing(vector<MyObject> os){
-    boolean alert = false;
-    double xRatio = mat.cols/realRect.width;
-    double yRatio = mat.rows/realRect.height;
-    for(int i = 0; i < os.size(); i++){
-        MyObject mo = os[i];
-        QMap<QString,vector<Region> > ::iterator ite = rg.rss.begin();
-        for(; ite!= rg.rss.end(); ite++){
-            RegionGroup rgg;
-            rgg.rs = ite.value();
-            if(rgg.isInner(Point2f((mo.cenPoint.x-realRect.x)*xRatio, (mo.cenPoint.y-realRect.y)*yRatio))){
-                alert = true;
-                break;
-            }
-        }
-        if(alert){
-            break;
-        }
-    }
-    if(alert && isGaojing){
-        QMessageBox::information(this,tr("告警"),tr("辅助显示区2：有目标进入监控区域！"));
-    }
+//把监控区的坐标转换成在全景视图的坐标
+int NWidget2::convertToOriginX(int x){
+    double ratio = ((double)realRect.width)/mat.cols;
+    return x*ratio + realRect.x;
+}
+
+//把监控区的坐标转换成在全景视图的坐标
+int NWidget2::convertToOriginY(int y){
+    double ratio = ((double)realRect.height)/mat.rows;
+    return y*ratio + realRect.y;
+}
+
+//把监控区的宽转换成在全景视图的宽度
+int NWidget2::convertToOriginWidth(int width){
+    double ratio = ((double)realRect.width)/mat.cols;
+    return width*ratio;
+}
+//把监控区的长转换成在全景视图的长度
+int NWidget2::convertToOriginHeight(int height){
+    double ratio = ((double)realRect.height)/mat.rows;
+    return height*ratio;
 }

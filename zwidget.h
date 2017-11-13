@@ -30,7 +30,11 @@ class ZWidget : public QWidget
 
 private:
 
-
+    //把监控区的坐标转换成在全景视图的坐标
+    int convertToOriginX(int x);
+    int convertToOriginY(int y);
+    int convertToOriginWidth(int width);
+    int convertToOriginHeight(int height);
 public:
    // bool completeRDefine;
     bool isGaojing;
@@ -75,8 +79,6 @@ public:
     vector<Point> points;
     //临时存储本次定义的监控区域
     vector<Region> rs;
-    //定义的监控区域所属的监控区域组
-    RegionGroup rg;
 
     //判断是不是第一次鼠标点击事件，用于矩形监控区域的绘制
     boolean isFirstDoubleClick;
@@ -84,8 +86,6 @@ public:
     QPoint position22;
 
     explicit ZWidget(QWidget *parent = 0);
-
-    void alertProcessing(vector<MyObject> os);
 
     void setFrom(int f);
 

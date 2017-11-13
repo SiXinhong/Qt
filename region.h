@@ -45,8 +45,10 @@ public:
     //多边形
     vector<Point> poly;
 
-    void draw(Mat mat);
+    void draw(Mat &mat);
 
+    //在显示区画，只画一变，draw在主mat中（两个全景图拼接）画两份
+    void draw1Time(Mat &mat);
     boolean isInner(Point2f p);
 
 };

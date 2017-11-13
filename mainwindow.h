@@ -88,6 +88,8 @@ public slots:
   virtual void onTimerOut2();
     
 public:
+  void readRgs();//读取监控组配置
+  void writeRgs();//保存监控组配置
   Monitor *monitor;
     bool location;
    QQueue<QTime> video;
@@ -200,6 +202,7 @@ public:
     //定义的监控区域所属的监控区域组
     RegionGroup rg;
 
+    int rgsIndex;
     vector<RegionGroup> rgs;
 
      QLabel *label;

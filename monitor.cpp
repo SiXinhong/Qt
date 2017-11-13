@@ -2,147 +2,77 @@
 #include <QColorDialog>
 #include <QColor>
 #include <QInputDialog>
+#include <QDebug>
 
 Monitor::Monitor(MainWindow *mw) :
     QMainWindow()
 {
-    addMyToolBar();
-   this->mw = mw;
-    qj1= mw->widget1;
-    qj2= mw->widget2;
-    z = mw->widget3;
-    n1 = mw->widget4;
-    n2 = mw->widget6;
+    //addMyToolBar();
     cenWidget = 0;
     layout = 0;
-}
-
-
-
-void Monitor::addMyToolBar(){
-
-
-    QToolButton *qj1Widget = new QToolButton(this);
-    QToolButton *qj2Widget = new QToolButton(this);
-    QToolButton *zWidget = new QToolButton(this);
-    QToolButton *nWidget1 = new QToolButton(this);
-    QToolButton *nWidget2 = new QToolButton(this);
-    QToolButton *exit = new QToolButton(this);
-
-    qj1Widget->setText("全景显示区1");
-    qj2Widget->setText("全景显示区2");
-    zWidget->setText("主显示区");
-    nWidget1->setText("辅助显示区1");
-    nWidget2->setText("辅助显示区2");
-    exit->setIcon(QPixmap("./icon/18.png"));
-
-    qj1Widget->setToolTip("qj1");
-    qj2Widget->setToolTip("qj2");
-    zWidget->setToolTip("z");
-    nWidget1->setToolTip("n1");
-    nWidget2->setToolTip("n2");
-
-    connect(qj1Widget,SIGNAL(clicked()),this,SLOT(widgetShow()));
-    connect(qj2Widget,SIGNAL(clicked()),this,SLOT(widgetShow()));
-    connect(zWidget,SIGNAL(clicked()),this,SLOT(widgetShow()));
-    connect(nWidget1,SIGNAL(clicked()),this,SLOT(widgetShow()));
-    connect(nWidget2,SIGNAL(clicked()),this,SLOT(widgetShow()));
-    connect(exit,SIGNAL(clicked()),this,SLOT(exitFunction()));
-
-    QHBoxLayout *vbox = new QHBoxLayout;
-    vbox->addWidget(qj1Widget);
-    vbox->addWidget(qj2Widget);
-    vbox->addWidget(zWidget);
-    vbox->addWidget(nWidget1);
-    vbox->addWidget(nWidget2);
-    vbox->addWidget(exit);
-
-    QGroupBox *group = new QGroupBox(this);
-    group->setLayout(vbox);
-
-    mainToolBar = addToolBar("RegionGroups");
-    mainToolBar->addWidget(group);
-
-
+    this->mw = mw;
 }
 
 void Monitor::widgetShow(){
-    QObject* obj = sender();
-    QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    QString tipOfButton=button->toolTip();
-    int size = 0;
-
-    if(tipOfButton == "qj1"){
-        ite = qj1->rg.rss.begin();
-        end = qj1->rg.rss.end();
-        widget = 1;
-        size = qj1->rg.rss.size();
-    }else if(tipOfButton == "qj2"){
-        ite = qj2->rg.rss.begin();
-        end = qj2->rg.rss.end();
-        widget = 2;
-        size = qj2->rg.rss.size();
-    }else if(tipOfButton == "z"){
-        ite = z->rg.rss.begin();
-        end = z->rg.rss.end();
-        widget = 3;
-        size = z->rg.rss.size();
-    }else if(tipOfButton =="n1"){
-        ite = n1->rg.rss.begin();
-        end = n1->rg.rss.end();
-        widget = 4;
-        size = n1->rg.rss.size();
-    }else if(tipOfButton =="n2"){
-        ite = n2->rg.rss.begin();
-        end = n2->rg.rss.end();
-        widget = 5;
-        size = n2->rg.rss.size();
-    }
-
-
     QGridLayout* old=layout;
     layout=new QGridLayout;
-
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();
-    int y = screenRect.height()/10;
-
-    if(size == 0){
+    if(mw->rgs.size() <= 1){
         QLabel *label = new QLabel(QString("未定义监控区域"),cenWidget);
         layout->addWidget(label,0,0);
     }
 
-    int i=0;
-    for(;ite!=end;ite++){
+
+    if(mw->rgs.size() == 0){
+        QMessageBox::information(this,tr("错误"),tr("rgs最少有一个"));
+        return;
+    }
+    //最后一个组是未完成的，所以不展示
+    for(int i = 0;i < mw->rgs.size()-1;i++){
+        QString tip = QString::number(i);//让slot能够知道是第几个监控组
         //不使用QLabel的原因是QLabel没有click信号
         QToolButton *label=new QToolButton(cenWidget);
-        label->setText(QString("监控区域组：").append(ite.value()[0].name));
+        label->setText(QString("监控区域组：").append(mw->rgs[i].name));
         label->setStyleSheet("border-style: flat;");//去掉边框，看起来像label，而不是按钮
-        label->setToolTip(ite.key());
+        label->setToolTip(tip);
         connect(label,SIGNAL(clicked()),this,SLOT(onClickName()));
 
         QToolButton *regionGroup = new QToolButton(cenWidget);
-        regionGroup->setText(QString("隐藏该监控区域组"));
+        if(mw->rgs[i].isActive){
+            regionGroup->setText(QString("隐藏该监控区域组"));
+        }else{
+            regionGroup->setText(QString("显示该监控区域组"));
+        }
+        regionGroup->setToolTip(tip);
         connect(regionGroup,SIGNAL(clicked()),this,SLOT(groupShow()));
 
         QToolButton *active = new QToolButton(cenWidget);
-        active->setText(QString("报警"));
-        connect(active,SIGNAL(clicked()),this,SLOT(isActive()));
+        if(mw->rgs[i].isAlert){
+            active->setText(QString("取消报警"));
+        }else{
+            active->setText(QString("报警"));
+        }
+        active->setToolTip(tip);
+        connect(active,SIGNAL(clicked()),this,SLOT(setAlert()));
 
         QToolButton *attributes = new QToolButton(cenWidget);
         attributes->setText(QString("颜色"));
-        attributes->setToolTip(ite.key());
-        Scalar color=ite.value().at(0).color;
+        attributes->setToolTip(tip);
+        Scalar color=mw->rgs[i].color;
         attributes->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
         connect(attributes,SIGNAL(clicked()),this,SLOT(attributesModify()));
+
+        QToolButton *edit = new QToolButton(cenWidget);
+        edit->setText(QString("编辑"));
+        edit->setToolTip(tip);
+        connect(edit,SIGNAL(clicked()),this,SLOT(exitFunction()));
 
         layout->addWidget(label,i,0);
         layout->addWidget(regionGroup,i,1);
         layout->addWidget(active,i,2);
         layout->addWidget(attributes,i,3);
-        i++;
+        layout->addWidget(edit,i,4);
     }
     if(old!=0){
         delete old;
@@ -163,27 +93,17 @@ void Monitor::widgetShow(){
 void Monitor::groupShow(){
 
     QObject* obj = sender();
-       QToolButton* button = dynamic_cast<QToolButton*>(obj);
-       if( button->text()== "隐藏该监控区域组"){
-            button->setText("显示该监控区域组");
-       }else if(button->text()=="显示该监控区域组"){
-           button->setText("隐藏该监控区域组");
-       }
-
-    if(widget ==1){
-        qj1->isShow = !qj1->isShow;
-    }else if(widget ==2){
-        qj2->isShow = !qj2->isShow;
-    }else if (widget ==3){
-        z->isShow = !z->isShow;
-    }else if(widget ==4){
-        n1->isShow = !n1->isShow;
-    }else if(widget ==5){
-        n2->isShow = !n2->isShow;
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    if( button->text()== "隐藏该监控区域组"){
+        button->setText("显示该监控区域组");
+    }else if(button->text()=="显示该监控区域组"){
+        button->setText("隐藏该监控区域组");
     }
+    int index = button->toolTip().toInt();
+    mw->rgs[index].isActive = !mw->rgs[index].isActive;
 }
 
-void Monitor::isActive(){
+void Monitor::setAlert(){
 
     QObject* obj = sender();
        QToolButton* button = dynamic_cast<QToolButton*>(obj);
@@ -193,76 +113,44 @@ void Monitor::isActive(){
            button->setText("取消报警");
        }
 
-    if(widget ==1){
-        qj1->isGaojing = !qj1->isGaojing;
-    }else if(widget ==2){
-        qj2->isGaojing = !qj2->isGaojing;
-    }else if (widget ==3){
-        z->isGaojing = !z->isGaojing;
-    }else if(widget ==4){
-        n1->isGaojing = !n1->isGaojing;
-    }else if(widget ==5){
-        n2->isGaojing = !n2->isGaojing;
-    }
+       int index = button->toolTip().toInt();
+       mw->rgs[index].isAlert = !mw->rgs[index].isAlert;
 }
 
 void Monitor::attributesModify(){
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    QString tipOfButton=button->toolTip();
+    int index = button->toolTip().toInt();
     QColor color = QColorDialog::getColor(Qt::black,this);
 
+    if(!color.isValid()){
+        return;
+    }
     button->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
 
-    QMap< QString,vector<Region> > ::iterator iter;
-    if(1 == widget){
-        iter = qj1->rg.rss.find(tipOfButton);
-    }else if(2 == widget){
-        iter = qj2->rg.rss.find(tipOfButton);
-    }else if(3 == widget){
-        iter = z->rg.rss.find(tipOfButton);
-    }else if(4 == widget){
-        iter = n1->rg.rss.find(tipOfButton);
-    }else if(5 == widget){
-        iter = n2->rg.rss.find(tipOfButton);
-    }
     Scalar c(color.blue(),color.green(),color.red());
-    for(int i=0;i<iter.value().size();i++){
-        iter.value()[i].color = c;
-    }
+    mw->rgs[index].setColor(c);
 }
 
 void Monitor::exitFunction(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    int index = button->toolTip().toInt();
+    mw->rgsIndex = index;
+    mw->isDefiningRegion = true;
     this->close();
-    mw->isDefiningRegion = false;
 }
 
 void Monitor::onClickName(){
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    QString tipOfButton=button->toolTip();
+    int index = button->toolTip().toInt();
 
     QString newName = QInputDialog::getText(this,QString("请输入新的组监控名字，按确定修改"),QString("新名字"));
 
-    if(newName == "" || newName == tipOfButton){
+    if(newName == "" || newName == mw->rgs[index].name){
         return;
     }
     button->setText(QString("监控区域组：").append(newName));
-    QMap< QString,vector<Region> > ::iterator iter;
-    if(1 == widget){
-        iter = qj1->rg.rss.find(tipOfButton);
-        iter.value()[0].name=newName;
-    }else if(2 == widget){
-        iter = qj2->rg.rss.find(tipOfButton);
-        iter.value()[0].name=newName;
-    }else if(3 == widget){
-        iter = z->rg.rss.find(tipOfButton);
-        iter.value()[0].name=newName;
-    }else if(4 == widget){
-        iter = n1->rg.rss.find(tipOfButton);
-        iter.value()[0].name=newName;
-    }else if(5 == widget){
-        iter = n2->rg.rss.find(tipOfButton);
-        iter.value()[0].name=newName;
-    }
+    mw->rgs[index].name = newName;
 }

@@ -6,7 +6,6 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include <QString>
-
 #include "region.h"
 
 using namespace cv;
@@ -51,7 +50,7 @@ Region::Region(QString name, Scalar c, vector<Point> ps){
     this->hasObjects = false;
 }
 
-void Region::draw(Mat mat){
+void Region::draw(Mat &mat){
     if(this->isRect && this->isActive){
         if(this->hasObjects){
             rectangle(mat,this->rect,this->color,5,1,0);
@@ -74,24 +73,54 @@ void Region::draw(Mat mat){
             Point p2 = Point(poly[i].x+mat.cols/2,poly[i].y);
             points2[0][i] = p2;
         }
+
         const Point* ppt[1] = {points[0]};
         int npt[] = {size};
         const Point* ppt2[1] = {points2[0]};
         int npt2[] = {size};
         if(this->hasObjects){
-            polylines(mat, ppt, npt, 5, 1, this->color, 0);
-            polylines(mat, ppt2, npt2, 5, 1, this->color, 0);
+            polylines(mat, ppt, npt, 1, true, this->color, 3);
+            polylines(mat, ppt2, npt2, 1, true, this->color, 3);
         }
         else{
-            polylines(mat, ppt, npt, 3, 1, this->color, 0);
-            polylines(mat, ppt2, npt2, 3, 1, this->color, 0);
+            polylines(mat, ppt, npt, 1, true, this->color, 3);
+            polylines(mat, ppt2, npt2, 1, true, this->color, 3);
         }
     }
     else{
 
     }
 }
+void Region::draw1Time(Mat &mat){
+    if(this->isRect && this->isActive){
+        if(this->hasObjects){
+            rectangle(mat,this->rect,this->color,5,1,0);
+        }
+        else{
+            rectangle(mat,this->rect,this->color,3,1,0);
+        }
 
+    }
+    else if(!this->isRect && this->isActive){
+        int size = this->poly.size();
+        Point points[1][size];
+        for(int i = 0; i < size; i++){
+            points[0][i] = this->poly[i];
+        }
+
+        const Point* ppt[1] = {points[0]};
+        int npt[] = {size};
+        if(this->hasObjects){
+            polylines(mat, ppt, npt, 1, true, this->color, 3);
+        }
+        else{
+            polylines(mat, ppt, npt, 1, true, this->color, 3);
+        }
+    }
+    else{
+
+    }
+}
 boolean Region::isInner(Point2f p){
     boolean in = false;
     if(isRect && this->isActive){

@@ -15,12 +15,14 @@ using namespace std;
 
 RegionGroup::RegionGroup(){
     this->isActive = true;
+    this->isAlert = true;
 }
 
 RegionGroup::RegionGroup(QString name, Scalar c){
     this->name = name;
     this->color = c;
     this->isActive = true;
+    this->isAlert = true;
 }
 
 RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
@@ -28,28 +30,28 @@ RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
     this->color = c;
     this->rs = rs;
     for(int i = 0; i < rs.size(); i++){
-        Region r = rs[i];
-        r.color = this->color;
+        rs[i].color = this->color;
     }
     this->isActive = true;
+    this->isAlert = true;
 }
 
-void RegionGroup::draw(Mat mat){
+void RegionGroup::draw(Mat &mat){
     if(this->isActive){
         for(int i = 0; i < this->rs.size(); i++){
-            Region r = rs[i];
-            r.draw(mat);
+            rs[i].draw(mat);
         }
     }
 }
 
 boolean RegionGroup::isInner(Point2f p){
     boolean in = false;
-    if(this->isActive){
+    if(this->isAlert){
         for(int i = 0; i< this->rs.size(); i++){
             Region r = rs[i];
             if(r.isInner(p)){
                 in = true;
+                break;
             }
         }
     }
@@ -71,7 +73,9 @@ void RegionGroup::addRegion(Region r){
     this->rs.push_back(r);
 }
 
-void RegionGroup::addRegionGroup(QString name,vector<Region> rs){
-    this->rss.insert(name,rs);
-
+void RegionGroup::setColor(Scalar c){
+    this->color = c;
+    for(int i=0;i<rs.size();i++){
+        rs[i].color = c;
+    }
 }

@@ -94,8 +94,6 @@ public:
     vector<Point> points;
     //临时存储本次定义的监控区域
     vector<Region> rs;
-    //定义的监控区域所属的监控区域组
-    RegionGroup rg;
 
     //判断是不是第一次鼠标点击事件，用于矩形监控区域的绘制
     boolean isFirstDoubleClick;
@@ -110,8 +108,6 @@ public:
     void mouseReleaseEvent(QMouseEvent *e);
     //void paintEvent(QPaintEvent *);
     void mouseDoubleClickEvent(QMouseEvent *e);
-
-    void alertProcessing(vector<MyObject> os);
 
     void setMat(Mat m);
     Mat getMat();

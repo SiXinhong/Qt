@@ -30,14 +30,16 @@ public:
 
     QString name;
 
+    //是否显示
     boolean isActive;
 
+    //是否报警
+    boolean isAlert;
     //多边形
     vector<Region> rs;
 
-    QMap < QString,vector<Region> > rss;
 
-    void draw(Mat mat);
+    void draw(Mat &mat);
 
     boolean isInner(Point2f p);
 
@@ -45,7 +47,7 @@ public:
 
     void addRegion(Region r);
 
-    void addRegionGroup(QString name,vector<Region> rs);
+    void setColor(Scalar c);
 
 
 };
