@@ -26,6 +26,7 @@ INPUT(
 ./debug\region.o
 ./debug\regiongroup.o
 ./debug\monitor.o
+./debug\detailsofrg.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
@@ -38,4 +39,5 @@ INPUT(
 ./debug\moc_nwidget1.o
 ./debug\moc_nwidget2.o
 ./debug\moc_monitor.o
+./debug\moc_detailsofrg.o
 );

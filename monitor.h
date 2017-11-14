@@ -8,6 +8,8 @@
 #include <QToolBar>
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QObjectUserData>
+
 class Monitor;
 #include "qj1widget.h"
 #include "qj2widget.h"
@@ -15,6 +17,7 @@ class Monitor;
 #include "nwidget1.h"
 #include "nwidget2.h"
 #include "mainwindow.h"
+#include "detailsofrg.h"
 
 
 class Monitor : public QMainWindow
@@ -26,10 +29,15 @@ public:
 public:
     explicit Monitor(MainWindow *mw);
 
+
+
 private:
-    QToolBar *mainToolBar;
+    //QToolBar *mainToolBar;
     QGridLayout* layout;
     QWidget *cenWidget;
+
+
+
 
 signals:
     
@@ -38,9 +46,10 @@ public slots:
     void groupShow();
     void setAlert();
     void attributesModify();
-    void exitFunction();
+    void editFunction();
     void onClickName();
-    
+    void createRG();
+    void detailsShow();
 };
 
 #endif // MONITOR_H

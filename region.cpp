@@ -125,15 +125,17 @@ boolean Region::isInner(Point2f p){
     boolean in = false;
     if(isRect && this->isActive){
         in = this->rect.contains(p);
+        this->hasObjects = this->rect.contains(p);
     }
     else if(!this->isRect && this->isActive){
         int inner = pointPolygonTest(this->poly, p, false);
         if (inner >= 0){
             in = true;
-            //this->hasObjects = true;
+            this->hasObjects = true;
         }
         else{
             in = false;
+            this->hasObjects = false;
         }
     }
     else{

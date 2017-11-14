@@ -11,13 +11,25 @@ Monitor::Monitor(MainWindow *mw) :
     cenWidget = 0;
     layout = 0;
     this->mw = mw;
+
+
 }
 
+//Monitor::~Monitor(){
+//    if(detailsOfRG){delete detailsOfRG;}
+//    if(layout){delete layout;}
+//    if(cenWidget){delete cenWidget;}
+//}
 void Monitor::widgetShow(){
     QGridLayout* old=layout;
     layout=new QGridLayout;
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
+
+    QToolButton *create = new QToolButton(cenWidget);
+    create->setText("创建监控区域组");
+    connect(create,SIGNAL(clicked()),this,SLOT(createRG()));
+
     if(mw->rgs.size() <= 1){
         QLabel *label = new QLabel(QString("未定义监控区域"),cenWidget);
         layout->addWidget(label,0,0);
@@ -28,7 +40,7 @@ void Monitor::widgetShow(){
         QMessageBox::information(this,tr("错误"),tr("rgs最少有一个"));
         return;
     }
-    //最后一个组是未完成的，所以不展示
+
     for(int i = 0;i < mw->rgs.size()-1;i++){
         QString tip = QString::number(i);//让slot能够知道是第几个监控组
         //不使用QLabel的原因是QLabel没有click信号
@@ -64,15 +76,30 @@ void Monitor::widgetShow(){
         connect(attributes,SIGNAL(clicked()),this,SLOT(attributesModify()));
 
         QToolButton *edit = new QToolButton(cenWidget);
+
+//        User *user = new User();
+//        user->nID = tip.toInt();
         edit->setText(QString("编辑"));
+
         edit->setToolTip(tip);
-        connect(edit,SIGNAL(clicked()),this,SLOT(exitFunction()));
+        //edit->setUserData(Qt::UserRole,user);
+        connect(edit,SIGNAL(clicked()),this,SLOT(editFunction()));
+
+        QToolButton *details = new QToolButton(cenWidget);
+
+            details->setText(QString("详细信息"));
+
+
+        details->setToolTip(tip);
+        connect(details,SIGNAL(clicked()),this,SLOT(detailsShow()));
 
         layout->addWidget(label,i,0);
         layout->addWidget(regionGroup,i,1);
         layout->addWidget(active,i,2);
         layout->addWidget(attributes,i,3);
         layout->addWidget(edit,i,4);
+        layout->addWidget(details,i,6);
+
     }
     if(old!=0){
         delete old;
@@ -132,13 +159,14 @@ void Monitor::attributesModify(){
     mw->rgs[index].setColor(c);
 }
 
-void Monitor::exitFunction(){
+void Monitor::editFunction(){
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    int index = button->toolTip().toInt();
-    mw->rgsIndex = index;
-    mw->isDefiningRegion = true;
-    this->close();
+        int index = button->toolTip().toInt();
+        mw->rgsIndex = index;
+        mw->isDefiningRegion = true;
+        this->close();
+
 }
 
 void Monitor::onClickName(){
@@ -153,4 +181,39 @@ void Monitor::onClickName(){
     }
     button->setText(QString("监控区域组：").append(newName));
     mw->rgs[index].name = newName;
+}
+
+void Monitor::createRG(){
+    this->close();
+     mw->widget1->CompleteRGDefining();
+     mw->isDefiningRegion = true;
+}
+
+void Monitor::detailsShow(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    int index = button->toolTip().toInt();
+
+    // User *user = (User *)(button->userData(Qt::UserRole));
+    //int index =user->nID;
+
+//    if(detailsOfRG==NULL||detailsOfRG->index == index){
+//        detailsOfRG   = new DetailsOfRG(mw,index);
+//    }
+//    else if(detailsOfRG!=NULL&&detailsOfRG->index==index){
+//        return;
+//    }
+
+        DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
+        //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
+        detailsOfRG->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的详细信息"));
+        detailsOfRG->activateWindow();
+        QDesktopWidget *desktop= QApplication::desktop();
+        QRect screenRect = desktop->screenGeometry();
+        int width = screenRect.width();
+        int height = screenRect.height();
+        detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
+        detailsOfRG->show();
+        detailsOfRG->detailsShow();
+
 }

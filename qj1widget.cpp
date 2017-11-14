@@ -636,11 +636,13 @@ void Qj1Widget::CompleteRDefining(){
 
 //完成监控区域组定义
 void Qj1Widget::CompleteRGDefining(){
+
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->isDefiningRegion == false)
         return;
-    mw->isDefiningRegion = false;
-   this->CompleteRDefining();
+
+    this->CompleteRDefining();
+     mw->isDefiningRegion = false;
     if(mw->rs.size() == 0)
         return;
    for(int i = 0; i < mw->rs.size(); i++){

@@ -650,6 +650,7 @@ void Qj2Widget::CompleteRGDefining(){
    this->rs.clear();
    //两种情况：自然的编辑，完成一个添加一个组，index总是最后一个组
    //第二种情况是从配置界面选择一个组进行编辑，那么index指向这个组，并且rgs最后一个还未完成编辑
+
    if(mw->rgsIndex + 1 == mw->rgs.size()){
        mw->rgsIndex++;
        char name  = 'a' + mw->rgsIndex;

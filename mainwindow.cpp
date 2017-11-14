@@ -196,7 +196,7 @@ void MainWindow::init(){
     gridlayout->addWidget(widget5,5,1);
     gridlayout->addWidget(widget6,5,2);
 
-    //gridlayout->setRowStretch(0, 1);
+    //gridlayout->setRowStretch(1, 1);
 
     gridlayout->setRowStretch(2, 1);
     gridlayout->setRowStretch(3, 1);
@@ -963,7 +963,7 @@ void MainWindow::addMyToolBar()
     QDesktopWidget* desktopWidget = QApplication::desktop();
     QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
     int screenWidth=screenRect.width();
-    const int buttonSize=(screenWidth*0.7)/32;
+    const int buttonSize=(screenWidth*0.7)/24;
 
     QGroupBox* group1=new QGroupBox(this);
     QGroupBox* group2=new QGroupBox(this);
@@ -1029,6 +1029,7 @@ void MainWindow::addMyToolBar()
     mstopSet="./iconUpdate/记录当前场景.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setIconSize(QSize(buttonSize,buttonSize));
+    mstop->setCheckable(true);
     vbox1->addWidget(mstop);
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
     //vbox1->addWidget(new QLabel(" "));
@@ -1044,6 +1045,7 @@ void MainWindow::addMyToolBar()
     backSet="./iconUpdate/执行非均匀性矫正.png";
     back->setIcon(QPixmap(backSet));
     back->setIconSize(QSize(buttonSize,buttonSize));
+    back->setCheckable(true);
     vbox1->addWidget(back);
     connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
     //vbox1->addWidget(new QLabel(" "));
@@ -1059,6 +1061,7 @@ void MainWindow::addMyToolBar()
     openSet="./iconUpdate/显示隐藏时间轴.png";
     open->setIcon(QPixmap(openSet));
     open->setIconSize(QSize(buttonSize,buttonSize));
+    open->setCheckable(true);
     vbox1->addWidget(open);
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
@@ -1073,10 +1076,15 @@ void MainWindow::addMyToolBar()
     chexiaoDuibidu ="./iconUpdate/撤销手动对比参数.png";
     chexiao->setIcon(QPixmap(chexiaoDuibidu));
     chexiao->setIconSize(QSize(buttonSize,buttonSize));
+    chexiao->setCheckable(true);
     vbox1->addWidget(chexiao);
     connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
 
+    vbox1->setMargin(0);
+    vbox1->setSpacing(0);
+
     group1->setLayout(vbox1);
+
     mainToolBar->addWidget(group1);
     //mainToolBar->addWidget(new QLabel("    "));
     //第二组按钮：图像
@@ -1100,6 +1108,7 @@ void MainWindow::addMyToolBar()
     automSet="./iconUpdate/应用自动对比度.png";
     autom->setIcon(QPixmap(automSet));
     autom->setIconSize(QSize(buttonSize,buttonSize));
+    autom->setCheckable(true);
     vbox2->addWidget(autom);
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
     //vbox2->addWidget(new QLabel(" "));
@@ -1115,6 +1124,7 @@ void MainWindow::addMyToolBar()
     reduceBrightnessSet="./iconUpdate/亮度减弱.png";
     reducebrightness->setIcon(QPixmap(reduceBrightnessSet));
     reducebrightness->setIconSize(QSize(buttonSize,buttonSize));
+    reducebrightness->setCheckable(true);
     vbox2->addWidget(reducebrightness);
     connect(reducebrightness,SIGNAL(clicked()),this,SLOT(reduceBrightnessFunction()));
     //vbox2->addWidget(new QLabel(" "));
@@ -1130,6 +1140,7 @@ void MainWindow::addMyToolBar()
     addBrightnessSet="./iconUpdate/亮度加强.png";
     addbrightness->setIcon(QPixmap(addBrightnessSet));
     addbrightness->setIconSize(QSize(buttonSize,buttonSize));
+    addbrightness->setCheckable(true);
     vbox2->addWidget(addbrightness);
     connect(addbrightness,SIGNAL(clicked()),this,SLOT(addBrightnessFunction()));
     //vbox2->addWidget(new QLabel(" "));
@@ -1148,6 +1159,7 @@ void MainWindow::addMyToolBar()
     reduceSaturationSet="./iconUpdate/对比度减弱.png";
     reducesaturation->setIcon(QPixmap(reduceSaturationSet));
     reducesaturation->setIconSize(QSize(buttonSize,buttonSize));
+    reducesaturation->setCheckable(true);
     vbox2->addWidget(reducesaturation);
     connect(reducesaturation,SIGNAL(clicked()),this,SLOT(reduceSaturationFunction()));
     //vbox2->addWidget(new QLabel(" "));
@@ -1163,6 +1175,7 @@ void MainWindow::addMyToolBar()
     addSaturationSet="./iconUpdate/对比度增加.png";
     addsaturation->setIcon(QPixmap(addSaturationSet));
     addsaturation->setIconSize(QSize(buttonSize,buttonSize));
+    addsaturation->setCheckable(true);
     vbox2->addWidget(addsaturation);
     connect(addsaturation,SIGNAL(clicked()),this,SLOT(addSaturationFunction()));
     //vbox2->addWidget(new QLabel(" "));
@@ -1179,8 +1192,12 @@ void MainWindow::addMyToolBar()
     pseudoColorSet="./iconUpdate/更多色板.png";
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
     pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
+    pseudoColor->setCheckable(true);
     vbox2->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
+
+    vbox2->setMargin(0);
+    vbox2->setSpacing(0);
 
     group2->setLayout(vbox2);
     mainToolBar->addWidget(group2);
@@ -1197,6 +1214,9 @@ void MainWindow::addMyToolBar()
     zhanweiLabel->setText(zhanwei);
     vbox8->addWidget(zhanweiLabel);
 
+    vbox8->setMargin(0);
+    vbox8->setSpacing(0);
+
     group8->setLayout(vbox8);
     mainToolBar->addWidget(group8);
 
@@ -1210,7 +1230,11 @@ void MainWindow::addMyToolBar()
 
             systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
             systime->setStyleSheet("color:Black");
+
+
             vbox6->addWidget(systime);
+            vbox6->setMargin(0);
+            vbox6->setSpacing(0);
             group6->setLayout(vbox6);
             mainToolBar->addWidget(group6);
 
@@ -1234,6 +1258,7 @@ void MainWindow::addMyToolBar()
     stabilityset = "./iconUpdate/启用垂直稳定图像";
     stability->setIcon(QPixmap(stabilityset));
     stability->setIconSize(QSize(buttonSize,buttonSize));
+    stability->setCheckable(true);
     vbox3->addWidget(stability);
     connect(stability,SIGNAL(clicked()),this,SLOT(stabilityFunction()));
 
@@ -1249,6 +1274,7 @@ void MainWindow::addMyToolBar()
     objectAttributeSet="./iconUpdate/显示点击处的位置.png";
     objectAttribute->setIcon(QPixmap(objectAttributeSet));
     objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
+    objectAttribute->setCheckable(true);
     vbox3->addWidget(objectAttribute);
     connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
     //vbox5->addWidget(new QLabel(" "));
@@ -1264,7 +1290,11 @@ void MainWindow::addMyToolBar()
     manualSet="./iconUpdate/增加标签.png";
     manual->setIcon(QPixmap(manualSet));
     manual->setIconSize(QSize(buttonSize,buttonSize));
+    manual->setCheckable(true);
     vbox3->addWidget(manual);
+
+    vbox3->setMargin(0);
+    vbox3->setSpacing(0);
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
     //vbox5->addWidget(new QLabel(" "));
     group3->setLayout(vbox3);
@@ -1291,6 +1321,7 @@ void MainWindow::addMyToolBar()
     openCloseSet="./iconUpdate/启用探测功能.png";
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setIconSize(QSize(buttonSize,buttonSize));
+    openClose->setCheckable(true);
     vbox4->addWidget(openClose);
     connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
     //vbox5->addWidget(new QLabel(" "));
@@ -1306,6 +1337,10 @@ void MainWindow::addMyToolBar()
     objectSet="./iconUpdate/调整灵敏度等级.png";
     objects->setIcon(QPixmap(objectSet));
     objects->setIconSize(QSize(buttonSize,buttonSize));
+    objects->setCheckable(true);
+
+
+
     vbox4->addWidget(objects);
     connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
     //vbox5->addWidget(new QLabel(" "));
@@ -1321,6 +1356,7 @@ void MainWindow::addMyToolBar()
     voiceSet="./iconUpdate/告警音开关.png";
     voice->setIcon(QPixmap(voiceSet));
     voice->setIconSize(QSize(buttonSize,buttonSize));
+    voice->setCheckable(true);
     vbox4->addWidget(voice);
     connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
@@ -1422,6 +1458,9 @@ void MainWindow::addMyToolBar()
             vbox4->addWidget(lights[2]);
             vbox4->addWidget(lights[3]);
             vbox4->addWidget(lights[4]);
+
+            vbox4->setMargin(0);
+            vbox4->setSpacing(0);
             group4->setLayout(vbox4);
             mainToolBar->addWidget(group4);
 
@@ -4157,7 +4196,7 @@ void MainWindow::regionClicked(){
     }
 
     //this->monitor->setWindowFlags(/*Qt::WindowStaysOnTopHint|*/Qt::FramelessWindowHint);
-    this->monitor->setWindowTitle("编辑监控区域");
+    this->monitor->setWindowTitle("创建或编辑区域菜单项");
     this->monitor->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
     QRect screenRect = desktop->screenGeometry();
