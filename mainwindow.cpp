@@ -135,7 +135,6 @@ void MainWindow::init(){
     widget5 = new HWidget(new QWidget(this));
     //widget6 = new LWidget(new QWidget(this));
     widget6 = new NWidget2(new QWidget(this));
-
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
     label3=new QLabel(widget3);
@@ -221,6 +220,7 @@ void MainWindow::init(){
 
         this->show();//BackWindow的show是由mainwindow中指定代码调用的
     }
+
 }
 
 MainWindow::~MainWindow(){
@@ -4056,14 +4056,14 @@ void MainWindow::voiceFunction()
 
     if(isShengyin)
     {
-        voice->setIcon(QPixmap("./icon/15_1灰.png"));
+       // voice->setIcon(QPixmap("./icon/15_1灰.png"));
         isShengyin = false;
         //voiceSet="./icon/15_1.png";
         voice->setToolTip("打开声音");
     }
     else
     {
-        voice->setIcon(QPixmap("./icon/15_1.png"));
+        //voice->setIcon(QPixmap("./icon/15_1.png"));
         isShengyin = true;
         //voiceSet="./icon/15_2.png";
         voice->setToolTip("关闭声音");

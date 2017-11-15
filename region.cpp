@@ -21,6 +21,7 @@ Region::Region(QString name, Scalar c){
     this->color = c;
     this->isActive = true;
     this->hasObjects = false;
+
 }
 
 Region::Region(QString name, Scalar c, double x, double y, double width, double height){

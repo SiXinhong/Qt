@@ -37,11 +37,15 @@ RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
 }
 
 void RegionGroup::draw(Mat &mat){
-    if(this->isActive){
-        for(int i = 0; i < this->rs.size(); i++){
-            rs[i].draw(mat);
+
+    for(int i = 0; i < this->rs.size(); i++){
+        rs[i].draw(mat);
         }
-    }
+//    if(this->isActive){
+//        for(int i = 0; i < this->rs.size(); i++){
+//            rs[i].draw(mat);
+//        }
+//    }
 }
 
 boolean RegionGroup::isInner(Point2f p){
