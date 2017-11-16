@@ -1210,7 +1210,7 @@ void MainWindow::addMyToolBar()
     vbox8->addWidget(position);
 
     zhanweiLabel = new QLabel(this);
-    zhanwei = "BJ036 վλ";
+    zhanwei = "BJ036 սλ";
     zhanweiLabel->setText(zhanwei);
     vbox8->addWidget(zhanweiLabel);
 

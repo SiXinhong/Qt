@@ -17,7 +17,7 @@ using namespace std;
 HWidget::HWidget(QWidget *parent) :
     QWidget(parent){
     r = 120;
-    r1 = 60;
+    r1 = 30;
     x0 = 150;
     y0 = 150;
 }
