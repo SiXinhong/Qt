@@ -20,10 +20,11 @@ public:
      QWidget *cenWidget;
 
 
+
 signals:
     
 public slots:
-    
+     void regionShow();
 };
 
 #endif // DETAILSOFRG_H

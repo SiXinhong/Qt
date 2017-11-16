@@ -24,8 +24,8 @@ public:
     void addMyToolBar_backWindow();
     QString currentFileTime;
 
-    class TimeLine *timeLine;
-    void timeLineFunction();
+   // class TimeLine *timeLine;
+    //void timeLineFunction();
     void onTimerOut2();
     map<int,MyObject*> objmap;
 };

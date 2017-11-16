@@ -121,12 +121,20 @@ void Monitor::groupShow(){
 
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    int index = button->toolTip().toInt();
     if( button->text()== "隐藏该监控区域组"){
         button->setText("显示该监控区域组");
+        for(int k=0;k<mw->rgs[index].rs.size();k++){
+            mw->rgs.at(index).rs[k].isActive = false;
+        }
+
     }else if(button->text()=="显示该监控区域组"){
         button->setText("隐藏该监控区域组");
+        for(int k=0;k<mw->rgs[index].rs.size();k++){
+            mw->rgs.at(index).rs[k].isActive = true;
+        }
     }
-    int index = button->toolTip().toInt();
+
     mw->rgs[index].isActive = !mw->rgs[index].isActive;
 }
 
