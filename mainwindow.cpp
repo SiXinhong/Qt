@@ -873,6 +873,8 @@ void MainWindow::addMyMenuBar(){
     installation = new QAction("启动安装向导",this);
     exit = new QAction("退出",this);
 
+    installation->setEnabled(false);
+
     //增加热键
     changeuser->setShortcut(Qt::Key_F11);
     connection->setShortcut(Qt::CTRL+Qt::Key_D);
@@ -910,20 +912,23 @@ void MainWindow::addMyMenuBar(){
     configuration = new QAction("配置...",this);
     saveconfiguration = new QAction("保存当前设置",this);
     region = new QAction("创建或编辑区域",this);
-    figure = new QAction("屏幕截图",this);
 
     region->setShortcut(Qt::Key_F12);
-    figure->setShortcut(Qt::Key_F7);
 
     OptionMenu->addAction(configuration);
     OptionMenu->addAction(saveconfiguration);
     OptionMenu->addAction(region);
-    ToolMenu->addAction(figure);
+
 
     connect(configuration,SIGNAL(triggered()),this,SLOT(configurationClicked()));
     connect(saveconfiguration,SIGNAL(triggered()),this,SLOT(saveconfigurationClicked()));
     connect(region,SIGNAL(triggered()),this,SLOT(regionClicked()));
-    connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
+
+
+     figure = new QAction("屏幕截图",this);
+     figure->setShortcut(Qt::Key_F7);
+     ToolMenu->addAction(figure);
+     connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
 
     openalert = new QAction("显示报警信息",this);
     closealert = new QAction("关闭报警信息",this);
@@ -1065,21 +1070,6 @@ void MainWindow::addMyToolBar()
     vbox1->addWidget(open);
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
-    //撤销手动对比度参数
-    chexiao = new QToolButton(this);
-    chexiao->setToolTip(tr("撤销手动对比度参数"));
-    chexiao->setMinimumHeight(buttonSize);
-    chexiao->setMaximumHeight(buttonSize);
-    chexiao->setMinimumWidth(buttonSize);
-    chexiao->setMaximumWidth(buttonSize);
-    chexiao->setStyleSheet("border-style:flat;background-color:2E302D");
-    chexiaoDuibidu ="./iconUpdate/撤销手动对比参数.png";
-    chexiao->setIcon(QPixmap(chexiaoDuibidu));
-    chexiao->setIconSize(QSize(buttonSize,buttonSize));
-    chexiao->setCheckable(true);
-    vbox1->addWidget(chexiao);
-    connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
-
     vbox1->setMargin(0);
     vbox1->setSpacing(0);
 
@@ -1095,7 +1085,20 @@ void MainWindow::addMyToolBar()
     photo->setPixmap(fitpixmap5);
     vbox2->addWidget(photo);
 
-
+    //撤销手动对比度参数
+    chexiao = new QToolButton(this);
+    chexiao->setToolTip(tr("撤销手动对比度参数"));
+    chexiao->setMinimumHeight(buttonSize);
+    chexiao->setMaximumHeight(buttonSize);
+    chexiao->setMinimumWidth(buttonSize);
+    chexiao->setMaximumWidth(buttonSize);
+    chexiao->setStyleSheet("border-style:flat;background-color:2E302D");
+    chexiaoDuibidu ="./iconUpdate/撤销手动对比参数.png";
+    chexiao->setIcon(QPixmap(chexiaoDuibidu));
+    chexiao->setIconSize(QSize(buttonSize,buttonSize));
+    chexiao->setCheckable(true);
+    vbox2->addWidget(chexiao);
+    connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
 
     //自动
     autom = new QToolButton(this);
@@ -2339,17 +2342,17 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
     {
         //isRect = false;
         //判断是否是拖拽出发点
-        QPoint position1 = e->pos();//e->globalPos() - this->pos();
-        //起始点是落在全景显示区1中的情况
-        if((position1.x() <= this->widget1->pos().x()+this->widget1->width()) &&(position1.x() >= this->widget1->pos().x()) && (position1.y() <= this->widget1->pos().y()+this->widget1->height()) &&(position1.y() >= this->widget1->pos().y())){
-            isDrag1 = true;
-            isDrag2 = false;
-        }
-        //起始点是落在全景显示区2中的情况
-        if((position1.x() <= this->widget2->pos().x()+this->widget2->width()) &&(position1.x() >= this->widget2->pos().x()) && (position1.y() <= this->widget2->pos().y()+this->widget2->height()) &&(position1.y() >= this->widget2->pos().y())){
-            isDrag2 = true;
-            isDrag1 = false;
-        }
+//        QPoint position1 = e->pos();//e->globalPos() - this->pos();
+//        //起始点是落在全景显示区1中的情况
+//        if((position1.x() <= this->widget1->pos().x()+this->widget1->width()) &&(position1.x() >= this->widget1->pos().x()) && (position1.y() <= this->widget1->pos().y()+this->widget1->height()) &&(position1.y() >= this->widget1->pos().y())){
+//            isDrag1 = true;
+//            isDrag2 = false;
+//        }
+//        //起始点是落在全景显示区2中的情况
+//        if((position1.x() <= this->widget2->pos().x()+this->widget2->width()) &&(position1.x() >= this->widget2->pos().x()) && (position1.y() <= this->widget2->pos().y()+this->widget2->height()) &&(position1.y() >= this->widget2->pos().y())){
+//            isDrag2 = true;
+//            isDrag1 = false;
+//        }
 
         //e->accept();
         //qDebug()<<position1;
@@ -2358,16 +2361,16 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-    if(isDrag1 && (e->buttons() && Qt::LeftButton)){
-        //move(e->globalPos() - position1);
-        isMove = true;
-        //e->accept();
-    }
-    if(isDrag2 && (e->buttons() && Qt::LeftButton)){
-        //move(e->globalPos() - position1);
-        isMove = true;
-        //e->accept();
-    }
+//    if(isDrag1 && (e->buttons() && Qt::LeftButton)){
+//        //move(e->globalPos() - position1);
+//        isMove = true;
+//        //e->accept();
+//    }
+//    if(isDrag2 && (e->buttons() && Qt::LeftButton)){
+//        //move(e->globalPos() - position1);
+//        isMove = true;
+//        //e->accept();
+//    }
     e->ignore();
 }
 
