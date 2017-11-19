@@ -340,7 +340,7 @@ protected:
 //     QString light4Set;
 //     QString light5Set;
 
-
+   // QLabel *light;
     QLabel *lights[5];
     QLabel *light1;
 ////     //QToolButton *light1;

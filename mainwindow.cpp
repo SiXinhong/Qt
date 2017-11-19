@@ -243,7 +243,7 @@ MainWindow::~MainWindow(){
 //处理告警，当有目标进入监控区域的时候，亮红灯
 void MainWindow::alertProcessing(vector<MyObject> os){
     //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
-
+    QString group;
     if(isGaojing){
         boolean alert = false;
         for(int i = 0; i < os.size(); i++){
@@ -251,6 +251,7 @@ void MainWindow::alertProcessing(vector<MyObject> os){
             for(int j = 0; j < this->rgs.size(); j++){
                 if(rgs[j].isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
                     alert = true;
+                    group =rgs.at(j).name;
                     break;
                 }
             }
@@ -259,7 +260,7 @@ void MainWindow::alertProcessing(vector<MyObject> os){
             }
         }
         if(alert)
-            QMessageBox::information(this,tr("告警"),tr("有目标进入告警区域！"));
+            QMessageBox::information(this,tr("告警"),QString("有目标进入监控区域组").append(group).append(" !"));
     }
     //
 //    if(alert){
@@ -1074,6 +1075,8 @@ void MainWindow::addMyToolBar()
     vbox1->setSpacing(0);
 
     group1->setLayout(vbox1);
+    group1->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景.png)");
+
 
     mainToolBar->addWidget(group1);
     //mainToolBar->addWidget(new QLabel("    "));
@@ -1203,6 +1206,7 @@ void MainWindow::addMyToolBar()
     vbox2->setSpacing(0);
 
     group2->setLayout(vbox2);
+     group2->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-2.png)");
     mainToolBar->addWidget(group2);
 
     //站位
@@ -1221,6 +1225,7 @@ void MainWindow::addMyToolBar()
     vbox8->setSpacing(0);
 
     group8->setLayout(vbox8);
+    group8->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-3.png)");
     mainToolBar->addWidget(group8);
 
     //时间组
@@ -1239,6 +1244,7 @@ void MainWindow::addMyToolBar()
             vbox6->setMargin(0);
             vbox6->setSpacing(0);
             group6->setLayout(vbox6);
+             group6->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-4.png)");
             mainToolBar->addWidget(group6);
 
 
@@ -1301,6 +1307,7 @@ void MainWindow::addMyToolBar()
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
     //vbox5->addWidget(new QLabel(" "));
     group3->setLayout(vbox3);
+     group3->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-5.png)");
     mainToolBar->addWidget(group3);
 
     //第四组，告警
@@ -1384,87 +1391,95 @@ void MainWindow::addMyToolBar()
     // 灯
         QPixmap pixmap1("./iconUpdate/报警灯-红.png");
         QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
-      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-        lights[0]=new QLabel(this);
-        lights[1]=new QLabel(this);
-        lights[2]=new QLabel(this);
-        lights[3]=new QLabel(this);
-        lights[4]=new QLabel(this);
+      light = new QToolButton(this);
+      if(isGaojing){
+          light->setIcon(pixmap1);
+      }else
+          light->setIcon(pixmap2);
+      light->setIconSize(QSize(buttonSize,buttonSize));
+//        lights[0]=new QLabel(this);
+//        lights[1]=new QLabel(this);
+//        lights[2]=new QLabel(this);
+//        lights[3]=new QLabel(this);
+//        lights[4]=new QLabel(this);
 
-        num_objs=widget1->objs.size();
+//        num_objs=widget1->objs.size();
 
-            if(!isGaojing)
-            {
-                lights[0]->setPixmap(fitpixmap2);
-                lights[1]->setPixmap(fitpixmap2);
-                lights[2]->setPixmap(fitpixmap2);
-                lights[3]->setPixmap(fitpixmap2);
-                lights[4]->setPixmap(fitpixmap2);
-            }
-            else
-            {
-                if(num_objs==0)
-                {
-                    lights[0]->setPixmap(fitpixmap2);
-                    lights[1]->setPixmap(fitpixmap2);
-                    lights[2]->setPixmap(fitpixmap2);
-                    lights[3]->setPixmap(fitpixmap2);
-                    lights[4]->setPixmap(fitpixmap2);
-                }
-                else if(num_objs==1)
-                {
-                    lights[0]->setPixmap(fitpixmap1);
-                    lights[1]->setPixmap(fitpixmap2);
-                    lights[2]->setPixmap(fitpixmap2);
-                    lights[3]->setPixmap(fitpixmap2);
-                    lights[4]->setPixmap(fitpixmap2);
-                }
-                else if(num_objs==2)
-                {
-                    lights[0]->setPixmap(fitpixmap1);
-                    lights[1]->setPixmap(fitpixmap1);
-                    lights[2]->setPixmap(fitpixmap2);
-                    lights[3]->setPixmap(fitpixmap2);
-                    lights[4]->setPixmap(fitpixmap2);
-                }
-                else if(num_objs==3)
-                {
+//            if(!isGaojing)
+//            {
+//                lights[0]->setPixmap(fitpixmap2);
+//                lights[1]->setPixmap(fitpixmap2);
+//                lights[2]->setPixmap(fitpixmap2);
+//                lights[3]->setPixmap(fitpixmap2);
+//                lights[4]->setPixmap(fitpixmap2);
+//            }
+//            else
+//            {
+//                if(num_objs==0)
+//                {
+//                    lights[0]->setPixmap(fitpixmap2);
+//                    lights[1]->setPixmap(fitpixmap2);
+//                    lights[2]->setPixmap(fitpixmap2);
+//                    lights[3]->setPixmap(fitpixmap2);
+//                    lights[4]->setPixmap(fitpixmap2);
+//                }
+//                else if(num_objs==1)
+//                {
+//                    lights[0]->setPixmap(fitpixmap1);
+//                    lights[1]->setPixmap(fitpixmap2);
+//                    lights[2]->setPixmap(fitpixmap2);
+//                    lights[3]->setPixmap(fitpixmap2);
+//                    lights[4]->setPixmap(fitpixmap2);
+//                }
+//                else if(num_objs==2)
+//                {
+//                    lights[0]->setPixmap(fitpixmap1);
+//                    lights[1]->setPixmap(fitpixmap1);
+//                    lights[2]->setPixmap(fitpixmap2);
+//                    lights[3]->setPixmap(fitpixmap2);
+//                    lights[4]->setPixmap(fitpixmap2);
+//                }
+//                else if(num_objs==3)
+//                {
 
-                    lights[0]->setPixmap(fitpixmap1);
-                    lights[1]->setPixmap(fitpixmap1);
-                    lights[2]->setPixmap(fitpixmap1);
-                    lights[3]->setPixmap(fitpixmap2);
-                    lights[4]->setPixmap(fitpixmap2);
-                }
-                else if(num_objs==4)
-                {
+//                    lights[0]->setPixmap(fitpixmap1);
+//                    lights[1]->setPixmap(fitpixmap1);
+//                    lights[2]->setPixmap(fitpixmap1);
+//                    lights[3]->setPixmap(fitpixmap2);
+//                    lights[4]->setPixmap(fitpixmap2);
+//                }
+//                else if(num_objs==4)
+//                {
 
-                    lights[0]->setPixmap(fitpixmap1);
-                    lights[1]->setPixmap(fitpixmap1);
-                    lights[2]->setPixmap(fitpixmap1);
-                    lights[3]->setPixmap(fitpixmap1);
-                    lights[4]->setPixmap(fitpixmap2);
-                }
-                else if(num_objs>= 5 )
-                {
-                    lights[0]->setPixmap(fitpixmap1);
-                    lights[1]->setPixmap(fitpixmap1);
-                    lights[2]->setPixmap(fitpixmap1);
-                    lights[3]->setPixmap(fitpixmap1);
-                    lights[4]->setPixmap(fitpixmap1);
-                }
-            }
-            vbox4->addWidget(lights[0]);
-            vbox4->addWidget(lights[1]);
-            vbox4->addWidget(lights[2]);
-            vbox4->addWidget(lights[3]);
-            vbox4->addWidget(lights[4]);
+//                    lights[0]->setPixmap(fitpixmap1);
+//                    lights[1]->setPixmap(fitpixmap1);
+//                    lights[2]->setPixmap(fitpixmap1);
+//                    lights[3]->setPixmap(fitpixmap1);
+//                    lights[4]->setPixmap(fitpixmap2);
+//                }
+//                else if(num_objs>= 5 )
+//                {
+//                    lights[0]->setPixmap(fitpixmap1);
+//                    lights[1]->setPixmap(fitpixmap1);
+//                    lights[2]->setPixmap(fitpixmap1);
+//                    lights[3]->setPixmap(fitpixmap1);
+//                    lights[4]->setPixmap(fitpixmap1);
+//                }
+//            }
 
+//            vbox4->addWidget(lights[0]);
+//            vbox4->addWidget(lights[1]);
+//            vbox4->addWidget(lights[2]);
+//            vbox4->addWidget(lights[3]);
+//            vbox4->addWidget(lights[4]);
+            vbox4->addWidget(light);
             vbox4->setMargin(0);
             vbox4->setSpacing(0);
             group4->setLayout(vbox4);
+             group4->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-6.png)");
             mainToolBar->addWidget(group4);
 
 //        group5->setLayout(vbox5);
@@ -3929,6 +3944,15 @@ void MainWindow::manualFunction()
 void MainWindow::openCloseFunction()
 {
     isGaojing = !isGaojing;
+    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+//      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+//      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+
+  if(isGaojing){
+      light->setIcon(pixmap1);
+  }else
+      light->setIcon(pixmap2);
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
 //    QRect screenRect = desktopWidget->screenGeometry();
 //    const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -4037,7 +4061,7 @@ void MainWindow::openCloseFunction()
 ////        light4->setPixmap(fitpixmap2);
 ////        light5->setPixmap(fitpixmap2);
 //   }
-    QMessageBox::information(this,tr("启用/禁用探测功能"),tr("启动或关闭告警。继续努力。"));
+    //QMessageBox::information(this,tr("启用/禁用探测功能"),tr("启动或关闭告警。继续努力。"));
 }
 
 //调整探测灵敏度等级
