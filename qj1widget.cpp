@@ -205,6 +205,7 @@ void Qj1Widget::draw(){
     for(int j=0;j<this->rs.size();j++){
         this->rs[j].draw1Time(mat);
     }
+
     mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
     mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);

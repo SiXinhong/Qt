@@ -1734,36 +1734,56 @@ void MainWindow::selfTimerout(){
     }
     //qDebug()<<"widget1,isTo3"<<this->widget1->isTo3;
     //画矩形
+    Mat tmat = mat.clone();
     if(this->widget1->isTo3){
         //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
-        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
-        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
+//        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
+//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget1->isTo4){
-        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+        rectangle(tmat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
-        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
+//        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
     }
     if(this->widget1->isTo6){
-        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+
+//        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        rectangle(tmat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
-        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
     if(this->widget2->isTo3){
-        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+//        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
-        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget2->isTo4){
-        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
+//        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
+//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+        rectangle(tmat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
-        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
     }
     if(this->widget2->isTo6){
-        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+//        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        rectangle(tmat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
-        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
     //然后劈成2半
 
@@ -1789,6 +1809,10 @@ void MainWindow::selfTimerout(){
     mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
     mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
+    Mat mat3, mat4;
+    tmat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat3);
+    tmat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat4);
+
 
     Mat newpano;
 
@@ -1803,7 +1827,7 @@ void MainWindow::selfTimerout(){
     //               hsl->channels[color].saturation1 = saturation1 - 100;
     //               hsl->adjust(mat1, mat1);
     //           }
-    widget1->setMat(mat1);
+    widget1->setMat(mat3);
     widget1->setPano(newpano);
     widget1->setTwoPano(mat);
     widget1->setObjects(objs);
@@ -1828,7 +1852,7 @@ void MainWindow::selfTimerout(){
     widget2->setPano(newpano);
     widget2->setTwoPano(mat);
     //widget2->setPano(mat);
-    widget2->setMat(mat2);
+    widget2->setMat(mat4);
     widget2->setObjects(objs);
     widget2->setTracks(in.getTracks());
     widget2->draw();
