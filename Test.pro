@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     region.cpp \
     regiongroup.cpp \
     monitor.cpp \
-    detailsofrg.cpp
+    detailsofrg.cpp \
+    alert.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -72,7 +73,8 @@ HEADERS  += mainwindow.h \
     region.h \
     regiongroup.h \
     monitor.h \
-    detailsofrg.h
+    detailsofrg.h \
+    alert.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

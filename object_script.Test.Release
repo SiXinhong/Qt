@@ -27,6 +27,7 @@ INPUT(
 ./release\regiongroup.o
 ./release\monitor.o
 ./release\detailsofrg.o
+./release\alert.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o
@@ -40,4 +41,5 @@ INPUT(
 ./release\moc_nwidget2.o
 ./release\moc_monitor.o
 ./release\moc_detailsofrg.o
+./release\moc_alert.o
 );

@@ -812,8 +812,8 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
     //QLabel *label = new QLabel(this);
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->location){
-    locationX = this->getMatX(position1.x());
-    locationY = this->getMatY(position1.y());
+   locationX = this->getMatX(position1.x());
+   locationY = this->getMatY(position1.y());
         QPixmap pixmap1 = QPixmap::fromImage(mw->imgLabel1);
         QPainter p(&pixmap1);
         QPen pen;
@@ -821,8 +821,8 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
         QFont font("свт╡", 80, QFont::Bold);
         p.setFont(font);
         p.setPen(pen);
-        //p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
-        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
+        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
+       // p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
 
         mw->label->setScaledContents(true);
         mw->label->setPixmap(pixmap1);
@@ -849,7 +849,7 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
     int posX = e->x();
     int posY = e->y();
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-
+     mw->widget5->isClicked = false;
 //    if(isDrag && isMove){
 
 //        if(posX>this->width())
@@ -969,6 +969,7 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
             cv::resize(image3, image33,dsize);
             mw->widget3->setMat(image33);
             mw->widget3->draw();
+
 
             mw->widget3->isClicked =false;
             mw->widget4->isClicked = false;

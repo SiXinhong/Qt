@@ -71,6 +71,7 @@ class MainWindow;
 #include <QQueue>
 #include<QMap>
 #include "monitor.h"
+#include "alert.h"
 
 using namespace cv;
 using namespace std;
@@ -86,11 +87,14 @@ class MainWindow : public QMainWindow
 public slots:
   void onTimerOut();
   virtual void onTimerOut2();
+  void onAlertTimer();
     
 public:
+
   void readRgs();//读取监控组配置
   void writeRgs();//保存监控组配置
   Monitor *monitor;
+  class Alert *alert;
     bool location;
    QQueue<QTime> video;
    QQueue<QTime> videoEnd;//recent
@@ -235,6 +239,7 @@ public:
      QTimer *timerSysTime;
      QTimer *timerFlash;
      QTimer *timerInit;
+     QTimer *showAlert;
      //处理鼠标拖拽事件的变量
      boolean isDrag1;
      boolean isDrag2;
@@ -453,6 +458,8 @@ protected slots:
      void lightFunction();
      void voiceFunction();
      void stabilityFunction();
+     void alertInformation();
+
 
      virtual void exitFunction();
 

@@ -20,6 +20,7 @@ HWidget::HWidget(QWidget *parent) :
     r1 = 30;
     x0 = 150;
     y0 = 150;
+    isClicked = false;
 }
 
 void HWidget::setMat(Mat m){
@@ -94,6 +95,34 @@ double HWidget::getDirectionX(double x, double y){
     //double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
     double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x90/pano.cols);
     return x2;
+
+}
+
+double HWidget::getInverseDirectionX(double x, double y){
+    double x2;
+    //(x-x0)/qSin(2*M_PI*x2/pano.cols)+(y-y0)/qCos(2*M_PI*x2/pano.cols)=0;
+    //(x-x0)*qCos(2*M_PI*x2/pano.cols)+(y-y0)*qSin(2*M_PI*x2/pano.cols)=0;
+    //(x-x0)*qCos(2*M_PI*x2/pano.cols)=(y0-y)*qSin(2*M_PI*x2/pano.cols);
+    //(x-x0)/(y0-y)=qTan(2*M_PI*x2/pano.cols);
+    //qATan((x-x0)/(y0-y))=2*M_PI*x2/pano.cols;
+    x2=pano.cols*qAtan((x-x0)/(y0-y))/(2*M_PI);
+
+    if(x2>pano.cols/4&&x2<pano.cols)
+        x2 = x2-pano.cols/4;
+    else if(x2<pano.cols/4&&x2>0)
+        x2 = x2+3*pano.cols/4;
+    return x2;
+}
+
+double HWidget::getInverseDirectionY(double x, double y){
+    double x2 = this->getInverseDirectionX(x,y);
+    if(x2< 3*pano.cols/4)
+        x2 = x2+pano.cols/4;
+    else
+        x2 = x2-3*pano.cols/4;
+
+    double y2 =(((x-x0)/qSin(2*M_PI*x2/pano.cols)+(r/r0)*r0)*pano.rows)/(r-r1);
+    return y2;
 }
 
 double HWidget::getDirectionY(double x, double y){
@@ -107,6 +136,15 @@ double HWidget::getDirectionY(double x, double y){
 
     double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
     return y2;
+}
+
+Point HWidget::getInverseDirectionPoint(Point p){
+    double x1 = p.x;
+    double y1 = p.y;
+    double x2 = getInverseDirectionX(x1,y1);
+    double y2 = getInverseDirectionY(x1,y1);
+    return Point(x2,y2);
+
 }
 
 Point HWidget::getDirectionPoint(Point p){
@@ -785,5 +823,13 @@ void HWidget::draw(){
     mw->imgLabel5 = mw->MatToQImage(tmat, mw->imgLabel5);
  //   cv::cvtColor(tmat, tmat, CV_BGR2RGB);
     mw->loadPictureToLabel5();
+
+}
+
+void HWidget::mouseReleaseEvent(QMouseEvent *e){
+    int posX = e->x();
+    int posY = e->y();
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    isClicked = true;
 
 }

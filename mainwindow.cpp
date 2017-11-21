@@ -162,6 +162,8 @@ void MainWindow::init(){
     //tempProcessing();
     //---------------------------------------------------------
     //定时器
+    showAlert = new QTimer();
+
     timer=new QTimer();
     timer->setInterval(3000);
     timer->start();
@@ -172,6 +174,7 @@ void MainWindow::init(){
     timerSysTime->setInterval(1000);
     timerSysTime->start();
     connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
+
 
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
@@ -214,6 +217,16 @@ void MainWindow::init(){
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
     this->menuBar()->raise();//menu前两个不能操作，可能是别的东西覆盖了这一块，把menuBar提升到顶层
+    this->menuBar()->activateWindow();
+    this->menubar->raise();
+    this->menubar->activateWindow();
+    this->menubar->show();
+
+//    double x = widget5->getDirectionX(1,2);
+//    qDebug()<<x<<"getDirectionX";
+//     double y = widget5->getDirectionY(1,2);
+//     x= widget5->getInverseDirectionX(x,y);
+//     qDebug()<<x<<"InverseDirectionX";
 
     if(welcome!=0){
         welcome->close();
@@ -259,9 +272,10 @@ void MainWindow::alertProcessing(vector<MyObject> os){
                 break;
             }
         }
-        if(alert)
-            QMessageBox::information(this,tr("告警"),QString("有目标进入监控区域组").append(group).append(" !"));
     }
+//        if(alert)
+//            QMessageBox::information(this,tr("告警"),QString("有目标进入监控区域组").append(group).append(" !"));
+//    }
     //
 //    if(alert){
 //        lightSet="./icon/16_1.png";
@@ -854,13 +868,15 @@ void MainWindow::tempProcessing(){
 //----------------------------------------------------------
 
 void MainWindow::addMyMenuBar(){
+    menubar = new QMenuBar(this);
+
     FileMenu = new QMenu("文件");
     OptionMenu = new QMenu("选项");
     ToolMenu = new QMenu("工具");
     DisplayMenu = new QMenu("显示");
     HelpMenu = new QMenu("帮助");
 
-    menubar = new QMenuBar(this);
+    //FileMenu->raise();
 
     connection = new QAction("连接",this);
     connectionplus = new QAction("连接...",this);
@@ -1400,6 +1416,7 @@ void MainWindow::addMyToolBar()
       }else
           light->setIcon(pixmap2);
       light->setIconSize(QSize(buttonSize,buttonSize));
+      connect(light,SIGNAL(clicked()),this,SLOT(alertInformation()));
 //        lights[0]=new QLabel(this);
 //        lights[1]=new QLabel(this);
 //        lights[2]=new QLabel(this);
@@ -1592,6 +1609,7 @@ void MainWindow::onTimerOut()
 //自定义接口定时器
 void MainWindow::selfTimerout(){
     //index=index+1;
+
     timerFlash->stop();
   //  qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
@@ -2415,6 +2433,7 @@ void MainWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
+
 
     //判断目的点落在主显示区的标志变量
     boolean target3 = false;
@@ -4269,7 +4288,8 @@ void MainWindow::figureClicked(){
     QString filename = QString("./屏幕截图/")+QDateTime::currentDateTime().toString("yyyy年MM月dd日hh时mm分ss秒")+".bmp";
 
     QPixmap pix;
-    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
+//    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
+    pix = QPixmap::grabWindow(QApplication::desktop()->winId());
     if(pix.save(filename,"bmp")){
         QMessageBox::information(this,"屏幕截图","截屏保存成功！",QMessageBox::Ok);
     }
@@ -4384,3 +4404,34 @@ void MainWindow::writeRgs(){
     file.close();
 }
 
+void MainWindow::alertInformation(){
+    if(showAlert->isActive()){
+        showAlert->stop();
+    }
+    showAlert->setSingleShot(true);
+    showAlert->start(5000);
+    connect(showAlert,SIGNAL(timeout()),SLOT(onAlertTimer()));
+
+    if(alert == NULL){
+        alert = new Alert(this,in.getObjs2());
+    }
+
+    this->alert->setWindowFlags(Qt::FramelessWindowHint);
+    this->alert->activateWindow();
+    QDesktopWidget *desktop= QApplication::desktop();
+    QRect screenRect = desktop->screenGeometry();
+    int width = screenRect.width();
+    int height = screenRect.height();
+    this->alert->setGeometry(8*width/10,height/10,width/10,height/10);
+    if(isGaojing){
+        this->alert->show();
+        this->alert->alertInfo();
+    }
+}
+
+void MainWindow::onAlertTimer(){
+    if(alert){
+        delete alert;
+        alert=0;
+    }
+}

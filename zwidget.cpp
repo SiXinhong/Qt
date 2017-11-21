@@ -942,14 +942,19 @@ void ZWidget::mouseMoveEvent(QMouseEvent *e){
 }
 
 void ZWidget::mouseReleaseEvent(QMouseEvent *e){
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(e->button() == Qt::LeftButton){
         this->isClicked = true;
-        MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+
         mw->widget4->isClicked = false;
         mw->widget6->isClicked = false;
     }
     e->ignore();
-    //qDebug()<<"isClicked:"<<isClicked;
+
+    if(mw->widget5->isClicked == true && this->isClicked == true){
+
+
+    }
 }
 
 boolean ZWidget::isObjSelected(MyObject obj){

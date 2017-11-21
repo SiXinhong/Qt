@@ -11,6 +11,7 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QLabel>
+#include <qmath.h>
 
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
@@ -36,6 +37,8 @@ private:
 
     double y0;
 public:
+
+    bool isClicked;
 
     Mat mat;
 
@@ -100,6 +103,16 @@ public:
     void drawArc4(Mat tmat, Rect r);
 
     void drawArc6(Mat tmat, Rect r);
+
+    void mouseReleaseEvent(QMouseEvent *);
+
+    double getInverseDirectionX(double x,double y);
+
+    double getInverseDirectionY(double x,double y);
+
+    Point getInverseDirectionPoint(Point p);
+
+
 signals:
 
 public slots:
