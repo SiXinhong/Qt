@@ -821,8 +821,12 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
         QFont font("свт╡", 80, QFont::Bold);
         p.setFont(font);
         p.setPen(pen);
-        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
-       // p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
+//       if(locationX*this->width()>3*mat.cols/10){
+//         p.drawText(locationX-20,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
+//       }
+//       else
+         p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
+       //p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
 
         mw->label->setScaledContents(true);
         mw->label->setPixmap(pixmap1);

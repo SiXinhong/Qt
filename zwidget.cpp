@@ -109,7 +109,7 @@ void ZWidget::contextMenuEvent(QContextMenuEvent *){
 
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
-     menu->setStyleSheet(QString::fromUtf8("border:opx"));
+     menu->setStyleSheet(QString::fromUtf8("border:0px"));
     menu->addAction(Yuan_Xuanze); //添加菜单项1
     menu->addAction(Wu_Bianxing); //添加菜单项1
     menu->addSeparator();
@@ -1092,4 +1092,8 @@ int ZWidget::convertToOriginWidth(int width){
 int ZWidget::convertToOriginHeight(int height){
     double ratio = ((double)realRect.height)/mat.rows;
     return height*ratio;
+}
+
+void ZWidget::zoomButton(){
+
 }

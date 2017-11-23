@@ -11,7 +11,7 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QLabel>
-#include <qmath.h>
+//#include <qmath.h>
 
 //OpenCVÍ·ÎÄ¼þ
 #include <vector>
@@ -112,6 +112,9 @@ public:
 
     Point getInverseDirectionPoint(Point p);
 
+    double getMatX(double x);
+
+    double getMatY(double y);
 
 signals:
 

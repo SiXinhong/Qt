@@ -128,13 +128,26 @@ void MainWindow::init(){
     QWidget* widget = new QWidget(this);
 
     //widget10 = new QWidget(this);
-    widget1 = new Qj1Widget(new QWidget(this));
-    widget2 = new Qj2Widget(new QWidget(this));
-    widget3 = new ZWidget(new QWidget(this));
-    widget4 = new NWidget1(new QWidget(this));
-    widget5 = new HWidget(new QWidget(this));
-    //widget6 = new LWidget(new QWidget(this));
-    widget6 = new NWidget2(new QWidget(this));
+
+    QWidget *tempW = new QWidget(this);
+    tempW->setGeometry(0,0,1,1);
+
+    //    widget1 = new Qj1Widget(new QWidget(this));
+    //    widget2 = new Qj2Widget(new QWidget(this));
+    //    widget3 = new ZWidget(new QWidget(this));
+    //    widget4 = new NWidget1(new QWidget(this));
+    //    widget5 = new HWidget(new QWidget(this));
+    //    //widget6 = new LWidget(new QWidget(this));
+    //    widget6 = new NWidget2(new QWidget(this));
+
+        widget1 = new Qj1Widget(tempW);
+        widget2 = new Qj2Widget(tempW);
+        widget3 = new ZWidget(tempW);
+        widget4 = new NWidget1(tempW);
+        widget5 = new HWidget(tempW);
+        //widget6 = new LWidget(tempW));
+        widget6 = new NWidget2(tempW);
+
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
     label3=new QLabel(widget3);
@@ -216,11 +229,7 @@ void MainWindow::init(){
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
-    this->menuBar()->raise();//menu前两个不能操作，可能是别的东西覆盖了这一块，把menuBar提升到顶层
-    this->menuBar()->activateWindow();
-    this->menubar->raise();
-    this->menubar->activateWindow();
-    this->menubar->show();
+
 
 //    double x = widget5->getDirectionX(1,2);
 //    qDebug()<<x<<"getDirectionX";
@@ -876,8 +885,6 @@ void MainWindow::addMyMenuBar(){
     DisplayMenu = new QMenu("显示");
     HelpMenu = new QMenu("帮助");
 
-    //FileMenu->raise();
-
     connection = new QAction("连接",this);
     connectionplus = new QAction("连接...",this);
     disconnection = new QAction("断开",this);
@@ -1091,7 +1098,7 @@ void MainWindow::addMyToolBar()
     vbox1->setSpacing(0);
 
     group1->setLayout(vbox1);
-    group1->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景.png)");
+    group1->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景.png)");
 
 
     mainToolBar->addWidget(group1);
@@ -1222,7 +1229,7 @@ void MainWindow::addMyToolBar()
     vbox2->setSpacing(0);
 
     group2->setLayout(vbox2);
-     group2->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-2.png)");
+     group2->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-2.png)");
     mainToolBar->addWidget(group2);
 
     //站位
@@ -1241,7 +1248,7 @@ void MainWindow::addMyToolBar()
     vbox8->setSpacing(0);
 
     group8->setLayout(vbox8);
-    group8->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-3.png)");
+    group8->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-3.png)");
     mainToolBar->addWidget(group8);
 
     //时间组
@@ -1260,7 +1267,7 @@ void MainWindow::addMyToolBar()
             vbox6->setMargin(0);
             vbox6->setSpacing(0);
             group6->setLayout(vbox6);
-             group6->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-4.png)");
+             group6->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-4.png)");
             mainToolBar->addWidget(group6);
 
 
@@ -1323,7 +1330,7 @@ void MainWindow::addMyToolBar()
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
     //vbox5->addWidget(new QLabel(" "));
     group3->setLayout(vbox3);
-     group3->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-5.png)");
+     group3->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-5.png)");
     mainToolBar->addWidget(group3);
 
     //第四组，告警
@@ -1496,7 +1503,7 @@ void MainWindow::addMyToolBar()
             vbox4->setMargin(0);
             vbox4->setSpacing(0);
             group4->setLayout(vbox4);
-             group4->setStyleSheet("border:opx;background-image:url(./iconUpdate/回放栏-背景-6.png)");
+             group4->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-6.png)");
             mainToolBar->addWidget(group4);
 
 //        group5->setLayout(vbox5);
@@ -3438,7 +3445,7 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
             //标尺上写字
             QString text = QString::number(t,10);
             string str = text.toStdString();
-            putText(image,str,Point(i*c-10,50),3,1,Scalar(255,255,255));
+            putText(image,str,Point(i*c-10,50),FONT_HERSHEY_SIMPLEX,10,Scalar(255,255,255),5,8,0);
         }
         else{
             line(image,Point(i*c,0),Point(i*c,15),Scalar(255,255,255),2,8,0);
@@ -3452,7 +3459,8 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
             line(image,Point(0,i*r),Point(20,i*r),Scalar(255,255,255),2,8,0);
             QString text2 = QString::number(t,10);
             string str2 = text2.toStdString();
-            putText(image,str2,Point(50,i*r+10),3,1,Scalar(255,255,255));
+            //putText(image,str2,Point(50,i*r+10),3,1,Scalar(255,255,255));
+            putText(image,str2,Point(50,i*r+10),FONT_HERSHEY_SIMPLEX,10,Scalar(255,255,255),5,8,0);
         }
         else{
             line(image,Point(0,i*r),Point(15,i*r),Scalar(255,255,255),2,8,0);

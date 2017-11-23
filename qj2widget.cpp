@@ -819,6 +819,7 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
     int posX = e->x();
     int posY = e->y();
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    mw->widget5->isClicked = false;
 //    if(isDrag && isMove){
 //        if(posX>this->width())
 //        {
