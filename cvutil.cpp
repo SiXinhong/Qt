@@ -118,7 +118,7 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
         }
         QString text = QString::number(ii,10);
         string str = text.toStdString();
-        putText(image,str,Point(i*c-10,25),3,0.75,Scalar(255,255,255));
+        putText(image,str,Point(i*c-10,50),FONT_HERSHEY_SCRIPT_SIMPLEX,1.7,Scalar(255,255,255),3,8,0);
      }
      else{
          line(image,Point(i*c,0),Point(i*c,8),Scalar(255,255,255),2,8,0);
@@ -134,7 +134,7 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
              int ii = (int)(starth+i*(endh-starth)/10);
             QString text2 = QString::number(ii,10);
             string str2 = text2.toStdString();
-            putText(image,str2,Point(20,i*r+10),3,0.75,Scalar(255,255,255));
+            putText(image,str2,Point(20,i*r+15),FONT_HERSHEY_SCRIPT_SIMPLEX,1.7,Scalar(255,255,255),3,8,0);
         }
         else{
             line(image,Point(0,i*r),Point(8,i*r),Scalar(255,255,255),2,8,0);
