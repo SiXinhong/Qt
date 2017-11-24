@@ -15,7 +15,7 @@ void Alert::alertInfo(){
     layout=new QGridLayout;
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
-
+    int index = 1;
     QString group;
     if(mw->isGaojing){
         boolean alert = false;
@@ -33,7 +33,7 @@ void Alert::alertInfo(){
                         if(mw->rgs[j].rs[k].isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
                             QString region = mw->rgs[j].rs[k].name;
                             QLabel *label = new QLabel(QString("¼à¿ØÇøÓò×é").append(group).append(":").append(region),cenWidget);
-                            layout->addWidget(label,j+k,0);
+                            layout->addWidget(label,index++,0);
                          }
 
                     }

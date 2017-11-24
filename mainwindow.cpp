@@ -4413,6 +4413,7 @@ void MainWindow::writeRgs(){
 }
 
 void MainWindow::alertInformation(){
+    this->onAlertTimer();
     if(showAlert->isActive()){
         showAlert->stop();
     }
@@ -4421,7 +4422,7 @@ void MainWindow::alertInformation(){
     connect(showAlert,SIGNAL(timeout()),SLOT(onAlertTimer()));
 
     if(alert == NULL){
-        alert = new Alert(this,in.getObjs2());
+        alert = new Alert(this,widget1->getObjects());
     }
 
     this->alert->setWindowFlags(Qt::FramelessWindowHint);
@@ -4434,11 +4435,13 @@ void MainWindow::alertInformation(){
     if(isGaojing){
         this->alert->show();
         this->alert->alertInfo();
+
     }
 }
 
 void MainWindow::onAlertTimer(){
     if(alert){
+        alert->close();
         delete alert;
         alert=0;
     }
