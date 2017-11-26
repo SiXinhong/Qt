@@ -938,7 +938,8 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
 //            isMove = false;
 //        }
  //   }
-    if((!mw->isDefiningRegion) && (e->button() == Qt::LeftButton)){
+   if( e->button() == Qt::LeftButton){
+  // if((!mw->isDefiningRegion) && (e->button() == Qt::LeftButton)){
         this->isClicked = true;
         mw->widget2->isClicked = false;
         if(mw->widget3->isClicked){

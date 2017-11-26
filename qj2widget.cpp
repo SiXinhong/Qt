@@ -792,7 +792,9 @@ void Qj2Widget::mousePressEvent(QMouseEvent *e)
         p.setFont(font);
         p.setPen(pen);
         //p.drawRect(QRect(position1.x()-2,position1.y()+2,1000,100));
-        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(locationX)).append("  ").append(QString("y:")).append(QString::number(locationY)));
+
+        p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
+        //p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(locationX)).append("  ").append(QString("y:")).append(QString::number(locationY)));
 
         mw->label2->setScaledContents(true);
         mw->label2->setPixmap(pixmap1);
@@ -899,7 +901,8 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
 //            isMove = false;
 //        }
 //    }
-     if((!mw->isDefiningRegion) && (e->button() == Qt::LeftButton)){
+    if(e->button() == Qt::LeftButton){
+  //   if((!mw->isDefiningRegion) && (e->button() == Qt::LeftButton)){
         this->isClicked = true;
         mw->widget2->isClicked = false;
         if(mw->widget3->isClicked){

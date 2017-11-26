@@ -180,7 +180,6 @@ public slots:
     //Àı–°
     void ZoomOut();
 
-    void zoomButton();
 };
 
 #endif // ZWIDGET_H

@@ -90,7 +90,12 @@ public slots:
   void onAlertTimer();
     
 public:
-
+   QToolButton *zWZoomIn;
+   QToolButton *zWZoomout;
+   QToolButton *n1WZoomIn;
+   QToolButton *n1WZoomout;
+   QToolButton *n2WZoomIn;
+   QToolButton *n2WZoomout;
   void readRgs();//∂¡»°º‡øÿ◊È≈‰÷√
   void writeRgs();//±£¥Êº‡øÿ◊È≈‰÷√
   Monitor *monitor;
@@ -437,6 +442,8 @@ protected:
      QAction* about;
 
 protected slots:
+     void zoomIn();
+     void zoomOut();
      void videoClick();//recent
      void startStopFunction();
      void mstopFunction();

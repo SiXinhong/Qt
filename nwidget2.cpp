@@ -82,7 +82,8 @@ Rect NWidget2::getRect(){
 
 
 void NWidget2::setMat(Mat m){
-    mat = m;
+   mat = m;
+   // cv::resize(m,mat,Size(m.cols*0.4,m.rows));
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 
@@ -374,7 +375,7 @@ void NWidget2::draw(){
             Mat mat1 = this->twopanos;
             Size dsize ;
             double scale = 0.5;
-            dsize = Size(mat1.cols*scale,mat1.rows*scale);
+            dsize = Size(rect.width*2,rect.height*2);
     //        Mat image11 = Mat(dsize,CV_32S);
     //        cv::resize(mat1, image11,dsize);
     //        mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
@@ -388,6 +389,7 @@ void NWidget2::draw(){
                 Mat image44 = Mat(dsize,CV_32S);
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
+              //  setMat(image4);
                 //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
                 CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
             }
@@ -474,9 +476,10 @@ void NWidget2::draw(){
               Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
               mat1(trect).copyTo(image4);//mw->QImageToMat(mw->aa);
               realRect =trect;
-              Mat image44 = Mat(dsize,CV_32S);
-              cv::resize(image4, image44,dsize);
-              setMat(image44);
+//              Mat image44 = Mat(dsize,CV_32S);
+//              cv::resize(image4, image44,dsize);
+//              setMat(image44);
+              setMat(image4);
             //  rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,0,0),5,1,0);
               CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }

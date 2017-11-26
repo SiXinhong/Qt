@@ -526,9 +526,10 @@ void ZWidget::draw(){
         if(isYuan){
             mat1(rect).copyTo(image3);//mw->QImageToMat(mw->aa);
             realRect=rect;
-            Mat image33 = Mat(dsize,CV_32S);
-            cv::resize(image3, image33,dsize);
-            setMat(image33);
+//            Mat image33 = Mat(dsize,CV_32S);
+//            cv::resize(image3, image33,dsize);
+//            setMat(image33);
+            setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
         }
@@ -540,9 +541,10 @@ void ZWidget::draw(){
             trect.width = trect.height * this->width() / this->height();
             mat1(trect).copyTo(image3);
             realRect=trect;
-            Mat image33 = Mat(dsize,CV_32S);
-            cv::resize(image3, image33,dsize);
-            setMat(image33);
+//            Mat image33 = Mat(dsize,CV_32S);
+//            cv::resize(image3, image33,dsize);
+//            setMat(image33);
+            setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
@@ -616,9 +618,10 @@ void ZWidget::draw(){
           Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
           mat1(trect).copyTo(image3);//mw->QImageToMat(mw->aa);
           realRect=trect;
-          Mat image33 = Mat(dsize,CV_32S);
-          cv::resize(image3, image33,dsize);
-          setMat(image33);
+//          Mat image33 = Mat(dsize,CV_32S);
+//          cv::resize(image3, image33,dsize);
+//          setMat(image33);
+          setMat(image3);
          // rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
           CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
     }
@@ -675,25 +678,27 @@ void ZWidget::draw(){
 }
 
 void ZWidget::ZoomIn(){
-//    if(this->rect.x + 1/8 * this->rect.width >= 0){
+    if(this->rect.x + 1/8 * this->rect.width <= pano.cols){
         this->rect.x = this->rect.x + 1/8 * this->rect.width;
         this->rect.width = this->rect.width *3/4;
-//    }
-//    if(this->rect.y + 1/8 * this->rect.height >= 0){
+    }
+    if(this->rect.y + 1/8 * this->rect.height <=pano.rows){
         this->rect.y = this->rect.y + 1/8 * this->rect.height;
         this->rect.height = this->rect.height *3/4;
-//    }
+    }
+
 }
 
 void ZWidget::ZoomOut(){
-    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
+    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *4/3 < pano.cols)){
         this->rect.x = this->rect.x - 1/6 * this->rect.width;
         this->rect.width = this->rect.width *4/3;
     }
-    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *7/6 < pano.rows)){
+    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *4/3 < pano.rows)){
         this->rect.y = this->rect.y - 1/6 * this->rect.height;
         this->rect.height = this->rect.height *4/3;
     }
+    qDebug()<<rect.x<<","<<rect.y<<"width:"<<rect.width<<"heigth"<<rect.height;
     //qDebug()<<"rect:x="<<rect.x<<",y="<<rect.y<<",width="<<rect.width<<",height="<<rect.height;
 }
 
@@ -1094,6 +1099,4 @@ int ZWidget::convertToOriginHeight(int height){
     return height*ratio;
 }
 
-void ZWidget::zoomButton(){
 
-}
