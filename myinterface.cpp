@@ -53,13 +53,13 @@ MyInterface::MyInterface(){
     f3 = "./s/3.bmp";
     f4 = "./s/4.bmp";
     f5 = "./s/5.bmp";
-    f6 = "./s/6.bmp";
-    f7 = "./s/7.bmp";
-    f8 = "./s/8.bmp";
-    f9 = "./s/9.bmp";
-    f10 = "./s/10.bmp";
-    f11 = "./s/11.bmp";
-    f12 = "./s/12.bmp";
+    //f6 = "./s/6.bmp";
+    //f7 = "./s/7.bmp";
+    //f8 = "./s/8.bmp";
+    //f9 = "./s/9.bmp";
+    //f10 = "./s/10.bmp";
+    //f11 = "./s/11.bmp";
+    //f12 = "./s/12.bmp";
 
     vc.push_back(f0);
     vc.push_back(f1);
@@ -67,13 +67,13 @@ MyInterface::MyInterface(){
     vc.push_back(f3);
     vc.push_back(f4);
     vc.push_back(f5);
-    vc.push_back(f6);
-    vc.push_back(f7);
-    vc.push_back(f8);
-    vc.push_back(f9);
-    vc.push_back(f10);
-    vc.push_back(f11);
-    vc.push_back(f12);
+    //vc.push_back(f6);
+    //vc.push_back(f7);
+    //vc.push_back(f8);
+    //vc.push_back(f9);
+    //vc.push_back(f10);
+    //vc.push_back(f11);
+    //vc.push_back(f12);
 
 
     index1=0;//用于取第一栏的图片
@@ -279,7 +279,7 @@ vector<MyObject> MyInterface::getQj2Objs(){
 
 int MyInterface::getIntegratedData2(){
     index1++;
-    QString qj = vc[(index1)%13];
+    QString qj = vc[(index1)%6];
 
     this->panoImage = imread(qj.toStdString());
     //    Mat mat = this->panoImage;
