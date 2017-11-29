@@ -11,7 +11,6 @@ Alert::Alert(MainWindow *mw,vector<MyObject> os) :
 }
 
 void Alert::alertInfo(){
-    qDebug()<<"alert";
     QGridLayout* old=layout;
     layout=new QGridLayout;
     QWidget *oldWidget = cenWidget;
@@ -48,13 +47,13 @@ void Alert::alertInfo(){
                 }
             }
         }
-            if(!alert){
-                QLabel*label = new QLabel(QString("无目标进入监控区域"),cenWidget);
-                layout->addWidget(label,0,0);
+        if(!alert){
+                    QLabel*label = new QLabel(QString("无目标进入监控区域"),cenWidget);
+                    layout->addWidget(label,0,0);
+}
+             }
 
-        }
-        }
-
+}
         if(old!=0){
             delete old;
         }
@@ -70,6 +69,6 @@ void Alert::alertInfo(){
 
         cenWidget->setLayout(layout);
         this->setCentralWidget(cenWidget);
-}
+
 }
 

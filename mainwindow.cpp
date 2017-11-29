@@ -84,7 +84,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 void MainWindow::init(){
 
     configure = 0;
-
+    alert = 0;
     monitor = 0;
 
     this->setWindowTitle("红外全景控制系统");
@@ -1632,7 +1632,7 @@ void MainWindow::adjustment()
 void MainWindow::onTimerOut()
 {
     //std::cout<<"ok1 "<<std::endl;
-    //this->selfTimerout();
+    this->selfTimerout();
     //this->jinTimerout();
 }
 
@@ -4484,22 +4484,21 @@ void MainWindow::alertInformation(){
     if(showAlert->isActive()){
         showAlert->stop();
     }
+
     showAlert->setSingleShot(true);
     showAlert->start(5000);
     connect(showAlert,SIGNAL(timeout()),SLOT(onAlertTimer()));
-    qDebug()<<"alertINFO";
     if(alert == NULL){
         alert = new Alert(this,widget1->getObjects());
     }
-    qDebug()<<"alertINFO2";
+
     this->alert->setWindowFlags(Qt::FramelessWindowHint);
     this->alert->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
     QRect screenRect = desktop->screenGeometry();
     int width = screenRect.width();
     int height = screenRect.height();
-    this->alert->setGeometry(8*width/10,height/10,width/10,height/10);
-    qDebug()<<"alertINFO3";
+    this->alert->setGeometry(7*width/10,height/10,width/10,height/10);
     if(isGaojing){
         this->alert->show();
         this->alert->alertInfo();
@@ -4509,7 +4508,6 @@ void MainWindow::alertInformation(){
 
 void MainWindow::onAlertTimer(){
     if(alert){
-        alert->close();
         delete alert;
         alert=0;
     }
