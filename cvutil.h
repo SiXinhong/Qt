@@ -1,9 +1,9 @@
-#ifndef CVUTIL_H
+﻿#ifndef CVUTIL_H
 #define CVUTIL_H
 
 #include <QImage>
 
-//OpenCVͷ�ļ�
+//OpenCV头文件
 #include <vector>
 #include <highgui.h>
 #include <cv.h>

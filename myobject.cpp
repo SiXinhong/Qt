@@ -1,4 +1,4 @@
-#include "myobject.h"
+ï»¿#include "myobject.h"
 #include "cvutil.h";
 #include <QBuffer>
 #include"myinterface.h"
@@ -7,24 +7,24 @@ MyObject::MyObject(){
     this->color = CVUtil::getRandomColor();
 
     oid = -1;
-    cenPoint = cv::Point(-1, -1);         // Ä¿±êÖĞĞÄ×ø±ê
-    blocksize = cv::Size(0, 0);            // ¼ì²â¿ò´óĞ¡
-    Velocity = 0;                    // ÔË¶¯ËÙÂÊ
-    MotionDerection = 0;             // ÔË¶¯·½Ïò
-    area = 0;                           // Ä¿±êÃæ»ı
-    horizontalAxisLength = 0;           // Ë®Æ½Öá³¤¶È
-    verticalAxisLength = 0;             // ÊúÖ±Öá³¤¶È
-    absoluteIntensity = 0;           // ¾ø¶ÔÇ¿¶È
-    relativeIntensity = 0;           // Ïà¶ÔÇ¿¶È
+    cenPoint = cv::Point(-1, -1);         // ç›®æ ‡ä¸­å¿ƒåæ ‡
+    blocksize = cv::Size(0, 0);            // æ£€æµ‹æ¡†å¤§å°
+    Velocity = 0;                    // è¿åŠ¨é€Ÿç‡
+    MotionDerection = 0;             // è¿åŠ¨æ–¹å‘
+    area = 0;                           // ç›®æ ‡é¢ç§¯
+    horizontalAxisLength = 0;           // æ°´å¹³è½´é•¿åº¦
+    verticalAxisLength = 0;             // ç«–ç›´è½´é•¿åº¦
+    absoluteIntensity = 0;           // ç»å¯¹å¼ºåº¦
+    relativeIntensity = 0;           // ç›¸å¯¹å¼ºåº¦
 
-    vector<cv::Point> contours;                 // Ä¿±êÂÖÀª
-    cv::Mat Snapshoot;                          // Ä¿±ê¿ìÕÕ
-    cv::Mat sihouette;                          // Ä¿±ê¼ôÓ°
+    vector<cv::Point> contours;                 // ç›®æ ‡è½®å»“
+    cv::Mat Snapshoot;                          // ç›®æ ‡å¿«ç…§
+    cv::Mat sihouette;                          // ç›®æ ‡å‰ªå½±
 
-    targetScale = 0;                 // Ä¿±ê³ß¶È
-    CenSueEintensity = 0;            // ÖĞÑëÖÜÎ§¶Ô±È¶ÈµÄÏìÓ¦Ç¿¶È
-    SCRValue = 0;                    // Ä¿±ê±³¾°ĞÅÔÓ±È
-    vector<double> theFeatures;             // 13Î¬µÄĞ¡Ä¿±êÌØÕ÷ÏòÁ¿
+    targetScale = 0;                 // ç›®æ ‡å°ºåº¦
+    CenSueEintensity = 0;            // ä¸­å¤®å‘¨å›´å¯¹æ¯”åº¦çš„å“åº”å¼ºåº¦
+    SCRValue = 0;                    // ç›®æ ‡èƒŒæ™¯ä¿¡æ‚æ¯”
+    vector<double> theFeatures;             // 13ç»´çš„å°ç›®æ ‡ç‰¹å¾å‘é‡
 
 }
 
@@ -211,13 +211,13 @@ QDataStream& MyObject::readMat(QDataStream &in,Mat &m){
     return in;
 }
 QDataStream& operator>>(QDataStream &in,MyObject& data){
-    //²»¶ÁIDÁË£¬ÈÃbackwindow¶ÁÈ¡id£¬ÅĞ¶ÏÊÇ·ñ´æÔÚobj£¬Èç¹û²»´æÔÚ¾Í´´½¨²¢ÉèÖÃid
+    //ä¸è¯»IDäº†ï¼Œè®©backwindowè¯»å–idï¼Œåˆ¤æ–­æ˜¯å¦å­˜åœ¨objï¼Œå¦‚æœä¸å­˜åœ¨å°±åˆ›å»ºå¹¶è®¾ç½®id
     in>>data.box.x>>data.box.y>>data.box.height>>data.box.width;
 
 //    int c1,c2,c3;
 //    in>>c1>>c2>>c3;
 //    data.SetColor(Scalar(c1,c2,c3));
-//    color³õÊ¼»¯µÄ´úÂëÊÇËæ»úÉú³ÉµÄÑÕÉ«,Ò²¾ÍÊÇÃ¿´Î¿´µ½µÄÎïÌåµÄÑÕÉ«ÊÇ²»Í¬µÄ,Ó¦¸ÃÎŞĞèĞòÁĞ»¯,Èç¹ûĞèÒª,ÉÏÃæÈıĞĞ¿ÉÄÜÄÜÓÃ
+//    coloråˆå§‹åŒ–çš„ä»£ç æ˜¯éšæœºç”Ÿæˆçš„é¢œè‰²,ä¹Ÿå°±æ˜¯æ¯æ¬¡çœ‹åˆ°çš„ç‰©ä½“çš„é¢œè‰²æ˜¯ä¸åŒçš„,åº”è¯¥æ— éœ€åºåˆ—åŒ–,å¦‚æœéœ€è¦,ä¸Šé¢ä¸‰è¡Œå¯èƒ½èƒ½ç”¨
 
     in>>data.cenPoint.x>>data.cenPoint.y;
     in>>data.blocksize.width>>data.blocksize.height;
@@ -269,13 +269,13 @@ QDataStream& operator>>(QDataStream &in,MyObject& data){
 }
 
 QDataStream& operator<<(QDataStream &out,MyObject& data ){
-    out<<data.oid;//Ìáµ½×îÉÏ±ß£¬ÏÈĞòÁĞºÅid£¬ÒÔ±ã´ÓÎÄ¼şÏÈ¶ÁÈ¡idÅĞ¶ÏÊÇ·ñÊÇ´æÔÚµÄobj
+    out<<data.oid;//æåˆ°æœ€ä¸Šè¾¹ï¼Œå…ˆåºåˆ—å·idï¼Œä»¥ä¾¿ä»æ–‡ä»¶å…ˆè¯»å–idåˆ¤æ–­æ˜¯å¦æ˜¯å­˜åœ¨çš„obj
     out<<data.box.x<<data.box.y<<data.box.height<<data.box.width;//box
 
 //    out<<data.color.val[0];
 //    out<<data.color.val[1];
 //    out<<data.color.val[2];
-//    color³õÊ¼»¯µÄ´úÂëÊÇËæ»úÉú³ÉµÄÑÕÉ«,Ò²¾ÍÊÇÃ¿´Î¿´µ½µÄÎïÌåµÄÑÕÉ«ÊÇ²»Í¬µÄ,Ó¦¸ÃÎŞĞèĞòÁĞ»¯,Èç¹ûĞèÒª,ÉÏÃæÈıĞĞ¿ÉÄÜÄÜÓÃ
+//    coloråˆå§‹åŒ–çš„ä»£ç æ˜¯éšæœºç”Ÿæˆçš„é¢œè‰²,ä¹Ÿå°±æ˜¯æ¯æ¬¡çœ‹åˆ°çš„ç‰©ä½“çš„é¢œè‰²æ˜¯ä¸åŒçš„,åº”è¯¥æ— éœ€åºåˆ—åŒ–,å¦‚æœéœ€è¦,ä¸Šé¢ä¸‰è¡Œå¯èƒ½èƒ½ç”¨
 
     out<<data.cenPoint.x<<data.cenPoint.y;
     out<<data.blocksize.width<<data.blocksize.height;

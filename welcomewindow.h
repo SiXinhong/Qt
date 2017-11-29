@@ -1,4 +1,4 @@
-#ifndef WELCOMEWINDOW_H
+﻿#ifndef WELCOMEWINDOW_H
 #define WELCOMEWINDOW_H
 
 #include <QWidget>

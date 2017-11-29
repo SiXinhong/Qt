@@ -1,4 +1,4 @@
-#ifndef BACKWINDOW_H
+﻿#ifndef BACKWINDOW_H
 #define BACKWINDOW_H
 #include "mainwindow.h"
 #include <QTime>

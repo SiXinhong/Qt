@@ -1,4 +1,4 @@
-#ifndef MYLABEL_H
+﻿#ifndef MYLABEL_H
 #define MYLABEL_H
 
 #include <QLabel>

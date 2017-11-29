@@ -1,4 +1,4 @@
-#include "rectan.h"
+﻿#include "rectan.h"
 
 Rectan::Rectan(){
 

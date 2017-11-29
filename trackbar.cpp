@@ -1,4 +1,4 @@
-#include "trackbar.h"
+ï»¿#include "trackbar.h"
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
@@ -7,20 +7,20 @@ TrackBar::TrackBar(MainWindow* mainWindow):QWidget()
     this->mainWindow=mainWindow;
     this->setMinimumSize(319,40);
     this->setMaximumSize(319,40);
-    this->position=0;//ÊúÏßµÄÎ»ÖÃ£¬±êÊ¶ÁÁ¶ÈµÄÊýÖµ
-    this->mousedown=false;//ÎªÁËÊµÏÖÍÏ¶¯Ð§¹û£¬ÏÈÅÐ¶ÏÊÇ·ñµãÏÂÁËÊó±ê£¬È»ºóÊó±êÒÆ¶¯²ÅÓÐÐ§
+    this->position=0;//ç«–çº¿çš„ä½ç½®ï¼Œæ ‡è¯†äº®åº¦çš„æ•°å€¼
+    this->mousedown=false;//ä¸ºäº†å®žçŽ°æ‹–åŠ¨æ•ˆæžœï¼Œå…ˆåˆ¤æ–­æ˜¯å¦ç‚¹ä¸‹äº†é¼ æ ‡ï¼Œç„¶åŽé¼ æ ‡ç§»åŠ¨æ‰æœ‰æ•ˆ
 }
 
 void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
-    this->mousedown=false;//Êó±ê·ÅÏÂºó£¬Êó±êÒÆ¶¯²»ÔÙ¾ßÓÐÍÏ¶¯Ð§¹û
+    this->mousedown=false;//é¼ æ ‡æ”¾ä¸‹åŽï¼Œé¼ æ ‡ç§»åŠ¨ä¸å†å…·æœ‰æ‹–åŠ¨æ•ˆæžœ
     int pos=event->x();
     if(pos<5)
         position=0;
     else if(pos>260)
         position=255;
     else
-        position=pos-5;//¼õ5ÊÇÒòÎªÏÔÊ¾µÄÊ±ºòÎªÁËºÃ¿´×ó±ß´Ó5µÄÎ»ÖÃ¿ªÊ¼ÏÔÊ¾£¬µ±×÷ÁÁ¶È0
-    update();//´¥·¢ÖØ»æ²Ù×÷£¬Éú³ÉpaintEventÊÂ¼þ
+        position=pos-5;//å‡5æ˜¯å› ä¸ºæ˜¾ç¤ºçš„æ—¶å€™ä¸ºäº†å¥½çœ‹å·¦è¾¹ä»Ž5çš„ä½ç½®å¼€å§‹æ˜¾ç¤ºï¼Œå½“ä½œäº®åº¦0
+    update();//è§¦å‘é‡ç»˜æ“ä½œï¼Œç”ŸæˆpaintEventäº‹ä»¶
     mainWindow->bright_TrackbarValue=position;
     mainWindow->adjustment();
 }
@@ -29,20 +29,20 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
 void TrackBar::paintEvent(QPaintEvent *){
     QPainter p(this);
     p.setPen(Qt::lightGray);
-    p.drawLine(QPoint(5,20),QPoint(260,20));//ÖÐ¼äµÄºáÏß
+    p.drawLine(QPoint(5,20),QPoint(260,20));//ä¸­é—´çš„æ¨ªçº¿
     p.setPen(QPen(Qt::lightGray, 5));
-    p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//ÊúÏß£¬±êÊ¶ÁÁ¶ÈÊýÖµµÄÎ»ÖÃ
-    p.drawText(265,25,QString("ÁÁ¶È")+QString::number(position));
+    p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//ç«–çº¿ï¼Œæ ‡è¯†äº®åº¦æ•°å€¼çš„ä½ç½®
+    p.drawText(265,25,QString("äº®åº¦")+QString::number(position));
 }
 
 void TrackBar:: mousePressEvent(QMouseEvent *){
-    this->mousedown=true;//Êó±ê°´ÏÂ£¬Ö®ºóÊó±êÒÆ¶¯²Ù×÷²úÉúÍÏ¶¯Ð§¹û
+    this->mousedown=true;//é¼ æ ‡æŒ‰ä¸‹ï¼Œä¹‹åŽé¼ æ ‡ç§»åŠ¨æ“ä½œäº§ç”Ÿæ‹–åŠ¨æ•ˆæžœ
 }
 
-void TrackBar::mouseMoveEvent(QMouseEvent *event){//Êó±êÒÆ¶¯ÊÂ¼þ£¬ÊÇ·ñÊÇÍÏ¶¯ÐèÒªÅÐ¶ÏÊÇ·ñÊó±ê°´ÏÂÁË
+void TrackBar::mouseMoveEvent(QMouseEvent *event){//é¼ æ ‡ç§»åŠ¨äº‹ä»¶ï¼Œæ˜¯å¦æ˜¯æ‹–åŠ¨éœ€è¦åˆ¤æ–­æ˜¯å¦é¼ æ ‡æŒ‰ä¸‹äº†
     if(mousedown==false)
         return;
-    //ÏÂÃæµÄ¸úÊó±êÊÍ·Å²Ù×÷ÊÇÒ»ÑùµÄ
+    //ä¸‹é¢çš„è·Ÿé¼ æ ‡é‡Šæ”¾æ“ä½œæ˜¯ä¸€æ ·çš„
     int pos=event->x();
     if(pos<5)
         position=0;

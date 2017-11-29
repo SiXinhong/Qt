@@ -1,4 +1,4 @@
-
+ï»¿
 #include "nwidget2.h"
 #include "mainwindow.h"
 #include "myobject.h"
@@ -19,19 +19,19 @@ NWidget2::NWidget2(QWidget *parent) :
     isFirstDoubleClick = false;
     isClicked = false;
 
-    Yuan_Xuanze = new QAction(tr("Ô­Ñ¡Ôñ"),this);
-    Wu_Bianxing = new QAction(tr("ÎŞ±äĞÎ"), this);
-    Define_Rect = new QAction(tr("¶¨Òå¾ØĞÎ¼à¿ØÇøÓò"), this);
-    Define_Poly = new QAction(tr("¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò"), this);
+    Yuan_Xuanze = new QAction(tr("åŸé€‰æ‹©"),this);
+    Wu_Bianxing = new QAction(tr("æ— å˜å½¢"), this);
+    Define_Rect = new QAction(tr("å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ"), this);
+    Define_Poly = new QAction(tr("å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ"), this);
 
-    Zoom_In = new QAction(tr("·Å´ó"), this);
-    Zoom_Out = new QAction(tr("ËõĞ¡"),this);
+    Zoom_In = new QAction(tr("æ”¾å¤§"), this);
+    Zoom_Out = new QAction(tr("ç¼©å°"),this);
 
-    Cancel_RDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò¶¨Òå"), this);
-    Cancel_RGDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò×é¶¨Òå"), this);
-    Complete_RDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò¶¨Òå"), this);
-    Complete_RGDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò×é¶¨Òå"), this);
-    //To_Tanchu = new QAction(tr("µ½µ¯³ö´°¿Ú"),this);
+    Cancel_RDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+    Cancel_RGDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
+    Complete_RDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+    Complete_RGDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
+    //To_Tanchu = new QAction(tr("åˆ°å¼¹å‡ºçª—å£"),this);
     connect(Yuan_Xuanze, SIGNAL(triggered()), this, SLOT(Yuanxuanze()));
     connect(Wu_Bianxing, SIGNAL(triggered()), this, SLOT(Wubianxing()));
     connect(Define_Rect, SIGNAL(triggered()), this, SLOT(DefineRect()));
@@ -122,8 +122,8 @@ void NWidget2::contextMenuEvent(QContextMenuEvent *){
     QMenu *menu=new QMenu(this);
 
       menu->setStyleSheet(QString::fromUtf8("border:0px"));
-    menu->addAction(Yuan_Xuanze); //Ìí¼Ó²Ëµ¥Ïî1
-    menu->addAction(Wu_Bianxing); //Ìí¼Ó²Ëµ¥Ïî1
+    menu->addAction(Yuan_Xuanze); //æ·»åŠ èœå•é¡¹1
+    menu->addAction(Wu_Bianxing); //æ·»åŠ èœå•é¡¹1
     menu->addSeparator();
     menu->addAction(Define_Rect);
     menu->addAction(Define_Poly);
@@ -135,10 +135,10 @@ void NWidget2::contextMenuEvent(QContextMenuEvent *){
     menu->addSeparator();
     menu->addAction(Zoom_In);
     menu->addAction(Zoom_Out);
-    menu->exec(cur.pos()); //¹ØÁªµ½¹â±ê
+    menu->exec(cur.pos()); //å…³è”åˆ°å…‰æ ‡
 }
 
-//ÊµÏÖÄ¿±êµÄ¸ú×Ù£¬ÒòÎª²»Í¬µÄÄ¿±êµÄÔË¶¯ËÙ¶È²»Í¬£¬ËùÒÔÔ­ÏÈÉè¶¨µÄÑ¡Ôñ¿òĞèÒª¶¯Ì¬µ÷Õû
+//å®ç°ç›®æ ‡çš„è·Ÿè¸ªï¼Œå› ä¸ºä¸åŒçš„ç›®æ ‡çš„è¿åŠ¨é€Ÿåº¦ä¸åŒï¼Œæ‰€ä»¥åŸå…ˆè®¾å®šçš„é€‰æ‹©æ¡†éœ€è¦åŠ¨æ€è°ƒæ•´
 Rect NWidget2::getRectFromObjs(Rect r){
     Rect rr;
     rr.x = r.x;
@@ -166,8 +166,8 @@ Rect NWidget2::getRectFromObjs(Rect r){
 //    }
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-    //ÏÈÕÒ×îĞ¡µã
+    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+    //å…ˆæ‰¾æœ€å°ç‚¹
     double xtemp1;
     double ytemp1;
 //    if(this->getFrom() == 1){
@@ -178,14 +178,14 @@ Rect NWidget2::getRectFromObjs(Rect r){
 //        xtemp1 = mw->widget2->getPano().cols;
 //        ytemp1 = mw->widget2->getPano().rows;
 //    }
-//    //³õÊ¼µÄÊ±ºò²»×ö´¦Àí
+//    //åˆå§‹çš„æ—¶å€™ä¸åšå¤„ç†
 //    else{
 
 //        return rr;
 //    }
     xtemp1 = pano.cols;
     ytemp1 = pano.rows;
-    //ÔÙÕÒ×î´óµã
+    //å†æ‰¾æœ€å¤§ç‚¹
     double xtemp2 = 0;
     double ytemp2 = 0;
 
@@ -214,7 +214,7 @@ Rect NWidget2::getRectFromObjs(Rect r){
     if((count > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
         xtemp1 = pano.cols;
         //ytemp1 = pano.rows;
-        //ÔÙÕÒ×î´óµã
+        //å†æ‰¾æœ€å¤§ç‚¹
         xtemp2 = 0;
         //double ytemp2 = 0;
         for(int i = 0; i < count; i++){
@@ -314,9 +314,9 @@ Rect NWidget2::getRectFromObjs(Rect r){
     if(mw->isMubiao){
         rr.width += 100;
     }
-    //Ê¹µÃ²»±äĞÎ
+    //ä½¿å¾—ä¸å˜å½¢
     //rr.width = rr.height * this->width() / this->height();
-    //Ê¹µÃÄ¿±êÎ»ÓÚÖĞ¼ä
+    //ä½¿å¾—ç›®æ ‡ä½äºä¸­é—´
     rr.x = (xtemp1+xtemp2-rr.width)/2;
     rr.y = (ytemp1+ytemp2-rr.height)/2;
     if(rr.x<0){
@@ -351,9 +351,9 @@ vector<MyObject> NWidget2::getAllObjects(){
 void NWidget2::draw(){
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
         //qDebug()<<this->getFrom();
-        //¸ù¾İ¾ØĞÎ¿òµÄ±ä»¯£¬ÖØĞÂ´ÓÈ«¾°ÏÔÊ¾Çø1»òÕßÈ«¾°ÏÔÊ¾Çø2¿½±´»ñµÃmat¡£
+        //æ ¹æ®çŸ©å½¢æ¡†çš„å˜åŒ–ï¼Œé‡æ–°ä»å…¨æ™¯æ˜¾ç¤ºåŒº1æˆ–è€…å…¨æ™¯æ˜¾ç¤ºåŒº2æ‹·è´è·å¾—matã€‚
         if(this->getFrom() == 1 || this->getFrom() == 2){
-            /*****************************²»ÔÙ¸ú×Ù****************************************************
+            /*****************************ä¸å†è·Ÿè¸ª****************************************************
             Rect r1;
             r1.x = this->rect.x;
             r1.y = this->rect.y;
@@ -371,7 +371,7 @@ void NWidget2::draw(){
             rect.y = r2.y;
             rect.width = r2.width;
             rect.height = r2.height;
-            *********************************²»ÔÙ¸ú×Ù½áÊø*********************************************/
+            *********************************ä¸å†è·Ÿè¸ªç»“æŸ*********************************************/
             Mat mat1 = this->twopanos;
             Size dsize ;
             double scale = 0.5;
@@ -447,7 +447,7 @@ void NWidget2::draw(){
     //        cv::resize(image3, image33,dsize);
     //        setMat(image33);
     //    }
-        else{//³õÊ¼µÄÊ±ºò£¬ÇĞÈ«¾°ÏÔÊ¾Çø1ÖĞµÄÒ»¶Î¹Ì¶¨ÇøÓò
+        else{//åˆå§‹çš„æ—¶å€™ï¼Œåˆ‡å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„ä¸€æ®µå›ºå®šåŒºåŸŸ
     //        Rect r1;
     //        r1.x = mw->widget1->rectan.x;
     //        r1.y = mw->widget1->rectan.y;
@@ -536,7 +536,7 @@ void NWidget2::ZoomOut(){
     }
 }
 
-//¶¨Òå¾ØĞÎ¼à¿ØÇøÓò
+//å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ
 void NWidget2::DefineRect(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion =true;
@@ -555,7 +555,7 @@ void NWidget2::DefineRect(){
     }
 }
 
-//¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò
+//å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ
 void NWidget2::DefinePoly(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion = true;
@@ -573,7 +573,7 @@ void NWidget2::DefinePoly(){
     }
 }
 
-//È¡Ïû¼à¿ØÇøÓò¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰
 void NWidget2::CancelRDefining(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     this->rectRegion.x = 0;
@@ -585,7 +585,7 @@ void NWidget2::CancelRDefining(){
     mw->isDefiningRegion =false;
 }
 
-//È¡Ïû¼à¿ØÇøÓò×é¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void NWidget2::CancelRGDefining(){
     this->rectRegion.x = 0;
     this->rectRegion.y = 0;
@@ -599,18 +599,18 @@ void NWidget2::CancelRGDefining(){
     this->isFirstDoubleClick = false;
 }
 
-//Íê³É¼à¿ØÇøÓò¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰
 void NWidget2::CompleteRDefining(){
     // this->completeRDefine = true;
      MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
      if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
-         QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¾ØĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ĞèÒª¶¨ÒåÁ½¸ö¶¥µã¡£"));
+         QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("çŸ©å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œéœ€è¦å®šä¹‰ä¸¤ä¸ªé¡¶ç‚¹ã€‚"));
      }
      else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
          QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
          Region r = Region(name, mw->rgs[mw->rgsIndex].color, convertToOriginX(rectRegion.x), convertToOriginY(rectRegion.y), convertToOriginWidth(rectRegion.width), convertToOriginHeight(rectRegion.height));
          mw->rs.push_back(r);
-         //ÎªÁËÔÚµãÍê³É¼à¿ØÇøÓòºó£¬timeroutË¢ĞÂ»­ÃæÊ±£¬»¹ÄÜÏÔÊ¾¸Õ¸Õ»­µÄÇøÓò£¬ÏÈ±£´æÔÚÁÙÊ±rsÖĞ£¬ÒòÎªÉĞÎ´Íê³É×é£¬ËùÒÔ²»ÄÜÔÚÖ÷matÖĞ»­
+         //ä¸ºäº†åœ¨ç‚¹å®Œæˆç›‘æ§åŒºåŸŸåï¼Œtimeroutåˆ·æ–°ç”»é¢æ—¶ï¼Œè¿˜èƒ½æ˜¾ç¤ºåˆšåˆšç”»çš„åŒºåŸŸï¼Œå…ˆä¿å­˜åœ¨ä¸´æ—¶rsä¸­ï¼Œå› ä¸ºå°šæœªå®Œæˆç»„ï¼Œæ‰€ä»¥ä¸èƒ½åœ¨ä¸»matä¸­ç”»
          this->rs.push_back(Region(name,mw->rgs[mw->rgsIndex].color,rectRegion));
          this->rectRegion.x = 0;
          this->rectRegion.y = 0;
@@ -621,7 +621,7 @@ void NWidget2::CompleteRDefining(){
          qDebug()<<"region.x:"<<r.rect.x<<"region.y:"<<r.rect.y<<"w:"<<r.rect.width<<"h"<<r.rect.height;
      }
      else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)&&isFirstDoubleClick){
-         QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¶à±ßĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ÖÁÉÙĞèÒª¶¨ÒåÈı¸ö¶¥µã"));
+         QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œè‡³å°‘éœ€è¦å®šä¹‰ä¸‰ä¸ªé¡¶ç‚¹"));
          this->isFirstDoubleClick = false;
      }
      else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
@@ -643,7 +643,7 @@ void NWidget2::CompleteRDefining(){
 
 }
 
-//Íê³É¼à¿ØÇøÓò×é¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void NWidget2::CompleteRGDefining(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->isDefiningRegion == false)
@@ -658,8 +658,8 @@ void NWidget2::CompleteRGDefining(){
 
    mw->rs.clear();
    this->rs.clear();
-   //Á½ÖÖÇé¿ö£º×ÔÈ»µÄ±à¼­£¬Íê³ÉÒ»¸öÌí¼ÓÒ»¸ö×é£¬index×ÜÊÇ×îºóÒ»¸ö×é
-   //µÚ¶şÖÖÇé¿öÊÇ´ÓÅäÖÃ½çÃæÑ¡ÔñÒ»¸ö×é½øĞĞ±à¼­£¬ÄÇÃ´indexÖ¸ÏòÕâ¸ö×é£¬²¢ÇÒrgs×îºóÒ»¸ö»¹Î´Íê³É±à¼­
+   //ä¸¤ç§æƒ…å†µï¼šè‡ªç„¶çš„ç¼–è¾‘ï¼Œå®Œæˆä¸€ä¸ªæ·»åŠ ä¸€ä¸ªç»„ï¼Œindexæ€»æ˜¯æœ€åä¸€ä¸ªç»„
+   //ç¬¬äºŒç§æƒ…å†µæ˜¯ä»é…ç½®ç•Œé¢é€‰æ‹©ä¸€ä¸ªç»„è¿›è¡Œç¼–è¾‘ï¼Œé‚£ä¹ˆindexæŒ‡å‘è¿™ä¸ªç»„ï¼Œå¹¶ä¸”rgsæœ€åä¸€ä¸ªè¿˜æœªå®Œæˆç¼–è¾‘
    if(mw->rgsIndex + 1 == mw->rgs.size()){
        mw->rgsIndex++;
        char name  = 'a' + mw->rgsIndex;
@@ -797,7 +797,7 @@ void NWidget2::mouseDoubleClickEvent(QMouseEvent *e){
 boolean NWidget2::isObjSelected(MyObject obj){
     boolean isSelected = false;
         if(this->rect.contains(obj.getCenPoint())){
-            //µ÷ÕûÑ¡Ôñ¿òÒÔÊ¹µÃÄ¿±êµÄboxÔÚÑ¡Ôñ¿òÖ®ÄÚ
+            //è°ƒæ•´é€‰æ‹©æ¡†ä»¥ä½¿å¾—ç›®æ ‡çš„boxåœ¨é€‰æ‹©æ¡†ä¹‹å†…
             if(obj.getRect().x<this->rect.x){
                 this->rect.x = obj.getRect().x - 5;
                 this->rect.width += this->rect.x - obj.getRect().x + 5;
@@ -821,7 +821,7 @@ boolean NWidget2::isObjSelected(MyObject obj){
     return isSelected;
 }
 
-//Ñ¡ÔñµÄÄ¿±ê²»ÄÜÉÓÉÏ£¬Ö»ÄÜ¼õÉÙ
+//é€‰æ‹©çš„ç›®æ ‡ä¸èƒ½æä¸Šï¼Œåªèƒ½å‡å°‘
 vector<MyObject> NWidget2::getSelectedObjects(){
     vector<MyObject> os;
     int count = this->allobjs.size();
@@ -836,7 +836,7 @@ vector<MyObject> NWidget2::getSelectedObjects(){
     for(int i = 0; i < count; i++){
         MyObject obj = allobjs[i];
 
-        //ÒÑ¾­³öÏÖ¹ıµÄ£¬Ò²¸úÉÏ
+        //å·²ç»å‡ºç°è¿‡çš„ï¼Œä¹Ÿè·Ÿä¸Š
 
         vector<MyObject> aos = this->objs;
         for(int j = 0; j < aos.size(); j++){
@@ -886,44 +886,44 @@ double NWidget2::getDirectionY2(){
     return yy*y/pano.rows;
 
 }
-//ÓÉWidget×ø±êµÄX»ñµÃÍ¼ÏñÖĞµÄX
+//ç”±Widgetåæ ‡çš„Xè·å¾—å›¾åƒä¸­çš„X
 double NWidget2::getMatX(double x){
     return x*mat.cols/this->width();
 }
 
-//ÓÉWidget×ø±êµÄY»ñµÃÍ¼ÏñÖĞµÄY
+//ç”±Widgetåæ ‡çš„Yè·å¾—å›¾åƒä¸­çš„Y
 double NWidget2::getMatY(double y){
     return y*mat.rows/this->height();
 }
 
-//ÓÉÍ¼ÏñÖĞµÄX»ñµÃWidgetÖĞµÄX
+//ç”±å›¾åƒä¸­çš„Xè·å¾—Widgetä¸­çš„X
 double NWidget2::getWidgetX(double x){
     return x*this->width()/mat.cols;
 }
 
-//ÓÉÍ¼ÏñÖĞµÄY»ñµÃWidgetÖĞµÄY
+//ç”±å›¾åƒä¸­çš„Yè·å¾—Widgetä¸­çš„Y
 double NWidget2::getWidgetY(double y){
     return y*this->height()/mat.rows;
 }
 
-//°Ñ¼à¿ØÇøµÄ×ø±ê×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ×ø±ê
+//æŠŠç›‘æ§åŒºçš„åæ ‡è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„åæ ‡
 int NWidget2::convertToOriginX(int x){
     double ratio = ((double)realRect.width)/mat.cols;
     return x*ratio + realRect.x;
 }
 
-//°Ñ¼à¿ØÇøµÄ×ø±ê×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ×ø±ê
+//æŠŠç›‘æ§åŒºçš„åæ ‡è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„åæ ‡
 int NWidget2::convertToOriginY(int y){
     double ratio = ((double)realRect.height)/mat.rows;
     return y*ratio + realRect.y;
 }
 
-//°Ñ¼à¿ØÇøµÄ¿í×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ¿í¶È
+//æŠŠç›‘æ§åŒºçš„å®½è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„å®½åº¦
 int NWidget2::convertToOriginWidth(int width){
     double ratio = ((double)realRect.width)/mat.cols;
     return width*ratio;
 }
-//°Ñ¼à¿ØÇøµÄ³¤×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ³¤¶È
+//æŠŠç›‘æ§åŒºçš„é•¿è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„é•¿åº¦
 int NWidget2::convertToOriginHeight(int height){
     double ratio = ((double)realRect.height)/mat.rows;
     return height*ratio;

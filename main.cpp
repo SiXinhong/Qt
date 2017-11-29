@@ -1,25 +1,26 @@
-#include <QApplication>
+Ôªø#include <QApplication>
 #include "mainwindow.h"
 #include <QTextCodec>
 
+#pragma execution_character_set("utf-8")
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
 
 
-    //–ﬁ∏ƒΩÁ√Ê¬“¬Î
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
-    //Set Encode GBK
-    QTextCodec::setCodecForTr(QTextCodec::codecForName("system"));
-    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("system"));
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("system"));
-    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+    //‰øÆÊîπÁïåÈù¢‰π±Á†Å
+//    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
+//    //Set Encode GBK
+//    QTextCodec::setCodecForTr(QTextCodec::codecForName("system"));
+//    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("system"));
+//    QTextCodec::setCodecForLocale(QTextCodec::codecForName("system"));
+//    QTextCodec::setCodecForTr(QTextCodec::codecForLocale());
 
     WelcomeWindow *welcome=new WelcomeWindow();
     //MainWindow w(welcome);
     //w.setA(a);
-    // w.setWindowTitle("∫ÏÕ‚»´æ∞øÿ÷∆œµÕ≥");
+    // w.setWindowTitle("Á∫¢Â§ñÂÖ®ÊôØÊéßÂà∂Á≥ªÁªü");
     //w.show();
     return a.exec();
 }

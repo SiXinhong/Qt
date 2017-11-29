@@ -1,4 +1,4 @@
-#include "backwindow.h"
+ï»¿#include "backwindow.h"
 #include <QFileInfo>
 #include <QToolBar>
 #include <map>
@@ -6,15 +6,15 @@
 #include<QTimer>
 BackWindow::BackWindow():MainWindow()
 {
-    setWindowTitle("»Ø·Å");
+    setWindowTitle("å›æ”¾");
 }
 BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
-    setWindowTitle("»Ø·Å");
+    setWindowTitle("å›æ”¾");
     this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
    // this->setWindowFlags(Qt::WindowStaysOnTopHint);
-    QString day=QString("./»Ø·Å/")+date.toString("yyyy-MM-dd");
+    QString day=QString("./å›æ”¾/")+date.toString("yyyy-MM-dd");
     QDir *dir=new QDir(day);
-    QStringList filter;//´´½¨¹ıÂËÆ÷£¬Ö»¿´.dat½áÎ²µÄÎÄ¼ş
+    QStringList filter;//åˆ›å»ºè¿‡æ»¤å™¨ï¼Œåªçœ‹.datç»“å°¾çš„æ–‡ä»¶
     filter<<"*.dat";
     dir->setNameFilters(filter);
     fileInfo=new QList<QFileInfo>(dir->entryInfoList(filter));
@@ -148,7 +148,7 @@ void BackWindow::selfTimerout(){
 //    }
 
 
-    //systime= QLabel();//Ê±¼ä
+    //systime= QLabel();//æ—¶é—´
 
     //in.getIntegratedData2();
 //    for(int i = 0; i < objs.size(); i++){
@@ -163,7 +163,7 @@ void BackWindow::selfTimerout(){
 //        qDebug()<<obj.getRect().height;
 //    }
 
-//    //Í¼Æ¬1
+//    //å›¾ç‰‡1
 //    QString s1=in.getQJ1();
 //    imageurl=s1.toStdString();
 //    Mat mat1 =imread(imageurl);
@@ -180,7 +180,7 @@ void BackWindow::selfTimerout(){
 //    widget1->setTracks(in.getTracks());
 //    widget1->draw();
 //    //qDebug()<<s1;
-//    //Í¼Æ¬2
+//    //å›¾ç‰‡2
 //    QString s2=in.getQJ2();
 //    imageurl2=s2.toStdString();
 //    Mat mat2 =imread(imageurl2);
@@ -198,15 +198,15 @@ void BackWindow::selfTimerout(){
 //    widget2->draw();
 //    //qDebug()<<s2;
 //    //drawUiLabel(mat2,2);
-//    //Í¼Æ¬3
+//    //å›¾ç‰‡3
 //    //Mat mat3 =imread(imageurl);
 //    widget3->draw();
 //    //drawUiLabelByCopy(mat3,3);
-//    //Í¼Æ¬4
+//    //å›¾ç‰‡4
 //    //Mat mat4 =imread(imageurl2);
 //    //drawUiLabelByCopy(mat4,4);
 //    widget4->draw();
-//    //Í¼Æ¬5
+//    //å›¾ç‰‡5
 //    //QString imageurl5=in.getHD();
 //    //Mat mat5 =imread(imageurl5.toStdString());
 //    //widget5->setMat(mat5);
@@ -214,7 +214,7 @@ void BackWindow::selfTimerout(){
 //    widget5->setObjects(objs);
 //    widget5->draw();
 //    //drawUiLabel(mat5,5);
-//    //Í¼Æ¬6
+//    //å›¾ç‰‡6
 //    //QString imageurl6= in.getLD();
 //    //Mat mat6 =imread(imageurl6.toStdString());
 //    //widget6->setMat(mat6);
@@ -238,14 +238,14 @@ void BackWindow::selfTimerout(){
 
    for (int i = 0; i < objs.size();i++)
    {
-       //»­¶ÔÏóµÄbox
+       //ç”»å¯¹è±¡çš„box
        MyObject obj = objs[i];
        Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
        rectangle(mat,rect2,obj.getColor(),2,1,0);
        //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-       //»­¹ì¼£
+       //ç”»è½¨è¿¹
        if(isMubiao){
        for(int ii = 0; ii < tracks.size(); ii++){
            MyObjectTrack track = tracks[ii];
@@ -255,8 +255,8 @@ void BackWindow::selfTimerout(){
                for(int iii = 0; iii < points.size(); iii++){
                    Point point = points[iii];
                    Point point2 = Point(point.x+pano.cols, point.y);
-                   circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                   circle(mat, point2, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
+                   circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                   circle(mat, point2, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
                    if(iii >= 1){
                        Point point3 = points[iii-1];
                        Point point4 = Point(point3.x+pano.cols, point3.y);
@@ -268,7 +268,7 @@ void BackWindow::selfTimerout(){
            }
        }
 }
-       //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+       //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
        if(isMubiao){
            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -287,7 +287,7 @@ void BackWindow::selfTimerout(){
    }
  //  cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-   //È»ºóÅü³É2°ë
+   //ç„¶ååŠˆæˆ2åŠ
 
 //    Size dsize ;
 //    double scale = 1;
@@ -301,7 +301,7 @@ void BackWindow::selfTimerout(){
 //    Mat image44 = Mat(dsize,CV_32S);
 //    cv::resize(image4, image44,dsize);
 
-//    //È«¾°2Mat
+//    //å…¨æ™¯2Mat
 //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
 //    Mat image5 = CVUtil::QImageToMat(aa2);
 //    Mat image55 = Mat(dsize,CV_32S);
@@ -329,8 +329,8 @@ void BackWindow::selfTimerout(){
    widget1->draw();
 
    //qDebug()<<s1;
-   //Í¼Æ¬2
-   //Í¼Æ¬1
+   //å›¾ç‰‡2
+   //å›¾ç‰‡1
 //    QString s1=in.getQJ1();
 //    imageurl=s1.toStdString();
 //    Mat mat1 =imread(imageurl);
@@ -351,7 +351,7 @@ void BackWindow::selfTimerout(){
    widget2->draw();
    //qDebug()<<s2;
    //drawUiLabel(mat2,2);
-   //Í¼Æ¬3
+   //å›¾ç‰‡3
    //Mat mat3 =imread(imageurl);
    widget3->setPano(newpano);
    widget3->setTwoPanos(mat);
@@ -359,7 +359,7 @@ void BackWindow::selfTimerout(){
    widget3->setAllObjects(in.getObjs2());
    widget3->draw();
    //drawUiLabelByCopy(mat3,3);
-   //Í¼Æ¬4
+   //å›¾ç‰‡4
    //Mat mat4 =imread(imageurl2);
    //drawUiLabelByCopy(mat4,4);
    //widget4->setPano(mat);
@@ -367,7 +367,7 @@ void BackWindow::selfTimerout(){
    widget4->setTwoPanos(mat);
    widget4->setAllObjects(in.getObjs2());
    widget4->draw();
-   //Í¼Æ¬5
+   //å›¾ç‰‡5
    //QString imageurl5=in.getHD();
    //Mat mat5 =imread(imageurl5.toStdString());
    //widget5->setMat(mat5);
@@ -376,7 +376,7 @@ void BackWindow::selfTimerout(){
    widget5->setObjects(objs);
    widget5->draw();
    //drawUiLabel(mat5,5);
-   //Í¼Æ¬6
+   //å›¾ç‰‡6
    //QString imageurl6= in.getLD();
    //Mat mat6 =imread(imageurl6.toStdString());
    //widget6->setMat(mat6);
@@ -391,7 +391,7 @@ void BackWindow::selfTimerout(){
    {
 
    if(objs.size()> num_objs){
-       this->sound->play();
+//       this->sound->play();
        newObjCount=objs.size()-num_objs;
         timerFlash->start();
        num_objs = objs.size();
@@ -468,9 +468,9 @@ void BackWindow::exitFunction(){
 void BackWindow::addMyToolBar_backWindow()
 {
 
-//    //Í¼±êÌ«´óµ¼ÖÂÔÚĞ¡ÆÁÄ»ÉÏÏÔÊ¾²»È«£¬¸ÄÎª°´ÕÕÆÁÄ»¿í¶È×Ô¶¯µ÷ÕûÍ¼±êµÄ´óĞ¡
+//    //å›¾æ ‡å¤ªå¤§å¯¼è‡´åœ¨å°å±å¹•ä¸Šæ˜¾ç¤ºä¸å…¨ï¼Œæ”¹ä¸ºæŒ‰ç…§å±å¹•å®½åº¦è‡ªåŠ¨è°ƒæ•´å›¾æ ‡çš„å¤§å°
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
-//    QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
+//    QRect screenRect = desktopWidget->screenGeometry();  //å±å¹•åŒºåŸŸ
 //    int screenWidth=screenRect.width();
 //    const int buttonSize=(screenWidth*0.7)/21.6;
 
@@ -492,7 +492,7 @@ void BackWindow::addMyToolBar_backWindow()
 
 
 
-    //¼ÓÍ¼±ê
+    //åŠ å›¾æ ‡
     //mainToolBar->addWidget(new QLabel(""));
 //    QPixmap pixmap3("./icon/fujirui.png");
 //    QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.8,buttonSize*1.8, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -501,7 +501,7 @@ void BackWindow::addMyToolBar_backWindow()
 //    mainToolBar->addWidget(tuBiao);
 //    mainToolBar->addWidget(new QLabel(" "));
     QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
+    QRect screenRect = desktopWidget->screenGeometry();  //å±å¹•åŒºåŸŸ
     int screenWidth=screenRect.width();
     const int buttonSize=(screenWidth*0.7)/26.5;
 
@@ -526,17 +526,17 @@ void BackWindow::addMyToolBar_backWindow()
 
     //mainToolBar = addToolBar("monitoring");
 
-    //»Ø·ÅÎÄ×Ö
+    //å›æ”¾æ–‡å­—
     QLabel *text = new QLabel(this);
-    text->setText(" »Ø·Å ");
-    QFont font("ËÎÌå", 22, 87);
+    text->setText(" å›æ”¾ ");
+    QFont font("å®‹ä½“", 22, 87);
     text->setFont(font);
     text->setStyleSheet("color:white;");
     mainToolBar->addWidget(text);
 
-    //    //Í¼±êÌ«´óµ¼ÖÂÔÚĞ¡ÆÁÄ»ÉÏÏÔÊ¾²»È«£¬¸ÄÎª°´ÕÕÆÁÄ»¿í¶È×Ô¶¯µ÷ÕûÍ¼±êµÄ´óĞ¡
+    //    //å›¾æ ‡å¤ªå¤§å¯¼è‡´åœ¨å°å±å¹•ä¸Šæ˜¾ç¤ºä¸å…¨ï¼Œæ”¹ä¸ºæŒ‰ç…§å±å¹•å®½åº¦è‡ªåŠ¨è°ƒæ•´å›¾æ ‡çš„å¤§å°
 
-        //¼ÓÍ¼±ê
+        //åŠ å›¾æ ‡
         //mainToolBar->addWidget(new QLabel(""));
     //    QPixmap pixmap3("./icon/fujirui.png");
     //    //QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.7,buttonSize*1.7, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -544,11 +544,11 @@ void BackWindow::addMyToolBar_backWindow()
     //    tuBiao->setPixmap(pixmap3);
     //    mainToolBar->addWidget(tuBiao);
     //    mainToolBar->addWidget(new QLabel(" "));
-        //µÚÒ»×é°´Å¥£º¼à¿ØºÍºóÍË£¬»¹ÓĞ»Ø·Å
-        //Æô¶¯/Í£Ö¹
+        //ç¬¬ä¸€ç»„æŒ‰é’®ï¼šç›‘æ§å’Œåé€€ï¼Œè¿˜æœ‰å›æ”¾
+        //å¯åŠ¨/åœæ­¢
 
     //    startStop = new QToolButton(this);
-    //    startStop->setToolTip(tr("Í£Ö¹"));
+    //    startStop->setToolTip(tr("åœæ­¢"));
     //    //startStop->setMinimumHeight(buttonSize);
     //    //startStop->setMaximumHeight(buttonSize);
     //    //startStop->setMinimumWidth(buttonSize);
@@ -561,22 +561,22 @@ void BackWindow::addMyToolBar_backWindow()
     //    connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
     //    //vbox1->addWidget(new QLabel(" "));
 
-        //»Ø·Å
+        //å›æ”¾
         backLabel = new QLabel(this);
-        QPixmap pixmap4("./iconUpdate/»Ø·Å.png");
+        QPixmap pixmap4("./iconUpdate/å›æ”¾.png");
         fitpixmap4=pixmap4.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         backLabel->setPixmap(fitpixmap4);
         vbox1->addWidget(backLabel);
 
-        //ÔİÍ£/¼ÌĞø
+        //æš‚åœ/ç»§ç»­
         mstop = new QToolButton(this);
-        mstop->setToolTip(tr("¼ÇÂ¼µ±Ç°³¡¾°"));
+        mstop->setToolTip(tr("è®°å½•å½“å‰åœºæ™¯"));
         mstop->setMinimumHeight(buttonSize);
         mstop->setMaximumHeight(buttonSize);
         mstop->setMinimumWidth(buttonSize);
         mstop->setMaximumWidth(buttonSize);
         mstop->setStyleSheet("border-style:flat;background-color:2E302D");
-        mstopSet="./iconUpdate/¼ÇÂ¼µ±Ç°³¡¾°.png";
+        mstopSet="./iconUpdate/è®°å½•å½“å‰åœºæ™¯.png";
         mstop->setIcon(QPixmap(mstopSet));
         mstop->setIconSize(QSize(buttonSize,buttonSize));
         mstop->setCheckable(true);
@@ -584,15 +584,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
         //vbox1->addWidget(new QLabel(" "));
 
-        //ºóÍË
+        //åé€€
         back = new QToolButton(this);
-        back->setToolTip(tr("Ö´ĞĞ·Ç¾ùÔÈĞÔĞ£Õı"));
+        back->setToolTip(tr("æ‰§è¡Œéå‡åŒ€æ€§æ ¡æ­£"));
         back->setMinimumHeight(buttonSize);
         back->setMaximumHeight(buttonSize);
         back->setMinimumWidth(buttonSize);
         back->setMaximumWidth(buttonSize);
         back->setStyleSheet("border-style:flat;background-color:2E302D");
-        backSet="./iconUpdate/Ö´ĞĞ·Ç¾ùÔÈĞÔ½ÃÕı.png";
+        backSet="./iconUpdate/æ‰§è¡Œéå‡åŒ€æ€§çŸ«æ­£.png";
         back->setIcon(QPixmap(backSet));
         back->setIconSize(QSize(buttonSize,buttonSize));
         back->setCheckable(true);
@@ -600,30 +600,30 @@ void BackWindow::addMyToolBar_backWindow()
         connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
         //vbox1->addWidget(new QLabel(" "));
 
-        //»Ø·Å
+        //å›æ”¾
         open = new QToolButton(this);
-        open->setToolTip(tr("ÏÔÊ¾Òş²ØÊ±¼äÖá"));
+        open->setToolTip(tr("æ˜¾ç¤ºéšè—æ—¶é—´è½´"));
         open->setMinimumHeight(buttonSize);
         open->setMaximumHeight(buttonSize);
         open->setMinimumWidth(buttonSize);
         open->setMaximumWidth(buttonSize);
         open->setStyleSheet("border-style:flat;background-color:2E302D");
-        openSet="./iconUpdate/ÏÔÊ¾Òş²ØÊ±¼äÖá.png";
+        openSet="./iconUpdate/æ˜¾ç¤ºéšè—æ—¶é—´è½´.png";
         open->setIcon(QPixmap(openSet));
         open->setIconSize(QSize(buttonSize,buttonSize));
         open->setCheckable(true);
         vbox1->addWidget(open);
         connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
-        //³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı
+        //æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°
         chexiao = new QToolButton(this);
-        chexiao->setToolTip(tr("³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı"));
+        chexiao->setToolTip(tr("æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°"));
         chexiao->setMinimumHeight(buttonSize);
         chexiao->setMaximumHeight(buttonSize);
         chexiao->setMinimumWidth(buttonSize);
         chexiao->setMaximumWidth(buttonSize);
         chexiao->setStyleSheet("border-style:flat;background-color:2E302D");
-        chexiaoDuibidu ="./iconUpdate/³·ÏúÊÖ¶¯¶Ô±È²ÎÊı.png";
+        chexiaoDuibidu ="./iconUpdate/æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”å‚æ•°.png";
         chexiao->setIcon(QPixmap(chexiaoDuibidu));
         chexiao->setIconSize(QSize(buttonSize,buttonSize));
         chexiao->setCheckable(true);
@@ -637,25 +637,25 @@ void BackWindow::addMyToolBar_backWindow()
 
         mainToolBar->addWidget(group1);
         //mainToolBar->addWidget(new QLabel("    "));
-        //µÚ¶ş×é°´Å¥£ºÍ¼Ïñ
-        //Í¼Ïñ
+        //ç¬¬äºŒç»„æŒ‰é’®ï¼šå›¾åƒ
+        //å›¾åƒ
         photo = new QLabel(this);
-        QPixmap pixmap5("./iconUpdate/Í¼Ïñ.png");
+        QPixmap pixmap5("./iconUpdate/å›¾åƒ.png");
         fitpixmap5=pixmap5.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         photo->setPixmap(fitpixmap5);
         vbox2->addWidget(photo);
 
 
 
-        //×Ô¶¯
+        //è‡ªåŠ¨
         autom = new QToolButton(this);
-        autom->setToolTip(tr("Ó¦ÓÃ×Ô¶¯¶Ô±È¶È"));
+        autom->setToolTip(tr("åº”ç”¨è‡ªåŠ¨å¯¹æ¯”åº¦"));
         autom->setMinimumHeight(buttonSize);
         autom->setMaximumHeight(buttonSize);
         autom->setMinimumWidth(buttonSize);
         autom->setMaximumWidth(buttonSize);
         autom->setStyleSheet("border-style:flat;background-color:2E302D");
-        automSet="./iconUpdate/Ó¦ÓÃ×Ô¶¯¶Ô±È¶È.png";
+        automSet="./iconUpdate/åº”ç”¨è‡ªåŠ¨å¯¹æ¯”åº¦.png";
         autom->setIcon(QPixmap(automSet));
         autom->setIconSize(QSize(buttonSize,buttonSize));
         autom->setCheckable(true);
@@ -663,15 +663,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
         //vbox2->addWidget(new QLabel(" "));
 
-        //½µµÍÁÁ¶È
+        //é™ä½äº®åº¦
         reducebrightness = new QToolButton(this);
-        reducebrightness->setToolTip(tr("½µµÍÁÁ¶È"));
+        reducebrightness->setToolTip(tr("é™ä½äº®åº¦"));
         reducebrightness->setMinimumHeight(buttonSize);
         reducebrightness->setMaximumHeight(buttonSize);
         reducebrightness->setMinimumWidth(buttonSize);
         reducebrightness->setMaximumWidth(buttonSize);
         reducebrightness->setStyleSheet("border-style:flat;background-color:2E302D");
-        reduceBrightnessSet="./iconUpdate/ÁÁ¶È¼õÈõ.png";
+        reduceBrightnessSet="./iconUpdate/äº®åº¦å‡å¼±.png";
         reducebrightness->setIcon(QPixmap(reduceBrightnessSet));
         reducebrightness->setIconSize(QSize(buttonSize,buttonSize));
         reducebrightness->setCheckable(true);
@@ -679,15 +679,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(reducebrightness,SIGNAL(clicked()),this,SLOT(reduceBrightnessFunction()));
         //vbox2->addWidget(new QLabel(" "));
 
-        //Ôö¼ÓÁÁ¶È
+        //å¢åŠ äº®åº¦
         addbrightness = new QToolButton(this);
-        addbrightness->setToolTip(tr("Ôö¼ÓÁÁ¶È"));
+        addbrightness->setToolTip(tr("å¢åŠ äº®åº¦"));
         addbrightness->setMinimumHeight(buttonSize);
         addbrightness->setMaximumHeight(buttonSize);
         addbrightness->setMinimumWidth(buttonSize);
         addbrightness->setMaximumWidth(buttonSize);
         addbrightness->setStyleSheet("border-style:flat;background-color:2E302D");
-        addBrightnessSet="./iconUpdate/ÁÁ¶È¼ÓÇ¿.png";
+        addBrightnessSet="./iconUpdate/äº®åº¦åŠ å¼º.png";
         addbrightness->setIcon(QPixmap(addBrightnessSet));
         addbrightness->setIconSize(QSize(buttonSize,buttonSize));
         addbrightness->setCheckable(true);
@@ -698,15 +698,15 @@ void BackWindow::addMyToolBar_backWindow()
 
 
 
-        //½µµÍ¶Ô±È¶È
+        //é™ä½å¯¹æ¯”åº¦
         reducesaturation = new QToolButton(this);
-        reducesaturation->setToolTip(tr("½µµÍ¶Ô±È¶È"));
+        reducesaturation->setToolTip(tr("é™ä½å¯¹æ¯”åº¦"));
         reducesaturation->setMinimumHeight(buttonSize);
         reducesaturation->setMaximumHeight(buttonSize);
         reducesaturation->setMinimumWidth(buttonSize);
         reducesaturation->setMaximumWidth(buttonSize);
         reducesaturation->setStyleSheet("border-style:flat;background-color:2E302D");
-        reduceSaturationSet="./iconUpdate/¶Ô±È¶È¼õÈõ.png";
+        reduceSaturationSet="./iconUpdate/å¯¹æ¯”åº¦å‡å¼±.png";
         reducesaturation->setIcon(QPixmap(reduceSaturationSet));
         reducesaturation->setIconSize(QSize(buttonSize,buttonSize));
         reducesaturation->setCheckable(true);
@@ -714,15 +714,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(reducesaturation,SIGNAL(clicked()),this,SLOT(reduceSaturationFunction()));
         //vbox2->addWidget(new QLabel(" "));
 
-        //Ôö¼Ó¶Ô±È¶È
+        //å¢åŠ å¯¹æ¯”åº¦
         addsaturation = new QToolButton(this);
-        addsaturation->setToolTip(tr("Ôö¼Ó¶Ô±È¶È"));
+        addsaturation->setToolTip(tr("å¢åŠ å¯¹æ¯”åº¦"));
         addsaturation->setMinimumHeight(buttonSize);
         addsaturation->setMaximumHeight(buttonSize);
         addsaturation->setMinimumWidth(buttonSize);
         addsaturation->setMaximumWidth(buttonSize);
         addsaturation->setStyleSheet("border-style:flat;background-color:2E302D");
-        addSaturationSet="./iconUpdate/¶Ô±È¶ÈÔö¼Ó.png";
+        addSaturationSet="./iconUpdate/å¯¹æ¯”åº¦å¢åŠ .png";
         addsaturation->setIcon(QPixmap(addSaturationSet));
         addsaturation->setIconSize(QSize(buttonSize,buttonSize));
         addsaturation->setCheckable(true);
@@ -731,15 +731,15 @@ void BackWindow::addMyToolBar_backWindow()
         //vbox2->addWidget(new QLabel(" "));
 
 
-        //Î±²ÊÉ«
+        //ä¼ªå½©è‰²
         pseudoColor = new QToolButton(this);
-        pseudoColor->setToolTip(tr("Î±²ÊÉ«"));
+        pseudoColor->setToolTip(tr("ä¼ªå½©è‰²"));
         pseudoColor->setMinimumHeight(buttonSize);
         pseudoColor->setMaximumHeight(buttonSize);
         pseudoColor->setMinimumWidth(buttonSize);
         pseudoColor->setMaximumWidth(buttonSize);
         pseudoColor->setStyleSheet("border-style:flat;background-color:2E302D");
-        pseudoColorSet="./iconUpdate/¸ü¶àÉ«°å.png";
+        pseudoColorSet="./iconUpdate/æ›´å¤šè‰²æ¿.png";
         pseudoColor->setIcon(QPixmap(pseudoColorSet));
         pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
         pseudoColor->setCheckable(true);
@@ -752,15 +752,15 @@ void BackWindow::addMyToolBar_backWindow()
         group2->setLayout(vbox2);
         mainToolBar->addWidget(group2);
 
-        //Õ¾Î»
+        //ç«™ä½
         position = new QLabel(this);
-        QPixmap pixmap8("./iconUpdate/Î»ÖÃ.png");
+        QPixmap pixmap8("./iconUpdate/ä½ç½®.png");
         fitpixmap8=pixmap8.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         position->setPixmap(fitpixmap8);
         vbox8->addWidget(position);
 
         zhanweiLabel = new QLabel(this);
-        zhanwei = "BJ036 Õ¾Î»";
+        zhanwei = "BJ036 ç«™ä½";
         zhanweiLabel->setText(zhanwei);
         vbox8->addWidget(zhanweiLabel);
 
@@ -770,15 +770,15 @@ void BackWindow::addMyToolBar_backWindow()
         group8->setLayout(vbox8);
         mainToolBar->addWidget(group8);
 
-        //Ê±¼ä×é
+        //æ—¶é—´ç»„
                 currentTime = new QLabel(this);
-                QPixmap pixmap3("./iconUpdate/µ±Ç°Ê±¼ä.png");
+                QPixmap pixmap3("./iconUpdate/å½“å‰æ—¶é—´.png");
                 fitpixmap3=pixmap3.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
                 currentTime->setPixmap(fitpixmap3);
                 vbox6->addWidget(currentTime);
 
 
-                systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//Ê±¼ä
+                systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//æ—¶é—´
                 systime->setStyleSheet("color:Black");
 
 
@@ -789,23 +789,23 @@ void BackWindow::addMyToolBar_backWindow()
                 mainToolBar->addWidget(group6);
 
 
-        //µÚÈı×é
+        //ç¬¬ä¸‰ç»„
 
         setup = new QLabel(this);
-        QPixmap pixmap6("./iconUpdate/ÉèÖÃ.png");
+        QPixmap pixmap6("./iconUpdate/è®¾ç½®.png");
         fitpixmap6=pixmap6.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         setup->setPixmap(fitpixmap6);
         vbox3->addWidget(setup);
 
-        //ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ
+        //å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ
         stability = new QToolButton(this);
-        stability->setToolTip(tr("ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ"));
+        stability->setToolTip(tr("å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ"));
         stability->setMinimumHeight(buttonSize);
         stability->setMaximumHeight(buttonSize);
         stability->setMinimumWidth(buttonSize);
         stability->setMaximumWidth(buttonSize);
         stability->setStyleSheet("border-style:flat;background-color:2E302D");
-        stabilityset = "./iconUpdate/ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ";
+        stabilityset = "./iconUpdate/å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ";
         stability->setIcon(QPixmap(stabilityset));
         stability->setIconSize(QSize(buttonSize,buttonSize));
         stability->setCheckable(true);
@@ -813,15 +813,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(stability,SIGNAL(clicked()),this,SLOT(stabilityFunction()));
 
 
-        //ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢
+        //æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯
         objectAttribute = new QToolButton(this);
-        objectAttribute->setToolTip(tr("¿ªÆôÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢"));
+        objectAttribute->setToolTip(tr("å¼€å¯æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯"));
         objectAttribute->setMinimumHeight(buttonSize);
         objectAttribute->setMaximumHeight(buttonSize);
         objectAttribute->setMinimumWidth(buttonSize);
         objectAttribute->setMaximumWidth(buttonSize);
         objectAttribute->setStyleSheet("border-style:flat;background-color:2E302D");
-        objectAttributeSet="./iconUpdate/ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃ.png";
+        objectAttributeSet="./iconUpdate/æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®.png";
         objectAttribute->setIcon(QPixmap(objectAttributeSet));
         objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
         objectAttribute->setCheckable(true);
@@ -829,15 +829,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
         //vbox5->addWidget(new QLabel(" "));
 
-        //Ôö¼Ó±êÇ©
+        //å¢åŠ æ ‡ç­¾
         manual = new QToolButton(this);
-        manual->setToolTip(tr("Ôö¼Ó±êÇ©"));
+        manual->setToolTip(tr("å¢åŠ æ ‡ç­¾"));
         manual->setMinimumHeight(buttonSize);
         manual->setMaximumHeight(buttonSize);
         manual->setMinimumWidth(buttonSize);
         manual->setMaximumWidth(buttonSize);
         manual->setStyleSheet("border-style:flat;background-color:2E302D");
-        manualSet="./iconUpdate/Ôö¼Ó±êÇ©.png";
+        manualSet="./iconUpdate/å¢åŠ æ ‡ç­¾.png";
         manual->setIcon(QPixmap(manualSet));
         manual->setIconSize(QSize(buttonSize,buttonSize));
         manual->setCheckable(true);
@@ -850,25 +850,25 @@ void BackWindow::addMyToolBar_backWindow()
         group3->setLayout(vbox3);
         mainToolBar->addWidget(group3);
 
-        //µÚËÄ×é£¬¸æ¾¯
-        //¸æ¾¯
+        //ç¬¬å››ç»„ï¼Œå‘Šè­¦
+        //å‘Šè­¦
 
         alarm = new QLabel(this);
-        QPixmap pixmap7("./iconUpdate/¸æ¾¯.png");
+        QPixmap pixmap7("./iconUpdate/å‘Šè­¦.png");
         fitpixmap7=pixmap7.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
         alarm->setPixmap(fitpixmap7);
         vbox4->addWidget(alarm);
 
 
-        //Æô¶¯/½ûÓÃÌ½²â¹¦ÄÜ
+        //å¯åŠ¨/ç¦ç”¨æ¢æµ‹åŠŸèƒ½
         openClose = new QToolButton(this);
-        openClose->setToolTip(tr("½ûÓÃÌ½²â¹¦ÄÜ"));
+        openClose->setToolTip(tr("ç¦ç”¨æ¢æµ‹åŠŸèƒ½"));
         openClose->setMinimumHeight(buttonSize);
         openClose->setMaximumHeight(buttonSize);
         openClose->setMinimumWidth(buttonSize);
         openClose->setMaximumWidth(buttonSize);
         openClose->setStyleSheet("border-style:flat;background-color:2E302D");
-        openCloseSet="./iconUpdate/ÆôÓÃÌ½²â¹¦ÄÜ.png";
+        openCloseSet="./iconUpdate/å¯ç”¨æ¢æµ‹åŠŸèƒ½.png";
         openClose->setIcon(QPixmap(openCloseSet));
         openClose->setIconSize(QSize(buttonSize,buttonSize));
         openClose->setCheckable(true);
@@ -876,15 +876,15 @@ void BackWindow::addMyToolBar_backWindow()
         connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
         //vbox5->addWidget(new QLabel(" "));
 
-        //µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶
+        //è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§
         objects = new QToolButton(this);
-        objects->setToolTip(tr("µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶"));
+        objects->setToolTip(tr("è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§"));
         objects->setMinimumHeight(buttonSize);
         objects->setMaximumHeight(buttonSize);
         objects->setMinimumWidth(buttonSize);
         objects->setMaximumWidth(buttonSize);
         objects->setStyleSheet("border-style:flat;background-color:2E302D");
-        objectSet="./iconUpdate/µ÷ÕûÁéÃô¶ÈµÈ¼¶.png";
+        objectSet="./iconUpdate/è°ƒæ•´çµæ•åº¦ç­‰çº§.png";
         objects->setIcon(QPixmap(objectSet));
         objects->setIconSize(QSize(buttonSize,buttonSize));
         objects->setCheckable(true);
@@ -895,27 +895,27 @@ void BackWindow::addMyToolBar_backWindow()
         connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
         //vbox5->addWidget(new QLabel(" "));
 
-        //¹Ø±ÕÉùÒô
+        //å…³é—­å£°éŸ³
         voice = new QToolButton(this);
-        voice->setToolTip(tr("¹Ø±ÕÉùÒô"));
+        voice->setToolTip(tr("å…³é—­å£°éŸ³"));
         voice->setMinimumHeight(buttonSize);
         voice->setMaximumHeight(buttonSize);
         voice->setMinimumWidth(buttonSize);
         voice->setMaximumWidth(buttonSize);
         voice->setStyleSheet("border-style:flat;background-color:2E302D");
-        voiceSet="./iconUpdate/¸æ¾¯Òô¿ª¹Ø.png";
+        voiceSet="./iconUpdate/å‘Šè­¦éŸ³å¼€å…³.png";
         voice->setIcon(QPixmap(voiceSet));
         voice->setIconSize(QSize(buttonSize,buttonSize));
         voice->setCheckable(true);
         vbox4->addWidget(voice);
-        connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+       //connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
 
         //mainToolBar->addWidget(new QLabel("   "));
 
-        //¸æ¾¯Ö¸Ê¾
+        //å‘Šè­¦æŒ‡ç¤º
     //    light = new QToolButton(this);
-    //    light->setToolTip(tr("¸æ¾¯Ö¸Ê¾"));
+    //    light->setToolTip(tr("å‘Šè­¦æŒ‡ç¤º"));
     //    light->setMinimumHeight(buttonSize);
     //    light->setMaximumHeight(buttonSize);
     //    light->setMinimumWidth(buttonSize);
@@ -928,9 +928,9 @@ void BackWindow::addMyToolBar_backWindow()
     //    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
     //    vbox5->addWidget(new QLabel(" "));
 
-        // µÆ
-            QPixmap pixmap1("./iconUpdate/±¨¾¯µÆ-ºì.png");
-            QPixmap pixmap2("./iconUpdate/±¨¾¯µÆ-ÂÌ.png");
+        // ç¯
+            QPixmap pixmap1("./iconUpdate/æŠ¥è­¦ç¯-çº¢.png");
+            QPixmap pixmap2("./iconUpdate/æŠ¥è­¦ç¯-ç»¿.png");
           fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
           fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
@@ -1015,25 +1015,25 @@ void BackWindow::addMyToolBar_backWindow()
                 mainToolBar->addWidget(group4);
 
 
-//    //µÚÒ»×é°´Å¥£º»Ø·ÅÊ±¼äÏß,»Ø·ÅÔİÍ£,»Ø·Å
-//    //»Ø·ÅÊ±¼äÏß
+//    //ç¬¬ä¸€ç»„æŒ‰é’®ï¼šå›æ”¾æ—¶é—´çº¿,å›æ”¾æš‚åœ,å›æ”¾
+//    //å›æ”¾æ—¶é—´çº¿
 ////    startStop = new QToolButton(this);
-////    startStop->setToolTip(tr("Ê±¼äÏß"));
+////    startStop->setToolTip(tr("æ—¶é—´çº¿"));
 ////    //startStop->setMinimumHeight(buttonSize);
 ////    //startStop->setMaximumHeight(buttonSize);
 ////    //startStop->setMinimumWidth(buttonSize);
 ////    //startStop->setMaximumWidth(buttonSize);
 ////    //startStop->setStyleSheet("border-style:flat;background-color:2E302D");
-////    startStopSet="./icon/Ê±¼äÏß.png";
+////    startStopSet="./icon/æ—¶é—´çº¿.png";
 ////    startStop->setIcon(QPixmap(startStopSet));
 ////    //startStop->setIconSize(QSize(buttonSize,buttonSize));
 ////    vbox1->addWidget(startStop);
 ////    connect(startStop,SIGNAL(clicked()),this,SLOT(timeLineFunction()));
 ////    //vbox1->addWidget(new QLabel(" "));
 
-//    //»Ø·ÅÔİÍ£
+//    //å›æ”¾æš‚åœ
 //    mstop = new QToolButton(this);
-//    mstop->setToolTip(tr("ÔİÍ£"));
+//    mstop->setToolTip(tr("æš‚åœ"));
 //    mstop->setMinimumHeight(buttonSize);
 //    mstop->setMaximumHeight(buttonSize);
 //    mstop->setMinimumWidth(buttonSize);
@@ -1045,9 +1045,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    vbox1->addWidget(mstop);
 //    connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
 //   // vbox1->addWidget(new QLabel(" "));
-//    //»Ø·Å
+//    //å›æ”¾
 ////    open = new QToolButton(this);
-////    open->setToolTip(tr("»Ø·Å"));
+////    open->setToolTip(tr("å›æ”¾"));
 ////    open->setMinimumHeight(buttonSize);
 ////    open->setMaximumHeight(buttonSize);
 ////    open->setMinimumWidth(buttonSize);
@@ -1062,11 +1062,11 @@ void BackWindow::addMyToolBar_backWindow()
 //    group1->setLayout(vbox1);
 //    mainToolBar->addWidget(group1);
 //    //mainToolBar->addWidget(new QLabel("    "));
-//    //µÚ¶ş×é°´Å¥£ºÍ¼Ïñ
+//    //ç¬¬äºŒç»„æŒ‰é’®ï¼šå›¾åƒ
 
-//    //³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı
+//    //æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°
 //    chexiao = new QToolButton(this);
-//    chexiao->setToolTip(tr("³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı"));
+//    chexiao->setToolTip(tr("æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°"));
 //    chexiaoDuibidu ="./icon/8_1.png";
 //    chexiao->setMinimumHeight(buttonSize);
 //    chexiao->setMaximumHeight(buttonSize);
@@ -1078,9 +1078,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    vbox2->addWidget(chexiao);
 //    connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
 
-//    //×Ô¶¯
+//    //è‡ªåŠ¨
 //    autom = new QToolButton(this);
-//    autom->setToolTip(tr("Ó¦ÓÃ×Ô¶¯¶Ô±È¶È"));
+//    autom->setToolTip(tr("åº”ç”¨è‡ªåŠ¨å¯¹æ¯”åº¦"));
 //    autom->setMinimumHeight(buttonSize);
 //    autom->setMaximumHeight(buttonSize);
 //    autom->setMinimumWidth(buttonSize);
@@ -1093,9 +1093,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
 //    //vbox2->addWidget(new QLabel(" "));
 
-//    //Ôö¼ÓÁÁ¶È
+//    //å¢åŠ äº®åº¦
 //    addbrightness = new QToolButton(this);
-//    addbrightness->setToolTip(tr("Ôö¼ÓÁÁ¶È"));
+//    addbrightness->setToolTip(tr("å¢åŠ äº®åº¦"));
 //    addbrightness->setMinimumHeight(buttonSize);
 //    addbrightness->setMaximumHeight(buttonSize);
 //    addbrightness->setMinimumWidth(buttonSize);
@@ -1108,9 +1108,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(addbrightness,SIGNAL(clicked()),this,SLOT(addBrightnessFunction()));
 //    //vbox2->addWidget(new QLabel(" "));
 
-//    //½µµÍÁÁ¶È
+//    //é™ä½äº®åº¦
 //    reducebrightness = new QToolButton(this);
-//    reducebrightness->setToolTip(tr("½µµÍÁÁ¶È"));
+//    reducebrightness->setToolTip(tr("é™ä½äº®åº¦"));
 //    reducebrightness->setMinimumHeight(buttonSize);
 //    reducebrightness->setMaximumHeight(buttonSize);
 //    reducebrightness->setMinimumWidth(buttonSize);
@@ -1123,9 +1123,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(reducebrightness,SIGNAL(clicked()),this,SLOT(reduceBrightnessFunction()));
 //    //vbox2->addWidget(new QLabel(" "));
 
-//    //Ôö¼Ó¶Ô±È¶È
+//    //å¢åŠ å¯¹æ¯”åº¦
 //    addsaturation = new QToolButton(this);
-//    addsaturation->setToolTip(tr("Ôö¼Ó¶Ô±È¶È"));
+//    addsaturation->setToolTip(tr("å¢åŠ å¯¹æ¯”åº¦"));
 //    addsaturation->setMinimumHeight(buttonSize);
 //    addsaturation->setMaximumHeight(buttonSize);
 //    addsaturation->setMinimumWidth(buttonSize);
@@ -1138,9 +1138,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(addsaturation,SIGNAL(clicked()),this,SLOT(addSaturationFunction()));
 //    //vbox2->addWidget(new QLabel(" "));
 
-//    //½µµÍ¶Ô±È¶È
+//    //é™ä½å¯¹æ¯”åº¦
 //    reducesaturation = new QToolButton(this);
-//    reducesaturation->setToolTip(tr("Ôö¼Ó¶Ô±È¶È"));
+//    reducesaturation->setToolTip(tr("å¢åŠ å¯¹æ¯”åº¦"));
 //    reducesaturation->setMinimumHeight(buttonSize);
 //    reducesaturation->setMaximumHeight(buttonSize);
 //    reducesaturation->setMinimumWidth(buttonSize);
@@ -1153,9 +1153,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(reducesaturation,SIGNAL(clicked()),this,SLOT(reduceSaturationFunction()));
 //    //vbox2->addWidget(new QLabel(" "));
 
-//    //Î±²ÊÉ«
+//    //ä¼ªå½©è‰²
 //    pseudoColor = new QToolButton(this);
-//    pseudoColor->setToolTip(tr("Î±²ÊÉ«"));
+//    pseudoColor->setToolTip(tr("ä¼ªå½©è‰²"));
 //    pseudoColor->setMinimumHeight(buttonSize);
 //    pseudoColor->setMaximumHeight(buttonSize);
 //    pseudoColor->setMinimumWidth(buttonSize);
@@ -1170,10 +1170,10 @@ void BackWindow::addMyToolBar_backWindow()
 //    group2->setLayout(vbox2);
 //    mainToolBar->addWidget(group2);
 
-//    //µÚÈı×é
-//    //ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢
+//    //ç¬¬ä¸‰ç»„
+//    //æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯
 //    objectAttribute = new QToolButton(this);
-//    objectAttribute->setToolTip(tr("ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢"));
+//    objectAttribute->setToolTip(tr("æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯"));
 //    objectAttribute->setMinimumHeight(buttonSize);
 //    objectAttribute->setMaximumHeight(buttonSize);
 //    objectAttribute->setMinimumWidth(buttonSize);
@@ -1186,9 +1186,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
 //    //vbox5->addWidget(new QLabel(" "));
 
-//    //Ôö¼Ó±êÇ©
+//    //å¢åŠ æ ‡ç­¾
 //    manual = new QToolButton(this);
-//    manual->setToolTip(tr("Ôö¼Ó±êÇ©"));
+//    manual->setToolTip(tr("å¢åŠ æ ‡ç­¾"));
 //    manual->setMinimumHeight(buttonSize);
 //    manual->setMaximumHeight(buttonSize);
 //    manual->setMinimumWidth(buttonSize);
@@ -1203,10 +1203,10 @@ void BackWindow::addMyToolBar_backWindow()
 //    group3->setLayout(vbox3);
 //    mainToolBar->addWidget(group3);
 
-//    //µÚËÄ×é£¬¸æ¾¯
-//    //Æô¶¯/½ûÓÃÌ½²â¹¦ÄÜ
+//    //ç¬¬å››ç»„ï¼Œå‘Šè­¦
+//    //å¯åŠ¨/ç¦ç”¨æ¢æµ‹åŠŸèƒ½
 //    openClose = new QToolButton(this);
-//    openClose->setToolTip(tr("½ûÓÃÌ½²â¹¦ÄÜ"));
+//    openClose->setToolTip(tr("ç¦ç”¨æ¢æµ‹åŠŸèƒ½"));
 //    openClose->setMinimumHeight(buttonSize);
 //    openClose->setMaximumHeight(buttonSize);
 //    openClose->setMinimumWidth(buttonSize);
@@ -1219,9 +1219,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
 //    //vbox5->addWidget(new QLabel(" "));
 
-//    //µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶
+//    //è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§
 //    objects = new QToolButton(this);
-//    objects->setToolTip(tr("µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶"));
+//    objects->setToolTip(tr("è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§"));
 //    objects->setMinimumHeight(buttonSize);
 //    objects->setMaximumHeight(buttonSize);
 //    objects->setMinimumWidth(buttonSize);
@@ -1234,9 +1234,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
 //    //vbox5->addWidget(new QLabel(" "));
 
-//    //¹Ø±ÕÉùÒô
+//    //å…³é—­å£°éŸ³
 //    voice = new QToolButton(this);
-//    voice->setToolTip(tr("¹Ø±ÕÉùÒô"));
+//    voice->setToolTip(tr("å…³é—­å£°éŸ³"));
 //    voice->setMinimumHeight(buttonSize);
 //    voice->setMaximumHeight(buttonSize);
 //    voice->setMinimumWidth(buttonSize);
@@ -1251,9 +1251,9 @@ void BackWindow::addMyToolBar_backWindow()
 
 //    //mainToolBar->addWidget(new QLabel("   "));
 
-//    //¸æ¾¯Ö¸Ê¾
+//    //å‘Šè­¦æŒ‡ç¤º
 ////    light = new QToolButton(this);
-////    light->setToolTip(tr("¸æ¾¯Ö¸Ê¾"));
+////    light->setToolTip(tr("å‘Šè­¦æŒ‡ç¤º"));
 ////    //attribute->setMinimumHeight(buttonSize);
 ////    //attribute->setMaximumHeight(buttonSize);
 ////    //attribute->setMinimumWidth(buttonSize);
@@ -1269,9 +1269,9 @@ void BackWindow::addMyToolBar_backWindow()
 //    mainToolBar->addWidget(group4);
 
 
-////    //×Ô¶¯
+////    //è‡ªåŠ¨
 ////    autom = new QToolButton(this);
-////    autom->setToolTip(tr("×Ô¶¯"));
+////    autom->setToolTip(tr("è‡ªåŠ¨"));
 ////    //autom->setMinimumHeight(buttonSize);
 ////    //autom->setMaximumHeight(buttonSize);
 ////    //autom->setMinimumWidth(buttonSize);
@@ -1284,9 +1284,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
 ////    //vbox2->addWidget(new QLabel(" "));
 ////    qDebug()<<"5555555555555555555555555555555555555555555555555555555555555555555";
-////    //ÁÁ¶È
+////    //äº®åº¦
 ////    brightness = new QToolButton(this);
-////    brightness->setToolTip(tr("ÁÁ¶È"));
+////    brightness->setToolTip(tr("äº®åº¦"));
 ////    //brightness->setMinimumHeight(buttonSize);
 ////    //brightness->setMaximumHeight(buttonSize);
 ////    //brightness->setMinimumWidth(buttonSize);
@@ -1299,9 +1299,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    connect(brightness,SIGNAL(clicked()),this,SLOT(brightnessFunction()));
 ////    //vbox2->addWidget(new QLabel(" "));
 
-////    //¶Ô±È¶È
+////    //å¯¹æ¯”åº¦
 ////    saturation = new QToolButton(this);
-////    saturation->setToolTip(tr("¶Ô±È¶È"));
+////    saturation->setToolTip(tr("å¯¹æ¯”åº¦"));
 ////    //saturation->setMinimumHeight(buttonSize);
 ////    //saturation->setMaximumHeight(buttonSize);
 ////    //saturation->setMinimumWidth(buttonSize);
@@ -1314,9 +1314,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    connect(saturation,SIGNAL(clicked()),this,SLOT(saturationFunction()));
 ////    //vbox2->addWidget(new QLabel(" "));
 
-////    //Î±²ÊÉ«
+////    //ä¼ªå½©è‰²
 ////    pseudoColor = new QToolButton(this);
-////    pseudoColor->setToolTip(tr("Î±²ÊÉ«"));
+////    pseudoColor->setToolTip(tr("ä¼ªå½©è‰²"));
 ////    //pseudoColor->setMinimumHeight(buttonSize);
 ////    //pseudoColor->setMaximumHeight(buttonSize);
 ////    //pseudoColor->setMinimumWidth(buttonSize);
@@ -1333,7 +1333,7 @@ void BackWindow::addMyToolBar_backWindow()
 ////    //mainToolBar->addWidget(new QLabel("    "));
 
 
-//    //µÚÈı×é°´Å¥£¬Ö¸Ê¾µÆ£¬ÎåÕµ£¬Ò»¸öÄ¿±êÒ»ÕµºìµÆ£»¶ş¸öÄ¿±ê¶şÕµºìµÆ£»Èı¸öÄ¿±êÈıÕµºìµÆ£»ËÄ¸öÄ¿±êËÄÕµºìµÆ£»Îå¸öÄ¿±ê¼°ÒÔÉÏ£¬ÎåÕµºìµÆ
+//    //ç¬¬ä¸‰ç»„æŒ‰é’®ï¼ŒæŒ‡ç¤ºç¯ï¼Œäº”ç›ï¼Œä¸€ä¸ªç›®æ ‡ä¸€ç›çº¢ç¯ï¼›äºŒä¸ªç›®æ ‡äºŒç›çº¢ç¯ï¼›ä¸‰ä¸ªç›®æ ‡ä¸‰ç›çº¢ç¯ï¼›å››ä¸ªç›®æ ‡å››ç›çº¢ç¯ï¼›äº”ä¸ªç›®æ ‡åŠä»¥ä¸Šï¼Œäº”ç›çº¢ç¯
 //    QPixmap pixmap1("./icon/16_1.png");
 //    QPixmap pixmap2("./icon/16_2.png");
 //    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -1419,11 +1419,11 @@ void BackWindow::addMyToolBar_backWindow()
 //    mainToolBar->addWidget(group5);
 ////    //mainToolBar->addWidget(new QLabel("    "));
 
-//    //µÚÁù×é£¬ÏÔÊ¾±àºÅºÍÏµÍ³µ±Ç°Ê±¼ä
-//   // serialNumber=new QLabel("    Î»ÖÃ£º"+xtbh);//±àºÅ
+//    //ç¬¬å…­ç»„ï¼Œæ˜¾ç¤ºç¼–å·å’Œç³»ç»Ÿå½“å‰æ—¶é—´
+//   // serialNumber=new QLabel("    ä½ç½®ï¼š"+xtbh);//ç¼–å·
 //   // serialNumber->setStyleSheet("color:Black");
 //   // vbox6->addWidget(serialNumber);
-//    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//Ê±¼ä
+//    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//æ—¶é—´
 
 //    QString datetime = fileInfo->at(fileIndex).filePath();
 //    QString backDate = datetime.right(datetime.length()-5).left(10);
@@ -1440,10 +1440,10 @@ void BackWindow::addMyToolBar_backWindow()
 //    group6->setLayout(vbox6);
 //    mainToolBar->addWidget(group6);
 
-////    //µÚÎå×é£¬¸æ¾¯
-////    //¹Ø±Õ¸æ¾¯
+////    //ç¬¬äº”ç»„ï¼Œå‘Šè­¦
+////    //å…³é—­å‘Šè­¦
 ////    openClose = new QToolButton(this);
-////    openClose->setToolTip(tr("¹Ø±Õ¸æ¾¯"));
+////    openClose->setToolTip(tr("å…³é—­å‘Šè­¦"));
 ////    //openClose->setMinimumHeight(buttonSize);
 ////    //openClose->setMaximumHeight(buttonSize);
 ////    //openClose->setMinimumWidth(buttonSize);
@@ -1456,9 +1456,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
 ////    //vbox5->addWidget(new QLabel(" "));
 
-////    //¶ÔÏóÊôĞÔ
+////    //å¯¹è±¡å±æ€§
 ////    objectAttribute = new QToolButton(this);
-////    objectAttribute->setToolTip(tr("¶ÔÏóÊôĞÔ"));
+////    objectAttribute->setToolTip(tr("å¯¹è±¡å±æ€§"));
 ////    //objectAttribute->setMinimumHeight(buttonSize);
 ////    //objectAttribute->setMaximumHeight(buttonSize);
 ////    //objectAttribute->setMinimumWidth(buttonSize);
@@ -1472,9 +1472,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    //vbox5->addWidget(new QLabel(" "));
 
 
-////    //¹Ø±ÕÄ¿±êÊôĞÔ¸úËæ
+////    //å…³é—­ç›®æ ‡å±æ€§è·Ÿéš
 ////    objects = new QToolButton(this);
-////    objects->setToolTip(tr("¹Ø±ÕÄ¿±êÊôĞÔ¸úËæ"));
+////    objects->setToolTip(tr("å…³é—­ç›®æ ‡å±æ€§è·Ÿéš"));
 ////    //objects->setMinimumHeight(buttonSize);
 ////    //objects->setMaximumHeight(buttonSize);
 ////    //objects->setMinimumWidth(buttonSize);
@@ -1487,9 +1487,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
 ////    //vbox5->addWidget(new QLabel(" "));
 
-////    //ÉèÖÃ
+////    //è®¾ç½®
 //////    attribute = new QToolButton(this);
-//////    attribute->setToolTip(tr("ÉèÖÃ"));
+//////    attribute->setToolTip(tr("è®¾ç½®"));
 //////    attribute->setMinimumHeight(buttonSize);
 //////    attribute->setMaximumHeight(buttonSize);
 //////    attribute->setMinimumWidth(buttonSize);
@@ -1502,9 +1502,9 @@ void BackWindow::addMyToolBar_backWindow()
 //////    connect(attribute,SIGNAL(clicked()),this,SLOT(attributeFunction()));
 //////    //vbox5->addWidget(new QLabel(" "));
 
-////    //¹Ø±ÕÉùÒô
+////    //å…³é—­å£°éŸ³
 ////    voice = new QToolButton(this);
-////    voice->setToolTip(tr("¹Ø±ÕÉùÒô"));
+////    voice->setToolTip(tr("å…³é—­å£°éŸ³"));
 ////    //voice->setMinimumHeight(buttonSize);
 ////    //voice->setMaximumHeight(buttonSize);
 ////    //voice->setMinimumWidth(buttonSize);
@@ -1520,9 +1520,9 @@ void BackWindow::addMyToolBar_backWindow()
 ////    mainToolBar->addWidget(group5);
 ////    //mainToolBar->addWidget(new QLabel("   "));
 
-//    //µÚÁù×é
+//    //ç¬¬å…­ç»„
 //    exitButton = new QToolButton(this);
-//    exitButton->setToolTip(tr("ÍË³ö"));
+//    exitButton->setToolTip(tr("é€€å‡º"));
 //    exitButton->setMinimumHeight(buttonSize);
 //    exitButton->setMaximumHeight(buttonSize);
 //    exitButton->setMinimumWidth(buttonSize);
@@ -1543,7 +1543,7 @@ void BackWindow::addMyToolBar_backWindow()
 //void BackWindow :: timeLineFunction(){
 //    timeLine->setTime(start,stop);
 //    timeLine->setWindowFlags(Qt::WindowStaysOnTopHint);
-//    timeLine->setWindowTitle("Ê±¼äÏß");
+//    timeLine->setWindowTitle("æ—¶é—´çº¿");
 //    timeLine->activateWindow();
 //    timeLine->move(200,200);
 //    timeLine->move(timeLine->x(),timeLine->y());
@@ -1554,7 +1554,7 @@ void BackWindow::addMyToolBar_backWindow()
 
 void BackWindow::onTimerOut2(){
 
-    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//Ê±¼ä
+    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//æ—¶é—´
 
     if(fileIndex < fileInfo->count()&&!currentFileTime.isEmpty())
     {
@@ -1571,7 +1571,7 @@ void BackWindow::onTimerOut2(){
     }
 
     else{
-        systime->setText("       µ±Ç°ÎŞ»Ø·Å      ");
+        systime->setText("       å½“å‰æ— å›æ”¾      ");
 }
 
 //    timeLine->position= fileIndex*255/fileInfo->count();

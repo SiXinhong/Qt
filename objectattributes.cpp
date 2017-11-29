@@ -1,4 +1,4 @@
-#include "objectAttributes.h"
+ï»¿#include "objectAttributes.h"
 #include <QPainter>
 #include<QString>
 #include "myinterface.h"
@@ -37,40 +37,40 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
     int y = height/13, x=30;
     QPainter painter(this);
 
-    painter.drawText(x,y,QString("Ä¿±ê").append(QString::number(index2Show+1)).append(":"));
+    painter.drawText(x,y,QString("ç›®æ ‡").append(QString::number(index2Show+1)).append(":"));
     y+=height/45;
     painter.drawText(x,y,QString("oid:").append(QString::number(obj->oid)));
     x+=width/10;
-    painter.drawText(x,y,QString("Ä¿±êÖĞĞÄ×ø±ê£º<").append(QString::number(obj->cenPoint.x)).append(",").append(QString::number(obj->cenPoint.y)).append(">"));
+    painter.drawText(x,y,QString("ç›®æ ‡ä¸­å¿ƒåæ ‡ï¼š<").append(QString::number(obj->cenPoint.x)).append(",").append(QString::number(obj->cenPoint.y)).append(">"));
     x+=width/10;
-    painter.drawText(x,y,QString("¼ì²â¿ò´óĞ¡£º<").append(QString::number(obj->blocksize.width)).append(",").append(QString::number(obj->blocksize.height)).append(">"));
+    painter.drawText(x,y,QString("æ£€æµ‹æ¡†å¤§å°ï¼š<").append(QString::number(obj->blocksize.width)).append(",").append(QString::number(obj->blocksize.height)).append(">"));
     y+=height/45;
     x=30;
-    painter.drawText(x,y,QString("ÔË¶¯ËÙÂÊ£º").append(QString::number(obj->Velocity)));
+    painter.drawText(x,y,QString("è¿åŠ¨é€Ÿç‡ï¼š").append(QString::number(obj->Velocity)));
     x+=width/10;
-    painter.drawText(x,y,QString("ÔË¶¯·½Ïò£º").append(QString::number(obj->MotionDerection)));
+    painter.drawText(x,y,QString("è¿åŠ¨æ–¹å‘ï¼š").append(QString::number(obj->MotionDerection)));
     x+=width/10;
-    painter.drawText(x,y,QString("Ä¿±êÃæ»ı£º").append(QString::number(obj->area)));
+    painter.drawText(x,y,QString("ç›®æ ‡é¢ç§¯ï¼š").append(QString::number(obj->area)));
     y+=height/45;
     x=30;
-    painter.drawText(x,y,QString("Ë®Æ½Öá³¤¶È£º").append(QString::number(obj->horizontalAxisLength)));
+    painter.drawText(x,y,QString("æ°´å¹³è½´é•¿åº¦ï¼š").append(QString::number(obj->horizontalAxisLength)));
     x+=width/10;
-    painter.drawText(x,y,QString("ÊúÖ±Öá³¤¶È£º").append(QString::number(obj->verticalAxisLength)));
+    painter.drawText(x,y,QString("ç«–ç›´è½´é•¿åº¦ï¼š").append(QString::number(obj->verticalAxisLength)));
     x+=width/10;
-    painter.drawText(x,y,QString("¾ø¶ÔÇ¿¶È£º").append(QString::number(obj->absoluteIntensity)));
+    painter.drawText(x,y,QString("ç»å¯¹å¼ºåº¦ï¼š").append(QString::number(obj->absoluteIntensity)));
     y+=height/45;
     x=30;
-    painter.drawText(x,y,QString("Ïà¶ÔÇ¿¶È£º").append(QString::number(obj->relativeIntensity)));
+    painter.drawText(x,y,QString("ç›¸å¯¹å¼ºåº¦ï¼š").append(QString::number(obj->relativeIntensity)));
     x+=width/10;
-    painter.drawText(x,y,QString("Ä¿±ê³ß¶È£º").append(QString::number(obj->targetScale)));
+    painter.drawText(x,y,QString("ç›®æ ‡å°ºåº¦ï¼š").append(QString::number(obj->targetScale)));
     x+=width/10;
-    painter.drawText(x,y,QString("ÖĞÑëÖÜÎ§¶Ô±È¶ÈµÄÏìÓ¦Ç¿¶È£º").append(QString::number(obj->CenSueEintensity)));
+    painter.drawText(x,y,QString("ä¸­å¤®å‘¨å›´å¯¹æ¯”åº¦çš„å“åº”å¼ºåº¦ï¼š").append(QString::number(obj->CenSueEintensity)));
     x=30;
     y+=height/45;
-    painter.drawText(x,y,QString("Ä¿±ê±³¾°ĞÅÔÓ±È£º").append(QString::number(obj->SCRValue)));
+    painter.drawText(x,y,QString("ç›®æ ‡èƒŒæ™¯ä¿¡æ‚æ¯”ï¼š").append(QString::number(obj->SCRValue)));
     x=30;
     y+=height/45;
-    painter.drawText(x,y,QString("Ä¿±êÂÖÀª£º"));
+    painter.drawText(x,y,QString("ç›®æ ‡è½®å»“ï¼š"));
     if (!obj->contours.empty())
     {
         x+=width/10;
@@ -82,11 +82,11 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
     }
     else {
         x+=width/10;
-        painter.drawText(x,y,QString("ÎŞ"));
+        painter.drawText(x,y,QString("æ— "));
     }
     x=30;
     y+=height/45;
-    painter.drawText(x,y,QString("Ä¿±ê¿ìÕÕ£º"));
+    painter.drawText(x,y,QString("ç›®æ ‡å¿«ç…§ï¼š"));
     if(!obj->Snapshoot.empty())
     {
 
@@ -97,12 +97,12 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
     }
     else{
         x+=width/10;
-        painter.drawText(x,y,QString("ÎŞ"));
+        painter.drawText(x,y,QString("æ— "));
     }
 
     x=30;
     y+=height/45;
-    painter.drawText(x,y,QString("Ä¿±ê¼ôÓ°£º"));
+    painter.drawText(x,y,QString("ç›®æ ‡å‰ªå½±ï¼š"));
     if(!obj->sihouette.empty())
     {
         x+=width/10;
@@ -112,17 +112,17 @@ void ObjectAttributes::paintEvent(QPaintEvent *event)
     }
     else{
         x+=width/10;
-        painter.drawText(x,y,QString("ÎŞ"));
+        painter.drawText(x,y,QString("æ— "));
     }
 
-//    QFont font("ËÎÌå", 15, QFont::Bold, true);
-//    //ÉèÖÃÏÂ»®Ïß
+//    QFont font("å®‹ä½“", 15, QFont::Bold, true);
+//    //è®¾ç½®ä¸‹åˆ’çº¿
 //    font.setUnderline(true);
-//    //ÉèÖÃÉÏ»®Ïß
+//    //è®¾ç½®ä¸Šåˆ’çº¿
 //    font.setOverline(true);
-//    //ÉèÖÃ×ÖÄ¸´óĞ¡Ğ´
+//    //è®¾ç½®å­—æ¯å¤§å°å†™
 //    font.setCapitalization(QFont::SmallCaps);
-//    //ÉèÖÃ×Ö·û¼äµÄ¼ä¾à
+//    //è®¾ç½®å­—ç¬¦é—´çš„é—´è·
 //    font.setLetterSpacing(QFont::AbsoluteSpacing, 10);
 }
 void ObjectAttributes::addMyToolBar()
@@ -138,7 +138,7 @@ void ObjectAttributes::addMyToolBar()
 
         QToolButton *object = new QToolButton(this);
 
-        object->setToolTip(tr("Ä¿±ê").append(QString::number(i+1)));
+        object->setToolTip(tr("ç›®æ ‡").append(QString::number(i+1)));
         object->setText(QString("obj").append(QString::number(i+1)));
         vbox->addWidget(object);
         connect(object,SIGNAL(clicked()),this,SLOT(objectsShow()));
@@ -161,7 +161,7 @@ void ObjectAttributes::addMyToolBar()
     QGroupBox *group4=new QGroupBox(this);
     QVBoxLayout *vbox4 = new QVBoxLayout;
     QToolButton *exitButton = new QToolButton(this);
-    exitButton->setToolTip(tr("ÍË³ö"));
+    exitButton->setToolTip(tr("é€€å‡º"));
     //    exitButton->setMinimumHeight(buttonSize);
     //    exitButton->setMaximumHeight(buttonSize);
     //    exitButton->setMinimumWidth(buttonSize);
@@ -189,12 +189,12 @@ void ObjectAttributes::exitFunction()
 void ObjectAttributes::objectsShow()
 {
     QObject* obj = sender();
-    // °Ñ»ùÀà¶ÔÏóÇ¿ÖÆ×ª»»³É×ÓÀà¶ÔÏó
+    // æŠŠåŸºç±»å¯¹è±¡å¼ºåˆ¶è½¬æ¢æˆå­ç±»å¯¹è±¡
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
 
-    QString textOfButton=button->text();//¸ù¾İbuttonÏÔÊ¾µÄÄÚÈİ¿´ÊÇµÚ¼¸¸ö
+    QString textOfButton=button->text();//æ ¹æ®buttonæ˜¾ç¤ºçš„å†…å®¹çœ‹æ˜¯ç¬¬å‡ ä¸ª
     if(textOfButton.length()<4)
         return;
-    index2Show=textOfButton.right(textOfButton.length()-3).left(textOfButton.length()-3).toInt()-1;//µÚ¼¸¸öobject
+    index2Show=textOfButton.right(textOfButton.length()-3).left(textOfButton.length()-3).toInt()-1;//ç¬¬å‡ ä¸ªobject
     this->repaint();
 }

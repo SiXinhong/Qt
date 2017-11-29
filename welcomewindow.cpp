@@ -1,4 +1,4 @@
-#include "welcomewindow.h"
+ï»¿#include "welcomewindow.h"
 #include <QApplication>
 #include <QDesktopWidget>
 #include <QDebug>
@@ -16,7 +16,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
     start = false;
     this->setWindowFlags(Qt::FramelessWindowHint);
     QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
+    QRect screenRect = desktopWidget->screenGeometry();  //å±å¹•åŒºåŸŸ
     int screenWidth=screenRect.width();
     int screenHeight=screenRect.height();
     this->setGeometry(screenWidth/2-1250/2,screenHeight/2-600/2,1250,700);
@@ -28,8 +28,8 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
 
     passwordInput->setEchoMode(QLineEdit::Password);
 
-    logIn->setText(QString("µÇÂ½"));
-    exit->setText(QString("ÍË³ö"));
+    logIn->setText(QString("ç™»é™†"));
+    exit->setText(QString("é€€å‡º"));
     connect(exit,SIGNAL(clicked()),this,SLOT(exitClicked()));
     connect(logIn,SIGNAL(clicked()),this,SLOT(loginClicked()));
     mainwindow = new MainWindow(this);
@@ -41,21 +41,21 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
 
 void WelcomeWindow::paintEvent(QPaintEvent *){
     QPainter p(this);
-    QFont font("ËÎÌå",18,75);
+    QFont font("å®‹ä½“",18,75);
     p.setFont(font);
-    //±êÌâ
-    QString title("ºìÍâÈ«¾°¼à¿ØÏµÍ³");
+    //æ ‡é¢˜
+    QString title("çº¢å¤–å…¨æ™¯ç›‘æŽ§ç³»ç»Ÿ");
     int widthOfTitle = p.fontMetrics().width(title);
     p.drawText(this->width()/2-widthOfTitle/2,100,title);
-    //Í¼Æ¬
+    //å›¾ç‰‡
     QImage image("./icon/load.bmp");
     p.drawImage(this->width()/2-image.width()/2,this->height()/2-image.height()/2-100,image);
     //p.drawImage();
-    //Ä¬ÈÏÓÃ»§ÃûÃÜÂë
+    //é»˜è®¤ç”¨æˆ·åå¯†ç 
     font.setPointSize(12);
     p.setFont(font);
-    QString user("ÓÃ»§Ãû:");
-    QString password("ÃÜÂë:");
+    QString user("ç”¨æˆ·å:");
+    QString password("å¯†ç :");
     p.drawText(80,450,user);
     p.drawText(80,540,password);
 
@@ -65,10 +65,10 @@ void WelcomeWindow::paintEvent(QPaintEvent *){
     passwordInput->setGeometry(80+w+20,540-h,w*2,h*1.5);
     logIn->setGeometry(80,590,w,h*1.5);
     exit->setGeometry(80+w*1.2,590,w,h*1.5);
-    //°æÈ¨ËùÓÐ
+    //ç‰ˆæƒæ‰€æœ‰
     font.setPointSize(8);
     p.setFont(font);
-    QString copyright("°æÈ¨ËùÓÐ");
+    QString copyright("ç‰ˆæƒæ‰€æœ‰");
     int widthOfCopy = p.fontMetrics().width(copyright);
     p.drawText(this->width()/2-widthOfCopy/2,650,copyright);
 

@@ -1,28 +1,28 @@
-#include "socket.h"
+ï»¿#include "socket.h"
 #include <QFile>
 #include <QByteArray>
 #include <QDebug>
 
-/****************************¶¨ÒåµÄÈ«¾Ö±äÁ¿***************************************/
-extern SOCKET hSocket;			//ÊÂ¼ş¶ÔÏóÁ¬½ÓµÄÌ×½Ó×Ö
- extern WSAEVENT hEvent;			//Ì×½Ó×ÖÏàÁ¬µÄÊÂ¼ş¶ÔÏó	
-//int datalen;			//¶¨ÒåÒ»¸öÕûÊı£¬±íÊ¾´Óµ±Ç°´«ÊäµÄÊı¾İÖĞµÃµ½µÄÊı¾İ³¤¶È
-extern char sendbuffer[SEND_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ·¢ËÍ»º³åÇø
-//char recvbuffer[RECV_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ½ÓÊÕ»º³åÇø		
-//char* databuffer = (char *)malloc(DATA_BUFFER_SIZE);//´æ·ÅÊı¾İµÄ¾²Ì¬»º³åÇø
+/****************************å®šä¹‰çš„å…¨å±€å˜é‡***************************************/
+extern SOCKET hSocket;			//äº‹ä»¶å¯¹è±¡è¿æ¥çš„å¥—æ¥å­—
+ extern WSAEVENT hEvent;			//å¥—æ¥å­—ç›¸è¿çš„äº‹ä»¶å¯¹è±¡	
+//int datalen;			//å®šä¹‰ä¸€ä¸ªæ•´æ•°ï¼Œè¡¨ç¤ºä»å½“å‰ä¼ è¾“çš„æ•°æ®ä¸­å¾—åˆ°çš„æ•°æ®é•¿åº¦
+extern char sendbuffer[SEND_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„å‘é€ç¼“å†²åŒº
+//char recvbuffer[RECV_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„æ¥æ”¶ç¼“å†²åŒº		
+//char* databuffer = (char *)malloc(DATA_BUFFER_SIZE);//å­˜æ”¾æ•°æ®çš„é™æ€ç¼“å†²åŒº
 //
 #define DATA_LENGTH_MAX     10*1024*1024
 #define DATA_LENGTH_MIN     9
 
-//char sendbuffer[SEND_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ·¢ËÍ»º³åÇø
-//char recvbuffer[RECV_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ½ÓÊÕ»º³åÇø		
+//char sendbuffer[SEND_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„å‘é€ç¼“å†²åŒº
+//char recvbuffer[RECV_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„æ¥æ”¶ç¼“å†²åŒº		
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-/*×÷ÓÃ£ºµ÷Õû»º³åÇø£¬É¾³ıÇ°Ãæ¹Ì¶¨³¤¶ÈµÄÊı¾İ£¬²¢½«ºóÃæµÄÊı¾İÒÀ´ÎÇ°ÒÆ
-*ÊäÈë²ÎÊı£ºdata[]£º	Ô­Ê¼Êı¾İ
-*		    pdatalen:	Ô­Ê¼Êı¾İµÄ³¤¶È
-*		    number:		ÒªÉ¾³ıµÄÊı¾İ¸öÊı
-*·µ»ØÖµ£º ÎŞ
+/*ä½œç”¨ï¼šè°ƒæ•´ç¼“å†²åŒºï¼Œåˆ é™¤å‰é¢å›ºå®šé•¿åº¦çš„æ•°æ®ï¼Œå¹¶å°†åé¢çš„æ•°æ®ä¾æ¬¡å‰ç§»
+*è¾“å…¥å‚æ•°ï¼šdata[]ï¼š	åŸå§‹æ•°æ®
+*		    pdatalen:	åŸå§‹æ•°æ®çš„é•¿åº¦
+*		    number:		è¦åˆ é™¤çš„æ•°æ®ä¸ªæ•°
+*è¿”å›å€¼ï¼š æ— 
 */
 void AdjustBuffer(char data[], int *pdatalen, int number){
 	int i = 0;
@@ -35,12 +35,12 @@ void AdjustBuffer(char data[], int *pdatalen, int number){
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-/*×÷ÓÃ£ºÍ¨¹ı²éÕÒ×Ó×Ö·û´®È·¶¨ÒªÉ¾³ıµÄ×Ö½ÚÊı
-*ÊäÈë²ÎÊı£ºdata[]£º		Ô­Ê¼Êı¾İ
-*			length:			Ô­Ê¼Êı¾İµÄ³¤¶È
-*			substring[]:	×Ó×Ö·û´®
-*			substringlength:×Ó×Ö·û´®µÄ³¤¶È
-*·µ»ØÖµ£º	·µ»ØÖµÎªÒªÉ¾³ıµÄ×Ö½ÚÊı
+/*ä½œç”¨ï¼šé€šè¿‡æŸ¥æ‰¾å­å­—ç¬¦ä¸²ç¡®å®šè¦åˆ é™¤çš„å­—èŠ‚æ•°
+*è¾“å…¥å‚æ•°ï¼šdata[]ï¼š		åŸå§‹æ•°æ®
+*			length:			åŸå§‹æ•°æ®çš„é•¿åº¦
+*			substring[]:	å­å­—ç¬¦ä¸²
+*			substringlength:å­å­—ç¬¦ä¸²çš„é•¿åº¦
+*è¿”å›å€¼ï¼š	è¿”å›å€¼ä¸ºè¦åˆ é™¤çš„å­—èŠ‚æ•°
 */
 int FindSubStringIndex(char data[], int length, char substring[], int substringlength)
 {
@@ -48,7 +48,7 @@ int FindSubStringIndex(char data[], int length, char substring[], int substringl
 	int j = 0;
 
 	if (length < substringlength){
-		//Ô­Ê¼Êı¾İ³¤¶ÈĞ¡ÓÚ×Ó×Ö·û´®³¤¶È£¬ËùÒÔ·µ»Ø0
+		//åŸå§‹æ•°æ®é•¿åº¦å°äºå­å­—ç¬¦ä¸²é•¿åº¦ï¼Œæ‰€ä»¥è¿”å›0
 		return 0;
 	}
 
@@ -66,13 +66,13 @@ int FindSubStringIndex(char data[], int length, char substring[], int substringl
 	return i + substringlength;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-/*×÷ÓÃ£ºÍ¨¹ıÊı¾İÖ¡Î²,Ğ£ÑéÊı¾İÊÇ·ñÕıÈ·
-*ÊäÈë²ÎÊı£ºdata[]£º		Ô­Ê¼Êı¾İ
-*			length:			Ô­Ê¼Êı¾İ³¤¶È
-*			substring[]:	×Ó×Ö·û´®
-*			substringlength:×Ó×Ö·û´®µÄ³¤¶È
-*·µ»ØÖµ£ºĞ£ÑéÍ¨¹ı·µ»Ø1£¬
-*		  Ğ£ÑéÎ´Í¨¹ı·µ»Ø0
+/*ä½œç”¨ï¼šé€šè¿‡æ•°æ®å¸§å°¾,æ ¡éªŒæ•°æ®æ˜¯å¦æ­£ç¡®
+*è¾“å…¥å‚æ•°ï¼šdata[]ï¼š		åŸå§‹æ•°æ®
+*			length:			åŸå§‹æ•°æ®é•¿åº¦
+*			substring[]:	å­å­—ç¬¦ä¸²
+*			substringlength:å­å­—ç¬¦ä¸²çš„é•¿åº¦
+*è¿”å›å€¼ï¼šæ ¡éªŒé€šè¿‡è¿”å›1ï¼Œ
+*		  æ ¡éªŒæœªé€šè¿‡è¿”å›0
 */
 int CheckData(char data[], int length, char substring[], int substringlength)
 {
@@ -88,33 +88,33 @@ int CheckData(char data[], int length, char substring[], int substringlength)
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-//´íÎóÏûÏ¢Êä³ö
+//é”™è¯¯æ¶ˆæ¯è¾“å‡º
 void ErrorHandling(char *pdata)
 {
     //fputs(pdata, stderr);
     std::cout<<pdata<<std::endl;
 }
 /*****************************************************************************************************/
-//ÈÕÖ¾ÏûÏ¢Êä³ö
+//æ—¥å¿—æ¶ˆæ¯è¾“å‡º
 void LogRecording(char *pdata)
 {
     //fputs(pdata, stdout);
      std::cout<<pdata<<std::endl;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-/*×÷ÓÃ£ºµÃ³ö»º³åÇøÖĞÊÇ·ñÓĞÒ»Ö¡Êı¾İ
-*ÊäÈë²ÎÊı£ºdata[]£º		½ÓÊÕ»º³åÇø
-*			pdatalen:		½ÓÊÕ»º³åÇøÖĞµÄÊı¾İ³¤¶È
+/*ä½œç”¨ï¼šå¾—å‡ºç¼“å†²åŒºä¸­æ˜¯å¦æœ‰ä¸€å¸§æ•°æ®
+*è¾“å…¥å‚æ•°ï¼šdata[]ï¼š		æ¥æ”¶ç¼“å†²åŒº
+*			pdatalen:		æ¥æ”¶ç¼“å†²åŒºä¸­çš„æ•°æ®é•¿åº¦
 *
-*·µ»ØÖµ£º 0£º±íÊ¾ÒÑÌáÈ¡³öÕıÈ·µÄ³¤¶ÈĞÅÏ¢£¬µ«ÊÇÊı¾İÎ´½ÓÊÕÈ«
-*		  -1£º±íÊ¾Êı¾İ³¤¶È²»¹»£¬ÎŞ·¨ÌáÈ¡³ö³¤¶ÈĞÅÏ¢
-*        -2£º±íÊ¾Êı¾İµÄ³¤¶ÈĞÅÏ¢ÌáÈ¡ÓĞÎó£¬²»ÔÚÒ»¸ö·¶Î§ÄÚ
-*        ÕıÊı£º±íÊ¾Ò»Ö¡Êı¾İµÄ³¤¶È
+*è¿”å›å€¼ï¼š 0ï¼šè¡¨ç¤ºå·²æå–å‡ºæ­£ç¡®çš„é•¿åº¦ä¿¡æ¯ï¼Œä½†æ˜¯æ•°æ®æœªæ¥æ”¶å…¨
+*		  -1ï¼šè¡¨ç¤ºæ•°æ®é•¿åº¦ä¸å¤Ÿï¼Œæ— æ³•æå–å‡ºé•¿åº¦ä¿¡æ¯
+*        -2ï¼šè¡¨ç¤ºæ•°æ®çš„é•¿åº¦ä¿¡æ¯æå–æœ‰è¯¯ï¼Œä¸åœ¨ä¸€ä¸ªèŒƒå›´å†…
+*        æ­£æ•°ï¼šè¡¨ç¤ºä¸€å¸§æ•°æ®çš„é•¿åº¦
 */
 int HasOneFrame(char data[], int* pdatalen){
 
-	int data_len = *pdatalen;	//»º³åÇøÖĞÊı¾İ³¤¶È
-	int frame_len = 0;			//Ò»Ö¡Êı¾İµÄ³¤¶È
+	int data_len = *pdatalen;	//ç¼“å†²åŒºä¸­æ•°æ®é•¿åº¦
+	int frame_len = 0;			//ä¸€å¸§æ•°æ®çš„é•¿åº¦
 
 	if (data_len < 4){
 		return  -1;
@@ -135,9 +135,9 @@ int HasOneFrame(char data[], int* pdatalen){
 	}
 }
 
-/*×÷ÓÃ£ºµÃ³öÒ»Ö¡Êı¾İµÄ³¤¶È
-*ÊäÈë²ÎÊı£ºdata[]£º	Ã¿¸öSocketÌ×½Ó×Ö×¨ÓĞµÄsocket½ÓÊÕ»º³åÇø
-*·µ»ØÖµ£º·µ»Ø½á¹ûÊÇÒ»Ö¡Êı¾İµÄ³¤¶È
+/*ä½œç”¨ï¼šå¾—å‡ºä¸€å¸§æ•°æ®çš„é•¿åº¦
+*è¾“å…¥å‚æ•°ï¼šdata[]ï¼š	æ¯ä¸ªSocketå¥—æ¥å­—ä¸“æœ‰çš„socketæ¥æ”¶ç¼“å†²åŒº
+*è¿”å›å€¼ï¼šè¿”å›ç»“æœæ˜¯ä¸€å¸§æ•°æ®çš„é•¿åº¦
 */
 int CountDataLength(char data[]){
 	int result;
@@ -162,15 +162,15 @@ int MySocketInitial(void){
 		return 1;
 	}
 
-	hSocket = socket(PF_INET, SOCK_STREAM, 0);		//´´½¨Á÷socket
+	hSocket = socket(PF_INET, SOCK_STREAM, 0);		//åˆ›å»ºæµsocket
 	if (hSocket == INVALID_SOCKET){
 		return 2;
 	}
 
-//	std::cout << "ÊäÈë·şÎñÆ÷¶ËIPµØÖ·" << std::endl;
+//	std::cout << "è¾“å…¥æœåŠ¡å™¨ç«¯IPåœ°å€" << std::endl;
 //	fgets(server_ip, sizeof(server_ip), stdin);
 
-//	std::cout << "ÊäÈë¶Ë¿ÚºÅ" << std::endl;
+//	std::cout << "è¾“å…¥ç«¯å£å·" << std::endl;
 //	fgets(server_port, sizeof(server_port), stdin);
 
 	memset(&servAdr, 0, sizeof(servAdr));
@@ -194,49 +194,49 @@ int MySocketInitial(void){
     servAdr.sin_port = htons(atoi("8080"));
 
 
-	if (connect(hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR){	//½«Ì×½Ó×Ö°ó¶¨µ½·şÎñÆ÷µÄÍøÂçµØÖ·ÉÏ
+	if (connect(hSocket, (SOCKADDR*)&servAdr, sizeof(servAdr)) == SOCKET_ERROR){	//å°†å¥—æ¥å­—ç»‘å®šåˆ°æœåŠ¡å™¨çš„ç½‘ç»œåœ°å€ä¸Š
 		return 3;
 	}
 
     int iMode = 1;
     ioctlsocket(hSocket, FIONBIO, (u_long FAR*) &iMode);
-	hEvent = WSACreateEvent();			//´´½¨ÊÂ¼ş¶ÔÏó
+	hEvent = WSACreateEvent();			//åˆ›å»ºäº‹ä»¶å¯¹è±¡
 	if (hEvent == WSA_INVALID_EVENT){
 		return 4;
 	}
 
-	if (WSAEventSelect(hSocket, hEvent, FD_READ | FD_CLOSE) == SOCKET_ERROR){		//¼àÊÓµÄÊÂ¼şÀàĞÍÎªÊÇ·ñÓĞĞÂµÄÁ¬½ÓÇëÇó
+	if (WSAEventSelect(hSocket, hEvent, FD_READ | FD_CLOSE) == SOCKET_ERROR){		//ç›‘è§†çš„äº‹ä»¶ç±»å‹ä¸ºæ˜¯å¦æœ‰æ–°çš„è¿æ¥è¯·æ±‚
 		return 5;
 	}
 	return 0;
 }
-/*×÷ÓÃ£º½«Êı¾İÍ¨¹ıÍøÂç·¢ËÍµ½¶ÔÓ¦¶Ë¿Ú
-*ÊäÈë²ÎÊı£ºs:				Ì×½Ó×Ö
-*			mode£º			Ä£Ê½
-*			buf[]£º			socket·¢ËÍ»º³åÇø
-*			buflen:			socket·¢ËÍ»º³åÇøµÄ´óĞ¡
-*			data[]£º		Ğè·¢ËÍµÄÊı¾İ
-*			datalen:		Ğè·¢ËÍµÄÊı¾İ³¤¶È
-*·µ»ØÖµ£º  0£º				´ú±í³É¹¦·¢ËÍ
-*			ÕıÊı£º		·¢ËÍÊ§°Ü£¬ÆäÖµÎª¶ÔÓ¦´íÎóÂë
+/*ä½œç”¨ï¼šå°†æ•°æ®é€šè¿‡ç½‘ç»œå‘é€åˆ°å¯¹åº”ç«¯å£
+*è¾“å…¥å‚æ•°ï¼šs:				å¥—æ¥å­—
+*			modeï¼š			æ¨¡å¼
+*			buf[]ï¼š			socketå‘é€ç¼“å†²åŒº
+*			buflen:			socketå‘é€ç¼“å†²åŒºçš„å¤§å°
+*			data[]ï¼š		éœ€å‘é€çš„æ•°æ®
+*			datalen:		éœ€å‘é€çš„æ•°æ®é•¿åº¦
+*è¿”å›å€¼ï¼š  0ï¼š				ä»£è¡¨æˆåŠŸå‘é€
+*			æ­£æ•°ï¼š		å‘é€å¤±è´¥ï¼Œå…¶å€¼ä¸ºå¯¹åº”é”™è¯¯ç 
 */
 int MySend(SOCKET s, char mode, char buf[], int buflen, char data[], int datalen){
-	int wt_cnt = 0;			//Ã¿´Îµ÷ÓÃsendº¯ÊıµÄ·µ»ØÖµ
-	int total_len = 0;		//×Ü¹²Òª·¢ËÍµÄÊı¾İ³¤¶È
-	int str_len = 0;		//Ê£ÓàÒª·¢ËÍµÄÊı¾İ³¤¶È
-	int buf_len = buflen;	//·¢ËÍ»º³åÇøµÄÊı¾İ³¤¶È
-	int data_len = datalen;	//Òª·¢ËÍµÄÊı¾İµÄ³¤¶È
+	int wt_cnt = 0;			//æ¯æ¬¡è°ƒç”¨sendå‡½æ•°çš„è¿”å›å€¼
+	int total_len = 0;		//æ€»å…±è¦å‘é€çš„æ•°æ®é•¿åº¦
+	int str_len = 0;		//å‰©ä½™è¦å‘é€çš„æ•°æ®é•¿åº¦
+	int buf_len = buflen;	//å‘é€ç¼“å†²åŒºçš„æ•°æ®é•¿åº¦
+	int data_len = datalen;	//è¦å‘é€çš„æ•°æ®çš„é•¿åº¦
 
 	memset(buf, 0, buf_len);
 	total_len = data_len + 9;
 
-	//ËÄÎ»Êı¾İ³¤¶È
+	//å››ä½æ•°æ®é•¿åº¦
 	buf[0] = total_len / (256 * 256 * 256);
 	buf[1] = (total_len / (256 * 256)) % 256;
 	buf[2] = (total_len / 256) % 256;
 	buf[3] = total_len%256;
 
-	//Ò»Î»Ä£Ê½
+	//ä¸€ä½æ¨¡å¼
 	buf[4] = mode;
 
 	if (data_len > 0){
@@ -245,7 +245,7 @@ int MySend(SOCKET s, char mode, char buf[], int buflen, char data[], int datalen
 		}
 	}
 
-	//ËÄÎ»Êı¾İ½áÎ²
+	//å››ä½æ•°æ®ç»“å°¾
 	buf[total_len - 4] = '#';
 	buf[total_len - 3] = '#';
 	buf[total_len - 2] = '#';
@@ -273,11 +273,11 @@ int MySend(SOCKET s, char mode, char buf[], int buflen, char data[], int datalen
 }
 
 
-/*×÷ÓÃ£º½«Êı¾İÍ¨¹ıÍøÂç·¢ËÍµ½¶ÔÓ¦¶Ë¿Ú
-*ÊäÈë²ÎÊı£ºs:				Ì×½Ó×Ö
-*			buf[]£º			socket½ÓÊÕ»º³åÇø
-*			buflen:			socket½ÓÊÕ»º³åÇøµÄ´óĞ¡
-*·µ»ØÖµ£º	recvº¯ÊıµÄ·µ»ØÖµ
+/*ä½œç”¨ï¼šå°†æ•°æ®é€šè¿‡ç½‘ç»œå‘é€åˆ°å¯¹åº”ç«¯å£
+*è¾“å…¥å‚æ•°ï¼šs:				å¥—æ¥å­—
+*			buf[]ï¼š			socketæ¥æ”¶ç¼“å†²åŒº
+*			buflen:			socketæ¥æ”¶ç¼“å†²åŒºçš„å¤§å°
+*è¿”å›å€¼ï¼š	recvå‡½æ•°çš„è¿”å›å€¼
 */
 
 int MyRecv(SOCKET s, char buf[], int buflen){
@@ -286,10 +286,10 @@ int MyRecv(SOCKET s, char buf[], int buflen){
 	return result;
 }
 
-/*×÷ÓÃ£º½«Êı¾İÍ¨¹ıÍøÂç·¢ËÍµ½¶ÔÓ¦¶Ë¿Ú
-*ÊäÈë²ÎÊı£º	s:			Ì×½Ó×Ö
-*				event£º		Ì×½Ó×ÖÏàÁ¬µÄÊÂ¼ş¶ÔÏó
-*·µ»ØÖµ£º		0£º			¹Ì¶¨Öµ
+/*ä½œç”¨ï¼šå°†æ•°æ®é€šè¿‡ç½‘ç»œå‘é€åˆ°å¯¹åº”ç«¯å£
+*è¾“å…¥å‚æ•°ï¼š	s:			å¥—æ¥å­—
+*				eventï¼š		å¥—æ¥å­—ç›¸è¿çš„äº‹ä»¶å¯¹è±¡
+*è¿”å›å€¼ï¼š		0ï¼š			å›ºå®šå€¼
 */
 int MySocketClose(SOCKET s, WSAEVENT event){
 	WSACloseEvent(event);
@@ -297,40 +297,40 @@ int MySocketClose(SOCKET s, WSAEVENT event){
 	return 0;
 }
 
-/*×÷ÓÃ£º¶Ô»º³åÇøÖĞµÄÊı¾İ½øĞĞ½âÎö
-*ÊäÈë²ÎÊı£ºbuf[]£º			SocketÌ×½Ó×Ö×¨ÓĞµÄsocket½ÓÊÕ»º³åÇø
-*			pbuflen:		Ö¸ÏòSocketÌ×½Ó×Ö×¨ÓĞµÄsocket½ÓÊÕ»º³åÇøÖĞµÄÊı¾İ³¤¶È
-*			pdatalen:		Ö¸ÏòÒ»Ö¡ĞÅÏ¢µÄ³¤¶È
-*·µ»ØÖµ£º 0£º±íÊ¾ÒÑÌáÈ¡³öÕıÈ·µÄ³¤¶ÈĞÅÏ¢£¬µ«ÊÇÊı¾İÎ´½ÓÊÕÈ«£¬ĞèÒª¼ÌĞø½ÓÊÕ
-*         1£ºĞèÒª¼ÌĞø½âÎöÊı¾İ
+/*ä½œç”¨ï¼šå¯¹ç¼“å†²åŒºä¸­çš„æ•°æ®è¿›è¡Œè§£æ
+*è¾“å…¥å‚æ•°ï¼šbuf[]ï¼š			Socketå¥—æ¥å­—ä¸“æœ‰çš„socketæ¥æ”¶ç¼“å†²åŒº
+*			pbuflen:		æŒ‡å‘Socketå¥—æ¥å­—ä¸“æœ‰çš„socketæ¥æ”¶ç¼“å†²åŒºä¸­çš„æ•°æ®é•¿åº¦
+*			pdatalen:		æŒ‡å‘ä¸€å¸§ä¿¡æ¯çš„é•¿åº¦
+*è¿”å›å€¼ï¼š 0ï¼šè¡¨ç¤ºå·²æå–å‡ºæ­£ç¡®çš„é•¿åº¦ä¿¡æ¯ï¼Œä½†æ˜¯æ•°æ®æœªæ¥æ”¶å…¨ï¼Œéœ€è¦ç»§ç»­æ¥æ”¶
+*         1ï¼šéœ€è¦ç»§ç»­è§£ææ•°æ®
 */
 int DataAnalyze(char data[], int* pdatalen){
-	int data_len = *pdatalen;	//datalenÎª»º³åÇøÖĞÊı¾İµÄ³¤¶È
-	int frame_len = 0;	//pframelenÎªÒ»Ö¡ÍêÕûµÄÊı¾İ¶ÔÓ¦µÄ³¤¶È
+	int data_len = *pdatalen;	//datalenä¸ºç¼“å†²åŒºä¸­æ•°æ®çš„é•¿åº¦
+	int frame_len = 0;	//pframelenä¸ºä¸€å¸§å®Œæ•´çš„æ•°æ®å¯¹åº”çš„é•¿åº¦
 
-	//ÅĞ¶ÏÊı¾İ»º³åÇøÖĞÊÇ·ñÓĞÒ»Ö¡Ğ£ÑéÍ¨¹ıµÄĞÅÏ¢
+	//åˆ¤æ–­æ•°æ®ç¼“å†²åŒºä¸­æ˜¯å¦æœ‰ä¸€å¸§æ ¡éªŒé€šè¿‡çš„ä¿¡æ¯
 	frame_len = HasOneFrame(data, pdatalen);
 	if (frame_len == 0){
-		//±íÊ¾ÒÑÌáÈ¡³öÕıÈ·µÄ³¤¶ÈĞÅÏ¢£¬µ«ÊÇÊı¾İÎ´½ÓÊÕÈ«
+		//è¡¨ç¤ºå·²æå–å‡ºæ­£ç¡®çš„é•¿åº¦ä¿¡æ¯ï¼Œä½†æ˜¯æ•°æ®æœªæ¥æ”¶å…¨
 		return 0;
 	}
 	else if (frame_len == -1){
-		//±íÊ¾Êı¾İ³¤¶È²»¹»£¬ÎŞ·¨ÌáÈ¡³ö³¤¶ÈĞÅÏ¢
+		//è¡¨ç¤ºæ•°æ®é•¿åº¦ä¸å¤Ÿï¼Œæ— æ³•æå–å‡ºé•¿åº¦ä¿¡æ¯
 		return 0;
 	}
 	else if (frame_len == -2){
-		//±íÊ¾Êı¾İµÄ³¤¶ÈĞÅÏ¢ÌáÈ¡ÓĞÎó£¬²»ÔÚÒ»¸ö·¶Î§ÄÚ,ËùÒÔÊı¾İ¿ªÍ·¾Í´íÁË£¬Ğèµ÷Õû»º³åÇø
+		//è¡¨ç¤ºæ•°æ®çš„é•¿åº¦ä¿¡æ¯æå–æœ‰è¯¯ï¼Œä¸åœ¨ä¸€ä¸ªèŒƒå›´å†…,æ‰€ä»¥æ•°æ®å¼€å¤´å°±é”™äº†ï¼Œéœ€è°ƒæ•´ç¼“å†²åŒº
 		int index = 0;
 		index = FindSubStringIndex(data, data_len, "####", 4);
-		AdjustBuffer(data, pdatalen, index);						//µ÷Õû½ÓÊÕ»º³åÇø£¬½«»º³åÇøÖĞÇ°ÃæÎŞÓÃµÄÊı¾İÉ¾³ı£¬Í¬Ê±ºóÃæµÄÊı¾İÇ°ÒÆ
+		AdjustBuffer(data, pdatalen, index);						//è°ƒæ•´æ¥æ”¶ç¼“å†²åŒºï¼Œå°†ç¼“å†²åŒºä¸­å‰é¢æ— ç”¨çš„æ•°æ®åˆ é™¤ï¼ŒåŒæ—¶åé¢çš„æ•°æ®å‰ç§»
 		return 1;
 	}
 	else{
-		//µÃ³öÁËÒ»Ö¡µÄÊı¾İ³¤¶È
+		//å¾—å‡ºäº†ä¸€å¸§çš„æ•°æ®é•¿åº¦
 		if (CheckData(data, frame_len, "####", 4) == TRUE){
-        //std::cout << "Êı¾İĞ£ÑéÍ¨¹ı" << std::endl;
+        //std::cout << "æ•°æ®æ ¡éªŒé€šè¿‡" << std::endl;
             if (data[4] == 3){
-                //std::cout << "ÊÕµ½Ò»Ö¡Êı¾İ" << std::endl;
+                //std::cout << "æ”¶åˆ°ä¸€å¸§æ•°æ®" << std::endl;
 				//int rows_length = (((uchar)data[13] * 256 + (uchar)data[14]) * 256 + (uchar)data[15]) * 256 + (uchar)data[16];
 				//int cols_length = (((uchar)data[17] * 256 + (uchar)data[18]) * 256 + (uchar)data[19]) * 256 + (uchar)data[20];
 				//cv::Mat or = GetImageFromBuffer(&data[21], rows_length, cols_length);
@@ -345,38 +345,38 @@ int DataAnalyze(char data[], int* pdatalen){
                 return 2;
             }
 			else{
-				std::cout << "ÆäËûÖ¸Áî" << std::endl;
-				AdjustBuffer(data, pdatalen, frame_len);						//µ÷Õû½ÓÊÕ»º³åÇø£¬½«»º³åÇøÖĞÇ°ÃæÎŞÓÃµÄÊı¾İÉ¾³ı£¬Í¬Ê±ºóÃæµÄÊı¾İÇ°ÒÆ
+				std::cout << "å…¶ä»–æŒ‡ä»¤" << std::endl;
+				AdjustBuffer(data, pdatalen, frame_len);						//è°ƒæ•´æ¥æ”¶ç¼“å†²åŒºï¼Œå°†ç¼“å†²åŒºä¸­å‰é¢æ— ç”¨çš„æ•°æ®åˆ é™¤ï¼ŒåŒæ—¶åé¢çš„æ•°æ®å‰ç§»
 				return 3;
 			}
-			//AdjustBuffer(data, pdatalen, frame_len);						//µ÷Õû½ÓÊÕ»º³åÇø£¬½«»º³åÇøÖĞÇ°ÃæÎŞÓÃµÄÊı¾İÉ¾³ı£¬Í¬Ê±ºóÃæµÄÊı¾İÇ°ÒÆ
+			//AdjustBuffer(data, pdatalen, frame_len);						//è°ƒæ•´æ¥æ”¶ç¼“å†²åŒºï¼Œå°†ç¼“å†²åŒºä¸­å‰é¢æ— ç”¨çš„æ•°æ®åˆ é™¤ï¼ŒåŒæ—¶åé¢çš„æ•°æ®å‰ç§»
 			return 2;
 		}
 		else{
-            //std::cout << "Êı¾İÎ´Ğ£ÑéÍ¨¹ı" << std::endl;
+            //std::cout << "æ•°æ®æœªæ ¡éªŒé€šè¿‡" << std::endl;
 			int index = 0;
 			index = FindSubStringIndex(data, data_len, "####", 4);
-			AdjustBuffer(data, pdatalen, index);						//µ÷Õû½ÓÊÕ»º³åÇø£¬½«»º³åÇøÖĞÇ°ÃæÎŞÓÃµÄÊı¾İÉ¾³ı£¬Í¬Ê±ºóÃæµÄÊı¾İÇ°ÒÆ
+			AdjustBuffer(data, pdatalen, index);						//è°ƒæ•´æ¥æ”¶ç¼“å†²åŒºï¼Œå°†ç¼“å†²åŒºä¸­å‰é¢æ— ç”¨çš„æ•°æ®åˆ é™¤ï¼ŒåŒæ—¶åé¢çš„æ•°æ®å‰ç§»
 		}
 		return 1;
 	}
 }
 
 
-/*×÷ÓÃ£º¶ÁÈ¡ÍøÂçÊı¾İ
-*ÊäÈë²ÎÊı£ºs:				Ì×½Ó×Ö
-*			netEvents		Ì×½Ó×Ö¶ÔÓ¦µÄÊÂ¼şÀàĞÍ
-*			buf[]£º			½ÓÊÕ»º³åÇø
-*			pbuflen:		½ÓÊÕ»º³åÇøÖĞµÄÊı¾İ³¤¶È
-*			data£º			ÓÃÓÚ´æ´¢Ò»Ö¡Êı¾İµÄ»º³åÇø
-*			pdatalen:		Ö¸ÏòÒ»Ö¡ĞÅÏ¢µÄ³¤¶È
-*·µ»ØÖµ£º 0£ºÓöµ½´íÎó£¬ĞèÒª¶Ï¿ªÁ¬½Ó
-*         1£ºÕıÈ·´¦Àí
+/*ä½œç”¨ï¼šè¯»å–ç½‘ç»œæ•°æ®
+*è¾“å…¥å‚æ•°ï¼šs:				å¥—æ¥å­—
+*			netEvents		å¥—æ¥å­—å¯¹åº”çš„äº‹ä»¶ç±»å‹
+*			buf[]ï¼š			æ¥æ”¶ç¼“å†²åŒº
+*			pbuflen:		æ¥æ”¶ç¼“å†²åŒºä¸­çš„æ•°æ®é•¿åº¦
+*			dataï¼š			ç”¨äºå­˜å‚¨ä¸€å¸§æ•°æ®çš„ç¼“å†²åŒº
+*			pdatalen:		æŒ‡å‘ä¸€å¸§ä¿¡æ¯çš„é•¿åº¦
+*è¿”å›å€¼ï¼š 0ï¼šé‡åˆ°é”™è¯¯ï¼Œéœ€è¦æ–­å¼€è¿æ¥
+*         1ï¼šæ­£ç¡®å¤„ç†
 */
 int ReadHanding(SOCKET s, WSANETWORKEVENTS netEvents, char buf[], int buflen, char data[], int *pdatalen){
-	int str_len = 0;				//µ÷ÓÃMyRecv()ºóµÄ·µ»ØÖµ
-	int buf_len = buflen;			//½ÓÊÕ»º³åÇøÖĞµÄÊı¾İ³¤¶È
-	int data_len = *pdatalen;		//»º³åÇøÖĞµÄÊı¾İ³¤¶È
+	int str_len = 0;				//è°ƒç”¨MyRecv()åçš„è¿”å›å€¼
+	int buf_len = buflen;			//æ¥æ”¶ç¼“å†²åŒºä¸­çš„æ•°æ®é•¿åº¦
+	int data_len = *pdatalen;		//ç¼“å†²åŒºä¸­çš„æ•°æ®é•¿åº¦
 
 	while (1){
 		memset(buf, 0, buf_len);
@@ -404,17 +404,17 @@ int ReadHanding(SOCKET s, WSANETWORKEVENTS netEvents, char buf[], int buflen, ch
 			return 0;
 		}
 		else{
-			//·¢Éú´íÎó£¬ĞèÒª¶Ô´íÎó´úÂë·ÖÎö
+			//å‘ç”Ÿé”™è¯¯ï¼Œéœ€è¦å¯¹é”™è¯¯ä»£ç åˆ†æ
 			if (WSAGetLastError() == 10035){
 				continue;
 			}
 			if (errno == EAGAIN){
-				//±íÊ¾µ±Ç°»º³åÇøÒÑÎŞÊı¾İ¿É¶Á
+				//è¡¨ç¤ºå½“å‰ç¼“å†²åŒºå·²æ— æ•°æ®å¯è¯»
 				;
 			}
 			else{
 				//std::cout << "3333" << std::endl;
-				//ÆäËûÔ­Òò
+				//å…¶ä»–åŸå› 
 				return 0;
 			}
 		}
@@ -428,17 +428,17 @@ int ReadHanding(SOCKET s, WSANETWORKEVENTS netEvents, char buf[], int buflen, ch
 	return 1;
 }
 
-/*×÷ÓÃ£º¶Ï¿ªÍøÂçÁ¬½Ó
-*ÊäÈë²ÎÊı£º	s:				Ì×½Ó×Ö
-*			hEvent£º		Ì×½Ó×Ö¶ÔÓ¦µÄÊÂ¼ş¶ÔÏó
-*			netEvents		ÊÂ¼ş¶ÔÏó¶ÔÓ¦µÄÊÂ¼şÀàĞÍ
-*·µ»ØÖµ£º	0£º				¹Ì¶¨·µ»ØÖµ
+/*ä½œç”¨ï¼šæ–­å¼€ç½‘ç»œè¿æ¥
+*è¾“å…¥å‚æ•°ï¼š	s:				å¥—æ¥å­—
+*			hEventï¼š		å¥—æ¥å­—å¯¹åº”çš„äº‹ä»¶å¯¹è±¡
+*			netEvents		äº‹ä»¶å¯¹è±¡å¯¹åº”çš„äº‹ä»¶ç±»å‹
+*è¿”å›å€¼ï¼š	0ï¼š				å›ºå®šè¿”å›å€¼
 */
 int CloseHanding(SOCKET s, WSAEVENT hEvent, WSANETWORKEVENTS netEvents){
-	//FD_CLOSEÊÂ¼şµÄ´¦Àí
-	if (netEvents.iErrorCode[FD_CLOSE_BIT] != 0)  //Èç¹û·¢ÉúFD_CLOSEÏà¹Ø´íÎó£¬ÔòÔÚiErrorCode[FD_CLOSE_BIT]ÖĞ±£´æ³ı0ÒÔÍâµÄÆäËûÖµ
+	//FD_CLOSEäº‹ä»¶çš„å¤„ç†
+	if (netEvents.iErrorCode[FD_CLOSE_BIT] != 0)  //å¦‚æœå‘ç”ŸFD_CLOSEç›¸å…³é”™è¯¯ï¼Œåˆ™åœ¨iErrorCode[FD_CLOSE_BIT]ä¸­ä¿å­˜é™¤0ä»¥å¤–çš„å…¶ä»–å€¼
 	{
-		ErrorHandling("¹Ø±ÕÊÂ¼ş¶ÔÏóÊ±³ö´í£º·¢ÉúFD_CLOSEÏà¹Ø´íÎó");
+		ErrorHandling("å…³é—­äº‹ä»¶å¯¹è±¡æ—¶å‡ºé”™ï¼šå‘ç”ŸFD_CLOSEç›¸å…³é”™è¯¯");
 	}
 
 	WSACloseEvent(hEvent);

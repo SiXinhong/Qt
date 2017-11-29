@@ -5,13 +5,16 @@
 #-------------------------------------------------
 
 QT       += core gui
-QT +=phonon
+#QT +=phonon
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Test
 TEMPLATE = app
+INCLUDEPATH += D:\opencv-2.4.9-build\install\include
+INCLUDEPATH += D:\opencv-2.4.9-build\install\include\opencv
 
+LIBS += -L D:\opencv-2.4.9-build\install\x64\mingw\lib\libopencv_*.a\
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -42,7 +45,8 @@ SOURCES += main.cpp\
     regiongroup.cpp \
     monitor.cpp \
     detailsofrg.cpp \
-    alert.cpp
+    alert.cpp \
+    timecontrol.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -74,45 +78,47 @@ HEADERS  += mainwindow.h \
     regiongroup.h \
     monitor.h \
     detailsofrg.h \
-    alert.h
+    alert.h \
+    timecontrol.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
     timetrackbar.ui \
     backwindow.ui
 
-INCLUDEPATH+=.\OpenCV\include\opencv\
+#INCLUDEPATH+=.\OpenCV\include\opencv\
 
-             INCLUDEPATH+=.\OpenCV\include\opencv2\
+#             INCLUDEPATH+=.\OpenCV\include\opencv2\
 
-             INCLUDEPATH+=.\OpenCV\include
+#             INCLUDEPATH+=.\OpenCV\include
 
-LIBS+=.\OpenCV\lib\libopencv_calib3d231.dll.a\
+#LIBS+=.\OpenCV\lib\libopencv_calib3d231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_contrib231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_contrib231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_core231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_core231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_features2d231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_features2d231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_flann231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_flann231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_gpu231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_gpu231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_highgui231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_highgui231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_imgproc231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_imgproc231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_legacy231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_legacy231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_ml231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_ml231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_objdetect231.dll.a\
+#        LIBS+=.\OpenCV\lib\libopencv_objdetect231.dll.a\
 
-        LIBS+=.\OpenCV\lib\libopencv_ts231.a\
+#        LIBS+=.\OpenCV\lib\libopencv_ts231.a\
 
-LIBS += .\lib\WinMM.Lib
-LIBS += .\lib\User32.Lib
+#LIBS += .\lib\WinMM.Lib
+#LIBS += .\lib\User32.Lib
+
 
 #///////////////////////////////////////////////////////zc
 

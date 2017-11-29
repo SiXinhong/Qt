@@ -1,4 +1,4 @@
-#include "imagedeal.h"
+﻿#include "imagedeal.h"
 
 ImageDeal::ImageDeal()
 {

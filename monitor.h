@@ -1,4 +1,4 @@
-#ifndef MONITOR_H
+﻿#ifndef MONITOR_H
 #define MONITOR_H
 
 #include <QMainWindow>
@@ -18,6 +18,7 @@ class Monitor;
 #include "nwidget2.h"
 #include "mainwindow.h"
 #include "detailsofrg.h"
+#include "timecontrol.h"
 
 
 class Monitor : public QMainWindow
@@ -50,6 +51,7 @@ public slots:
     void onClickName();
     void createRG();
     void detailsShow();
+    void timeControl();
 };
 
 #endif // MONITOR_H

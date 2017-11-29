@@ -1,4 +1,4 @@
-#include "myobject.h"
+ï»¿#include "myobject.h"
 #include "myinterface.h";
 #include "cvutil.h"
 #include "show_sdk.h"
@@ -10,7 +10,7 @@
 #include <iostream>
 #include<QDebug>
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -24,35 +24,41 @@ using namespace std;
 //#pragma comment(lib,"DisplaySDK.lib")
 
 MyInterface::MyInterface(){
-    //´æ´¢µÚÒ»À¸
+    //å­˜å‚¨ç¬¬ä¸€æ 
     filename1 = "./s1/1.bmp";
     filename2 = "./s1/2.bmp";
     filename3 = "./s1/3.bmp";
     filename4 = "./s1/4.bmp";
-    //´æ´¢µÚ¶şÀ¸
+    //å­˜å‚¨ç¬¬äºŒæ 
     filename5 = "./s2/1.bmp";
     filename6 = "./s2/2.bmp";
     filename7 = "./s2/3.bmp";
     filename8 = "./s2/4.bmp";
 
-    //½«µÚÒ»À¸´æ´¢ÔÚvectorÖĞ
+    //å°†ç¬¬ä¸€æ å­˜å‚¨åœ¨vectorä¸­
     vc1.push_back(filename1);
     vc1.push_back(filename2);
     vc1.push_back(filename3);
     vc1.push_back(filename4);
-    //½«µÚ¶şÀ¸´æ´¢ÔÚvectorÖĞ
+    //å°†ç¬¬äºŒæ å­˜å‚¨åœ¨vectorä¸­
     vc2.push_back(filename5);
     vc2.push_back(filename6);
     vc2.push_back(filename7);
     vc2.push_back(filename8);
 
-    //´Ó½ğÀÏÊ¦µÃÀ´µÄÍ¼Æ¬
+    //ä»é‡‘è€å¸ˆå¾—æ¥çš„å›¾ç‰‡
     f0 = "./s/0.bmp";
     f1 = "./s/1.bmp";
     f2 = "./s/2.bmp";
     f3 = "./s/3.bmp";
     f4 = "./s/4.bmp";
     f5 = "./s/5.bmp";
+//    f0 = "./s/0.jpg";
+//    f1 = "./s/1.jpg";
+//    f2 = "./s/2.jpg";
+//    f3 = "./s/3.jpg";
+//    f4 = "./s/4.jpg";
+//    f5 = "./s/5.jpg";
     //f6 = "./s/6.bmp";
     //f7 = "./s/7.bmp";
     //f8 = "./s/8.bmp";
@@ -76,8 +82,8 @@ MyInterface::MyInterface(){
     //vc.push_back(f12);
 
 
-    index1=0;//ÓÃÓÚÈ¡µÚÒ»À¸µÄÍ¼Æ¬
-    index2=0;//ÓÃÓÚÈ¡µÚ¶şÀ¸µÄÍ¼Æ¬
+    index1=0;//ç”¨äºå–ç¬¬ä¸€æ çš„å›¾ç‰‡
+    index2=0;//ç”¨äºå–ç¬¬äºŒæ çš„å›¾ç‰‡
 
     indexx = 0;
     indexy = 0;
@@ -89,7 +95,7 @@ MyInterface::MyInterface(){
 
 //    MyObject mo1 = MyObject();
 //    //int x1 = this->panoImage.cols-150;
-//    int x1=500;//ÎªÁË²»ÈÃxĞ¡ÓÚ0
+//    int x1=500;//ä¸ºäº†ä¸è®©xå°äº0
 //    int y1 = 10;
 //    int w = 30;
 //    int h = 30;
@@ -120,7 +126,7 @@ MyInterface::MyInterface(){
 
     MyObject mo1 = MyObject();
     //int x1 = this->panoImage.cols-150;
-    int x1=500;//ÎªÁË²»ÈÃxĞ¡ÓÚ0
+    int x1=500;//ä¸ºäº†ä¸è®©xå°äº0
     int y1 = 10;
     int w = 30;
     int h = 30;
@@ -170,7 +176,7 @@ void MyInterface::fillObjs(){
         Rect r=mo1.getRect();
         int w=r.width;
         int h=r.height;
-        int x=qrand()%this->panoImage.cols;//³õÊ¼ÖµËæ»ú
+        int x=qrand()%this->panoImage.cols;//åˆå§‹å€¼éšæœº
         int y=qrand()%this->panoImage.rows;
         mo1.color = CVUtil::getRandomColor();
         mo1.setRect(Rect(x,y,w,h));
@@ -267,12 +273,12 @@ vector<MyObject> MyInterface::getObjs(){
     ret.insert(ret.end(),objs2.begin(),objs2.end());
     return ret;
 }
-//»ñµÃÈ«¾°ÏÔÊ¾Çø1ÖĞµÄ¶ÔÏó
+//è·å¾—å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„å¯¹è±¡
 vector<MyObject> MyInterface::getQj1Objs(){
     return this->objs1;
 }
 
-//»ñµÃÈ«¾°ÏÔÊ¾Çø2ÖĞµÄ¶ÔÏó
+//è·å¾—å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­çš„å¯¹è±¡
 vector<MyObject> MyInterface::getQj2Objs(){
     return this->objs2;
 }
@@ -280,7 +286,7 @@ vector<MyObject> MyInterface::getQj2Objs(){
 int MyInterface::getIntegratedData2(){
     index1++;
     QString qj = vc[(index1)%6];
-
+    //QString qj = vc[0];
     this->panoImage = imread(qj.toStdString());
     //    Mat mat = this->panoImage;
     //    Size dsize ;
@@ -296,7 +302,7 @@ int MyInterface::getIntegratedData2(){
     //    cv::resize(image4, image44,dsize);
     //    this->qj1mat = image44;
 
-    //    //È«¾°2Mat
+    //    //å…¨æ™¯2Mat
     //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
     //    Mat image5 = CVUtil::QImageToMat(aa2);
     //    Mat image55 = Mat(dsize,CV_32S);
@@ -304,11 +310,11 @@ int MyInterface::getIntegratedData2(){
     //    this->qj2mat = image55;
 }
 
-//»ñµÃ×ÛºÏÊı¾İ
+//è·å¾—ç»¼åˆæ•°æ®
 int MyInterface::getIntegratedData(){
     IntegratedData* data = new IntegratedData;
-    int isfail_getdata = GetSurveillanceData(0, data);//»ñÈ¡ÖÜÊÔÍ¼
-    isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//»ñÈ¡ÖÜÊÔÍ¼
+    int isfail_getdata = GetSurveillanceData(0, data);//è·å–å‘¨è¯•å›¾
+    isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//è·å–å‘¨è¯•å›¾
     if (isfail_getdata == 0)
     {
         if (!data->panoImage.empty())
@@ -318,18 +324,18 @@ int MyInterface::getIntegratedData(){
             this->timett = data->timeinfo;
             cv::Mat pano_temp=cv::Mat(data->panoImage.rows,data->panoImage.cols,CV_8UC3);
             vector<cv::Mat> v_mat(3);
-            cv::split(pano_temp,v_mat);//°Ñ¶àÍ¨µÀ·Ö½â³É¼¸¸öµ¥Í¨µÀ
+            cv::split(pano_temp,v_mat);//æŠŠå¤šé€šé“åˆ†è§£æˆå‡ ä¸ªå•é€šé“
             v_mat[0]=data->panoImage.clone();
             v_mat[1]=data->panoImage.clone();
             v_mat[2]=data->panoImage.clone();
-            cv::merge(v_mat,pano_temp);//°Ñ¼¸¸öµ¥Í¨µÀ×éºÏ³ÉÒ»¸ö¶àÍ¨µÀ
+            cv::merge(v_mat,pano_temp);//æŠŠå‡ ä¸ªå•é€šé“ç»„åˆæˆä¸€ä¸ªå¤šé€šé“
             //cv::imshow(pano_image);
             data->panoImage=pano_temp;
 
             this->panoImage = data->panoImage;
             //std::cout<<panoImage.channels()<<std::endl;
-            //                //ÏÂÃæ½«Õû¸öµÄÍ¼ÏñÇĞ³ÉÁ½·ù
-            //                //È«¾°1Mat
+            //                //ä¸‹é¢å°†æ•´ä¸ªçš„å›¾åƒåˆ‡æˆä¸¤å¹…
+            //                //å…¨æ™¯1Mat
             //                Mat mat = this->panoImage;
             //                Size dsize ;
             //                double scale = 1;
@@ -355,7 +361,7 @@ int MyInterface::getIntegratedData(){
             //                this->qj1mat = image44;
 
             //                //this->qj1mat = mat;
-            //                //È«¾°2Mat
+            //                //å…¨æ™¯2Mat
             //                //mat = this->panoImage;
             //                //dsize ;
             //                //double scale = 1;
@@ -372,7 +378,7 @@ int MyInterface::getIntegratedData(){
             //                this->qj2mat = image55;
             //this->qj2mat = mat;
 
-            //ÏÂÃæÍê³ÉÃ¿¸öÄ¿±êµÄ¹¹Ôì
+            //ä¸‹é¢å®Œæˆæ¯ä¸ªç›®æ ‡çš„æ„é€ 
             //this->objs.clear();
             this->objs1.clear();
             this->objs2.clear();
@@ -383,10 +389,10 @@ int MyInterface::getIntegratedData(){
             for (int i = 0; i < count;i++)
             {
                 SmallTarget tar = targets[i];
-                //ÁÙÊ±¸øÄ¿±êÉèÖÃid£¬SDK´«¹ıÀ´µÄid¶¼ÊÇ-1
+                //ä¸´æ—¶ç»™ç›®æ ‡è®¾ç½®idï¼ŒSDKä¼ è¿‡æ¥çš„idéƒ½æ˜¯-1
                 tar.id = i;
                 //qDebug()<<"target id "<<tar.id;
-                //ÏÈÅĞ¶ÏÄ¿±êÊÇ²»ÊÇÒÑ¾­´æÔÚ
+                //å…ˆåˆ¤æ–­ç›®æ ‡æ˜¯ä¸æ˜¯å·²ç»å­˜åœ¨
                 boolean isObjExisted = false;
                 //MyObject obj;
                 int objIndex=-1;
@@ -434,13 +440,13 @@ int MyInterface::getIntegratedData(){
                 objs[objIndex].setCenSueEintensity(tar.CenSueEintensity);
                 objs[objIndex].setSCRValue(tar.SCRValue);
                 objs[objIndex].setTheFeatures(tar.theFeatures);
-                //ÉèÖÃ¾ØĞÎ¿ò
+                //è®¾ç½®çŸ©å½¢æ¡†
                 objs[objIndex].setRect(Rect(objs[objIndex].getCenPoint().x-objs[objIndex].getBlockSize().width/2,objs[objIndex].getCenPoint().y-objs[objIndex].getBlockSize().height/2,objs[objIndex].getBlockSize().width,objs[objIndex].getBlockSize().height));
 //                if(!isObjExisted){
 //                    this->objs.push_back(obj);
 //                }
 
-                //ÉèÖÃ¹ì¼£
+                //è®¾ç½®è½¨è¿¹
                 boolean isExisted = false;
                 for(int i = 0; i < this->tracks.size(); i++){
                     MyObjectTrack track = tracks[i];
@@ -463,7 +469,7 @@ int MyInterface::getIntegratedData(){
 
                 if(objs[objIndex].getCenPoint().y<this->panoImage.cols/2){
                     this->objs1.push_back(objs[objIndex]);
-                    //ÉèÖÃ¹ì¼£
+                    //è®¾ç½®è½¨è¿¹
                     boolean isExisted1 = false;
                     for(int i = 0; i < this->tracks1.size(); i++){
                         MyObjectTrack track2 = tracks1[i];
@@ -486,7 +492,7 @@ int MyInterface::getIntegratedData(){
                 }
                 else{
                     this->objs2.push_back(objs[objIndex]);
-                    //ÉèÖÃ¹ì¼£
+                    //è®¾ç½®è½¨è¿¹
                     boolean isExisted2 = false;
                     for(int i = 0; i < this->tracks2.size(); i++){
                         MyObjectTrack track4 = tracks2[i];
@@ -524,17 +530,17 @@ int MyInterface::getIntegratedData(){
     return 3;
 }
 
-////ÉèÖÃÏµÍ³²ÎÊı
+////è®¾ç½®ç³»ç»Ÿå‚æ•°
 //int MyInterface::SetSysPara(int mode, const char *para_string, int id){
 //    //return SetSystemPara(mode,para_string,id);
 //}
 
-////»ñµÃÏµÍ³²ÎÊı
+////è·å¾—ç³»ç»Ÿå‚æ•°
 //int MyInterface::GetSysPara(int mode, char *para_string, int id){
 //    //return GetSystemPara(mode,para_string,id);
 //}
 
-//Ëæ»úÉú³É3¸ö¶ÔÏó
+//éšæœºç”Ÿæˆ3ä¸ªå¯¹è±¡
 vector<MyObject> MyInterface::getObjs2(){
     if(1){
         return getRandomObjs();
@@ -585,8 +591,8 @@ vector<MyObject> MyInterface::getObjs2(){
     x2 = x2+indexx*5;
     //y2 = y2+indexy*2;
     y2*=y_increace_ratio;
-    //ÕâÀïxºÍy¸ú³¤¶ÈºÍ¿í¶È±È½Ï£¬µ«ÊÇÏÂÃæmo2.setCenPoint(Point(x2+w/2, y2+h/2))
-    //ÉèÖÃµÄÊ±ºòÓÖ¸ø¼ÓÉÏÁËw/2ºÍh/2£¬µ¼ÖÂ»á³¬³ö½çÏŞ£¬ÈÃÆä±È½ÏÊ±¼ÓÉÏÁËmo2.getRect().width
+    //è¿™é‡Œxå’Œyè·Ÿé•¿åº¦å’Œå®½åº¦æ¯”è¾ƒï¼Œä½†æ˜¯ä¸‹é¢mo2.setCenPoint(Point(x2+w/2, y2+h/2))
+    //è®¾ç½®çš„æ—¶å€™åˆç»™åŠ ä¸Šäº†w/2å’Œh/2ï¼Œå¯¼è‡´ä¼šè¶…å‡ºç•Œé™ï¼Œè®©å…¶æ¯”è¾ƒæ—¶åŠ ä¸Šäº†mo2.getRect().width
     if(x2+mo2.getRect().width >= this->panoImage.cols){
         indexx = 0;
         x2 = 300;
@@ -634,7 +640,7 @@ vector<MyObject> MyInterface::getObjs2(){
     mo3.setRect(Rect(x3,y3,w,h));
     mo3.setCenPoint(Point(x3+w/2, y3+h/2));
 
-    //ÉèÖÃ¹ì¼£
+    //è®¾ç½®è½¨è¿¹
     boolean isExisted = false;
     for(int i = 0; i < this->tracks.size(); i++){
         MyObjectTrack track = tracks[i];
@@ -711,7 +717,7 @@ vector<MyObject> MyInterface::getObjs2(){
 void MyInterface::setObjs(vector<MyObject> os){
     this->objs = os;
 }
-//Éú³ÉËæ»ú¸ö¶ÔÏó
+//ç”Ÿæˆéšæœºä¸ªå¯¹è±¡
 vector<MyObject> MyInterface::getRandomObjs(){
     if(this->panoImage.cols==0)
         return objs_self;
@@ -726,7 +732,7 @@ vector<MyObject> MyInterface::getRandomObjs(){
         int y1=mo1.getRect().y;
         int w = 30;
         int h = 30;
-        x1 = x1+indexx*5;//Ã¿´ÎÒÆ¶¯Ôö¼Ó50
+        x1 = x1+indexx*5;//æ¯æ¬¡ç§»åŠ¨å¢åŠ 50
         y1*=y_increace_ratio;
         if(x1+mo1.getRect().width >= this->panoImage.cols){
             x1 = x1 % this->panoImage.cols;
@@ -738,7 +744,7 @@ vector<MyObject> MyInterface::getRandomObjs(){
 
         mo1.setRect(Rect(x1,y1,w,h));
         mo1.setCenPoint(Point(x1+w/2, y1+h/2));
-        //ÉèÖÃ¹ì¼£
+        //è®¾ç½®è½¨è¿¹
         boolean isExisted = false;
         for(int i = 0; i < this->tracks.size(); i++){
             MyObjectTrack track = tracks[i];

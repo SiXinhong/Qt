@@ -1,4 +1,4 @@
-#include "zwidget.h"
+ï»¿#include "zwidget.h"
 #include "mainwindow.h"
 #include "myobject.h"
 #include "cvutil.h"
@@ -17,19 +17,19 @@ ZWidget::ZWidget(QWidget *parent) :
     isFirstDoubleClick = false;
     isClicked = false;
 
-    Yuan_Xuanze = new QAction(tr("Ô­Ñ¡Ôñ"),this);
-    Wu_Bianxing = new QAction(tr("ÎŞ±äĞÎ"), this);
-    Define_Rect = new QAction(tr("¶¨Òå¾ØĞÎ¼à¿ØÇøÓò"), this);
-    Define_Poly = new QAction(tr("¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò"), this);
+    Yuan_Xuanze = new QAction(tr("åŸé€‰æ‹©"),this);
+    Wu_Bianxing = new QAction(tr("æ— å˜å½¢"), this);
+    Define_Rect = new QAction(tr("å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ"), this);
+    Define_Poly = new QAction(tr("å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ"), this);
 
-    Cancel_RDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò¶¨Òå"), this);
-    Cancel_RGDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò×é¶¨Òå"), this);
-    Complete_RDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò¶¨Òå"), this);
-    Complete_RGDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò×é¶¨Òå"), this);
-    Zoom_In = new QAction(tr("·Å´ó"), this);
-    Zoom_Out = new QAction(tr("ËõĞ¡"),this);
+    Cancel_RDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+    Cancel_RGDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
+    Complete_RDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+    Complete_RGDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
+    Zoom_In = new QAction(tr("æ”¾å¤§"), this);
+    Zoom_Out = new QAction(tr("ç¼©å°"),this);
 
-    //To_Tanchu = new QAction(tr("µ½µ¯³ö´°¿Ú"),this);
+    //To_Tanchu = new QAction(tr("åˆ°å¼¹å‡ºçª—å£"),this);
     connect(Yuan_Xuanze, SIGNAL(triggered()), this, SLOT(Yuanxuanze()));
     connect(Wu_Bianxing, SIGNAL(triggered()), this, SLOT(Wubianxing()));
     connect(Define_Rect, SIGNAL(triggered()), this, SLOT(DefineRect()));
@@ -110,8 +110,8 @@ void ZWidget::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
      menu->setStyleSheet(QString::fromUtf8("border:0px"));
-    menu->addAction(Yuan_Xuanze); //Ìí¼Ó²Ëµ¥Ïî1
-    menu->addAction(Wu_Bianxing); //Ìí¼Ó²Ëµ¥Ïî1
+    menu->addAction(Yuan_Xuanze); //æ·»åŠ èœå•é¡¹1
+    menu->addAction(Wu_Bianxing); //æ·»åŠ èœå•é¡¹1
     menu->addSeparator();
     menu->addAction(Define_Rect);
     menu->addAction(Define_Poly);
@@ -123,10 +123,10 @@ void ZWidget::contextMenuEvent(QContextMenuEvent *){
     menu->addSeparator();
     menu->addAction(Zoom_In);
     menu->addAction(Zoom_Out);
-    menu->exec(cur.pos()); //¹ØÁªµ½¹â±ê
+    menu->exec(cur.pos()); //å…³è”åˆ°å…‰æ ‡
 }
 
-//ÊµÏÖÄ¿±êµÄ¸ú×Ù£¬ÒòÎª²»Í¬µÄÄ¿±êµÄÔË¶¯ËÙ¶È²»Í¬£¬ËùÒÔÔ­ÏÈÉè¶¨µÄÑ¡Ôñ¿òĞèÒª¶¯Ì¬µ÷Õû
+//å®ç°ç›®æ ‡çš„è·Ÿè¸ªï¼Œå› ä¸ºä¸åŒçš„ç›®æ ‡çš„è¿åŠ¨é€Ÿåº¦ä¸åŒï¼Œæ‰€ä»¥åŸå…ˆè®¾å®šçš„é€‰æ‹©æ¡†éœ€è¦åŠ¨æ€è°ƒæ•´
 Rect ZWidget::getRectFromObjs(Rect r){
     Rect rr;
     rr.x = r.x;
@@ -154,8 +154,8 @@ Rect ZWidget::getRectFromObjs(Rect r){
 //    }
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-    //ÏÈÕÒ×îĞ¡µã
+    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+    //å…ˆæ‰¾æœ€å°ç‚¹
     double xtemp1;
     double ytemp1;
 //    if(this->getFrom() == 1){
@@ -166,14 +166,14 @@ Rect ZWidget::getRectFromObjs(Rect r){
 //        xtemp1 = mw->widget2->getPano().cols;
 //        ytemp1 = mw->widget2->getPano().rows;
 //    }
-//    //³õÊ¼µÄÊ±ºò²»×ö´¦Àí
+//    //åˆå§‹çš„æ—¶å€™ä¸åšå¤„ç†
 //    else{
 
 //        return rr;
 //    }
     xtemp1 = pano.cols;
     ytemp1 = pano.rows;
-    //ÔÙÕÒ×î´óµã
+    //å†æ‰¾æœ€å¤§ç‚¹
     double xtemp2 = 0;
     double ytemp2 = 0;
 
@@ -202,7 +202,7 @@ Rect ZWidget::getRectFromObjs(Rect r){
     if((count > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
         xtemp1 = pano.cols;
         //ytemp1 = pano.rows;
-        //ÔÙÕÒ×î´óµã
+        //å†æ‰¾æœ€å¤§ç‚¹
         xtemp2 = 0;
         //double ytemp2 = 0;
         for(int i = 0; i < count; i++){
@@ -302,9 +302,9 @@ Rect ZWidget::getRectFromObjs(Rect r){
     if(mw->isMubiao){
         rr.width += 100;
     }
-    //Ê¹µÃ²»±äĞÎ
+    //ä½¿å¾—ä¸å˜å½¢
     //rr.width = rr.height * this->width() / this->height();
-    //Ê¹µÃÄ¿±êÎ»ÓÚÖĞ¼ä
+    //ä½¿å¾—ç›®æ ‡ä½äºä¸­é—´
     rr.x = (xtemp1+xtemp2-rr.width)/2;
     rr.y = (ytemp1+ytemp2-rr.height)/2;
     if(rr.x<0){
@@ -328,7 +328,7 @@ Rect ZWidget::getRectFromObjs(Rect r){
    return rr;
 }
 
-////ÊµÏÖÄ¿±êµÄ¸ú×Ù£¬ÒòÎª²»Í¬µÄÄ¿±êµÄÔË¶¯ËÙ¶È²»Í¬£¬ËùÒÔÔ­ÏÈÉè¶¨µÄÑ¡Ôñ¿òĞèÒª¶¯Ì¬µ÷Õû
+////å®ç°ç›®æ ‡çš„è·Ÿè¸ªï¼Œå› ä¸ºä¸åŒçš„ç›®æ ‡çš„è¿åŠ¨é€Ÿåº¦ä¸åŒï¼Œæ‰€ä»¥åŸå…ˆè®¾å®šçš„é€‰æ‹©æ¡†éœ€è¦åŠ¨æ€è°ƒæ•´
 //Rect ZWidget::getRectFromObjs2(Rect r){
 //    Rect rr;
 //    rr.x = r.x;
@@ -356,8 +356,8 @@ Rect ZWidget::getRectFromObjs(Rect r){
 ////    }
 //    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    double xtemp1;
 //    double ytemp1;
 //    if(this->getFrom() == 1){
@@ -368,12 +368,12 @@ Rect ZWidget::getRectFromObjs(Rect r){
 //        xtemp1 = mw->widget2->getPano().cols;
 //        ytemp1 = mw->widget2->getPano().rows;
 //    }
-//    //³õÊ¼µÄÊ±ºò²»×ö´¦Àí
+//    //åˆå§‹çš„æ—¶å€™ä¸åšå¤„ç†
 //    else{
 
 //        return rr;
 //    }
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -445,9 +445,9 @@ Rect ZWidget::getRectFromObjs(Rect r){
 //    if(mw->isMubiao){
 //        rr.width += 100;
 //    }
-//    //Ê¹µÃ²»±äĞÎ
+//    //ä½¿å¾—ä¸å˜å½¢
 //    rr.width = rr.height * this->width() / this->height();
-//    //Ê¹µÃÄ¿±êÎ»ÓÚÖĞ¼ä
+//    //ä½¿å¾—ç›®æ ‡ä½äºä¸­é—´
 //    rr.x = (xtemp1-mw->widget1->getMat().cols+xtemp2-mw->widget1->getMat().cols-rr.width)/2;
 //    rr.y = (ytemp1+ytemp2-rr.height)/2;
 //    if(rr.x<0){
@@ -478,9 +478,9 @@ vector<MyObject> ZWidget::getAllObjects(){
 void ZWidget::draw(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     //qDebug()<<this->getFrom();
-    //¸ù¾İ¾ØĞÎ¿òµÄ±ä»¯£¬ÖØĞÂ´ÓÈ«¾°ÏÔÊ¾Çø1»òÕßÈ«¾°ÏÔÊ¾Çø2¿½±´»ñµÃmat¡£
+    //æ ¹æ®çŸ©å½¢æ¡†çš„å˜åŒ–ï¼Œé‡æ–°ä»å…¨æ™¯æ˜¾ç¤ºåŒº1æˆ–è€…å…¨æ™¯æ˜¾ç¤ºåŒº2æ‹·è´è·å¾—matã€‚
     if(this->getFrom() == 1 || this->getFrom() == 2){
-        /**********************²»ÔÙ¸ú×Ù******************************************
+        /**********************ä¸å†è·Ÿè¸ª******************************************
         Rect r1;
 //        qDebug()<<QString("here1!");
 //        qDebug()<<this->rect.x;
@@ -504,7 +504,7 @@ void ZWidget::draw(){
         rect.y = r2.y;
         rect.width = r2.width;
         rect.height = r2.height;
-        ************************²»ÔÙ¸ú×Ù½áÊø************************************/
+        ************************ä¸å†è·Ÿè¸ªç»“æŸ************************************/
 //        qDebug()<<QString("here2!");
 //        qDebug()<<this->pano.cols;
 //        qDebug()<<this->rect.x + this->rect.width;
@@ -515,7 +515,7 @@ void ZWidget::draw(){
         Mat mat1 = this->twopanos;
         Size dsize ;
         double scale = 0.5;
-        dsize = Size(mat1.cols*scale,mat1.rows*scale);
+        dsize = Size(mw->widget3->width(),mw->widget3->height());
 //        Mat image11 = Mat(dsize,CV_32S);
 //        cv::resize(mat1, image11,dsize);
 //        mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
@@ -526,10 +526,10 @@ void ZWidget::draw(){
         if(isYuan){
             mat1(rect).copyTo(image3);//mw->QImageToMat(mw->aa);
             realRect=rect;
-//            Mat image33 = Mat(dsize,CV_32S);
-//            cv::resize(image3, image33,dsize);
-//            setMat(image33);
-            setMat(image3);
+            Mat image33 = Mat(dsize,CV_32S);
+            cv::resize(image3, image33,dsize);
+            setMat(image33);
+            //setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
         }
@@ -541,10 +541,10 @@ void ZWidget::draw(){
             trect.width = trect.height * this->width() / this->height();
             mat1(trect).copyTo(image3);
             realRect=trect;
-//            Mat image33 = Mat(dsize,CV_32S);
-//            cv::resize(image3, image33,dsize);
-//            setMat(image33);
-            setMat(image3);
+            Mat image33 = Mat(dsize,CV_32S);
+            cv::resize(image3, image33,dsize);
+            setMat(image33);
+            //setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
             CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
         }
@@ -589,7 +589,7 @@ void ZWidget::draw(){
 //        cv::resize(image3, image33,dsize);
 //        setMat(image33);
 //    }
-    else{//³õÊ¼µÄÊ±ºò£¬ÇĞÈ«¾°ÏÔÊ¾Çø1ÖĞµÄÒ»¶Î¹Ì¶¨ÇøÓò
+    else{//åˆå§‹çš„æ—¶å€™ï¼Œåˆ‡å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„ä¸€æ®µå›ºå®šåŒºåŸŸ
 //        Rect r1;
 //        r1.x = mw->widget1->rectan.x;
 //        r1.y = mw->widget1->rectan.y;
@@ -678,31 +678,31 @@ void ZWidget::draw(){
 }
 
 void ZWidget::ZoomIn(){
-    if(this->rect.x + 1/8 * this->rect.width <= pano.cols){
-        this->rect.x = this->rect.x + 1/8 * this->rect.width;
+    if(/*this->rect.x + this->rect.width/8 <= pano.cols && */this->rect.width*3/4>0){
+        //this->rect.x = this->rect.x + this->rect.width/8;
         this->rect.width = this->rect.width *3/4;
     }
-    if(this->rect.y + 1/8 * this->rect.height <=pano.rows){
-        this->rect.y = this->rect.y + 1/8 * this->rect.height;
+    if(/*this->rect.y + this->rect.height/8 <=pano.rows && */this->rect.height*3/4>0){
+        //this->rect.y = this->rect.y + this->rect.height/8;
         this->rect.height = this->rect.height *3/4;
     }
-
+    qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
 }
 
 void ZWidget::ZoomOut(){
-    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *4/3 < pano.cols)){
-        this->rect.x = this->rect.x - 1/6 * this->rect.width;
+    if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+        //this->rect.x = this->rect.x - this->rect.width/6;
         this->rect.width = this->rect.width *4/3;
     }
-    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *4/3 < pano.rows)){
-        this->rect.y = this->rect.y - 1/6 * this->rect.height;
+    if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+        //this->rect.y = this->rect.y - this->rect.height/6;
         this->rect.height = this->rect.height *4/3;
     }
     qDebug()<<rect.x<<","<<rect.y<<"width:"<<rect.width<<"heigth"<<rect.height;
     //qDebug()<<"rect:x="<<rect.x<<",y="<<rect.y<<",width="<<rect.width<<",height="<<rect.height;
 }
 
-//¶¨Òå¾ØĞÎ¼à¿ØÇøÓò
+//å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ
 void ZWidget::DefineRect(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion = true;
@@ -721,7 +721,7 @@ void ZWidget::DefineRect(){
     }
 }
 
-//¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò
+//å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ
 void ZWidget::DefinePoly(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion = true;
@@ -739,7 +739,7 @@ void ZWidget::DefinePoly(){
     }
 }
 
-//È¡Ïû¼à¿ØÇøÓò¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰
 void ZWidget::CancelRDefining(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     this->rectRegion.x = 0;
@@ -751,7 +751,7 @@ void ZWidget::CancelRDefining(){
     mw->isDefiningRegion =false;
 }
 
-//È¡Ïû¼à¿ØÇøÓò×é¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void ZWidget::CancelRGDefining(){
     this->rectRegion.x = 0;
     this->rectRegion.y = 0;
@@ -765,12 +765,12 @@ void ZWidget::CancelRGDefining(){
     this->isFirstDoubleClick = false;
 }
 
-//Íê³É¼à¿ØÇøÓò¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰
 void ZWidget::CompleteRDefining(){
     // this->completeRDefine = true;
      MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
      if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
-         QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¾ØĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ĞèÒª¶¨ÒåÁ½¸ö¶¥µã¡£"));
+         QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("çŸ©å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œéœ€è¦å®šä¹‰ä¸¤ä¸ªé¡¶ç‚¹ã€‚"));
      }
      else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
          QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
@@ -785,7 +785,7 @@ void ZWidget::CompleteRDefining(){
          this->isFirstDoubleClick = false;
      }
      else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2)&&isFirstDoubleClick){
-         QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¶à±ßĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ÖÁÉÙĞèÒª¶¨ÒåÈı¸ö¶¥µã"));
+         QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œè‡³å°‘éœ€è¦å®šä¹‰ä¸‰ä¸ªé¡¶ç‚¹"));
          this->isFirstDoubleClick = false;
      }
      else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
@@ -807,7 +807,7 @@ void ZWidget::CompleteRDefining(){
 
 }
 
-//Íê³É¼à¿ØÇøÓò×é¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void ZWidget::CompleteRGDefining(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->isDefiningRegion == false)
@@ -965,7 +965,7 @@ void ZWidget::mouseReleaseEvent(QMouseEvent *e){
 boolean ZWidget::isObjSelected(MyObject obj){
     boolean isSelected = false;
         if(this->rect.contains(obj.getCenPoint())){
-            //µ÷ÕûÑ¡Ôñ¿òÒÔÊ¹µÃÄ¿±êµÄboxÔÚÑ¡Ôñ¿òÖ®ÄÚ
+            //è°ƒæ•´é€‰æ‹©æ¡†ä»¥ä½¿å¾—ç›®æ ‡çš„boxåœ¨é€‰æ‹©æ¡†ä¹‹å†…
             if(obj.getRect().x<this->rect.x){
                 this->rect.x = obj.getRect().x - 5;
                 this->rect.width += this->rect.x - obj.getRect().x + 5;
@@ -989,7 +989,7 @@ boolean ZWidget::isObjSelected(MyObject obj){
     return isSelected;
 }
 
-//Ñ¡ÔñµÄÄ¿±ê²»ÄÜÉÓÉÏ£¬Ö»ÄÜ¼õÉÙ
+//é€‰æ‹©çš„ç›®æ ‡ä¸èƒ½æä¸Šï¼Œåªèƒ½å‡å°‘
 vector<MyObject> ZWidget::getSelectedObjects(){
     vector<MyObject> os;
     int count = this->allobjs.size();
@@ -1004,7 +1004,7 @@ vector<MyObject> ZWidget::getSelectedObjects(){
     for(int i = 0; i < count; i++){
         MyObject obj = allobjs[i];
 
-        //ÒÑ¾­³öÏÖ¹ıµÄ£¬Ò²¸úÉÏ
+        //å·²ç»å‡ºç°è¿‡çš„ï¼Œä¹Ÿè·Ÿä¸Š
 
         vector<MyObject> aos = this->objs;
         for(int j = 0; j < aos.size(); j++){
@@ -1055,45 +1055,45 @@ double ZWidget::getDirectionY2(){
 
 }
 
-//ÓÉWidget×ø±êµÄX»ñµÃÍ¼ÏñÖĞµÄX
+//ç”±Widgetåæ ‡çš„Xè·å¾—å›¾åƒä¸­çš„X
 double ZWidget::getMatX(double x){
     return x*mat.cols/this->width();
 }
 
-//ÓÉWidget×ø±êµÄY»ñµÃÍ¼ÏñÖĞµÄY
+//ç”±Widgetåæ ‡çš„Yè·å¾—å›¾åƒä¸­çš„Y
 double ZWidget::getMatY(double y){
     return y*mat.rows/this->height();
 }
 
-//ÓÉÍ¼ÏñÖĞµÄX»ñµÃWidgetÖĞµÄX
+//ç”±å›¾åƒä¸­çš„Xè·å¾—Widgetä¸­çš„X
 double ZWidget::getWidgetX(double x){
     return x*this->width()/mat.cols;
 }
 
-//ÓÉÍ¼ÏñÖĞµÄY»ñµÃWidgetÖĞµÄY
+//ç”±å›¾åƒä¸­çš„Yè·å¾—Widgetä¸­çš„Y
 double ZWidget::getWidgetY(double y){
     return y*this->height()/mat.rows;
 }
 
 
-//°Ñ¼à¿ØÇøµÄ×ø±ê×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ×ø±ê
+//æŠŠç›‘æ§åŒºçš„åæ ‡è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„åæ ‡
 int ZWidget::convertToOriginX(int x){
     double ratio = ((double)realRect.width)/mat.cols;
     return x*ratio + realRect.x;
 }
 
-//°Ñ¼à¿ØÇøµÄ×ø±ê×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ×ø±ê
+//æŠŠç›‘æ§åŒºçš„åæ ‡è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„åæ ‡
 int ZWidget::convertToOriginY(int y){
     double ratio = ((double)realRect.height)/mat.rows;
     return y*ratio + realRect.y;
 }
 
-//°Ñ¼à¿ØÇøµÄ¿í×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ¿í¶È
+//æŠŠç›‘æ§åŒºçš„å®½è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„å®½åº¦
 int ZWidget::convertToOriginWidth(int width){
     double ratio = ((double)realRect.width)/mat.cols;
     return width*ratio;
 }
-//°Ñ¼à¿ØÇøµÄ³¤×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ³¤¶È
+//æŠŠç›‘æ§åŒºçš„é•¿è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„é•¿åº¦
 int ZWidget::convertToOriginHeight(int height){
     double ratio = ((double)realRect.height)/mat.rows;
     return height*ratio;

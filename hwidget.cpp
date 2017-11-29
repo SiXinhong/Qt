@@ -1,10 +1,10 @@
-#include "hwidget.h"
+ï»¿#include "hwidget.h"
 #include "mainwindow.h"
 #include "myobject.h"
 
 
 #include <QtCore/qmath.h>
-//opencvµÄÍ·ÎÄ¼ş
+//opencvçš„å¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -25,7 +25,7 @@ HWidget::HWidget(QWidget *parent) :
 
 void HWidget::setMat(Mat m){
     mat = m;
-    //ÔÚÕâÀïÉú³É»·´øÍ¼Ïñ
+    //åœ¨è¿™é‡Œç”Ÿæˆç¯å¸¦å›¾åƒ
 
     for(int i=0;i<pano.rows;i++){
 
@@ -84,9 +84,9 @@ vector<MyObject> HWidget::getObjects6(){
     return this->objs6;
 }
 
-//¼ÆËãÔÚ»·´øÏÔÊ¾ÇøµÄ×ø±ê£¬ÊäÈëÊÇÔË¶¯Ä¿±êÔÚÈ«¾°Í¼ÏñÖĞµÄÎ»ÖÃ
+//è®¡ç®—åœ¨ç¯å¸¦æ˜¾ç¤ºåŒºçš„åæ ‡ï¼Œè¾“å…¥æ˜¯è¿åŠ¨ç›®æ ‡åœ¨å…¨æ™¯å›¾åƒä¸­çš„ä½ç½®
 double HWidget::getDirectionX(double x, double y){
-    //Ë³Ê±ÕëĞı×ª90¶È
+    //é¡ºæ—¶é’ˆæ—‹è½¬90åº¦
     double x90;
     if(x< 3*pano.cols/4)
         x90 = x+pano.cols/4;
@@ -138,7 +138,7 @@ double HWidget::getInverseDirectionY(double x, double y){
 
 double HWidget::getDirectionY(double x, double y){
     //double y2 = y0 + (r/r0)*((r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols));
-    //Ë³Ê±ÕëĞı×ª90¶È
+    //é¡ºæ—¶é’ˆæ—‹è½¬90åº¦
     double x90;
     if(x< 3*pano.cols/4)
         x90 = x+pano.cols/4;
@@ -204,7 +204,7 @@ void HWidget::drawArc4(Mat tmat, Rect re){
     line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
 
     line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -226,7 +226,7 @@ void HWidget::drawArc4(Mat tmat, Rect re){
     ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,255,0));
 }
 
-//¸¨ÖúÏÔÊ¾Çø1µÄ£¬»ñµÃ»­¶à±ßĞÎµÄ°Ë¸öµã£¬ĞèÒª¼ÆËã¸¨ÖúÏÔÊ¾Çø1Ëù¹Ø×¢µÄ¶ÔÏó¼¯ºÏµÄ×ø±êÀ´È·¶¨¡£
+//è¾…åŠ©æ˜¾ç¤ºåŒº1çš„ï¼Œè·å¾—ç”»å¤šè¾¹å½¢çš„å…«ä¸ªç‚¹ï¼Œéœ€è¦è®¡ç®—è¾…åŠ©æ˜¾ç¤ºåŒº1æ‰€å…³æ³¨çš„å¯¹è±¡é›†åˆçš„åæ ‡æ¥ç¡®å®šã€‚
 
 void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
@@ -283,13 +283,13 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
        Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
        Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
 
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    //qDebug()<<QString("xuanzhong");
 //    //qDebug()<<sobjs.size();
 //    double xtemp1 = this->pano.cols;
 //    double ytemp1 = this->pano.rows;
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -304,17 +304,17 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //            ytemp2 = obj.getCenPoint().y;
 //        }
 //    }
-//    //ÔÙÏò×óÉÏ¿¿¿¿
+//    //å†å‘å·¦ä¸Šé é 
 //    if(xtemp1-5>=0 && ytemp1-5 >= 0){
 //        xtemp1 -= 5;
 //        ytemp1 -= 5;
 //    }
-//    //ÔÙÏòÓÒÏÂ¿¿¿¿
+//    //å†å‘å³ä¸‹é é 
 //    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
 //        xtemp2 += 5;
 //        ytemp2 += 5;
 //    }
-//    //ÖØĞÂÕÒ×îĞ¡µã
+//    //é‡æ–°æ‰¾æœ€å°ç‚¹
 //    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
 //        xtemp1 = 0;
 
@@ -347,7 +347,7 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
 
     line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -399,7 +399,7 @@ void HWidget::drawArc6(Mat tmat, Rect re){
     line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
 
     line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -421,7 +421,7 @@ void HWidget::drawArc6(Mat tmat, Rect re){
     ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,0,0));
 }
 
-//¸¨ÖúÏÔÊ¾Çø2µÄ£¬»ñµÃ»­¶à±ßĞÎµÄ°Ë¸öµã£¬ĞèÒª¼ÆËã¸¨ÖúÏÔÊ¾Çø2Ëù¹Ø×¢µÄ¶ÔÏó¼¯ºÏµÄ×ø±êÀ´È·¶¨¡£
+//è¾…åŠ©æ˜¾ç¤ºåŒº2çš„ï¼Œè·å¾—ç”»å¤šè¾¹å½¢çš„å…«ä¸ªç‚¹ï¼Œéœ€è¦è®¡ç®—è¾…åŠ©æ˜¾ç¤ºåŒº2æ‰€å…³æ³¨çš„å¯¹è±¡é›†åˆçš„åæ ‡æ¥ç¡®å®šã€‚
 void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -477,13 +477,13 @@ void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
        Point p1 = getDirectionPoint(Point(xtemp1, ytemp1));
        Point p2 = getDirectionPoint(Point(xtemp2, ytemp2));
 
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    //qDebug()<<QString("xuanzhong");
 //    //qDebug()<<sobjs.size();
 //    double xtemp1 = this->pano.cols;
 //    double ytemp1 = this->pano.rows;
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -498,17 +498,17 @@ void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
 //            ytemp2 = obj.getCenPoint().y;
 //        }
 //    }
-//    //ÔÙÏò×óÉÏ¿¿¿¿
+//    //å†å‘å·¦ä¸Šé é 
 //    if(xtemp1-5>=0 && ytemp1-5 >= 0){
 //        xtemp1 -= 5;
 //        ytemp1 -= 5;
 //    }
-//    //ÔÙÏòÓÒÏÂ¿¿¿¿
+//    //å†å‘å³ä¸‹é é 
 //    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
 //        xtemp2 += 5;
 //        ytemp2 += 5;
 //    }
-//    //ÖØĞÂÕÒ×îĞ¡µã
+//    //é‡æ–°æ‰¾æœ€å°ç‚¹
 //    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
 //        xtemp1 = 0;
 
@@ -541,7 +541,7 @@ void HWidget::drawArc6(vector<MyObject> sobjs, Mat tmat){
     line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
 
     line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -593,7 +593,7 @@ void HWidget::drawArc3(Mat tmat, Rect re){
     line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
 
     line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -615,7 +615,7 @@ void HWidget::drawArc3(Mat tmat, Rect re){
     ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(0,0,255));
 }
 
-//Ö÷ÏÔÊ¾ÇøµÄ£¬»ñµÃ»­¶à±ßĞÎµÄ°Ë¸öµã£¬ĞèÒª¼ÆËãÖ÷ÏÔÊ¾ÇøËù¹Ø×¢µÄ¶ÔÏó¼¯ºÏµÄ×ø±êÀ´È·¶¨¡£
+//ä¸»æ˜¾ç¤ºåŒºçš„ï¼Œè·å¾—ç”»å¤šè¾¹å½¢çš„å…«ä¸ªç‚¹ï¼Œéœ€è¦è®¡ç®—ä¸»æ˜¾ç¤ºåŒºæ‰€å…³æ³¨çš„å¯¹è±¡é›†åˆçš„åæ ‡æ¥ç¡®å®šã€‚
 void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -673,13 +673,13 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 
        Point p3 = Point(x0, y0);
 
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    //qDebug()<<QString("xuanzhong");
 //    //qDebug()<<sobjs.size();
 //    double xtemp1 = this->pano.cols;
 //    double ytemp1 = this->pano.rows;
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -694,17 +694,17 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //            ytemp2 = obj.getCenPoint().y;
 //        }
 //    }
-//    //ÔÙÏò×óÉÏ¿¿¿¿
+//    //å†å‘å·¦ä¸Šé é 
 //    if(xtemp1-5>=0 && ytemp1-5 >= 0){
 //        xtemp1 -= 5;
 //        ytemp1 -= 5;
 //    }
-//    //ÔÙÏòÓÒÏÂ¿¿¿¿
+//    //å†å‘å³ä¸‹é é 
 //    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
 //        xtemp2 += 5;
 //        ytemp2 += 5;
 //    }
-//    //ÖØĞÂÕÒ×îĞ¡µã
+//    //é‡æ–°æ‰¾æœ€å°ç‚¹
 //    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
 //        xtemp1 = 0;
 
@@ -737,7 +737,7 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
 
     line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
-    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -786,8 +786,8 @@ void HWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 void HWidget::draw(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-    Mat tmat = this->mat.clone();//Ò»¶¨ÒªÔÚ¿ËÂ¡ÉÏ»­
-    //»­¶à±ßĞÎ
+    Mat tmat = this->mat.clone();//ä¸€å®šè¦åœ¨å…‹éš†ä¸Šç”»
+    //ç”»å¤šè¾¹å½¢
 //    vector<Point> points = this->getPoints(mw->widget3->getObjects());
 //    int count = points.size();
 //    for (int i = 0; i <count;i+=2)
@@ -818,7 +818,7 @@ void HWidget::draw(){
 //    if(mw->widget6->getObjects().size() > 0){
         this->drawArc6(tmat, mw->widget6->rect);
 //    }
-    //ÔÚÍ¼ÏñÉÏ»­Ô²µã
+    //åœ¨å›¾åƒä¸Šç”»åœ†ç‚¹
     int count = objs.size();
     for (int i = 0; i < count; i++){
         cv::Point p = objs[i].getCenPoint();
@@ -827,7 +827,7 @@ void HWidget::draw(){
 //        qDebug()<<this->getDirectionPoint(p).x;
 //        qDebug()<<this->getDirectionPoint(p).y;
         Scalar color = objs[i].getColor();
-        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
+        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
        // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
  //   cv::cvtColor(tmat,tmat,CV_BGR2RGB);

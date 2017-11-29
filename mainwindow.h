@@ -1,4 +1,4 @@
-#ifndef MAINWINDOW_H
+ï»¿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
@@ -21,14 +21,14 @@
 #include "mixer.h"
 #include <QGridLayout>
 #include <cv.h>
-#include <phonon>
+//#include <phonon>
 #include <QToolButton>
 #include <QApplication>
-#include <QSound>
+//#include <QSound>
 #include<QGroupBox>
 #include <QButtonGroup>
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -38,14 +38,14 @@
 #include <QtGui/QPainter>
 #include "rectan.h"
 //#define arraySize 10;
-//SLOGÍ·ÎÄ¼ş
+//SLOGå¤´æ–‡ä»¶
 
 #include <QFileDialog>
-//¶Ô»°¿òËùĞèÒªµÄÍ·ÎÄ¼ş
+//å¯¹è¯æ¡†æ‰€éœ€è¦çš„å¤´æ–‡ä»¶
 #include <QLineEdit>
 #include <QMessageBox>
 
-//Í¼ÏñËùĞèÒªµÄÍ·ÎÄ¼ş
+//å›¾åƒæ‰€éœ€è¦çš„å¤´æ–‡ä»¶
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include <QSlider>
@@ -55,7 +55,7 @@
 #include "s_trackbar.h"
 
 //#include"ltrackbar.h"
-//»Ø·ÅËùĞèÒªµÄÍ·ÎÄ¼ş
+//å›æ”¾æ‰€éœ€è¦çš„å¤´æ–‡ä»¶
 
 #include<QDateEdit>
 #include<QDateTimeEdit>
@@ -96,8 +96,8 @@ public:
    QToolButton *n1WZoomout;
    QToolButton *n2WZoomIn;
    QToolButton *n2WZoomout;
-  void readRgs();//¶ÁÈ¡¼à¿Ø×éÅäÖÃ
-  void writeRgs();//±£´æ¼à¿Ø×éÅäÖÃ
+  void readRgs();//è¯»å–ç›‘æ§ç»„é…ç½®
+  void writeRgs();//ä¿å­˜ç›‘æ§ç»„é…ç½®
   Monitor *monitor;
   class Alert *alert;
     bool location;
@@ -114,7 +114,7 @@ public:
   MyObject myobjects;
   ObjectAttributes *objectAttributes;
   //QLabel *objectAttributes;
-  QSound *sound;
+//  QSound *sound;
    void adjustment();
    int bright_TrackbarValue;
    int alpha_contrast;
@@ -146,69 +146,69 @@ public:
 
     void test();
 
-    void paintRectangle(Mat image,double x,double y,double width,double height);//»­¾ØĞÎ
-    void paintCircle(Mat image,double x,double y);//»­Ô²
-    void paintScale(Mat image,double startw,double starth);//»­±ê³ß
+    void paintRectangle(Mat image,double x,double y,double width,double height);//ç”»çŸ©å½¢
+    void paintCircle(Mat image,double x,double y);//ç”»åœ†
+    void paintScale(Mat image,double startw,double starth);//ç”»æ ‡å°º
 
    cv:: Mat QImageToMat(QImage image);
     static QImage MatToQImage(const cv::Mat& mat, QImage imgLabel);
 
-    //---xiaotian   ¼ÓÔØÍ¼Æ¬µ½LabelÉÏ¡£
+    //---xiaotian   åŠ è½½å›¾ç‰‡åˆ°Labelä¸Šã€‚
     void loadPictureToLabel(QLabel *label,QImage image);
-    //¼ÓÔØÍ¼Æ¬µ½Label1ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label1ä¸Š
     void loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
-    //¼ÓÔØÍ¼Æ¬µ½Label2ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label2ä¸Š
     void loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
-    //¼ÓÔØÍ¼Æ¬µ½Label3ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label3ä¸Š
     void loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps);
-    //¼ÓÔØÍ¼Æ¬µ½Label4ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label4ä¸Š
     void loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps);
-    //¼ÓÔØÍ¼Æ¬µ½Label5ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label5ä¸Š
     void loadPictureToLabel5();
-    //¼ÓÔØÍ¼Æ¬µ½Label6ÉÏ
+    //åŠ è½½å›¾ç‰‡åˆ°Label6ä¸Š
     void loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps);
-    // ¼ÓÔØÍ¼Æ¬µ½Label7ÉÏ
+    // åŠ è½½å›¾ç‰‡åˆ°Label7ä¸Š
     void loadPictureToLabel7();
-    //---xiaotian  ÔÚÍ¼ÏñÉÏ»æÖÆ¾ØĞÎ¿ò  Ê¹ÓÃÊı×é£¬×î¶à²»³¬¹ı10¸ö
+    //---xiaotian  åœ¨å›¾åƒä¸Šç»˜åˆ¶çŸ©å½¢æ¡†  ä½¿ç”¨æ•°ç»„ï¼Œæœ€å¤šä¸è¶…è¿‡10ä¸ª
     void drawRecOnPic(Mat image,vector<Rectan> rectan);
-    //»æÖÆÊó±êÑ¡È¡µÄ¾ØĞÎ
+    //ç»˜åˆ¶é¼ æ ‡é€‰å–çš„çŸ©å½¢
     void drawRecOnPic2(Mat image, Rect rect);
-    //---xiaotian   ÔÚÍ¼ÏñÊÇ»æÖÆ±ê³ßºÍ¾ØĞÎ¿ò
+    //---xiaotian   åœ¨å›¾åƒæ˜¯ç»˜åˆ¶æ ‡å°ºå’ŒçŸ©å½¢æ¡†
     void drawScaleAndRecOnPic(Mat image11,vector<Rectan> rectan,double startw,double starth);
-    //---xiaotian  ÔÚÍ¼ÏñÉÏ»­Ô²ºÍ¶à±ßĞÎ
+    //---xiaotian  åœ¨å›¾åƒä¸Šç”»åœ†å’Œå¤šè¾¹å½¢
     void drawCircleOnPic(Mat image11,vector<Point> point,double x,double y);
 
-    //---xiaotian  ÔÚ½çÃæÉÏ»­label  Í¼Æ¬1 Í¼Æ¬2  Í¼Æ¬5 Í¼Æ¬6
+    //---xiaotian  åœ¨ç•Œé¢ä¸Šç”»label  å›¾ç‰‡1 å›¾ç‰‡2  å›¾ç‰‡5 å›¾ç‰‡6
     void drawUiLabel(Mat image,int index);
-    //---xiaotian  ÔÚ½çÃæÉÏ»­label  Í¼Æ¬3 Í¼Æ¬4.£¨ÕâÁ½ÕÅÍ¼Æ¬ĞèÒª½ØÈ¡£¬ËùÒÔÊôÓÚÒ»Àà·½·¨£©
+    //---xiaotian  åœ¨ç•Œé¢ä¸Šç”»label  å›¾ç‰‡3 å›¾ç‰‡4.ï¼ˆè¿™ä¸¤å¼ å›¾ç‰‡éœ€è¦æˆªå–ï¼Œæ‰€ä»¥å±äºä¸€ç±»æ–¹æ³•ï¼‰
     void drawUiLabelByCopy(Mat iamge,int index1);
-    //´¦ÀíÊó±êÍÏ×§ÊÂ¼ş£¬ÖØÔØJMainFrameµÄÊó±êÊÂ¼ş´¦Àíº¯Êı
+    //å¤„ç†é¼ æ ‡æ‹–æ‹½äº‹ä»¶ï¼Œé‡è½½JMainFrameçš„é¼ æ ‡äº‹ä»¶å¤„ç†å‡½æ•°
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
     // void init();
-    //Ìí¼ÓÊôĞÔÉèÖÃÖĞµÄ±äÁ¿
-    //Æô¶¯»¹ÊÇÍ£Ö¹
+    //æ·»åŠ å±æ€§è®¾ç½®ä¸­çš„å˜é‡
+    //å¯åŠ¨è¿˜æ˜¯åœæ­¢
     boolean isQidong;
-    //ÔİÍ£»¹ÊÇ¼ÌĞø
+    //æš‚åœè¿˜æ˜¯ç»§ç»­
     boolean isJixu;
-    //¸æ¾¯Æô¶¯»¹ÊÇ¹Ø±Õ
+    //å‘Šè­¦å¯åŠ¨è¿˜æ˜¯å…³é—­
     boolean isGaojing;
-    //ÉùÒô´ò¿ª»¹ÊÇ¹Ø±Õ
+    //å£°éŸ³æ‰“å¼€è¿˜æ˜¯å…³é—­
     boolean isShengyin;
-    //Ä¿±êÊôĞÔÊÇ·ñ¸úËæ
+    //ç›®æ ‡å±æ€§æ˜¯å¦è·Ÿéš
     boolean isMubiao;
-    //ÏµÍ³±àºÅ
+    //ç³»ç»Ÿç¼–å·
     QString xtbh;
-    //ÅĞ¶Ï´°¿ÚÊÇ·ñ´ò¿ª
+    //åˆ¤æ–­çª—å£æ˜¯å¦æ‰“å¼€
     bool is_open;
-    //ÅĞ¶ÏÊÇ·ñ´¦ÓÚ¶¨Òå¼à¿ØÇøÓòµÄ×´Ì¬
+    //åˆ¤æ–­æ˜¯å¦å¤„äºå®šä¹‰ç›‘æ§åŒºåŸŸçš„çŠ¶æ€
     boolean isDefiningRegion;
-    //ÅĞ¶ÏÊÇ·ñÊÇ¶¨Òå¾ØĞÎ¼à¿ØÇøÓòµÄ×´Ì¬
+    //åˆ¤æ–­æ˜¯å¦æ˜¯å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸçš„çŠ¶æ€
     boolean isDefiningRectRegion;
-    //ÁÙÊ±´æ´¢±¾´Î¶¨ÒåµÄ¼à¿ØÇøÓò
+    //ä¸´æ—¶å­˜å‚¨æœ¬æ¬¡å®šä¹‰çš„ç›‘æ§åŒºåŸŸ
     vector<Region> rs;
-    //¶¨ÒåµÄ¼à¿ØÇøÓòËùÊôµÄ¼à¿ØÇøÓò×é
+    //å®šä¹‰çš„ç›‘æ§åŒºåŸŸæ‰€å±çš„ç›‘æ§åŒºåŸŸç»„
     RegionGroup rg;
 
     int rgsIndex;
@@ -222,7 +222,7 @@ public:
      QLabel *label6;
      QLabel *label7;
 
-     //¼ÓÔØµ½6¸öQLabelÉÏµÄ6¸öQImage
+     //åŠ è½½åˆ°6ä¸ªQLabelä¸Šçš„6ä¸ªQImage
      QImage imgLabel1;
      QImage imgLabel2;
      QImage imgLabel3;
@@ -245,24 +245,24 @@ public:
      QTimer *timerFlash;
      QTimer *timerInit;
      QTimer *showAlert;
-     //´¦ÀíÊó±êÍÏ×§ÊÂ¼şµÄ±äÁ¿
+     //å¤„ç†é¼ æ ‡æ‹–æ‹½äº‹ä»¶çš„å˜é‡
      boolean isDrag1;
      boolean isDrag2;
      boolean isMove;
 
      QGridLayout *gridlayout;
 
-     //----------------ÒÔÏÂÎªÁÙÊ±ĞÔ±äÁ¿-----------------
+     //----------------ä»¥ä¸‹ä¸ºä¸´æ—¶æ€§å˜é‡-----------------
      MyInterface in;
      Mat image11;
-     //¶¯Í¼ĞèÒªµÄ±äÁ¿
+     //åŠ¨å›¾éœ€è¦çš„å˜é‡
      vector<Rectan> rectans1;
-     int index;//ÓÃÓÚ±ê³ß¶¯
-     //´æ´¢ÎÄ¼şµÄÍ¼Æ¬ĞèÒªµÄ±äÁ¿
-     int index1;//¶ÁÈ¡µÚ¼¸ÕÅÍ¼Æ¬
-     vector<QString> vc1;//´æ´¢µÚÒ»À¸µÄÍ¼Æ¬
-     int index2;//¶ÁÈ¡µÚ¶şÀ¸µÚ¼¸ÕÅÍ¼Æ¬
-     vector<QString> vc2;//´æ´¢µÚ¶şÀ¸µÄÍ¼Æ¬
+     int index;//ç”¨äºæ ‡å°ºåŠ¨
+     //å­˜å‚¨æ–‡ä»¶çš„å›¾ç‰‡éœ€è¦çš„å˜é‡
+     int index1;//è¯»å–ç¬¬å‡ å¼ å›¾ç‰‡
+     vector<QString> vc1;//å­˜å‚¨ç¬¬ä¸€æ çš„å›¾ç‰‡
+     int index2;//è¯»å–ç¬¬äºŒæ ç¬¬å‡ å¼ å›¾ç‰‡
+     vector<QString> vc2;//å­˜å‚¨ç¬¬äºŒæ çš„å›¾ç‰‡
 
      string imageurl;
      string imageurl2;
@@ -292,38 +292,38 @@ protected:
      double getDirectionY(double y, Mat mat);
 
      void addMyMenuBar();
-     //¹¤¾ßÌõĞèÒªµÄ±äÁ¿
+     //å·¥å…·æ¡éœ€è¦çš„å˜é‡
      void addMyToolBar();
-     //ÁÙÊ±ĞÔ´¦Àí
+     //ä¸´æ—¶æ€§å¤„ç†
      void tempProcessing();
-     //×Ô¶¨Òå½Ó¿Ú´¦Àí
+     //è‡ªå®šä¹‰æ¥å£å¤„ç†
      void selfProcessing();
-     //Óë½ğÀÏÊ¦µÄ½Ó¿Ú´¦Àí
+     //ä¸é‡‘è€å¸ˆçš„æ¥å£å¤„ç†
      void jinProcessing();
 
-     //×Ô¶¨Òå½Ó¿Ú¶¨Ê±Æ÷
+     //è‡ªå®šä¹‰æ¥å£å®šæ—¶å™¨
      virtual void selfTimerout();
 
-     //Óë½ğÀÏÊ¦½Ó¿ÚµÄ¶¨Ê±Æ÷´¦Àí
+     //ä¸é‡‘è€å¸ˆæ¥å£çš„å®šæ—¶å™¨å¤„ç†
      void jinTimerout();
-     //´¦Àí¸æ¾¯
+     //å¤„ç†å‘Šè­¦
      void alertProcessing(vector<MyObject> objs);
 
      QToolBar *mainToolBar;
-     //µÚÒ»×é°´Å¥£º¼à¿ØºÍºóÍË£¬»¹ÓĞ»Ø·Å
+     //ç¬¬ä¸€ç»„æŒ‰é’®ï¼šç›‘æ§å’Œåé€€ï¼Œè¿˜æœ‰å›æ”¾
      //QLabel *listLabel1;
      //QString startStopSet;
      QLabel *backLabel;
      QString mstopSet;
      QString backSet;
      //QString openSet;
-     //QToolButton *startStop;//´ò¿ª/ÔİÍ£
-     QToolButton *mstop;//ÔİÍ£
+     //QToolButton *startStop;//æ‰“å¼€/æš‚åœ
+     QToolButton *mstop;//æš‚åœ
      QToolButton *back;
-     //»Ø·Å
+     //å›æ”¾
      QString openSet;
-     QToolButton *open;//´ò¿ª
-     //µÚ¶ş×é°´Å¥£¬Í¼Ïñ
+     QToolButton *open;//æ‰“å¼€
+     //ç¬¬äºŒç»„æŒ‰é’®ï¼Œå›¾åƒ
      //QLabel *listLabel3;
      QLabel *photo;
      QString chexiaoDuibidu;
@@ -336,14 +336,14 @@ protected:
    //  QString serialNumberSet;
 //     QString timeSet;
      QToolButton *chexiao;
-     QToolButton *autom;//×Ô¶¯
-     QToolButton *addbrightness;//ÁÁ¶È
+     QToolButton *autom;//è‡ªåŠ¨
+     QToolButton *addbrightness;//äº®åº¦
      QToolButton *reducebrightness;
-     QToolButton *addsaturation;//±¥ºÍ¶È
+     QToolButton *addsaturation;//é¥±å’Œåº¦
      QToolButton *reducesaturation;
-     QToolButton *pseudoColor;//Î±²ÊÉ«
+     QToolButton *pseudoColor;//ä¼ªå½©è‰²
 
-     //µÚÈı×é°´Å¥£¬Ö¸Ê¾µÆ£¬ÎåÕµ£¬Ò»¸öÄ¿±êÒ»ÕµºìµÆ£»¶ş¸öÄ¿±ê¶şÕµºìµÆ£»Èı¸öÄ¿±êÈıÕµºìµÆ£»ËÄ¸öÄ¿±êËÄÕµºìµÆ£»Îå¸öÄ¿±ê¼°ÒÔÉÏ£¬ÎåÕµºìµÆ
+     //ç¬¬ä¸‰ç»„æŒ‰é’®ï¼ŒæŒ‡ç¤ºç¯ï¼Œäº”ç›ï¼Œä¸€ä¸ªç›®æ ‡ä¸€ç›çº¢ç¯ï¼›äºŒä¸ªç›®æ ‡äºŒç›çº¢ç¯ï¼›ä¸‰ä¸ªç›®æ ‡ä¸‰ç›çº¢ç¯ï¼›å››ä¸ªç›®æ ‡å››ç›çº¢ç¯ï¼›äº”ä¸ªç›®æ ‡åŠä»¥ä¸Šï¼Œäº”ç›çº¢ç¯
 //     QString light1Set;
 //     QString light2Set;
 //     QString light3Set;
@@ -359,44 +359,44 @@ protected:
      QLabel *light4;
      QLabel *light5;
 
-     //µÚËÄ×é£¬ÏÔÊ¾±àºÅºÍÏµÍ³µ±Ç°Ê±¼ä
+     //ç¬¬å››ç»„ï¼Œæ˜¾ç¤ºç¼–å·å’Œç³»ç»Ÿå½“å‰æ—¶é—´
       QLabel *currentTime;
-    QLabel *serialNumber;//±àºÅ
-     QLabel *systime;//Ê±¼ä
-     //¸æ¾¯
+    QLabel *serialNumber;//ç¼–å·
+     QLabel *systime;//æ—¶é—´
+     //å‘Šè­¦
      //QLabel *listLabel4;
      QLabel *setup;
      QLabel *alarm;
      QLabel *position;
      QLabel *zhanweiLabel;
 
-     QString objectAttributeSet;//ÏÔÊ¾µã»÷´¦Î»ÖÃ
-     QString manualSet;//Ôö¼Ó±êÇ©
+     QString objectAttributeSet;//æ˜¾ç¤ºç‚¹å‡»å¤„ä½ç½®
+     QString manualSet;//å¢åŠ æ ‡ç­¾
 
-     QToolButton *objectAttribute;//ÏÔÊ¾µã»÷´¦Î»ÖÃ
-     QToolButton *manual;//Ôö¼Ó±êÇ©
+     QToolButton *objectAttribute;//æ˜¾ç¤ºç‚¹å‡»å¤„ä½ç½®
+     QToolButton *manual;//å¢åŠ æ ‡ç­¾
      QToolButton *stability;
 
      QString stabilityset;
-     QString openCloseSet;//Æô¶¯¹Ø±Õ¸æ¾¯
-     QString objectSet;//µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶
+     QString openCloseSet;//å¯åŠ¨å…³é—­å‘Šè­¦
+     QString objectSet;//è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§
      QString voiceSet;
      QString lightSet;
      QString exitSet;
      QString zhanwei;
 
-     QToolButton *openClose;//¿ª/¹Ø
-     QToolButton *objects;//Ä¿±ê¶ÔÏóµÄÊôĞÔÊÇ·ñ¸úËæÄ¿±ê
-     QToolButton *voice;//ÉùÒô
-     QToolButton *light;//ÊôĞÔ
-     //QToolButton *setUp;//ÉèÖÃ
-     QToolButton *exitButton;//ÍË³ö°´Å¥
-     //QToolButton *light;//Ö¸Ê¾µÆ
-     //¶Ô»°¿òĞèÒªµÄ±äÁ¿
+     QToolButton *openClose;//å¼€/å…³
+     QToolButton *objects;//ç›®æ ‡å¯¹è±¡çš„å±æ€§æ˜¯å¦è·Ÿéšç›®æ ‡
+     QToolButton *voice;//å£°éŸ³
+     QToolButton *light;//å±æ€§
+     //QToolButton *setUp;//è®¾ç½®
+     QToolButton *exitButton;//é€€å‡ºæŒ‰é’®
+     //QToolButton *light;//æŒ‡ç¤ºç¯
+     //å¯¹è¯æ¡†éœ€è¦çš„å˜é‡
      //QLineEdit *fileLineEdit;
      //QLabel *dialogLabel;
 
-     //»Ø·Å°´Å¥ËùĞèÒªµÄ²ÎÊı
+     //å›æ”¾æŒ‰é’®æ‰€éœ€è¦çš„å‚æ•°
      class BackWindow *backwindow;
      QWidget *widgetNew;
 //     QPushButton *inputBtn;
@@ -463,7 +463,7 @@ protected slots:
      void manualFunction();
      void objectsFunction();
      void lightFunction();
-     void voiceFunction();
+//     void voiceFunction();
      void stabilityFunction();
      void alertInformation();
 
@@ -472,7 +472,7 @@ protected slots:
 
      void closeEvent(QCloseEvent *event);
 
-     //²Ëµ¥À¸²Ûº¯Êı
+     //èœå•æ æ§½å‡½æ•°
      void connectionClicked();
      void connectionplusClicked();
      void disconnectionClicked();
@@ -497,7 +497,7 @@ protected slots:
 
      //void lightFunction();
     // void adjustbrightness();
-     //»Ø·ÅËùĞèº¯Êı
+     //å›æ”¾æ‰€éœ€å‡½æ•°
      void queDingFunction();
      void quXiaoFunction();
      virtual void timeLineFunction();

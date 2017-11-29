@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+ï»¿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "qj1widget.h"
 #include "qj2widget.h"
@@ -15,7 +15,7 @@
 #include "imagedeal.h"
 #include "monitor.h"
 
-//opencvµÄÍ·ÎÄ¼ş
+//opencvçš„å¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -43,12 +43,12 @@
 
 
 //////////////////////////////ZC/////////////////
-SOCKET hSocket;			//ÊÂ¼ş¶ÔÏóÁ¬½ÓµÄÌ×½Ó×Ö
-WSAEVENT hEvent;			//Ì×½Ó×ÖÏàÁ¬µÄÊÂ¼ş¶ÔÏó
-int datalen;			//¶¨ÒåÒ»¸öÕûÊı£¬±íÊ¾´Óµ±Ç°´«ÊäµÄÊı¾İÖĞµÃµ½µÄÊı¾İ³¤¶È
-char sendbuffer[SEND_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ·¢ËÍ»º³åÇø
-char recvbuffer[RECV_BUFFER_SIZE];				//¶¨ÒåµÄÒ»¸ösocketµÄ½ÓÊÕ»º³åÇø
-char *databuffer = (char *)malloc(DATA_BUFFER_SIZE);//´æ·ÅÊı¾İµÄ¾²Ì¬»º³åÇø
+SOCKET hSocket;			//äº‹ä»¶å¯¹è±¡è¿æ¥çš„å¥—æ¥å­—
+WSAEVENT hEvent;			//å¥—æ¥å­—ç›¸è¿çš„äº‹ä»¶å¯¹è±¡
+int datalen;			//å®šä¹‰ä¸€ä¸ªæ•´æ•°ï¼Œè¡¨ç¤ºä»å½“å‰ä¼ è¾“çš„æ•°æ®ä¸­å¾—åˆ°çš„æ•°æ®é•¿åº¦
+char sendbuffer[SEND_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„å‘é€ç¼“å†²åŒº
+char recvbuffer[RECV_BUFFER_SIZE];				//å®šä¹‰çš„ä¸€ä¸ªsocketçš„æ¥æ”¶ç¼“å†²åŒº
+char *databuffer = (char *)malloc(DATA_BUFFER_SIZE);//å­˜æ”¾æ•°æ®çš„é™æ€ç¼“å†²åŒº
 
 WSANETWORKEVENTS netEvents;
 
@@ -66,30 +66,31 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     this->welcome=welcome;
-    //ÒòÎªBackwindow¼Ì³ĞÁËMainWindow£¬Backwindow²»ĞèÒªÆô¶¯½çÃæ£¬¸ø¹¹Ôìº¯Êı´«µİ¿ÕÖ¸Õë£¬
-    //ÕâÊ±ºòÒ»¶¨ÒªÁ¢¼´Ö´ĞĞinit()£¬·ñÔòBackwindowÒÔÎª³õÊ¼»¯¹¤×÷Íê³É¿ªÊ¼Ö´ĞĞ±ğµÄ´úÂëÊ±¾Í±¨´íÁË
+    //å› ä¸ºBackwindowç»§æ‰¿äº†MainWindowï¼ŒBackwindowä¸éœ€è¦å¯åŠ¨ç•Œé¢ï¼Œç»™æ„é€ å‡½æ•°ä¼ é€’ç©ºæŒ‡é’ˆï¼Œ
+    //è¿™æ—¶å€™ä¸€å®šè¦ç«‹å³æ‰§è¡Œinit()ï¼Œå¦åˆ™Backwindowä»¥ä¸ºåˆå§‹åŒ–å·¥ä½œå®Œæˆå¼€å§‹æ‰§è¡Œåˆ«çš„ä»£ç æ—¶å°±æŠ¥é”™äº†
     if(welcome != 0){
         welcome->show();
-//        timerInit=new QTimer();
-//        timerInit->setInterval(100);
-//        timerInit->setSingleShot(true);
-//        timerInit->start();
-//        connect(timerInit, SIGNAL(timeout()), SLOT(init()));
+        //        timerInit=new QTimer();
+        //        timerInit->setInterval(100);
+        //        timerInit->setSingleShot(true);
+        //        timerInit->start();
+        //        connect(timerInit, SIGNAL(timeout()), SLOT(init()));
     }else{
         init();
     }
 }
 
 void MainWindow::init(){
-    this->setWindowTitle("ºìÍâÈ«¾°¿ØÖÆÏµÍ³");
+    monitor = 0;
+    this->setWindowTitle("çº¢å¤–å…¨æ™¯æ§åˆ¶ç³»ç»Ÿ");
     location = false;
     directory = new QDir();
     widgetNew=NULL;
     this->setWindowFlags(Qt::FramelessWindowHint);
-   // this->objectAttributes=new ObjectAttributes(&this->in);
+    // this->objectAttributes=new ObjectAttributes(&this->in);
     this->objectAttributes = 0;
-    cmixer = new CMixer();
-    sound = new QSound("E:\github\Qt\1.mp3",this);
+//    cmixer = new CMixer();
+//    sound = new QSound("E:\github\Qt\1.mp3",this);
     color = 0;
     //saturation1 = 100;
     //hsl=new HSL();
@@ -98,27 +99,27 @@ void MainWindow::init(){
     //objectAttributes = new QLabel();
     isPseudo = false;
     isVoice = false;
-    //ÉèÖÃÊôĞÔÉèÖÃÖĞµÄ±äÁ¿µÄÄ¬ÈÏÖµ-------------------------------
-    //Æô¶¯»¹ÊÇÍ£Ö¹
+    //è®¾ç½®å±æ€§è®¾ç½®ä¸­çš„å˜é‡çš„é»˜è®¤å€¼-------------------------------
+    //å¯åŠ¨è¿˜æ˜¯åœæ­¢
     isQidong = true;
-    //ÔİÍ£»¹ÊÇ¼ÌĞø
+    //æš‚åœè¿˜æ˜¯ç»§ç»­
     isJixu = false;
-    //¸æ¾¯Æô¶¯»¹ÊÇ¹Ø±Õ
+    //å‘Šè­¦å¯åŠ¨è¿˜æ˜¯å…³é—­
     isGaojing = true;
-    //ÉùÒô´ò¿ª»¹ÊÇ¹Ø±Õ
+    //å£°éŸ³æ‰“å¼€è¿˜æ˜¯å…³é—­
     isShengyin = true;
-    //Ä¿±êÊôĞÔÊÇ·ñ¸úËæ
+    //ç›®æ ‡å±æ€§æ˜¯å¦è·Ÿéš
     isMubiao = true;
-    //ÏµÍ³±àºÅ
-    //xtbh = QString("BJ036AÕ½Î»");
+    //ç³»ç»Ÿç¼–å·
+    //xtbh = QString("BJ036Aæˆ˜ä½");
     //-------------------------------------------------------
-    //ÅĞ¶Ï´°¿ÚÊÇ·ñ´ò¿ª
+    //åˆ¤æ–­çª—å£æ˜¯å¦æ‰“å¼€
     is_open=false;
-    //ÅĞ¶ÏÊÇ·ñ´¦ÓÚ¶¨Òå¼à¿ØÇøÓòµÄ×´Ì¬
+    //åˆ¤æ–­æ˜¯å¦å¤„äºå®šä¹‰ç›‘æ§åŒºåŸŸçš„çŠ¶æ€
     this->isDefiningRegion = false;
     this->isDefiningRectRegion = true;
     readRgs();
-    //ÁÙÊ±µÄ£¬¼à¿ØÇøÓòµÄ¶¨ÒåĞèÒªÓÉ¶¨Òå¼à¿ØÇøÓòµÄ½çÃæÀ´´ò¿ª
+    //ä¸´æ—¶çš„ï¼Œç›‘æ§åŒºåŸŸçš„å®šä¹‰éœ€è¦ç”±å®šä¹‰ç›‘æ§åŒºåŸŸçš„ç•Œé¢æ¥æ‰“å¼€
     char name  = 'a'+rgs.size();
     rg = RegionGroup((QString)name, Scalar(0,255,0));
     rgs.push_back(rg);
@@ -140,13 +141,13 @@ void MainWindow::init(){
     //    //widget6 = new LWidget(new QWidget(this));
     //    widget6 = new NWidget2(new QWidget(this));
 
-        widget1 = new Qj1Widget(tempW);
-        widget2 = new Qj2Widget(tempW);
-        widget3 = new ZWidget(tempW);
-        widget4 = new NWidget1(tempW);
-        widget5 = new HWidget(tempW);
-        //widget6 = new LWidget(tempW));
-        widget6 = new NWidget2(tempW);
+    widget1 = new Qj1Widget(tempW);
+    widget2 = new Qj2Widget(tempW);
+    widget3 = new ZWidget(tempW);
+    widget4 = new NWidget1(tempW);
+    widget5 = new HWidget(tempW);
+    //widget6 = new LWidget(tempW));
+    widget6 = new NWidget2(tempW);
 
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
@@ -164,32 +165,32 @@ void MainWindow::init(){
     n2WZoomout = new QToolButton(label6);
 
 
-    //Êó±êÍÏ×§¿ØÖÆ±äÁ¿¸³³õÖµ
+    //é¼ æ ‡æ‹–æ‹½æ§åˆ¶å˜é‡èµ‹åˆå€¼
     isDrag1 = false;
     isDrag2 = false;
     isMove = false;
 
     ////////////////zc///////////////////////
-    //Í¨ĞÅÁ¬½Ó
+    //é€šä¿¡è¿æ¥
     //MySocketInitial();
 
-    //×Ô¶¨Òå½Ó¿Ú´¦Àí£¬½«À´±»½ğÀÏÊ¦SDKÌæ»»--------------------------------
+    //è‡ªå®šä¹‰æ¥å£å¤„ç†ï¼Œå°†æ¥è¢«é‡‘è€å¸ˆSDKæ›¿æ¢--------------------------------
     in = MyInterface();
     selfProcessing();
     //this->jinProcessing();
     //---------------------------------------------------------
 
-    //ÁÙÊ±ĞÔ´¦Àí£¬½«À´±»½ğÀÏÊ¦SDKÌæ»»--------------------------------
+    //ä¸´æ—¶æ€§å¤„ç†ï¼Œå°†æ¥è¢«é‡‘è€å¸ˆSDKæ›¿æ¢--------------------------------
     //tempProcessing();
     //---------------------------------------------------------
-    //¶¨Ê±Æ÷
+    //å®šæ—¶å™¨
     showAlert = new QTimer();
 
     timer=new QTimer();
     timer->setInterval(3000);
     timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
-    //¶¨Ê±Æ÷£¬»ñÈ¡ÏµÍ³Ê±¼ä
+    //å®šæ—¶å™¨ï¼Œè·å–ç³»ç»Ÿæ—¶é—´
 
     timerSysTime=new QTimer();
     timerSysTime->setInterval(1000);
@@ -200,13 +201,13 @@ void MainWindow::init(){
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
     connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
-    //´´½¨²Ëµ¥À¸
+    //åˆ›å»ºèœå•æ 
     addMyMenuBar();
-    // ´´½¨¹¤¾ßÀ¸
+    // åˆ›å»ºå·¥å…·æ 
     //qDebug()<<"addmytoolbar1";
     addMyToolBar();
     //qDebug()<<"addmytoolbar2";
-    //²¼¾Ö
+    //å¸ƒå±€
     gridlayout = new QGridLayout;
     //mainToolBar->setStyleSheet("background-color:#2E302D");
     gridlayout->addWidget(menubar,0,0,1,3);
@@ -239,16 +240,16 @@ void MainWindow::init(){
     this->strackBar = new STrackBar(this);
 
 
-//    double x = widget5->getDirectionX(1,2);
-//    qDebug()<<x<<"getDirectionX";
-//     double y = widget5->getDirectionY(1,2);
-//     x= widget5->getInverseDirectionX(x,y);
-//     qDebug()<<x<<"InverseDirectionX";
+    //    double x = widget5->getDirectionX(1,2);
+    //    qDebug()<<x<<"getDirectionX";
+    //     double y = widget5->getDirectionY(1,2);
+    //     x= widget5->getInverseDirectionX(x,y);
+    //     qDebug()<<x<<"InverseDirectionX";
 
     if(welcome!=0){
         welcome->close();
 
-        this->show();//BackWindowµÄshowÊÇÓÉmainwindowÖĞÖ¸¶¨´úÂëµ÷ÓÃµÄ
+        this->show();//BackWindowçš„showæ˜¯ç”±mainwindowä¸­æŒ‡å®šä»£ç è°ƒç”¨çš„
     }
 
 }
@@ -263,14 +264,14 @@ MainWindow::~MainWindow(){
     if(monitor)
         delete monitor;
     delete cmixer;
-    delete sound;
+//    delete sound;
     delete welcome;
     delete directory;
-    //cv::pointPolygonTest()//ÅĞ¶ÏµãÊÇ²»ÊÇÂäÔÚ¶à±ßĞÎÖ®ÄÚµÄº¯Êı
-    //cv::polylines()//»æÖÆ¶à±ßĞÎ
+    //cv::pointPolygonTest()//åˆ¤æ–­ç‚¹æ˜¯ä¸æ˜¯è½åœ¨å¤šè¾¹å½¢ä¹‹å†…çš„å‡½æ•°
+    //cv::polylines()//ç»˜åˆ¶å¤šè¾¹å½¢
 }
 
-//´¦Àí¸æ¾¯£¬µ±ÓĞÄ¿±ê½øÈë¼à¿ØÇøÓòµÄÊ±ºò£¬ÁÁºìµÆ
+//å¤„ç†å‘Šè­¦ï¼Œå½“æœ‰ç›®æ ‡è¿›å…¥ç›‘æ§åŒºåŸŸçš„æ—¶å€™ï¼Œäº®çº¢ç¯
 void MainWindow::alertProcessing(vector<MyObject> os){
     //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
     QString group;
@@ -290,38 +291,38 @@ void MainWindow::alertProcessing(vector<MyObject> os){
             }
         }
     }
-//        if(alert)
-//            QMessageBox::information(this,tr("¸æ¾¯"),QString("ÓĞÄ¿±ê½øÈë¼à¿ØÇøÓò×é").append(group).append(" !"));
-//    }
+    //        if(alert)
+    //            QMessageBox::information(this,tr("å‘Šè­¦"),QString("æœ‰ç›®æ ‡è¿›å…¥ç›‘æ§åŒºåŸŸç»„").append(group).append(" !"));
+    //    }
     //
-//    if(alert){
-//        lightSet="./icon/16_1.png";
-//        light->setIcon(QPixmap(lightSet));
-//    }
-//    else{
-//        lightSet="./icon/16_2.png";
-//        light->setIcon(QPixmap(lightSet));
-//    }
+    //    if(alert){
+    //        lightSet="./icon/16_1.png";
+    //        light->setIcon(QPixmap(lightSet));
+    //    }
+    //    else{
+    //        lightSet="./icon/16_2.png";
+    //        light->setIcon(QPixmap(lightSet));
+    //    }
 }
 
-//Óë½ğÀÏÊ¦µÄ½Ó¿Ú´¦Àí
+//ä¸é‡‘è€å¸ˆçš„æ¥å£å¤„ç†
 void MainWindow::jinProcessing(){
     int v=in.getIntegratedData();
     if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
-        //Í¼Æ¬1
+        //å›¾ç‰‡1
         //        QString s1=in.getQJ1();
         //        imageurl=s1.toStdString();
         //        //qDebug()<<in.getObjs().size();
-        //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
-        //ÔÚÁ½¸öÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
-        QString today=QString("./»Ø·Å/")+QDate::currentDate().toString("yyyy-MM-dd");
-       // QDir *todayDir=new QDir();
+        //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
+        //åœ¨ä¸¤ä¸ªå…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
+        QString today=QString("./å›æ”¾/")+QDate::currentDate().toString("yyyy-MM-dd");
+        // QDir *todayDir=new QDir();
         bool exist=directory->exists(today);
         if(!exist){
             directory->mkdir(today);
         }
-      // delete todayDir;
+        // delete todayDir;
 
         Mat pano = in.getPano();
         if(isJixu == true){
@@ -340,13 +341,13 @@ void MainWindow::jinProcessing(){
             current_time.clear();
             current_path.clear();
 
-    }
+        }
 
         Mat pano1 = pano.clone();
         Mat pano2 = pano.clone();
         Mat mat;
         hconcat(pano1,pano2,mat);
-        //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+        //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
         vector<MyObject> objs = in.getObjs();
         for(int i=0;i<objs.size();i++){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -367,37 +368,37 @@ void MainWindow::jinProcessing(){
         int num_objs = objs.size();
         for (int i = 0; i < num_objs;i++)
         {
-            //»­¶ÔÏóµÄbox
+            //ç”»å¯¹è±¡çš„box
             MyObject obj = objs[i];
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
-           // cv::cvtColor(mat, mat, CV_BGR2RGB);
+            // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-            //»­¹ì¼£
+            //ç”»è½¨è¿¹
             if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                for(int ii = 0; ii < tracks.size(); ii++){
+                    MyObjectTrack track = tracks[ii];
+                    int id = track.getId();
+                    vector<Point> points = track.getTrack();
+                    if(id == obj.getID()){
+                        for(int iii = 0; iii < points.size(); iii++){
+                            Point point = points[iii];
+                            Point point2 = Point(point.x+pano.cols, point.y);
+                            circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                            if(iii >= 1){
+                                Point point3 = points[iii-1];
+                                Point point4 = Point(point3.x+pano.cols, point3.y);
+                                line(mat,point,point3,obj.getColor(),1,8,0);
+                                line(mat,point2,point4,obj.getColor(),1,8,0);
+                            }
+                            // cv::cvtColor(mat, mat, CV_BGR2RGB);
                         }
-                       // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-           }
-            //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+            //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
                 int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -410,7 +411,7 @@ void MainWindow::jinProcessing(){
                 //qDebug()<<tstr;
                 Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
                 Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
-    
+
                 putText(mat,str,p,3,0.5,obj.getColor());
                 putText(mat,str,p2,3,0.5,obj.getColor());
 
@@ -419,18 +420,18 @@ void MainWindow::jinProcessing(){
 
                 putText(mat,idst,p3,3,0.5,obj.getColor());
                 putText(mat,idst,p4,3,0.5,obj.getColor());
-                        }
-           // cv::cvtColor(mat, mat, CV_BGR2RGB);
+            }
+            // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
-       // cv::cvtColor(mat, mat, CV_BGR2RGB);
+        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //»­¸æ¾¯ÇøÓò
+        //ç”»å‘Šè­¦åŒºåŸŸ
         for(int iii = 0; iii < this->rgs.size(); iii++){
             RegionGroup rg = rgs[iii];
             rg.draw(mat);
         }
 
-        //»­¾ØĞÎ
+        //ç”»çŸ©å½¢
         if(this->widget1->isTo3){
             //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
             rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
@@ -462,7 +463,7 @@ void MainWindow::jinProcessing(){
             Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
             rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
         }
-        //È»ºóÅü³É2°ë
+        //ç„¶ååŠˆæˆ2åŠ
 
         //    Size dsize ;
         //    double scale = 1;
@@ -476,7 +477,7 @@ void MainWindow::jinProcessing(){
         //    Mat image44 = Mat(dsize,CV_32S);
         //    cv::resize(image4, image44,dsize);
 
-        //    //È«¾°2Mat
+        //    //å…¨æ™¯2Mat
         //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
         //    Mat image5 = CVUtil::QImageToMat(aa2);
         //    Mat image55 = Mat(dsize,CV_32S);
@@ -499,7 +500,7 @@ void MainWindow::jinProcessing(){
         widget1->setObjects(objs);
         widget1->setTracks(in.getTracks());
         widget1->draw();
-        //Í¼Æ¬2
+        //å›¾ç‰‡2
         widget2->setPano(newpano);
         widget2->setMat(mat2);
         widget2->setTwoPano(mat);
@@ -508,34 +509,34 @@ void MainWindow::jinProcessing(){
         widget2->draw();
         //qDebug()<<s2;
         //drawUiLabel(mat2,2);
-        //Í¼Æ¬3
+        //å›¾ç‰‡3
         //Mat mat3 =imread(imageurl);
         widget3->setPano(newpano);
         widget3->setTwoPanos(mat);
         widget3->setAllObjects(in.getObjs());
         widget3->draw();
         //drawUiLabelByCopy(mat3,3);
-        //Í¼Æ¬4
+        //å›¾ç‰‡4
         //Mat mat4 =imread(imageurl2);
         //drawUiLabelByCopy(mat4,4);
         widget4->setPano(newpano);
         widget4->setTwoPanos(mat);
         widget4->setAllObjects(in.getObjs());
         widget4->draw();
-        //Í¼Æ¬5
+        //å›¾ç‰‡5
         widget5->setPano(pano);
         QString imageurl5=in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
         widget5->setMat(mat5);
         widget5->setObjects(objs);
         widget5->draw();
-        //Í¼Æ¬6
-//        QString imageurl6= in.getLD();
-//        Mat mat6 =imread(imageurl6.toStdString());
-//        widget6->setMat(mat6);
-//        widget6->setPano(pano);
-//        widget6->setObjects(objs);
-//        widget6->draw();
+        //å›¾ç‰‡6
+        //        QString imageurl6= in.getLD();
+        //        Mat mat6 =imread(imageurl6.toStdString());
+        //        widget6->setMat(mat6);
+        //        widget6->setPano(pano);
+        //        widget6->setObjects(objs);
+        //        widget6->draw();
         widget6->setPano(newpano);
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(in.getObjs());
@@ -543,17 +544,17 @@ void MainWindow::jinProcessing(){
         this->alertProcessing(in.getObjs());
     }
     else{
-        QMessageBox::information(this,tr("½Ó¿Ú·µ»ØÖµ"),QString::number(v,10));
+        QMessageBox::information(this,tr("æ¥å£è¿”å›å€¼"),QString::number(v,10));
         this->selfProcessing();
 
     }
 }
 
-//×Ô¶¨Òå½Ó¿Ú´¦Àíº¯Êı£¬½«À´±»½ğÀÏÊ¦SDKÌæ»»------------------------------
+//è‡ªå®šä¹‰æ¥å£å¤„ç†å‡½æ•°ï¼Œå°†æ¥è¢«é‡‘è€å¸ˆSDKæ›¿æ¢------------------------------
 void MainWindow::selfProcessing(){
     //QDir *todayDir=new QDir();
-    QString huiFile = QString("./»Ø·Å");
-    QString today=QString("./»Ø·Å/")+QDate::currentDate().toString("yyyy-MM-dd");
+    QString huiFile = QString("./å›æ”¾");
+    QString today=QString("./å›æ”¾/")+QDate::currentDate().toString("yyyy-MM-dd");
     bool exist = directory->exists(huiFile);
     if(!exist){
         directory->mkdir(huiFile);
@@ -566,8 +567,8 @@ void MainWindow::selfProcessing(){
 
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
-   num_objs =objs.size();
-   // num_objs =0;
+    num_objs =objs.size();
+    // num_objs =0;
     for(int i=0;i<objs.size();i++){
         QString current_time=QTime::currentTime().toString("hh-mm-ss");
         QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
@@ -593,57 +594,56 @@ void MainWindow::selfProcessing(){
     //        qDebug()<<obj.getRect().height;
     //    }
 
-    //Í¼Æ¬1
-    //Í¼Æ¬1
+    //å›¾ç‰‡1
+    //å›¾ç‰‡1
     //    QString s1=in.getQJ1();
     //    imageurl=s1.toStdString();
     //    Mat mat1 =imread(imageurl);
 
-    //ÔÚÁ½¸öÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+    //åœ¨ä¸¤ä¸ªå…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
     Mat pano = in.getPano();
 
     Mat pano1 = pano.clone();
     Mat pano2 = pano.clone();
     Mat mat;
     hconcat(pano1,pano2,mat);
-
-    //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+    //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
-
+    qDebug()<<num_objs;
     for (int i = 0; i < num_objs;i++)
     {
-        //»­¶ÔÏóµÄbox
+        //ç”»å¯¹è±¡çš„box
         MyObject obj = objs[i];
         Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
         rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
         rectangle(mat,rect2,obj.getColor(),2,1,0);
-       // cv::cvtColor(mat, mat, CV_BGR2RGB);
+        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //»­¹ì¼£
+        //ç”»è½¨è¿¹
         if(isMubiao){
-        for(int ii = 0; ii < tracks.size(); ii++){
-            MyObjectTrack track = tracks[ii];
-            int id = track.getId();
-            vector<Point> points = track.getTrack();
-            if(id == obj.getID()){
-                for(int iii = 0; iii < points.size(); iii++){
-                    Point point = points[iii];
-                    Point point2 = Point(point.x+pano.cols, point.y);
-                    circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                    if(iii >= 1){
-                        Point point3 = points[iii-1];
-                        Point point4 = Point(point3.x+pano.cols, point3.y);
-                        line(mat,point,point3,obj.getColor(),1,8,0);
-                        line(mat,point2,point4,obj.getColor(),1,8,0);
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                        }
+                        // cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
-                   // cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-       }
-        //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+        //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
             int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -665,17 +665,16 @@ void MainWindow::selfProcessing(){
 
             putText(mat,idst,p3,3,0.5,obj.getColor());
             putText(mat,idst,p4,3,0.5,obj.getColor());
-                    }
-       // cv::cvtColor(mat, mat, CV_BGR2RGB);
+        }
+        // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
-
-    //»­¸æ¾¯ÇøÓò
+    //ç”»å‘Šè­¦åŒºåŸŸ
     for(int iii = 0; iii < this->rgs.size(); iii++){
         RegionGroup rg = rgs[iii];
         rg.draw(mat);
     }
-    //»­¾ØĞÎ
+    //ç”»çŸ©å½¢
     if(this->widget1->isTo3){
         //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
         rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
@@ -707,7 +706,7 @@ void MainWindow::selfProcessing(){
         Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
         rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
     }
-    //È»ºóÅü³É2°ë
+    //ç„¶ååŠˆæˆ2åŠ
 
     //    Size dsize ;
     //    double scale = 1;
@@ -721,7 +720,7 @@ void MainWindow::selfProcessing(){
     //    Mat image44 = Mat(dsize,CV_32S);
     //    cv::resize(image4, image44,dsize);
 
-    //    //È«¾°2Mat
+    //    //å…¨æ™¯2Mat
     //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
     //    Mat image5 = CVUtil::QImageToMat(aa2);
     //    Mat image55 = Mat(dsize,CV_32S);
@@ -740,10 +739,10 @@ void MainWindow::selfProcessing(){
     hconcat(mat1,mat2,newpano);
 
     //Mat mat1 = image44;
-//    if(this->isPseudo==true)
-//        mat1=setPseudocolor(mat1);
-//    updateBright(mat1);
-//    updateContrast(mat1);
+    //    if(this->isPseudo==true)
+    //        mat1=setPseudocolor(mat1);
+    //    updateBright(mat1);
+    //    updateContrast(mat1);
     //        if(saturation1!=100){
     //               hsl->channels[color].saturation1 = saturation1 - 100;
     //               hsl->adjust(mat1, mat1);
@@ -755,26 +754,26 @@ void MainWindow::selfProcessing(){
     widget1->setTracks(in.getTracks());
     widget1->draw();
     //qDebug()<<s1;
-    //Í¼Æ¬2
-    //Í¼Æ¬1
+    //å›¾ç‰‡2
+    //å›¾ç‰‡1
     //    QString s1=in.getQJ1();
     //    imageurl=s1.toStdString();
     //    Mat mat1 =imread(imageurl);
 
     //Mat mat2 = image55;
     if(this->isPseudo==true)
-                        mat2=setPseudocolor(mat2);
-        updateBright(mat2);
-        updateContrast(mat2);
-//        if(saturation1!=100){
-//               hsl->channels[color].saturation1 = saturation1 - 100;
-//               hsl->adjust(mat2, mat2);
-//           }
+        mat2=setPseudocolor(mat2);
+    updateBright(mat2);
+    updateContrast(mat2);
+    //        if(saturation1!=100){
+    //               hsl->channels[color].saturation1 = saturation1 - 100;
+    //               hsl->adjust(mat2, mat2);
+    //           }
     widget2->setPano(newpano);
-//    if(this->isPseudo==true)
-//        mat2=setPseudocolor(mat2);
-//    updateBright(mat2);
-//    updateContrast(mat2);
+    //    if(this->isPseudo==true)
+    //        mat2=setPseudocolor(mat2);
+    //    updateBright(mat2);
+    //    updateContrast(mat2);
     //        if(saturation1!=100){
     //               hsl->channels[color].saturation1 = saturation1 - 100;
     //               hsl->adjust(mat2, mat2);
@@ -787,34 +786,34 @@ void MainWindow::selfProcessing(){
     widget2->draw();
     //qDebug()<<s2;
     //drawUiLabel(mat2,2);
-    //Í¼Æ¬3
+    //å›¾ç‰‡3
     //Mat mat3 =imread(imageurl);
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
     widget3->setAllObjects(in.getObjs());
     widget3->draw();
     //drawUiLabelByCopy(mat3,3);
-    //Í¼Æ¬4
+    //å›¾ç‰‡4
     //Mat mat4 =imread(imageurl2);
     //drawUiLabelByCopy(mat4,4);
     widget4->setPano(newpano);
     widget4->setTwoPanos(mat);
     widget4->setAllObjects(in.getObjs());
     widget4->draw();
-    //Í¼Æ¬5
+    //å›¾ç‰‡5
     widget5->setPano(pano);
     QString imageurl5=in.getHD();
     Mat mat5 =imread(imageurl5.toStdString());
     widget5->setMat(mat5);
     widget5->setObjects(objs);
     widget5->draw();
-    //Í¼Æ¬6
-//    QString imageurl6= in.getLD();
-//    Mat mat6 =imread(imageurl6.toStdString());
-//    widget6->setMat(mat6);
-//    widget6->setPano(pano);
-//    widget6->setObjects(objs);
-//    widget6->draw();
+    //å›¾ç‰‡6
+    //    QString imageurl6= in.getLD();
+    //    Mat mat6 =imread(imageurl6.toStdString());
+    //    widget6->setMat(mat6);
+    //    widget6->setPano(pano);
+    //    widget6->setObjects(objs);
+    //    widget6->draw();
     widget6->setPano(newpano);
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(in.getObjs());
@@ -823,36 +822,36 @@ void MainWindow::selfProcessing(){
 }
 //----------------------------------------------------------
 
-//ÁÙÊ±ĞÔ´¦Àíº¯Êı£¬½«À´±»½ğÀÏÊ¦SDKÌæ»»------------------------------
+//ä¸´æ—¶æ€§å¤„ç†å‡½æ•°ï¼Œå°†æ¥è¢«é‡‘è€å¸ˆSDKæ›¿æ¢------------------------------
 void MainWindow::tempProcessing(){
-    index=0;//ÓÃÓÚ¼ÆËã±ê³ßµÄÆğÊ¼Î»ÖÃ
-    index1=0;//ÓÃÓÚÈ¡µÚÒ»À¸µÄÍ¼Æ¬
-    index2=0;//ÓÃÓÚÈ¡µÚ¶şÀ¸µÄÍ¼Æ¬
+    index=0;//ç”¨äºè®¡ç®—æ ‡å°ºçš„èµ·å§‹ä½ç½®
+    index1=0;//ç”¨äºå–ç¬¬ä¸€æ çš„å›¾ç‰‡
+    index2=0;//ç”¨äºå–ç¬¬äºŒæ çš„å›¾ç‰‡
 
-    //Í¼Æ¬1
+    //å›¾ç‰‡1
     string imageurl="./s1/1.bmp";
     Mat mat1 =imread(imageurl);
     widget1->setMat(mat1);
     drawUiLabel(mat1,1);
 
-    //Í¼Æ¬2
+    //å›¾ç‰‡2
     string imageurl2 = "./s2/1.bmp";
     Mat mat2 =imread(imageurl2);
     widget2->setMat(mat2);
     drawUiLabel(mat2,2);
-    //Í¼Æ¬3
+    //å›¾ç‰‡3
     Mat mat3 =imread(imageurl);
     drawUiLabelByCopy(mat3,3);
-    //Í¼Æ¬4
+    //å›¾ç‰‡4
     Mat mat4 =imread(imageurl2);
     drawUiLabelByCopy(mat4,4);
-    //Í¼Æ¬5
-    string imageurl5="./0.png";//µÚÎå¸öÍ¼Æ¬µÄ
+    //å›¾ç‰‡5
+    string imageurl5="./0.png";//ç¬¬äº”ä¸ªå›¾ç‰‡çš„
     Mat mat5 =imread(imageurl5);
 
     drawUiLabel(mat5,5);
-    //Í¼Æ¬6
-    string imageurl6= "./0.png";//µÚÎå¸öÍ¼Æ¬µÄ
+    //å›¾ç‰‡6
+    string imageurl6= "./0.png";//ç¬¬äº”ä¸ªå›¾ç‰‡çš„
     Mat mat6 =imread(imageurl6);
 
     drawUiLabel(mat6,6);
@@ -860,22 +859,22 @@ void MainWindow::tempProcessing(){
     imageurl="./s1/1.bmp";
     imageurl2="./s2/1.bmp";
 
-    //´æ´¢µÚÒ»À¸
+    //å­˜å‚¨ç¬¬ä¸€æ 
     filename1 = "./s1/1.bmp";
     filename2 = "./s1/2.bmp";
     filename3 = "./s1/3.bmp";
     filename4 = "./s1/4.bmp";
-    //´æ´¢µÚ¶şÀ¸
+    //å­˜å‚¨ç¬¬äºŒæ 
     filename5 = "./s2/1.bmp";
     filename6 = "./s2/2.bmp";
     filename7 = "./s2/3.bmp";
     filename8 = "./s2/4.bmp";
-    //½«µÚÒ»À¸´æ´¢ÔÚvectorÖĞ
+    //å°†ç¬¬ä¸€æ å­˜å‚¨åœ¨vectorä¸­
     vc1.push_back(filename1);
     vc1.push_back(filename2);
     vc1.push_back(filename3);
     vc1.push_back(filename4);
-    //½«µÚ¶şÀ¸´æ´¢ÔÚvectorÖĞ
+    //å°†ç¬¬äºŒæ å­˜å‚¨åœ¨vectorä¸­
     vc2.push_back(filename5);
     vc2.push_back(filename6);
     vc2.push_back(filename7);
@@ -887,34 +886,34 @@ void MainWindow::tempProcessing(){
 void MainWindow::addMyMenuBar(){
     menubar = new QMenuBar(this);
 
-    FileMenu = new QMenu("ÎÄ¼ş");
-    OptionMenu = new QMenu("Ñ¡Ïî");
-    ToolMenu = new QMenu("¹¤¾ß");
-    DisplayMenu = new QMenu("ÏÔÊ¾");
-    HelpMenu = new QMenu("°ïÖú");
+    FileMenu = new QMenu("æ–‡ä»¶");
+    OptionMenu = new QMenu("é€‰é¡¹");
+    ToolMenu = new QMenu("å·¥å…·");
+    DisplayMenu = new QMenu("æ˜¾ç¤º");
+    HelpMenu = new QMenu("å¸®åŠ©");
 
-    connection = new QAction("Á¬½Ó",this);
-    connectionplus = new QAction("Á¬½Ó...",this);
-    disconnection = new QAction("¶Ï¿ª",this);
-    openplus = new QAction("´ò¿ª...",this);
-    backplus = new QAction("»Ø·Å",this);
-    closeaction = new QAction("¹Ø±Õ",this);
-    //recentvidio = new QAction("×î½üÊÓÆµ",this);
-    recentvidio = new QMenu("×î½üÊÓÆµ");//recent ÓĞµ¥¶ÀµÄ×Ó²Ëµ¥£¬ËùÒÔ¶¨Òå³Émenu
-    changeuser = new QAction("ÇĞ»»ÓÃ»§",this);
-    installation = new QAction("Æô¶¯°²×°Ïòµ¼",this);
-    exit = new QAction("ÍË³ö",this);
+    connection = new QAction("è¿æ¥",this);
+    connectionplus = new QAction("è¿æ¥...",this);
+    disconnection = new QAction("æ–­å¼€",this);
+    openplus = new QAction("æ‰“å¼€...",this);
+    backplus = new QAction("å›æ”¾",this);
+    closeaction = new QAction("å…³é—­",this);
+    //recentvidio = new QAction("æœ€è¿‘è§†é¢‘",this);
+    recentvidio = new QMenu("æœ€è¿‘è§†é¢‘");//recent æœ‰å•ç‹¬çš„å­èœå•ï¼Œæ‰€ä»¥å®šä¹‰æˆmenu
+    changeuser = new QAction("åˆ‡æ¢ç”¨æˆ·",this);
+    installation = new QAction("å¯åŠ¨å®‰è£…å‘å¯¼",this);
+    exit = new QAction("é€€å‡º",this);
 
     installation->setEnabled(false);
 
-    //Ôö¼ÓÈÈ¼ü
+    //å¢åŠ çƒ­é”®
     changeuser->setShortcut(Qt::Key_F11);
     connection->setShortcut(Qt::CTRL+Qt::Key_D);
 
     for(int j=0;j<6;j++){//recent
         videoAction[j]=new QAction("",this);
         videoAction[j]->setVisible(false);
-        videoAction[j]->setData(j);//ÔÚ²Ûº¯ÊıÀï»ñÈ¡·¢³öĞÅºÅµÄ¶ÔÏó£¬È¡³ödata£¬¿´ÊÇµÚ¼¸¸ö
+        videoAction[j]->setData(j);//åœ¨æ§½å‡½æ•°é‡Œè·å–å‘å‡ºä¿¡å·çš„å¯¹è±¡ï¼Œå–å‡ºdataï¼Œçœ‹æ˜¯ç¬¬å‡ ä¸ª
         connect(videoAction[j],SIGNAL(triggered()),this,SLOT(videoClick()));
         recentvidio->addAction(videoAction[j]);
     }
@@ -941,9 +940,9 @@ void MainWindow::addMyMenuBar(){
     connect(installation,SIGNAL(triggered()),this,SLOT(installationClicked()));
     connect(exit,SIGNAL(triggered()),this,SLOT(exitClicked()));
 
-    configuration = new QAction("ÅäÖÃ...",this);
-    saveconfiguration = new QAction("±£´æµ±Ç°ÉèÖÃ",this);
-    region = new QAction("´´½¨»ò±à¼­ÇøÓò",this);
+    configuration = new QAction("é…ç½®...",this);
+    saveconfiguration = new QAction("ä¿å­˜å½“å‰è®¾ç½®",this);
+    region = new QAction("åˆ›å»ºæˆ–ç¼–è¾‘åŒºåŸŸ",this);
 
     region->setShortcut(Qt::Key_F12);
 
@@ -957,13 +956,13 @@ void MainWindow::addMyMenuBar(){
     connect(region,SIGNAL(triggered()),this,SLOT(regionClicked()));
 
 
-     figure = new QAction("ÆÁÄ»½ØÍ¼",this);
-     figure->setShortcut(Qt::Key_F7);
-     ToolMenu->addAction(figure);
-     connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
+    figure = new QAction("å±å¹•æˆªå›¾",this);
+    figure->setShortcut(Qt::Key_F7);
+    ToolMenu->addAction(figure);
+    connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
 
-    openalert = new QAction("ÏÔÊ¾±¨¾¯ĞÅÏ¢",this);
-    closealert = new QAction("¹Ø±Õ±¨¾¯ĞÅÏ¢",this);
+    openalert = new QAction("æ˜¾ç¤ºæŠ¥è­¦ä¿¡æ¯",this);
+    closealert = new QAction("å…³é—­æŠ¥è­¦ä¿¡æ¯",this);
 
     openalert->setShortcut(Qt::Key_F3);
     closealert->setShortcut(Qt::Key_F9);
@@ -974,8 +973,8 @@ void MainWindow::addMyMenuBar(){
     connect(openalert,SIGNAL(triggered()),this,SLOT(openalertClicked()));
     connect(closealert,SIGNAL(triggered()),this,SLOT(closealertClicked()));
 
-    help = new QAction("°ïÖú",this);
-    about = new QAction("¹ØÓÚ",this);
+    help = new QAction("å¸®åŠ©",this);
+    about = new QAction("å…³äº",this);
 
     HelpMenu->addAction(help);
     HelpMenu->addAction(about);
@@ -992,13 +991,13 @@ void MainWindow::addMyMenuBar(){
 }
 
 
-//»æÖÆ¹¤¾ßÀ¸
+//ç»˜åˆ¶å·¥å…·æ 
 void MainWindow::addMyToolBar()
 {
 
-//    //Í¼±êÌ«´óµ¼ÖÂÔÚĞ¡ÆÁÄ»ÉÏÏÔÊ¾²»È«£¬¸ÄÎª°´ÕÕÆÁÄ»¿í¶È×Ô¶¯µ÷ÕûÍ¼±êµÄ´óĞ¡
+    //    //å›¾æ ‡å¤ªå¤§å¯¼è‡´åœ¨å°å±å¹•ä¸Šæ˜¾ç¤ºä¸å…¨ï¼Œæ”¹ä¸ºæŒ‰ç…§å±å¹•å®½åº¦è‡ªåŠ¨è°ƒæ•´å›¾æ ‡çš„å¤§å°
     QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
+    QRect screenRect = desktopWidget->screenGeometry();  //å±å¹•åŒºåŸŸ
     int screenWidth=screenRect.width();
     const int buttonSize=(screenWidth*0.7)/28;
 
@@ -1008,7 +1007,7 @@ void MainWindow::addMyToolBar()
     QGroupBox *group4=new QGroupBox(this);
     //QGroupBox* group5=new QGroupBox(this);
     QGroupBox *group6=new QGroupBox(this);
-   // QGroupBox *group7=new QGroupBox(this);
+    // QGroupBox *group7=new QGroupBox(this);
     QGroupBox *group8=new QGroupBox(this);
 
 
@@ -1016,54 +1015,54 @@ void MainWindow::addMyToolBar()
     QHBoxLayout *vbox2 = new QHBoxLayout;
     QHBoxLayout *vbox3 = new QHBoxLayout;
     QHBoxLayout *vbox4 = new QHBoxLayout;
-   //QHBoxLayout *vbox5 = new QHBoxLayout;
+    //QHBoxLayout *vbox5 = new QHBoxLayout;
     QHBoxLayout *vbox6 = new QHBoxLayout;
-  //  QHBoxLayout *vbox7 = new QHBoxLayout;
+    //  QHBoxLayout *vbox7 = new QHBoxLayout;
     QHBoxLayout *vbox8 = new QHBoxLayout;
 
     mainToolBar = addToolBar("monitoring");
 
-    //¼ÓÍ¼±ê
+    //åŠ å›¾æ ‡
     //mainToolBar->addWidget(new QLabel(""));
-//    QPixmap pixmap3("./icon/fujirui.png");
-//    //QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.7,buttonSize*1.7, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    QLabel *tuBiao=new QLabel(this);
-//    tuBiao->setPixmap(pixmap3);
-//    mainToolBar->addWidget(tuBiao);
-//    mainToolBar->addWidget(new QLabel(" "));
-    //µÚÒ»×é°´Å¥£º¼à¿ØºÍºóÍË£¬»¹ÓĞ»Ø·Å
-    //Æô¶¯/Í£Ö¹
+    //    QPixmap pixmap3("./icon/fujirui.png");
+    //    //QPixmap fitpixmap3=pixmap3.scaled(buttonSize*1.7,buttonSize*1.7, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //    QLabel *tuBiao=new QLabel(this);
+    //    tuBiao->setPixmap(pixmap3);
+    //    mainToolBar->addWidget(tuBiao);
+    //    mainToolBar->addWidget(new QLabel(" "));
+    //ç¬¬ä¸€ç»„æŒ‰é’®ï¼šç›‘æ§å’Œåé€€ï¼Œè¿˜æœ‰å›æ”¾
+    //å¯åŠ¨/åœæ­¢
 
-//    startStop = new QToolButton(this);
-//    startStop->setToolTip(tr("Í£Ö¹"));
-//    //startStop->setMinimumHeight(buttonSize);
-//    //startStop->setMaximumHeight(buttonSize);
-//    //startStop->setMinimumWidth(buttonSize);
-//    //startStop->setMaximumWidth(buttonSize);
-//    //startStop->setStyleSheet("border-style:flat;background-color:2E302D");
-//    startStopSet="./icon/1_1.png";
-//    startStop->setIcon(QPixmap(startStopSet));
-//    //startStop->setIconSize(QSize(buttonSize,buttonSize));
-//    vbox1->addWidget(startStop);
-//    connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
-//    //vbox1->addWidget(new QLabel(" "));
+    //    startStop = new QToolButton(this);
+    //    startStop->setToolTip(tr("åœæ­¢"));
+    //    //startStop->setMinimumHeight(buttonSize);
+    //    //startStop->setMaximumHeight(buttonSize);
+    //    //startStop->setMinimumWidth(buttonSize);
+    //    //startStop->setMaximumWidth(buttonSize);
+    //    //startStop->setStyleSheet("border-style:flat;background-color:2E302D");
+    //    startStopSet="./icon/1_1.png";
+    //    startStop->setIcon(QPixmap(startStopSet));
+    //    //startStop->setIconSize(QSize(buttonSize,buttonSize));
+    //    vbox1->addWidget(startStop);
+    //    connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
+    //    //vbox1->addWidget(new QLabel(" "));
 
-    //»Ø·Å
+    //å›æ”¾
     backLabel = new QLabel(this);
-    QPixmap pixmap4("./iconUpdate/»Ø·Å.png");
+    QPixmap pixmap4("./iconUpdate/å›æ”¾.png");
     fitpixmap4=pixmap4.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     backLabel->setPixmap(fitpixmap4);
     vbox1->addWidget(backLabel);
 
-    //ÔİÍ£/¼ÌĞø
+    //æš‚åœ/ç»§ç»­
     mstop = new QToolButton(this);
-    mstop->setToolTip(tr("¼ÇÂ¼µ±Ç°³¡¾°"));
+    mstop->setToolTip(tr("è®°å½•å½“å‰åœºæ™¯"));
     mstop->setMinimumHeight(buttonSize);
     mstop->setMaximumHeight(buttonSize);
     mstop->setMinimumWidth(buttonSize);
     mstop->setMaximumWidth(buttonSize);
     mstop->setStyleSheet("border-style:flat;background-color:2E302D");
-    mstopSet="./iconUpdate/¼ÇÂ¼µ±Ç°³¡¾°.png";
+    mstopSet="./iconUpdate/è®°å½•å½“å‰åœºæ™¯.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setIconSize(QSize(buttonSize,buttonSize));
     mstop->setCheckable(true);
@@ -1071,15 +1070,15 @@ void MainWindow::addMyToolBar()
     connect(mstop,SIGNAL(clicked()),this,SLOT(mstopFunction()));
     //vbox1->addWidget(new QLabel(" "));
 
-    //ºóÍË
+    //åé€€
     back = new QToolButton(this);
-    back->setToolTip(tr("Ö´ĞĞ·Ç¾ùÔÈĞÔĞ£Õı"));
+    back->setToolTip(tr("æ‰§è¡Œéå‡åŒ€æ€§æ ¡æ­£"));
     back->setMinimumHeight(buttonSize);
     back->setMaximumHeight(buttonSize);
     back->setMinimumWidth(buttonSize);
     back->setMaximumWidth(buttonSize);
     back->setStyleSheet("border-style:flat;background-color:2E302D");
-    backSet="./iconUpdate/Ö´ĞĞ·Ç¾ùÔÈĞÔ½ÃÕı.png";
+    backSet="./iconUpdate/æ‰§è¡Œéå‡åŒ€æ€§çŸ«æ­£.png";
     back->setIcon(QPixmap(backSet));
     back->setIconSize(QSize(buttonSize,buttonSize));
     back->setCheckable(true);
@@ -1087,63 +1086,64 @@ void MainWindow::addMyToolBar()
     connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
     //vbox1->addWidget(new QLabel(" "));
 
-    //»Ø·Å
+    //å›æ”¾
     open = new QToolButton(this);
-    open->setToolTip(tr("ÏÔÊ¾Òş²ØÊ±¼äÖá"));
+    open->setToolTip(tr("æ˜¾ç¤ºéšè—æ—¶é—´è½´"));
     open->setMinimumHeight(buttonSize);
     open->setMaximumHeight(buttonSize);
     open->setMinimumWidth(buttonSize);
     open->setMaximumWidth(buttonSize);
     open->setStyleSheet("border-style:flat;background-color:2E302D");
-    openSet="./iconUpdate/ÏÔÊ¾Òş²ØÊ±¼äÖá.png";
+    openSet="./iconUpdate/æ˜¾ç¤ºéšè—æ—¶é—´è½´.png";
     open->setIcon(QPixmap(openSet));
     open->setIconSize(QSize(buttonSize,buttonSize));
     open->setCheckable(true);
     vbox1->addWidget(open);
     connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
-
+    \
+    vbox1->addWidget(new QLabel("  "));
     vbox1->setMargin(0);
     vbox1->setSpacing(0);
     //vbox1->setContentsMargins(QMargins(0,0,0,0));
 
     group1->setLayout(vbox1);
-    group1->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°.png)");
+    group1->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯.png)");
 
 
     mainToolBar->addWidget(group1);
     //mainToolBar->addWidget(new QLabel("    "));
-    //µÚ¶ş×é°´Å¥£ºÍ¼Ïñ
-    //Í¼Ïñ
+    //ç¬¬äºŒç»„æŒ‰é’®ï¼šå›¾åƒ
+    //å›¾åƒ
     photo = new QLabel(this);
-    QPixmap pixmap5("./iconUpdate/Í¼Ïñ.png");
+    QPixmap pixmap5("./iconUpdate/å›¾åƒ.png");
     fitpixmap5=pixmap5.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     photo->setPixmap(fitpixmap5);
     vbox2->addWidget(photo);
 
-    //³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı
+    //æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°
     chexiao = new QToolButton(this);
-    chexiao->setToolTip(tr("³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı"));
+    chexiao->setToolTip(tr("æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°"));
     chexiao->setMinimumHeight(buttonSize);
     chexiao->setMaximumHeight(buttonSize);
     chexiao->setMinimumWidth(buttonSize);
     chexiao->setMaximumWidth(buttonSize);
     chexiao->setStyleSheet("border-style:flat;background-color:2E302D");
-    chexiaoDuibidu ="./iconUpdate/³·ÏúÊÖ¶¯¶Ô±È²ÎÊı.png";
+    chexiaoDuibidu ="./iconUpdate/æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”å‚æ•°.png";
     chexiao->setIcon(QPixmap(chexiaoDuibidu));
     chexiao->setIconSize(QSize(buttonSize,buttonSize));
     chexiao->setCheckable(true);
     vbox2->addWidget(chexiao);
     connect(chexiao,SIGNAL(clicked()),this,SLOT(chexiaoFunction()));
 
-    //×Ô¶¯
+    //è‡ªåŠ¨
     autom = new QToolButton(this);
-    autom->setToolTip(tr("Ó¦ÓÃ×Ô¶¯¶Ô±È¶È"));
+    autom->setToolTip(tr("åº”ç”¨è‡ªåŠ¨å¯¹æ¯”åº¦"));
     autom->setMinimumHeight(buttonSize);
     autom->setMaximumHeight(buttonSize);
     autom->setMinimumWidth(buttonSize);
     autom->setMaximumWidth(buttonSize);
     autom->setStyleSheet("border-style:flat;background-color:2E302D");
-    automSet="./iconUpdate/Ó¦ÓÃ×Ô¶¯¶Ô±È¶È.png";
+    automSet="./iconUpdate/åº”ç”¨è‡ªåŠ¨å¯¹æ¯”åº¦.png";
     autom->setIcon(QPixmap(automSet));
     autom->setIconSize(QSize(buttonSize,buttonSize));
     autom->setCheckable(true);
@@ -1151,15 +1151,15 @@ void MainWindow::addMyToolBar()
     connect(autom,SIGNAL(clicked()),this,SLOT(automFunction()));
     //vbox2->addWidget(new QLabel(" "));
 
-    //½µµÍÁÁ¶È
+    //é™ä½äº®åº¦
     reducebrightness = new QToolButton(this);
-    reducebrightness->setToolTip(tr("½µµÍÁÁ¶È"));
+    reducebrightness->setToolTip(tr("é™ä½äº®åº¦"));
     reducebrightness->setMinimumHeight(buttonSize);
     reducebrightness->setMaximumHeight(buttonSize);
     reducebrightness->setMinimumWidth(buttonSize);
     reducebrightness->setMaximumWidth(buttonSize);
     reducebrightness->setStyleSheet("border-style:flat;background-color:2E302D");
-    reduceBrightnessSet="./iconUpdate/ÁÁ¶È¼õÈõ.png";
+    reduceBrightnessSet="./iconUpdate/äº®åº¦å‡å¼±.png";
     reducebrightness->setIcon(QPixmap(reduceBrightnessSet));
     reducebrightness->setIconSize(QSize(buttonSize,buttonSize));
     reducebrightness->setCheckable(true);
@@ -1167,15 +1167,15 @@ void MainWindow::addMyToolBar()
     connect(reducebrightness,SIGNAL(clicked()),this,SLOT(reduceBrightnessFunction()));
     //vbox2->addWidget(new QLabel(" "));
 
-    //Ôö¼ÓÁÁ¶È
+    //å¢åŠ äº®åº¦
     addbrightness = new QToolButton(this);
-    addbrightness->setToolTip(tr("Ôö¼ÓÁÁ¶È"));
+    addbrightness->setToolTip(tr("å¢åŠ äº®åº¦"));
     addbrightness->setMinimumHeight(buttonSize);
     addbrightness->setMaximumHeight(buttonSize);
     addbrightness->setMinimumWidth(buttonSize);
     addbrightness->setMaximumWidth(buttonSize);
     addbrightness->setStyleSheet("border-style:flat;background-color:2E302D");
-    addBrightnessSet="./iconUpdate/ÁÁ¶È¼ÓÇ¿.png";
+    addBrightnessSet="./iconUpdate/äº®åº¦åŠ å¼º.png";
     addbrightness->setIcon(QPixmap(addBrightnessSet));
     addbrightness->setIconSize(QSize(buttonSize,buttonSize));
     addbrightness->setCheckable(true);
@@ -1186,15 +1186,15 @@ void MainWindow::addMyToolBar()
 
 
 
-    //½µµÍ¶Ô±È¶È
+    //é™ä½å¯¹æ¯”åº¦
     reducesaturation = new QToolButton(this);
-    reducesaturation->setToolTip(tr("½µµÍ¶Ô±È¶È"));
+    reducesaturation->setToolTip(tr("é™ä½å¯¹æ¯”åº¦"));
     reducesaturation->setMinimumHeight(buttonSize);
     reducesaturation->setMaximumHeight(buttonSize);
     reducesaturation->setMinimumWidth(buttonSize);
     reducesaturation->setMaximumWidth(buttonSize);
     reducesaturation->setStyleSheet("border-style:flat;background-color:2E302D");
-    reduceSaturationSet="./iconUpdate/¶Ô±È¶È¼õÈõ.png";
+    reduceSaturationSet="./iconUpdate/å¯¹æ¯”åº¦å‡å¼±.png";
     reducesaturation->setIcon(QPixmap(reduceSaturationSet));
     reducesaturation->setIconSize(QSize(buttonSize,buttonSize));
     reducesaturation->setCheckable(true);
@@ -1202,15 +1202,15 @@ void MainWindow::addMyToolBar()
     connect(reducesaturation,SIGNAL(clicked()),this,SLOT(reduceSaturationFunction()));
     //vbox2->addWidget(new QLabel(" "));
 
-    //Ôö¼Ó¶Ô±È¶È
+    //å¢åŠ å¯¹æ¯”åº¦
     addsaturation = new QToolButton(this);
-    addsaturation->setToolTip(tr("Ôö¼Ó¶Ô±È¶È"));
+    addsaturation->setToolTip(tr("å¢åŠ å¯¹æ¯”åº¦"));
     addsaturation->setMinimumHeight(buttonSize);
     addsaturation->setMaximumHeight(buttonSize);
     addsaturation->setMinimumWidth(buttonSize);
     addsaturation->setMaximumWidth(buttonSize);
     addsaturation->setStyleSheet("border-style:flat;background-color:2E302D");
-    addSaturationSet="./iconUpdate/¶Ô±È¶ÈÔö¼Ó.png";
+    addSaturationSet="./iconUpdate/å¯¹æ¯”åº¦å¢åŠ .png";
     addsaturation->setIcon(QPixmap(addSaturationSet));
     addsaturation->setIconSize(QSize(buttonSize,buttonSize));
     addsaturation->setCheckable(true);
@@ -1219,84 +1219,87 @@ void MainWindow::addMyToolBar()
     //vbox2->addWidget(new QLabel(" "));
 
 
-    //Î±²ÊÉ«
+    //ä¼ªå½©è‰²
     pseudoColor = new QToolButton(this);
-    pseudoColor->setToolTip(tr("Î±²ÊÉ«"));
+    pseudoColor->setToolTip(tr("ä¼ªå½©è‰²"));
     pseudoColor->setMinimumHeight(buttonSize);
     pseudoColor->setMaximumHeight(buttonSize);
     pseudoColor->setMinimumWidth(buttonSize);
     pseudoColor->setMaximumWidth(buttonSize);
     pseudoColor->setStyleSheet("border-style:flat;background-color:2E302D");
-    pseudoColorSet="./iconUpdate/¸ü¶àÉ«°å.png";
+    pseudoColorSet="./iconUpdate/æ›´å¤šè‰²æ¿.png";
     pseudoColor->setIcon(QPixmap(pseudoColorSet));
     pseudoColor->setIconSize(QSize(buttonSize,buttonSize));
     pseudoColor->setCheckable(true);
     vbox2->addWidget(pseudoColor);
     connect(pseudoColor,SIGNAL(clicked()),this,SLOT(pseudoColorFunction()));
 
+    vbox2->addWidget(new QLabel("  "));
     vbox2->setMargin(0);
     vbox2->setSpacing(0);
 
     group2->setLayout(vbox2);
-     group2->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°-2.png)");
+    group2->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯-2.png)");
     mainToolBar->addWidget(group2);
 
-    //Õ¾Î»
+    //ç«™ä½
     position = new QLabel(this);
-    QPixmap pixmap8("./iconUpdate/Î»ÖÃ.png");
+    QPixmap pixmap8("./iconUpdate/ä½ç½®.png");
     fitpixmap8=pixmap8.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     position->setPixmap(fitpixmap8);
     vbox8->addWidget(position);
 
     zhanweiLabel = new QLabel(this);
-    zhanwei = "BJ036 Õ½Î»";
+    zhanwei = "BJ036 æˆ˜ä½";
     zhanweiLabel->setText(zhanwei);
     vbox8->addWidget(zhanweiLabel);
 
+    vbox8->addWidget(new QLabel("  "));
     vbox8->setMargin(0);
     vbox8->setSpacing(0);
 
     group8->setLayout(vbox8);
-    group8->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°-3.png)");
+    group8->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯-3.png)");
     mainToolBar->addWidget(group8);
 
-    //Ê±¼ä×é
-            currentTime = new QLabel(this);
-            QPixmap pixmap3("./iconUpdate/µ±Ç°Ê±¼ä.png");
-            fitpixmap3=pixmap3.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-            currentTime->setPixmap(fitpixmap3);
-            vbox6->addWidget(currentTime);
+    //æ—¶é—´ç»„
+    currentTime = new QLabel(this);
+    QPixmap pixmap3("./iconUpdate/å½“å‰æ—¶é—´.png");
+    fitpixmap3=pixmap3.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    currentTime->setPixmap(fitpixmap3);
+    vbox6->addWidget(currentTime);
 
 
-            systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//Ê±¼ä
-            systime->setStyleSheet("color:Black");
+    systime=new QLabel(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//æ—¶é—´
+    systime->setStyleSheet("color:Black");
+    vbox6->addWidget(systime);
+
+    vbox6->addWidget(new QLabel("  "));
+
+    vbox6->setMargin(0);
+    vbox6->setSpacing(0);
+    group6->setLayout(vbox6);
+    group6->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯-4.png)");
+    mainToolBar->addWidget(group6);
 
 
-            vbox6->addWidget(systime);
-            vbox6->setMargin(0);
-            vbox6->setSpacing(0);
-            group6->setLayout(vbox6);
-             group6->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°-4.png)");
-            mainToolBar->addWidget(group6);
-
-
-    //µÚÈı×é
+    //ç¬¬ä¸‰ç»„
 
     setup = new QLabel(this);
-    QPixmap pixmap6("./iconUpdate/ÉèÖÃ.png");
+    QPixmap pixmap6("./iconUpdate/è®¾ç½®.png");
     fitpixmap6=pixmap6.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     setup->setPixmap(fitpixmap6);
     vbox3->addWidget(setup);
 
-    //ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ
+    //å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ
     stability = new QToolButton(this);
-    stability->setToolTip(tr("ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ"));
+    stability->setToolTip(tr("å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ"));
     stability->setMinimumHeight(buttonSize);
     stability->setMaximumHeight(buttonSize);
     stability->setMinimumWidth(buttonSize);
     stability->setMaximumWidth(buttonSize);
     stability->setStyleSheet("border-style:flat;background-color:2E302D");
-    stabilityset = "./iconUpdate/ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ";
+    stabilityset = "./iconUpdate/å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ";
     stability->setIcon(QPixmap(stabilityset));
     stability->setIconSize(QSize(buttonSize,buttonSize));
     stability->setCheckable(true);
@@ -1304,15 +1307,15 @@ void MainWindow::addMyToolBar()
     connect(stability,SIGNAL(clicked()),this,SLOT(stabilityFunction()));
 
 
-    //ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢
+    //æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯
     objectAttribute = new QToolButton(this);
-    objectAttribute->setToolTip(tr("¿ªÆôÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢"));
+    objectAttribute->setToolTip(tr("å¼€å¯æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯"));
     objectAttribute->setMinimumHeight(buttonSize);
     objectAttribute->setMaximumHeight(buttonSize);
     objectAttribute->setMinimumWidth(buttonSize);
     objectAttribute->setMaximumWidth(buttonSize);
     objectAttribute->setStyleSheet("border-style:flat;background-color:2E302D");
-    objectAttributeSet="./iconUpdate/ÏÔÊ¾µã»÷´¦µÄÎ»ÖÃ.png";
+    objectAttributeSet="./iconUpdate/æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®.png";
     objectAttribute->setIcon(QPixmap(objectAttributeSet));
     objectAttribute->setIconSize(QSize(buttonSize,buttonSize));
     objectAttribute->setCheckable(true);
@@ -1320,47 +1323,48 @@ void MainWindow::addMyToolBar()
     connect(objectAttribute,SIGNAL(clicked()),this,SLOT(objectAttributeFunction()));
     //vbox5->addWidget(new QLabel(" "));
 
-    //Ôö¼Ó±êÇ©
+    //å¢åŠ æ ‡ç­¾
     manual = new QToolButton(this);
-    manual->setToolTip(tr("Ôö¼Ó±êÇ©"));
+    manual->setToolTip(tr("å¢åŠ æ ‡ç­¾"));
     manual->setMinimumHeight(buttonSize);
     manual->setMaximumHeight(buttonSize);
     manual->setMinimumWidth(buttonSize);
     manual->setMaximumWidth(buttonSize);
     manual->setStyleSheet("border-style:flat;background-color:2E302D");
-    manualSet="./iconUpdate/Ôö¼Ó±êÇ©.png";
+    manualSet="./iconUpdate/å¢åŠ æ ‡ç­¾.png";
     manual->setIcon(QPixmap(manualSet));
     manual->setIconSize(QSize(buttonSize,buttonSize));
     manual->setCheckable(true);
     vbox3->addWidget(manual);
 
+    vbox3->addWidget(new QLabel("  "));
     vbox3->setMargin(0);
     vbox3->setSpacing(0);
     connect(manual,SIGNAL(clicked()),this,SLOT(manualFunction()));
     //vbox5->addWidget(new QLabel(" "));
     group3->setLayout(vbox3);
-     group3->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°-5.png)");
+    group3->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯-5.png)");
     mainToolBar->addWidget(group3);
 
-    //µÚËÄ×é£¬¸æ¾¯
-    //¸æ¾¯
+    //ç¬¬å››ç»„ï¼Œå‘Šè­¦
+    //å‘Šè­¦
 
     alarm = new QLabel(this);
-    QPixmap pixmap7("./iconUpdate/¸æ¾¯.png");
+    QPixmap pixmap7("./iconUpdate/å‘Šè­¦.png");
     fitpixmap7=pixmap7.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     alarm->setPixmap(fitpixmap7);
     vbox4->addWidget(alarm);
 
 
-    //Æô¶¯/½ûÓÃÌ½²â¹¦ÄÜ
+    //å¯åŠ¨/ç¦ç”¨æ¢æµ‹åŠŸèƒ½
     openClose = new QToolButton(this);
-    openClose->setToolTip(tr("½ûÓÃÌ½²â¹¦ÄÜ"));
+    openClose->setToolTip(tr("ç¦ç”¨æ¢æµ‹åŠŸèƒ½"));
     openClose->setMinimumHeight(buttonSize);
     openClose->setMaximumHeight(buttonSize);
     openClose->setMinimumWidth(buttonSize);
     openClose->setMaximumWidth(buttonSize);
     openClose->setStyleSheet("border-style:flat;background-color:2E302D");
-    openCloseSet="./iconUpdate/ÆôÓÃÌ½²â¹¦ÄÜ.png";
+    openCloseSet="./iconUpdate/å¯ç”¨æ¢æµ‹åŠŸèƒ½.png";
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setIconSize(QSize(buttonSize,buttonSize));
     openClose->setCheckable(true);
@@ -1368,15 +1372,15 @@ void MainWindow::addMyToolBar()
     connect(openClose,SIGNAL(clicked()),this,SLOT(openCloseFunction()));
     //vbox5->addWidget(new QLabel(" "));
 
-    //µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶
+    //è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§
     objects = new QToolButton(this);
-    objects->setToolTip(tr("µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶"));
+    objects->setToolTip(tr("è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§"));
     objects->setMinimumHeight(buttonSize);
     objects->setMaximumHeight(buttonSize);
     objects->setMinimumWidth(buttonSize);
     objects->setMaximumWidth(buttonSize);
     objects->setStyleSheet("border-style:flat;background-color:2E302D");
-    objectSet="./iconUpdate/µ÷ÕûÁéÃô¶ÈµÈ¼¶.png";
+    objectSet="./iconUpdate/è°ƒæ•´çµæ•åº¦ç­‰çº§.png";
     objects->setIcon(QPixmap(objectSet));
     objects->setIconSize(QSize(buttonSize,buttonSize));
     objects->setCheckable(true);
@@ -1387,159 +1391,161 @@ void MainWindow::addMyToolBar()
     connect(objects,SIGNAL(clicked()),this,SLOT(objectsFunction()));
     //vbox5->addWidget(new QLabel(" "));
 
-    //¹Ø±ÕÉùÒô
+    //å…³é—­å£°éŸ³
     voice = new QToolButton(this);
-    voice->setToolTip(tr("¹Ø±ÕÉùÒô"));
+    voice->setToolTip(tr("å…³é—­å£°éŸ³"));
     voice->setMinimumHeight(buttonSize);
     voice->setMaximumHeight(buttonSize);
     voice->setMinimumWidth(buttonSize);
     voice->setMaximumWidth(buttonSize);
     voice->setStyleSheet("border-style:flat;background-color:2E302D");
-    voiceSet="./iconUpdate/¸æ¾¯Òô¿ª¹Ø.png";
+    voiceSet="./iconUpdate/å‘Šè­¦éŸ³å¼€å…³.png";
     voice->setIcon(QPixmap(voiceSet));
     voice->setIconSize(QSize(buttonSize,buttonSize));
     voice->setCheckable(true);
     vbox4->addWidget(voice);
-    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+   // connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
 
     //mainToolBar->addWidget(new QLabel("   "));
 
-    //¸æ¾¯Ö¸Ê¾
-//    light = new QToolButton(this);
-//    light->setToolTip(tr("¸æ¾¯Ö¸Ê¾"));
-//    light->setMinimumHeight(buttonSize);
-//    light->setMaximumHeight(buttonSize);
-//    light->setMinimumWidth(buttonSize);
-//    light->setMaximumWidth(buttonSize);
-//    light->setStyleSheet("border-style:flat;background-color:2E302D");
-//    lightSet="./icon/16_1.png";
-//    light->setIcon(QPixmap(lightSet));
-//    light->setIconSize(QSize(buttonSize,buttonSize));
-//    vbox4->addWidget(light);
-//    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
-//    vbox5->addWidget(new QLabel(" "));
+    //å‘Šè­¦æŒ‡ç¤º
+    //    light = new QToolButton(this);
+    //    light->setToolTip(tr("å‘Šè­¦æŒ‡ç¤º"));
+    //    light->setMinimumHeight(buttonSize);
+    //    light->setMaximumHeight(buttonSize);
+    //    light->setMinimumWidth(buttonSize);
+    //    light->setMaximumWidth(buttonSize);
+    //    light->setStyleSheet("border-style:flat;background-color:2E302D");
+    //    lightSet="./icon/16_1.png";
+    //    light->setIcon(QPixmap(lightSet));
+    //    light->setIconSize(QSize(buttonSize,buttonSize));
+    //    vbox4->addWidget(light);
+    //    connect(light,SIGNAL(clicked()),this,SLOT(lightFunction()));
+    //    vbox5->addWidget(new QLabel(" "));
 
-    // µÆ
-        QPixmap pixmap1("./iconUpdate/±¨¾¯µÆ-ºì.png");
-        QPixmap pixmap2("./iconUpdate/±¨¾¯µÆ-ÂÌ.png");
-//      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    // ç¯
+    QPixmap pixmap1("./iconUpdate/æŠ¥è­¦ç¯-çº¢.png");
+    QPixmap pixmap2("./iconUpdate/æŠ¥è­¦ç¯-ç»¿.png");
+    //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-      light = new QToolButton(this);
-      if(isGaojing){
-          light->setIcon(pixmap1);
-      }else
-          light->setIcon(pixmap2);
-      light->setIconSize(QSize(buttonSize,buttonSize));
-      connect(light,SIGNAL(clicked()),this,SLOT(alertInformation()));
-//        lights[0]=new QLabel(this);
-//        lights[1]=new QLabel(this);
-//        lights[2]=new QLabel(this);
-//        lights[3]=new QLabel(this);
-//        lights[4]=new QLabel(this);
+    light = new QToolButton(this);
+    if(isGaojing){
+        light->setIcon(pixmap1);
+    }else
+        light->setIcon(pixmap2);
+    light->setIconSize(QSize(buttonSize,buttonSize));
+    connect(light,SIGNAL(clicked()),this,SLOT(alertInformation()));
+    //        lights[0]=new QLabel(this);
+    //        lights[1]=new QLabel(this);
+    //        lights[2]=new QLabel(this);
+    //        lights[3]=new QLabel(this);
+    //        lights[4]=new QLabel(this);
 
-//        num_objs=widget1->objs.size();
+    //        num_objs=widget1->objs.size();
 
-//            if(!isGaojing)
-//            {
-//                lights[0]->setPixmap(fitpixmap2);
-//                lights[1]->setPixmap(fitpixmap2);
-//                lights[2]->setPixmap(fitpixmap2);
-//                lights[3]->setPixmap(fitpixmap2);
-//                lights[4]->setPixmap(fitpixmap2);
-//            }
-//            else
-//            {
-//                if(num_objs==0)
-//                {
-//                    lights[0]->setPixmap(fitpixmap2);
-//                    lights[1]->setPixmap(fitpixmap2);
-//                    lights[2]->setPixmap(fitpixmap2);
-//                    lights[3]->setPixmap(fitpixmap2);
-//                    lights[4]->setPixmap(fitpixmap2);
-//                }
-//                else if(num_objs==1)
-//                {
-//                    lights[0]->setPixmap(fitpixmap1);
-//                    lights[1]->setPixmap(fitpixmap2);
-//                    lights[2]->setPixmap(fitpixmap2);
-//                    lights[3]->setPixmap(fitpixmap2);
-//                    lights[4]->setPixmap(fitpixmap2);
-//                }
-//                else if(num_objs==2)
-//                {
-//                    lights[0]->setPixmap(fitpixmap1);
-//                    lights[1]->setPixmap(fitpixmap1);
-//                    lights[2]->setPixmap(fitpixmap2);
-//                    lights[3]->setPixmap(fitpixmap2);
-//                    lights[4]->setPixmap(fitpixmap2);
-//                }
-//                else if(num_objs==3)
-//                {
+    //            if(!isGaojing)
+    //            {
+    //                lights[0]->setPixmap(fitpixmap2);
+    //                lights[1]->setPixmap(fitpixmap2);
+    //                lights[2]->setPixmap(fitpixmap2);
+    //                lights[3]->setPixmap(fitpixmap2);
+    //                lights[4]->setPixmap(fitpixmap2);
+    //            }
+    //            else
+    //            {
+    //                if(num_objs==0)
+    //                {
+    //                    lights[0]->setPixmap(fitpixmap2);
+    //                    lights[1]->setPixmap(fitpixmap2);
+    //                    lights[2]->setPixmap(fitpixmap2);
+    //                    lights[3]->setPixmap(fitpixmap2);
+    //                    lights[4]->setPixmap(fitpixmap2);
+    //                }
+    //                else if(num_objs==1)
+    //                {
+    //                    lights[0]->setPixmap(fitpixmap1);
+    //                    lights[1]->setPixmap(fitpixmap2);
+    //                    lights[2]->setPixmap(fitpixmap2);
+    //                    lights[3]->setPixmap(fitpixmap2);
+    //                    lights[4]->setPixmap(fitpixmap2);
+    //                }
+    //                else if(num_objs==2)
+    //                {
+    //                    lights[0]->setPixmap(fitpixmap1);
+    //                    lights[1]->setPixmap(fitpixmap1);
+    //                    lights[2]->setPixmap(fitpixmap2);
+    //                    lights[3]->setPixmap(fitpixmap2);
+    //                    lights[4]->setPixmap(fitpixmap2);
+    //                }
+    //                else if(num_objs==3)
+    //                {
 
-//                    lights[0]->setPixmap(fitpixmap1);
-//                    lights[1]->setPixmap(fitpixmap1);
-//                    lights[2]->setPixmap(fitpixmap1);
-//                    lights[3]->setPixmap(fitpixmap2);
-//                    lights[4]->setPixmap(fitpixmap2);
-//                }
-//                else if(num_objs==4)
-//                {
+    //                    lights[0]->setPixmap(fitpixmap1);
+    //                    lights[1]->setPixmap(fitpixmap1);
+    //                    lights[2]->setPixmap(fitpixmap1);
+    //                    lights[3]->setPixmap(fitpixmap2);
+    //                    lights[4]->setPixmap(fitpixmap2);
+    //                }
+    //                else if(num_objs==4)
+    //                {
 
-//                    lights[0]->setPixmap(fitpixmap1);
-//                    lights[1]->setPixmap(fitpixmap1);
-//                    lights[2]->setPixmap(fitpixmap1);
-//                    lights[3]->setPixmap(fitpixmap1);
-//                    lights[4]->setPixmap(fitpixmap2);
-//                }
-//                else if(num_objs>= 5 )
-//                {
-//                    lights[0]->setPixmap(fitpixmap1);
-//                    lights[1]->setPixmap(fitpixmap1);
-//                    lights[2]->setPixmap(fitpixmap1);
-//                    lights[3]->setPixmap(fitpixmap1);
-//                    lights[4]->setPixmap(fitpixmap1);
-//                }
-//            }
+    //                    lights[0]->setPixmap(fitpixmap1);
+    //                    lights[1]->setPixmap(fitpixmap1);
+    //                    lights[2]->setPixmap(fitpixmap1);
+    //                    lights[3]->setPixmap(fitpixmap1);
+    //                    lights[4]->setPixmap(fitpixmap2);
+    //                }
+    //                else if(num_objs>= 5 )
+    //                {
+    //                    lights[0]->setPixmap(fitpixmap1);
+    //                    lights[1]->setPixmap(fitpixmap1);
+    //                    lights[2]->setPixmap(fitpixmap1);
+    //                    lights[3]->setPixmap(fitpixmap1);
+    //                    lights[4]->setPixmap(fitpixmap1);
+    //                }
+    //            }
 
-//            vbox4->addWidget(lights[0]);
-//            vbox4->addWidget(lights[1]);
-//            vbox4->addWidget(lights[2]);
-//            vbox4->addWidget(lights[3]);
-//            vbox4->addWidget(lights[4]);
-            vbox4->addWidget(light);
-            vbox4->setMargin(0);
-            vbox4->setSpacing(0);
-            group4->setLayout(vbox4);
-             group4->setStyleSheet("border:0px;background-image:url(./iconUpdate/»Ø·ÅÀ¸-±³¾°-6.png)");
-            mainToolBar->addWidget(group4);
+    //            vbox4->addWidget(lights[0]);
+    //            vbox4->addWidget(lights[1]);
+    //            vbox4->addWidget(lights[2]);
+    //            vbox4->addWidget(lights[3]);
+    //            vbox4->addWidget(lights[4]);
+    vbox4->addWidget(light);
 
-//        group5->setLayout(vbox5);
-//        mainToolBar->addWidget(group5);
+    vbox4->addWidget(new QLabel("  "));
+    vbox4->setMargin(0);
+    vbox4->setSpacing(0);
+    group4->setLayout(vbox4);
+    group4->setStyleSheet("border:0px;background-image:url(./iconUpdate/å›æ”¾æ -èƒŒæ™¯-6.png)");
+    mainToolBar->addWidget(group4);
+
+    //        group5->setLayout(vbox5);
+    //        mainToolBar->addWidget(group5);
 
 
-    //µÚÁù×é
-//    exitButton = new QToolButton(this);
-//    exitButton->setToolTip(tr("ÍË³ö"));
-//    exitButton->setMinimumHeight(buttonSize);
-//    exitButton->setMaximumHeight(buttonSize);
-//    exitButton->setMinimumWidth(buttonSize);
-//    exitButton->setMaximumWidth(buttonSize);
-//    exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
-//    exitSet="./icon/18.png";
-//    exitButton->setIcon(QPixmap(exitSet));
-//    exitButton->setIconSize(QSize(buttonSize,buttonSize));
-//    //mainToolBar->addWidget(exitButton);
-//    vbox7->addWidget(exitButton);
-//    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
-//    group7->setLayout(vbox7);
-//    mainToolBar->addWidget(group7);
+    //ç¬¬å…­ç»„
+    //    exitButton = new QToolButton(this);
+    //    exitButton->setToolTip(tr("é€€å‡º"));
+    //    exitButton->setMinimumHeight(buttonSize);
+    //    exitButton->setMaximumHeight(buttonSize);
+    //    exitButton->setMinimumWidth(buttonSize);
+    //    exitButton->setMaximumWidth(buttonSize);
+    //    exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
+    //    exitSet="./icon/18.png";
+    //    exitButton->setIcon(QPixmap(exitSet));
+    //    exitButton->setIconSize(QSize(buttonSize,buttonSize));
+    //    //mainToolBar->addWidget(exitButton);
+    //    vbox7->addWidget(exitButton);
+    //    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+    //    group7->setLayout(vbox7);
+    //    mainToolBar->addWidget(group7);
 }
 
-//»ñÈ¡ÏµÍ³µ±Ç°Ê±¼ä¶¨Ê±Æ÷
+//è·å–ç³»ç»Ÿå½“å‰æ—¶é—´å®šæ—¶å™¨
 void MainWindow::onTimerOut2(){
-    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//Ê±¼ä
+    systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//æ—¶é—´
 }
 
 void MainWindow::adjustment()
@@ -1550,7 +1556,7 @@ void MainWindow::adjustment()
     Mat pano2 = pano.clone();
     Mat mat;
     hconcat(pano1,pano2,mat);
-   // Mat mat = in.getPano().clone();
+    // Mat mat = in.getPano().clone();
 
     if(this->isPseudo==true)
         mat=setPseudocolor(mat);
@@ -1567,26 +1573,26 @@ void MainWindow::adjustment()
 
     hconcat(mat1,mat2,newpano);
 
-//    Mat w1 = widget1->getMat();
-//    if(this->isPseudo==true)
-//        mat=setPseudocolor(w1);
-//    updateBright(w1);
-//    updateContrast(w1);
-   // widget1->setMat(w1);
+    //    Mat w1 = widget1->getMat();
+    //    if(this->isPseudo==true)
+    //        mat=setPseudocolor(w1);
+    //    updateBright(w1);
+    //    updateContrast(w1);
+    // widget1->setMat(w1);
 
     widget1->setMat(mat1);
-  //  widget1->setPano(mat);
+    //  widget1->setPano(mat);
     widget1->setPano(newpano);
     widget1->setTwoPano(mat);
-   //widget1->setObjects(objs);
+    //widget1->setObjects(objs);
     widget1->setTracks(in.getTracks());
     widget1->draw();
 
-//    Mat w2 = widget2->getMat();
-//    if(this->isPseudo==true)
-//        mat=setPseudocolor(w2);
-//    updateBright(w2);
-//    updateContrast(w2);
+    //    Mat w2 = widget2->getMat();
+    //    if(this->isPseudo==true)
+    //        mat=setPseudocolor(w2);
+    //    updateBright(w2);
+    //    updateContrast(w2);
     //widget2->setMat(w2);
 
     //widget2->setPano(mat);
@@ -1600,7 +1606,7 @@ void MainWindow::adjustment()
 
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
-   widget3->setAllObjects(widget1->objs);
+    widget3->setAllObjects(widget1->objs);
     widget3->draw();
 
     widget4->setPano(newpano);
@@ -1614,7 +1620,7 @@ void MainWindow::adjustment()
     widget6->draw();
 }
 
-//¶¨Ê±Æ÷ÈÎÎñ
+//å®šæ—¶å™¨ä»»åŠ¡
 void MainWindow::onTimerOut()
 {
     //std::cout<<"ok1 "<<std::endl;
@@ -1622,14 +1628,14 @@ void MainWindow::onTimerOut()
     //this->jinTimerout();
 }
 
-//×Ô¶¨Òå½Ó¿Ú¶¨Ê±Æ÷
+//è‡ªå®šä¹‰æ¥å£å®šæ—¶å™¨
 void MainWindow::selfTimerout(){
     //index=index+1;
 
     timerFlash->stop();
-  //  qDebug()<<QTime::currentTime().toString("hh:mm:ss");
-    QString today=QString("./»Ø·Å/")+QDate::currentDate().toString("yyyy-MM-dd");
-   // QDir *todayDir=new QDir();
+    //  qDebug()<<QTime::currentTime().toString("hh:mm:ss");
+    QString today=QString("./å›æ”¾/")+QDate::currentDate().toString("yyyy-MM-dd");
+    // QDir *todayDir=new QDir();
     bool exist= directory->exists(today);
     if(!exist){
         directory->mkdir(today);
@@ -1639,13 +1645,13 @@ void MainWindow::selfTimerout(){
     in.getIntegratedData2();
     vector<MyObject> objs = in.getObjs2();
 
-//    QDesktopWidget* desktopWidget = QApplication::desktop();
-//    QRect screenRect = desktopWidget->screenGeometry();
-//    const int buttonSize=(screenRect.width()*0.7)/21.6;
-//    QPixmap pixmap1("./icon/16_1.png");
-//    QPixmap pixmap2("./icon/16_2.png");
-//    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //    QDesktopWidget* desktopWidget = QApplication::desktop();
+    //    QRect screenRect = desktopWidget->screenGeometry();
+    //    const int buttonSize=(screenRect.width()*0.7)/21.6;
+    //    QPixmap pixmap1("./icon/16_1.png");
+    //    QPixmap pixmap2("./icon/16_2.png");
+    //    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
 
 
@@ -1674,30 +1680,30 @@ void MainWindow::selfTimerout(){
     //        qDebug()<<obj.getRect().height;
     //    }
 
-    //Í¼Æ¬1
-    //Í¼Æ¬1
+    //å›¾ç‰‡1
+    //å›¾ç‰‡1
     //    QString s1=in.getQJ1();
     //    imageurl=s1.toStdString();
     //    Mat mat1 =imread(imageurl);
 
-    //ÔÚÁ½¸öÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+    //åœ¨ä¸¤ä¸ªå…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
     Mat pano = in.getPano();
 
     if(isJixu == true){
-            QString current_time=QTime::currentTime().toString("hh-mm-ss");
-            QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
-            QFile file(current_path);
-            file.open(QIODevice::WriteOnly);
-            QDataStream out(&file);
-            if(pano.empty()){
-                out<<-1;
-            }else{
-                out<<1;
-                MyObject::writeMat(out,pano);
-            }
-            file.close();
-            current_time.clear();
-            current_path.clear();
+        QString current_time=QTime::currentTime().toString("hh-mm-ss");
+        QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
+        QFile file(current_path);
+        file.open(QIODevice::WriteOnly);
+        QDataStream out(&file);
+        if(pano.empty()){
+            out<<-1;
+        }else{
+            out<<1;
+            MyObject::writeMat(out,pano);
+        }
+        file.close();
+        current_time.clear();
+        current_path.clear();
 
     }
 
@@ -1708,7 +1714,7 @@ void MainWindow::selfTimerout(){
     Mat mat;
     hconcat(pano1,pano2,mat);
 
-    //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+    //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
 
@@ -1719,37 +1725,37 @@ void MainWindow::selfTimerout(){
 
     for (int i = 0; i < objs.size();i++)
     {
-        //»­¶ÔÏóµÄbox
+        //ç”»å¯¹è±¡çš„box
         MyObject obj = objs[i];
         Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
         rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
         rectangle(mat,rect2,obj.getColor(),2,1,0);
         //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //»­¹ì¼£
+        //ç”»è½¨è¿¹
         if(isMubiao){
-        for(int ii = 0; ii < tracks.size(); ii++){
-            MyObjectTrack track = tracks[ii];
-            int id = track.getId();
-            vector<Point> points = track.getTrack();
-            if(id == obj.getID()){
-                for(int iii = 0; iii < points.size(); iii++){
-                    Point point = points[iii];
-                    Point point2 = Point(point.x+pano.cols, point.y);
-                    circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                    circle(mat, point2, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                    if(iii >= 1){
-                        Point point3 = points[iii-1];
-                        Point point4 = Point(point3.x+pano.cols, point3.y);
-                        line(mat,point,point3,obj.getColor(),1,8,0);
-                        line(mat,point2,point4,obj.getColor(),1,8,0);
+            for(int ii = 0; ii < tracks.size(); ii++){
+                MyObjectTrack track = tracks[ii];
+                int id = track.getId();
+                vector<Point> points = track.getTrack();
+                if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                            line(mat,point,point3,obj.getColor(),1,8,0);
+                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                        }
+                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
-                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
                 }
             }
         }
-}
-        //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+        //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
             int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -1771,70 +1777,70 @@ void MainWindow::selfTimerout(){
 
             putText(mat,idst,p3,3,0.5,obj.getColor());
             putText(mat,idst,p4,3,0.5,obj.getColor());
-       }
-       // cv::cvtColor(mat, mat, CV_BGR2RGB);
+        }
+        // cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
-   // cv::cvtColor(mat, mat, CV_BGR2RGB);
-
-    //»­¸æ¾¯ÇøÓò
+    // cv::cvtColor(mat, mat, CV_BGR2RGB);
+    //ç”»å‘Šè­¦åŒºåŸŸ
     for(int iii = 0; iii < this->rgs.size(); iii++){
         RegionGroup rg = rgs[iii];
         rg.draw(mat);
     }
     //qDebug()<<"widget1,isTo3"<<this->widget1->isTo3;
-    //»­¾ØĞÎ
+    //ç”»çŸ©å½¢
     Mat tmat = mat.clone();
+   //Mat tmat = mat;
     if(this->widget1->isTo3){
         //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
         rectangle(tmat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
         rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
-//        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
-//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+        //        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
+        //        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget1->isTo4){
         rectangle(tmat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
         rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
-//        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
-//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+        //        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+        //        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
     }
     if(this->widget1->isTo6){
 
-//        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
-//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        //        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+        //        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
         rectangle(tmat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
         rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
     if(this->widget2->isTo3){
-//        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
-//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+        //        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+        //        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
         rectangle(tmat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
         rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget2->isTo4){
-//        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
-//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+        //        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
+        //        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
         rectangle(tmat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
         rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
     }
     if(this->widget2->isTo6){
-//        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
-//        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
-//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+        //        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+        //        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+        //        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
         rectangle(tmat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
         Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
         rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
-    //È»ºóÅü³É2°ë
+    //ç„¶ååŠˆæˆ2åŠ
 
     //    Size dsize ;
     //    double scale = 1;
@@ -1848,7 +1854,7 @@ void MainWindow::selfTimerout(){
     //    Mat image44 = Mat(dsize,CV_32S);
     //    cv::resize(image4, image44,dsize);
 
-    //    //È«¾°2Mat
+    //    //å…¨æ™¯2Mat
     //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
     //    Mat image5 = CVUtil::QImageToMat(aa2);
     //    Mat image55 = Mat(dsize,CV_32S);
@@ -1862,16 +1868,15 @@ void MainWindow::selfTimerout(){
     tmat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat3);
     tmat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat4);
 
-
     Mat newpano;
 
     hconcat(mat1,mat2,newpano);
 
     //Mat mat1 = image44;
-//    if(this->isPseudo==true)
-//        mat1=setPseudocolor(mat1);
-//    updateBright(mat1);
-//    updateContrast(mat1);
+    //    if(this->isPseudo==true)
+    //        mat1=setPseudocolor(mat1);
+    //    updateBright(mat1);
+    //    updateContrast(mat1);
     //        if(saturation1!=100){
     //               hsl->channels[color].saturation1 = saturation1 - 100;
     //               hsl->adjust(mat1, mat1);
@@ -1883,21 +1888,21 @@ void MainWindow::selfTimerout(){
     widget1->setTracks(in.getTracks());
     widget1->draw();
     //qDebug()<<s1;
-    //Í¼Æ¬2
-    //Í¼Æ¬1
+    //å›¾ç‰‡2
+    //å›¾ç‰‡1
     //    QString s1=in.getQJ1();
     //    imageurl=s1.toStdString();
     //    Mat mat1 =imread(imageurl);
 
     //Mat mat2 = image55;
-//    if(this->isPseudo==true)
-//                        mat2=setPseudocolor(mat2);
-//        updateBright(mat2);
-//        updateContrast(mat2);
-//        if(saturation1!=100){
-//               hsl->channels[color].saturation1 = saturation1 - 100;
-//               hsl->adjust(mat2, mat2);
-//           }
+    //    if(this->isPseudo==true)
+    //                        mat2=setPseudocolor(mat2);
+    //        updateBright(mat2);
+    //        updateContrast(mat2);
+    //        if(saturation1!=100){
+    //               hsl->channels[color].saturation1 = saturation1 - 100;
+    //               hsl->adjust(mat2, mat2);
+    //           }
     widget2->setPano(newpano);
     widget2->setTwoPano(mat);
     //widget2->setPano(mat);
@@ -1907,21 +1912,21 @@ void MainWindow::selfTimerout(){
     widget2->draw();
     //qDebug()<<s2;
     //drawUiLabel(mat2,2);
-    //Í¼Æ¬3
+    //å›¾ç‰‡3
     //Mat mat3 =imread(imageurl);
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
     widget3->setAllObjects(in.getObjs2());
     widget3->draw();
     //drawUiLabelByCopy(mat3,3);
-    //Í¼Æ¬4
+    //å›¾ç‰‡4
     //Mat mat4 =imread(imageurl2);
     //drawUiLabelByCopy(mat4,4);
     widget4->setPano(newpano);
     widget4->setTwoPanos(mat);
     widget4->setAllObjects(in.getObjs2());
     widget4->draw();
-    //Í¼Æ¬5
+    //å›¾ç‰‡5
     //QString imageurl5=in.getHD();
     //Mat mat5 =imread(imageurl5.toStdString());
     //widget5->setMat(mat5);
@@ -1929,121 +1934,121 @@ void MainWindow::selfTimerout(){
     widget5->setObjects(objs);
     widget5->draw();
     //drawUiLabel(mat5,5);
-    //Í¼Æ¬6
+    //å›¾ç‰‡6
     //QString imageurl6= in.getLD();
     //Mat mat6 =imread(imageurl6.toStdString());
     //widget6->setMat(mat6);
-//    widget6->setPano(newpano);
-//    widget6->setObjects(objs);
-//    widget6->draw();
-// qDebug()<<QTime::currentTime().toString("hh:mm:ss");
+    //    widget6->setPano(newpano);
+    //    widget6->setObjects(objs);
+    //    widget6->draw();
+    // qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     widget6->setPano(newpano);
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(in.getObjs2());
     widget6->draw();
     this->alertProcessing(objs);
 
-// if(isGaojing)
-// {
-//     if(objs.size()>num_objs){
-//         this->sound->play();
-//         newObjCount=objs.size()-num_objs;
-//         timerFlash->start();
+    // if(isGaojing)
+    // {
+    //     if(objs.size()>num_objs){
+    //         this->sound->play();
+    //         newObjCount=objs.size()-num_objs;
+    //         timerFlash->start();
 
-//         num_objs = objs.size();
-//     }
-//     else
-//         num_objs =objs.size();
-// }
+    //         num_objs = objs.size();
+    //     }
+    //     else
+    //         num_objs =objs.size();
+    // }
 
-// if(isGaojing)
-// {
-//     if(num_objs==0)
-//     {
-//         lights[0]->setPixmap(fitpixmap2);
-//         lights[1]->setPixmap(fitpixmap2);
-//         lights[2]->setPixmap(fitpixmap2);
-//         lights[3]->setPixmap(fitpixmap2);
-//         lights[4]->setPixmap(fitpixmap2);
-//     }
-//     else if(num_objs==1)
-//     {
-//         lights[0]->setPixmap(fitpixmap1);
-//         lights[1]->setPixmap(fitpixmap2);
-//         lights[2]->setPixmap(fitpixmap2);
-//         lights[3]->setPixmap(fitpixmap2);
-//         lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap2);
-////            light3->setPixmap(fitpixmap2);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//     }
-//     else if(num_objs==2)
-//     {
-//         lights[0]->setPixmap(fitpixmap1);
-//         lights[1]->setPixmap(fitpixmap1);
-//         lights[2]->setPixmap(fitpixmap2);
-//         lights[3]->setPixmap(fitpixmap2);
-//         lights[4]->setPixmap(fitpixmap2);
+    // if(isGaojing)
+    // {
+    //     if(num_objs==0)
+    //     {
+    //         lights[0]->setPixmap(fitpixmap2);
+    //         lights[1]->setPixmap(fitpixmap2);
+    //         lights[2]->setPixmap(fitpixmap2);
+    //         lights[3]->setPixmap(fitpixmap2);
+    //         lights[4]->setPixmap(fitpixmap2);
+    //     }
+    //     else if(num_objs==1)
+    //     {
+    //         lights[0]->setPixmap(fitpixmap1);
+    //         lights[1]->setPixmap(fitpixmap2);
+    //         lights[2]->setPixmap(fitpixmap2);
+    //         lights[3]->setPixmap(fitpixmap2);
+    //         lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap2);
+    ////            light3->setPixmap(fitpixmap2);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //     }
+    //     else if(num_objs==2)
+    //     {
+    //         lights[0]->setPixmap(fitpixmap1);
+    //         lights[1]->setPixmap(fitpixmap1);
+    //         lights[2]->setPixmap(fitpixmap2);
+    //         lights[3]->setPixmap(fitpixmap2);
+    //         lights[4]->setPixmap(fitpixmap2);
 
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap2);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//     }
-//     else if(num_objs==3)
-//     {
-//         lights[0]->setPixmap(fitpixmap1);
-//         lights[1]->setPixmap(fitpixmap1);
-//         lights[2]->setPixmap(fitpixmap1);
-//         lights[3]->setPixmap(fitpixmap2);
-//         lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//     }
-//     else if(num_objs==4)
-//     {
-//         lights[0]->setPixmap(fitpixmap1);
-//         lights[1]->setPixmap(fitpixmap1);
-//         lights[2]->setPixmap(fitpixmap1);
-//         lights[3]->setPixmap(fitpixmap1);
-//         lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap1);
-////            light5->setPixmap(fitpixmap2);
-//     }
-//     else if(num_objs>= 5 )
-//     {
-//         lights[0]->setPixmap(fitpixmap1);
-//         lights[1]->setPixmap(fitpixmap1);
-//         lights[2]->setPixmap(fitpixmap1);
-//         lights[3]->setPixmap(fitpixmap1);
-//         lights[4]->setPixmap(fitpixmap1);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap1);
-////            light5->setPixmap(fitpixmap1);
-//   }
-// }
-// else
-// {
-//     lights[0]->setPixmap(fitpixmap2);
-//     lights[1]->setPixmap(fitpixmap2);
-//     lights[2]->setPixmap(fitpixmap2);
-//     lights[3]->setPixmap(fitpixmap2);
-//     lights[4]->setPixmap(fitpixmap2);
-//}
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap2);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //     }
+    //     else if(num_objs==3)
+    //     {
+    //         lights[0]->setPixmap(fitpixmap1);
+    //         lights[1]->setPixmap(fitpixmap1);
+    //         lights[2]->setPixmap(fitpixmap1);
+    //         lights[3]->setPixmap(fitpixmap2);
+    //         lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //     }
+    //     else if(num_objs==4)
+    //     {
+    //         lights[0]->setPixmap(fitpixmap1);
+    //         lights[1]->setPixmap(fitpixmap1);
+    //         lights[2]->setPixmap(fitpixmap1);
+    //         lights[3]->setPixmap(fitpixmap1);
+    //         lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap1);
+    ////            light5->setPixmap(fitpixmap2);
+    //     }
+    //     else if(num_objs>= 5 )
+    //     {
+    //         lights[0]->setPixmap(fitpixmap1);
+    //         lights[1]->setPixmap(fitpixmap1);
+    //         lights[2]->setPixmap(fitpixmap1);
+    //         lights[3]->setPixmap(fitpixmap1);
+    //         lights[4]->setPixmap(fitpixmap1);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap1);
+    ////            light5->setPixmap(fitpixmap1);
+    //   }
+    // }
+    // else
+    // {
+    //     lights[0]->setPixmap(fitpixmap2);
+    //     lights[1]->setPixmap(fitpixmap2);
+    //     lights[2]->setPixmap(fitpixmap2);
+    //     lights[3]->setPixmap(fitpixmap2);
+    //     lights[4]->setPixmap(fitpixmap2);
+    //}
 }
 
-//Óë½ğÀÏÊ¦½Ó¿ÚµÄ¶¨Ê±Æ÷´¦Àí
+//ä¸é‡‘è€å¸ˆæ¥å£çš„å®šæ—¶å™¨å¤„ç†
 void MainWindow::jinTimerout(){
     //vector<MyObject> objs = in.getObjs2();
     //std::cout<<"ok2 "<<std::endl;
@@ -2051,15 +2056,15 @@ void MainWindow::jinTimerout(){
     int v=in.getIntegratedData();
     if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
-        //Í¼Æ¬1
+        //å›¾ç‰‡1
         //        QString s1=in.getQJ1();
         //        imageurl=s1.toStdString();
         //        //qDebug()<<in.getObjs().size();
-        //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
-        //ÔÚÁ½¸öÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+        //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
+        //åœ¨ä¸¤ä¸ªå…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
         timerFlash->stop();
         //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
-        QString today=QString("./»Ø·Å/")+QDate::currentDate().toString("yyyy-MM-dd");
+        QString today=QString("./å›æ”¾/")+QDate::currentDate().toString("yyyy-MM-dd");
         //QDir *todayDir=new QDir();
         bool exist=directory->exists(today);
         if(!exist){
@@ -2084,14 +2089,14 @@ void MainWindow::jinTimerout(){
             current_time.clear();
             current_path.clear();
 
-    }
+        }
 
         Mat pano1 = pano.clone();
         Mat pano2 = pano.clone();
         Mat mat;
         hconcat(pano1,pano2,mat);
 
-        //ÔÚÈ«¾°ÉÏ»­¾ØĞÎ£¬ÎÄ×Ö£¬¹ì¼£µÈ
+        //åœ¨å…¨æ™¯ä¸Šç”»çŸ©å½¢ï¼Œæ–‡å­—ï¼Œè½¨è¿¹ç­‰
         //Mat mat = in.getPano().clone();
         vector<MyObject> objs = in.getObjs();
         qDebug()<<"mainwindow objs.size "<<objs.size();
@@ -2114,41 +2119,41 @@ void MainWindow::jinTimerout(){
             mat=setPseudocolor(mat);
         updateBright(mat);
         updateContrast(mat);
-       num_objs = objs.size();
+        num_objs = objs.size();
         for (int i = 0; i < num_objs;i++)
         {
-            //»­¶ÔÏóµÄbox
+            //ç”»å¯¹è±¡çš„box
             MyObject obj = objs[i];
             //qDebug()<<"obj.point"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
             //cv::cvtColor(mat, mat, CV_BGR2RGB);
-    
-            //»­¹ì¼£
+
+            //ç”»è½¨è¿¹
             if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
+                for(int ii = 0; ii < tracks.size(); ii++){
+                    MyObjectTrack track = tracks[ii];
+                    int id = track.getId();
+                    vector<Point> points = track.getTrack();
+                    if(id == obj.getID()){
+                        for(int iii = 0; iii < points.size(); iii++){
+                            Point point = points[iii];
+                            Point point2 = Point(point.x+pano.cols, point.y);
+                            circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
+                            if(iii >= 1){
+                                Point point3 = points[iii-1];
+                                Point point4 = Point(point3.x+pano.cols, point3.y);
+                                line(mat,point,point3,obj.getColor(),1,8,0);
+                                line(mat,point2,point4,obj.getColor(),1,8,0);
+                            }
+                            //cv::cvtColor(mat, mat, CV_BGR2RGB);
                         }
-                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
                     }
                 }
             }
-    }
-            //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+            //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
             if(isMubiao){
                 int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
                 int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -2170,18 +2175,18 @@ void MainWindow::jinTimerout(){
 
                 putText(mat,idst,p3,3,0.5,obj.getColor());
                 putText(mat,idst,p4,3,0.5,obj.getColor());
-           }
-           // cv::cvtColor(mat, mat, CV_BGR2RGB);
+            }
+            // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
-      //  cv::cvtColor(mat, mat, CV_BGR2RGB);
+        //  cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //»­¸æ¾¯ÇøÓò
+        //ç”»å‘Šè­¦åŒºåŸŸ
         for(int iii = 0; iii < this->rgs.size(); iii++){
             RegionGroup rg = rgs[iii];
             rg.draw(mat);
         }
 
-        //»­¾ØĞÎ
+        //ç”»çŸ©å½¢
         if(this->widget1->isTo3){
             //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
             rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
@@ -2213,7 +2218,7 @@ void MainWindow::jinTimerout(){
             Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
             rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
         }
-        //È»ºóÅü³É2°ë
+        //ç„¶ååŠˆæˆ2åŠ
 
         //    Size dsize ;
         //    double scale = 1;
@@ -2227,7 +2232,7 @@ void MainWindow::jinTimerout(){
         //    Mat image44 = Mat(dsize,CV_32S);
         //    cv::resize(image4, image44,dsize);
 
-        //    //È«¾°2Mat
+        //    //å…¨æ™¯2Mat
         //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
         //    Mat image5 = CVUtil::QImageToMat(aa2);
         //    Mat image55 = Mat(dsize,CV_32S);
@@ -2241,10 +2246,10 @@ void MainWindow::jinTimerout(){
         hconcat(mat1,mat2,newpano);
 
         //Mat mat1 = image44;
-    //    if(this->isPseudo==true)
-    //        mat1=setPseudocolor(mat1);
-    //    updateBright(mat1);
-    //    updateContrast(mat1);
+        //    if(this->isPseudo==true)
+        //        mat1=setPseudocolor(mat1);
+        //    updateBright(mat1);
+        //    updateContrast(mat1);
         //        if(saturation1!=100){
         //               hsl->channels[color].saturation1 = saturation1 - 100;
         //               hsl->adjust(mat1, mat1);
@@ -2265,21 +2270,21 @@ void MainWindow::jinTimerout(){
         widget2->draw();
         //qDebug()<<s2;
         //drawUiLabel(mat2,2);
-        //Í¼Æ¬3
+        //å›¾ç‰‡3
         //Mat mat3 =imread(imageurl);
         widget3->setPano(newpano);
         widget3->setTwoPanos(mat);
         widget3->setAllObjects(widget1->objs);
         widget3->draw();
         //drawUiLabelByCopy(mat3,3);
-        //Í¼Æ¬4
+        //å›¾ç‰‡4
         //Mat mat4 =imread(imageurl2);
         //drawUiLabelByCopy(mat4,4);
         widget4->setPano(newpano);
         widget4->setTwoPanos(mat);
         widget4->setAllObjects(widget1->objs);
         widget4->draw();
-        //Í¼Æ¬5
+        //å›¾ç‰‡5
         //QString imageurl5=in.getHD();
         //Mat mat5 =imread(imageurl5.toStdString());
         //widget5->setMat(mat5);
@@ -2287,145 +2292,145 @@ void MainWindow::jinTimerout(){
         widget5->setObjects(objs);
         widget5->draw();
         //drawUiLabel(mat5,5);
-        //Í¼Æ¬6
+        //å›¾ç‰‡6
         //QString imageurl6= in.getLD();
         //Mat mat6 =imread(imageurl6.toStdString());
         //widget6->setMat(mat6);
-//        widget6->setPano(newpano);
-//        widget6->setObjects(objs);
-//        widget6->draw();
+        //        widget6->setPano(newpano);
+        //        widget6->setObjects(objs);
+        //        widget6->draw();
         widget6->setPano(newpano);
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(widget1->objs);
         widget6->draw();
         this->alertProcessing(objs);
-     //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
-    
-//     if(isGaojing)
-//     {
-//         if(objs.size()>num_objs){
-//             this->sound->play();
-//             newObjCount=objs.size()-num_objs;
-//             timerFlash->start();
-    
-//             num_objs = objs.size();
-//         }
-//         else
-//             num_objs =objs.size();
-//     }
-    
-//     if(isGaojing)
-//     {
-//         if(num_objs==0)
-//         {
-//             lights[0]->setPixmap(fitpixmap2);
-//             lights[1]->setPixmap(fitpixmap2);
-//             lights[2]->setPixmap(fitpixmap2);
-//             lights[3]->setPixmap(fitpixmap2);
-//             lights[4]->setPixmap(fitpixmap2);
-//         }
-//         else if(num_objs==1)
-//         {
-//             lights[0]->setPixmap(fitpixmap1);
-//             lights[1]->setPixmap(fitpixmap2);
-//             lights[2]->setPixmap(fitpixmap2);
-//             lights[3]->setPixmap(fitpixmap2);
-//             lights[4]->setPixmap(fitpixmap2);
-//    //            light1->setPixmap(fitpixmap1);
-//    //            light2->setPixmap(fitpixmap2);
-//    //            light3->setPixmap(fitpixmap2);
-//    //            light4->setPixmap(fitpixmap2);
-//    //            light5->setPixmap(fitpixmap2);
-//         }
-//         else if(num_objs==2)
-//         {
-//             lights[0]->setPixmap(fitpixmap1);
-//             lights[1]->setPixmap(fitpixmap1);
-//             lights[2]->setPixmap(fitpixmap2);
-//             lights[3]->setPixmap(fitpixmap2);
-//             lights[4]->setPixmap(fitpixmap2);
-    
-//    //            light1->setPixmap(fitpixmap1);
-//    //            light2->setPixmap(fitpixmap1);
-//    //            light3->setPixmap(fitpixmap2);
-//    //            light4->setPixmap(fitpixmap2);
-//    //            light5->setPixmap(fitpixmap2);
-//         }
-//         else if(num_objs==3)
-//         {
-//             lights[0]->setPixmap(fitpixmap1);
-//             lights[1]->setPixmap(fitpixmap1);
-//             lights[2]->setPixmap(fitpixmap1);
-//             lights[3]->setPixmap(fitpixmap2);
-//             lights[4]->setPixmap(fitpixmap2);
-//    //            light1->setPixmap(fitpixmap1);
-//    //            light2->setPixmap(fitpixmap1);
-//    //            light3->setPixmap(fitpixmap1);
-//    //            light4->setPixmap(fitpixmap2);
-//    //            light5->setPixmap(fitpixmap2);
-//         }
-//         else if(num_objs==4)
-//         {
-//             lights[0]->setPixmap(fitpixmap1);
-//             lights[1]->setPixmap(fitpixmap1);
-//             lights[2]->setPixmap(fitpixmap1);
-//             lights[3]->setPixmap(fitpixmap1);
-//             lights[4]->setPixmap(fitpixmap2);
-//    //            light1->setPixmap(fitpixmap1);
-//    //            light2->setPixmap(fitpixmap1);
-//    //            light3->setPixmap(fitpixmap1);
-//    //            light4->setPixmap(fitpixmap1);
-//    //            light5->setPixmap(fitpixmap2);
-//         }
-//         else if(num_objs>= 5 )
-//         {
-//             lights[0]->setPixmap(fitpixmap1);
-//             lights[1]->setPixmap(fitpixmap1);
-//             lights[2]->setPixmap(fitpixmap1);
-//             lights[3]->setPixmap(fitpixmap1);
-//             lights[4]->setPixmap(fitpixmap1);
-//    //            light1->setPixmap(fitpixmap1);
-//    //            light2->setPixmap(fitpixmap1);
-//    //            light3->setPixmap(fitpixmap1);
-//    //            light4->setPixmap(fitpixmap1);
-//    //            light5->setPixmap(fitpixmap1);
-//       }
-//     }
-//     else
-//     {
-//         lights[0]->setPixmap(fitpixmap2);
-//         lights[1]->setPixmap(fitpixmap2);
-//         lights[2]->setPixmap(fitpixmap2);
-//         lights[3]->setPixmap(fitpixmap2);
-//         lights[4]->setPixmap(fitpixmap2);
-//    }
+        //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
+
+        //     if(isGaojing)
+        //     {
+        //         if(objs.size()>num_objs){
+        //             this->sound->play();
+        //             newObjCount=objs.size()-num_objs;
+        //             timerFlash->start();
+
+        //             num_objs = objs.size();
+        //         }
+        //         else
+        //             num_objs =objs.size();
+        //     }
+
+        //     if(isGaojing)
+        //     {
+        //         if(num_objs==0)
+        //         {
+        //             lights[0]->setPixmap(fitpixmap2);
+        //             lights[1]->setPixmap(fitpixmap2);
+        //             lights[2]->setPixmap(fitpixmap2);
+        //             lights[3]->setPixmap(fitpixmap2);
+        //             lights[4]->setPixmap(fitpixmap2);
+        //         }
+        //         else if(num_objs==1)
+        //         {
+        //             lights[0]->setPixmap(fitpixmap1);
+        //             lights[1]->setPixmap(fitpixmap2);
+        //             lights[2]->setPixmap(fitpixmap2);
+        //             lights[3]->setPixmap(fitpixmap2);
+        //             lights[4]->setPixmap(fitpixmap2);
+        //    //            light1->setPixmap(fitpixmap1);
+        //    //            light2->setPixmap(fitpixmap2);
+        //    //            light3->setPixmap(fitpixmap2);
+        //    //            light4->setPixmap(fitpixmap2);
+        //    //            light5->setPixmap(fitpixmap2);
+        //         }
+        //         else if(num_objs==2)
+        //         {
+        //             lights[0]->setPixmap(fitpixmap1);
+        //             lights[1]->setPixmap(fitpixmap1);
+        //             lights[2]->setPixmap(fitpixmap2);
+        //             lights[3]->setPixmap(fitpixmap2);
+        //             lights[4]->setPixmap(fitpixmap2);
+
+        //    //            light1->setPixmap(fitpixmap1);
+        //    //            light2->setPixmap(fitpixmap1);
+        //    //            light3->setPixmap(fitpixmap2);
+        //    //            light4->setPixmap(fitpixmap2);
+        //    //            light5->setPixmap(fitpixmap2);
+        //         }
+        //         else if(num_objs==3)
+        //         {
+        //             lights[0]->setPixmap(fitpixmap1);
+        //             lights[1]->setPixmap(fitpixmap1);
+        //             lights[2]->setPixmap(fitpixmap1);
+        //             lights[3]->setPixmap(fitpixmap2);
+        //             lights[4]->setPixmap(fitpixmap2);
+        //    //            light1->setPixmap(fitpixmap1);
+        //    //            light2->setPixmap(fitpixmap1);
+        //    //            light3->setPixmap(fitpixmap1);
+        //    //            light4->setPixmap(fitpixmap2);
+        //    //            light5->setPixmap(fitpixmap2);
+        //         }
+        //         else if(num_objs==4)
+        //         {
+        //             lights[0]->setPixmap(fitpixmap1);
+        //             lights[1]->setPixmap(fitpixmap1);
+        //             lights[2]->setPixmap(fitpixmap1);
+        //             lights[3]->setPixmap(fitpixmap1);
+        //             lights[4]->setPixmap(fitpixmap2);
+        //    //            light1->setPixmap(fitpixmap1);
+        //    //            light2->setPixmap(fitpixmap1);
+        //    //            light3->setPixmap(fitpixmap1);
+        //    //            light4->setPixmap(fitpixmap1);
+        //    //            light5->setPixmap(fitpixmap2);
+        //         }
+        //         else if(num_objs>= 5 )
+        //         {
+        //             lights[0]->setPixmap(fitpixmap1);
+        //             lights[1]->setPixmap(fitpixmap1);
+        //             lights[2]->setPixmap(fitpixmap1);
+        //             lights[3]->setPixmap(fitpixmap1);
+        //             lights[4]->setPixmap(fitpixmap1);
+        //    //            light1->setPixmap(fitpixmap1);
+        //    //            light2->setPixmap(fitpixmap1);
+        //    //            light3->setPixmap(fitpixmap1);
+        //    //            light4->setPixmap(fitpixmap1);
+        //    //            light5->setPixmap(fitpixmap1);
+        //       }
+        //     }
+        //     else
+        //     {
+        //         lights[0]->setPixmap(fitpixmap2);
+        //         lights[1]->setPixmap(fitpixmap2);
+        //         lights[2]->setPixmap(fitpixmap2);
+        //         lights[3]->setPixmap(fitpixmap2);
+        //         lights[4]->setPixmap(fitpixmap2);
+        //    }
     }
     else{
-        //QMessageBox::information(this,tr("½Ó¿Ú·µ»ØÖµ"),QString::number(v,10));
+        //QMessageBox::information(this,tr("æ¥å£è¿”å›å€¼"),QString::number(v,10));
         this->selfTimerout();
     }
 
 }
 
-//ÒÔÏÂ´¦ÀíÊó±êÍÏ×§ÊÂ¼ş£¬ÔÚÈ«¾°ÏÔÊ¾Çø1»òÕß2ÓĞÑ¡Ôñ¿òµÄÇé¿öÏÂ£¬´ÓÈ«¾°ÏÔÊ¾Çø1»òÕß2³ö·¢£¬Ä¿±êÊÇÖ÷ÏÔÊ¾Çø£¬Ôò¿½±´Í¼Ïñµ½Ö÷ÏÔÊ¾Çø£»Ä¿±êÊÇÄıÊÓÏÔÊ¾Çø£¬Ôò¿½±´Í¼Ïñµ½ÄıÊÓÏÔÊ¾Çø¡£
+//ä»¥ä¸‹å¤„ç†é¼ æ ‡æ‹–æ‹½äº‹ä»¶ï¼Œåœ¨å…¨æ™¯æ˜¾ç¤ºåŒº1æˆ–è€…2æœ‰é€‰æ‹©æ¡†çš„æƒ…å†µä¸‹ï¼Œä»å…¨æ™¯æ˜¾ç¤ºåŒº1æˆ–è€…2å‡ºå‘ï¼Œç›®æ ‡æ˜¯ä¸»æ˜¾ç¤ºåŒºï¼Œåˆ™æ‹·è´å›¾åƒåˆ°ä¸»æ˜¾ç¤ºåŒºï¼›ç›®æ ‡æ˜¯å‡è§†æ˜¾ç¤ºåŒºï¼Œåˆ™æ‹·è´å›¾åƒåˆ°å‡è§†æ˜¾ç¤ºåŒºã€‚
 void MainWindow::mousePressEvent(QMouseEvent *e)
 {
-    //qDebug()<<"Êó±êÑ¹ÏÂÊÂ¼şÀ´×Ômainframe";
+    //qDebug()<<"é¼ æ ‡å‹ä¸‹äº‹ä»¶æ¥è‡ªmainframe";
     if(e->button() == Qt::LeftButton)
     {
         //isRect = false;
-        //ÅĞ¶ÏÊÇ·ñÊÇÍÏ×§³ö·¢µã
-//        QPoint position1 = e->pos();//e->globalPos() - this->pos();
-//        //ÆğÊ¼µãÊÇÂäÔÚÈ«¾°ÏÔÊ¾Çø1ÖĞµÄÇé¿ö
-//        if((position1.x() <= this->widget1->pos().x()+this->widget1->width()) &&(position1.x() >= this->widget1->pos().x()) && (position1.y() <= this->widget1->pos().y()+this->widget1->height()) &&(position1.y() >= this->widget1->pos().y())){
-//            isDrag1 = true;
-//            isDrag2 = false;
-//        }
-//        //ÆğÊ¼µãÊÇÂäÔÚÈ«¾°ÏÔÊ¾Çø2ÖĞµÄÇé¿ö
-//        if((position1.x() <= this->widget2->pos().x()+this->widget2->width()) &&(position1.x() >= this->widget2->pos().x()) && (position1.y() <= this->widget2->pos().y()+this->widget2->height()) &&(position1.y() >= this->widget2->pos().y())){
-//            isDrag2 = true;
-//            isDrag1 = false;
-//        }
+        //åˆ¤æ–­æ˜¯å¦æ˜¯æ‹–æ‹½å‡ºå‘ç‚¹
+        //        QPoint position1 = e->pos();//e->globalPos() - this->pos();
+        //        //èµ·å§‹ç‚¹æ˜¯è½åœ¨å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„æƒ…å†µ
+        //        if((position1.x() <= this->widget1->pos().x()+this->widget1->width()) &&(position1.x() >= this->widget1->pos().x()) && (position1.y() <= this->widget1->pos().y()+this->widget1->height()) &&(position1.y() >= this->widget1->pos().y())){
+        //            isDrag1 = true;
+        //            isDrag2 = false;
+        //        }
+        //        //èµ·å§‹ç‚¹æ˜¯è½åœ¨å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­çš„æƒ…å†µ
+        //        if((position1.x() <= this->widget2->pos().x()+this->widget2->width()) &&(position1.x() >= this->widget2->pos().x()) && (position1.y() <= this->widget2->pos().y()+this->widget2->height()) &&(position1.y() >= this->widget2->pos().y())){
+        //            isDrag2 = true;
+        //            isDrag1 = false;
+        //        }
 
         //e->accept();
         //qDebug()<<position1;
@@ -2434,16 +2439,16 @@ void MainWindow::mousePressEvent(QMouseEvent *e)
 
 void MainWindow::mouseMoveEvent(QMouseEvent *e)
 {
-//    if(isDrag1 && (e->buttons() && Qt::LeftButton)){
-//        //move(e->globalPos() - position1);
-//        isMove = true;
-//        //e->accept();
-//    }
-//    if(isDrag2 && (e->buttons() && Qt::LeftButton)){
-//        //move(e->globalPos() - position1);
-//        isMove = true;
-//        //e->accept();
-//    }
+    //    if(isDrag1 && (e->buttons() && Qt::LeftButton)){
+    //        //move(e->globalPos() - position1);
+    //        isMove = true;
+    //        //e->accept();
+    //    }
+    //    if(isDrag2 && (e->buttons() && Qt::LeftButton)){
+    //        //move(e->globalPos() - position1);
+    //        isMove = true;
+    //        //e->accept();
+    //    }
     e->ignore();
 }
 
@@ -2451,24 +2456,24 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 {
 
 
-    //ÅĞ¶ÏÄ¿µÄµãÂäÔÚÖ÷ÏÔÊ¾ÇøµÄ±êÖ¾±äÁ¿
+    //åˆ¤æ–­ç›®çš„ç‚¹è½åœ¨ä¸»æ˜¾ç¤ºåŒºçš„æ ‡å¿—å˜é‡
     boolean target3 = false;
     boolean target4 = false;
     boolean target6 = false;
     QPoint position2 = e->pos();//e->globalPos() - this->pos();
-    //ÅĞ¶ÏÄ¿µÄµãÂäÔÚÖ÷ÏÔÊ¾ÇøµÄÇé¿ö
+    //åˆ¤æ–­ç›®çš„ç‚¹è½åœ¨ä¸»æ˜¾ç¤ºåŒºçš„æƒ…å†µ
     if((position2.x() <= this->widget3->pos().x()+this->widget3->width()) &&(position2.x() >= this->widget3->pos().x()) && (position2.y() <= this->widget3->pos().y()+this->widget3->height()) &&(position2.y() >= this->widget3->pos().y())){
         target3 = true;
         target4 = false;
         target6 = false;
     }
-    //ÅĞ¶ÏÄ¿µÄµãÂäÔÚ¸¨ÖúÏÔÊ¾Çø1µÄÇé¿ö
+    //åˆ¤æ–­ç›®çš„ç‚¹è½åœ¨è¾…åŠ©æ˜¾ç¤ºåŒº1çš„æƒ…å†µ
     else if((position2.x() <= this->widget4->pos().x()+this->widget4->width()) &&(position2.x() >= this->widget4->pos().x()) && (position2.y() <= this->widget4->pos().y()+this->widget4->height()) &&(position2.y() >= this->widget4->pos().y())){
         target4 = true;
         target3 = false;
         target6 = false;
     }
-    //ÅĞ¶ÏÄ¿µÄµãÂäÔÚ¸¨ÖúÏÔÊ¾Çø2µÄÇé¿ö
+    //åˆ¤æ–­ç›®çš„ç‚¹è½åœ¨è¾…åŠ©æ˜¾ç¤ºåŒº2çš„æƒ…å†µ
     else if((position2.x() <= this->widget6->pos().x()+this->widget6->width()) &&(position2.x() >= this->widget6->pos().x()) && (position2.y() <= this->widget6->pos().y()+this->widget6->height()) &&(position2.y() >= this->widget6->pos().y())){
         target6 = true;
         target3 = false;
@@ -2483,8 +2488,8 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
     //qDebug()<<"here!!";
     //qDebug()<<"isDrag1:"<<isDrag1<<"isDrag2:"<<isDrag2<<"isMove:"<<isMove;
     //qDebug()<<"target3:"<<target3<<"target4:"<<target4<<"target6"<<target6;
-    //6ÖÖ×éºÏ
-    //1. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø1£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø1ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇÖ÷ÏÔÊ¾Çø£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø1Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½Ö÷ÏÔÊ¾Çø
+    //6ç§ç»„åˆ
+    //1. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº1ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯ä¸»æ˜¾ç¤ºåŒºï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº1é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°ä¸»æ˜¾ç¤ºåŒº
     if(isDrag1 && isMove && target3){
 
         //        widget1->rectan.x = widget1->newrect.x;
@@ -2514,10 +2519,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget1->rectan3.width = widget1->rectan3.height * widget3->width() / widget3->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs3;
         int num_objs = widget1->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2555,7 +2560,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget3->setMat(image33);
         widget3->draw();
     }
-    //2. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø2£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø2ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇÖ÷ÏÔÊ¾Çø£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø2Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½Ö÷ÏÔÊ¾Çø
+    //2. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº2ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯ä¸»æ˜¾ç¤ºåŒºï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº2é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°ä¸»æ˜¾ç¤ºåŒº
     if(isDrag2 && isMove && target3){
         //widget2->rectan = widget2->newrect;
         //        widget2->rectan.x = widget2->newrect.x;
@@ -2587,10 +2592,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
 
         widget2->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget2->rectan3.width = widget2->rectan3.height * widget3->width() / widget3->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs3;
         int num_objs = widget2->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2628,7 +2633,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget3->setMat(image33);
         widget3->draw();
     }
-    //3. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø1£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø1ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇ¸¨ÖúÏÔÊ¾Çø1£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø1Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½¸¨ÖúÏÔÊ¾Çø1
+    //3. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº1ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯è¾…åŠ©æ˜¾ç¤ºåŒº1ï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº1é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°è¾…åŠ©æ˜¾ç¤ºåŒº1
     if(isDrag1 && isMove && target4){
         //widget1->rectan = widget1->newrect;
         widget1->isTo4 = true;
@@ -2654,10 +2659,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs4;
         int num_objs = widget1->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2695,7 +2700,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setMat(image44);
         widget4->draw();
     }
-    //4. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø2£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø2ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇ¸¨ÖúÏÔÊ¾Çø1£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø2Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½¸¨ÖúÏÔÊ¾Çø1
+    //4. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº2ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯è¾…åŠ©æ˜¾ç¤ºåŒº1ï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº2é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°è¾…åŠ©æ˜¾ç¤ºåŒº1
     if(isDrag2 && isMove && target4){
 
         widget1->isTo4 = false;
@@ -2722,10 +2727,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget2->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs4;
         int num_objs = widget2->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2763,7 +2768,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget4->setMat(image44);
         widget4->draw();
     }
-    //5. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø1£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø1ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇ¸¨ÖúÏÔÊ¾Çø2£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø1Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½¸¨ÖúÏÔÊ¾Çø2
+    //5. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº1ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯è¾…åŠ©æ˜¾ç¤ºåŒº2ï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº1é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°è¾…åŠ©æ˜¾ç¤ºåŒº2
     if(isDrag1 && isMove && target6){
         //widget1->rectan = widget1->newrect;
         widget1->isTo6 = true;
@@ -2790,10 +2795,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget1->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget1->rectan4.width = widget1->rectan4.height * widget4->width() / widget4->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs6;
         int num_objs = widget1->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2831,7 +2836,7 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         widget6->setMat(image66);
         widget6->draw();
     }
-    //6. Èç¹û³ö·¢µãÊÇÈ«¾°ÏÔÊ¾Çø2£¬²¢ÇÒÈ«¾°ÏÔÊ¾Çø2ÖĞÓĞÑ¡Ôñ¿ò£¬²¢ÇÒÄ¿µÄÊÇ¸¨ÖúÏÔÊ¾Çø2£¬Ôò¿½±´È«¾°ÏÔÊ¾Çø2Ñ¡Ôñ¿òÄÚµÄÍ¼Ïñµ½¸¨ÖúÏÔÊ¾Çø2
+    //6. å¦‚æœå‡ºå‘ç‚¹æ˜¯å…¨æ™¯æ˜¾ç¤ºåŒº2ï¼Œå¹¶ä¸”å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­æœ‰é€‰æ‹©æ¡†ï¼Œå¹¶ä¸”ç›®çš„æ˜¯è¾…åŠ©æ˜¾ç¤ºåŒº2ï¼Œåˆ™æ‹·è´å…¨æ™¯æ˜¾ç¤ºåŒº2é€‰æ‹©æ¡†å†…çš„å›¾åƒåˆ°è¾…åŠ©æ˜¾ç¤ºåŒº2
     if(isDrag2 && isMove && target6){
 
         widget1->isTo6 = false;
@@ -2858,10 +2863,10 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *e)
         }
         widget2->isRect = false;
 
-        //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+        //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
         //widget2->rectan4.width = widget2->rectan4.height * widget4->width() / widget4->height();
 
-        //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+        //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
         vector<MyObject> objs6;
         int num_objs = widget2->objs.size();
         for(int i = 0; i < num_objs; i++){
@@ -2916,13 +2921,13 @@ void MainWindow::resizeEvent(QResizeEvent *){
 }
 
 void MainWindow::paintEvent(QPaintEvent *){
-    //ÖØĞÂ»æÖÆÍ¼Æ¬¡£
+    //é‡æ–°ç»˜åˆ¶å›¾ç‰‡ã€‚
 }
 
 Mat MainWindow::setPseudocolor(Mat& image){
     Mat img_pseudocolor(image.rows, image.cols, CV_8UC3);
     // qDebug()<<image.channels();
-    for (int y = 0; y < image.rows; y++)//×ªÎªÎ±²ÊÉ«Í¼ÏñµÄ¾ßÌåËã·¨
+    for (int y = 0; y < image.rows; y++)//è½¬ä¸ºä¼ªå½©è‰²å›¾åƒçš„å…·ä½“ç®—æ³•
     {
         for (int x = 0; x < image.cols; x++)
         {
@@ -2949,7 +2954,7 @@ double MainWindow::getDirectionY(double y, Mat mat){
 }
 
 
-//---xiaotian »æÖÆ½çÃæÉÏµÄÍ¼Æ¬3  Í¼Æ¬4
+//---xiaotian ç»˜åˆ¶ç•Œé¢ä¸Šçš„å›¾ç‰‡3  å›¾ç‰‡4
 void MainWindow::drawUiLabelByCopy(Mat image, int index1){
     if(this->isPseudo==true)
         image=setPseudocolor(image);
@@ -3002,7 +3007,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
         //QImage imgLabe3 = drawScaleAndRecOnPic(image33,rectans1,index,-1);
         drawScaleAndRecOnPic(image33,rectans1,index,-1);
         imgLabel3 = MatToQImage(image33,imgLabel3);
-     //   cv::cvtColor(image11, image11, CV_BGR2RGB);
+        //   cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label3,imgLabel3);
         //release(&image3);
         //release(&image33);
@@ -3018,7 +3023,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
         //QImage imgLabel4 = drawRecOnPic(image44,rectans);
         drawRecOnPic(image44,rectans);
         imgLabel4 = MatToQImage(image44,imgLabel4);
-       // cv::cvtColor(image11, image11, CV_BGR2RGB);
+        // cv::cvtColor(image11, image11, CV_BGR2RGB);
         loadPictureToLabel(label4,imgLabel4);
         //cvReleaseMat(&image4);
         //cvReleaseMat(&image44);
@@ -3030,7 +3035,7 @@ void MainWindow::drawUiLabelByCopy(Mat image, int index1){
 }
 
 
-//---xiaotian »æÖÆ½çÃæÉÏµÄÍ¼Æ¬1 Í¼Æ¬2 Í¼Æ¬5 Í¼Æ¬6
+//---xiaotian ç»˜åˆ¶ç•Œé¢ä¸Šçš„å›¾ç‰‡1 å›¾ç‰‡2 å›¾ç‰‡5 å›¾ç‰‡6
 void MainWindow::drawUiLabel(Mat image, int index){
     if(index == 1 || index==2){
         for (int y = 0; y < image.rows; y++)
@@ -3052,7 +3057,7 @@ void MainWindow::drawUiLabel(Mat image, int index){
     //Mat image =imread(imgurl);
     vector<Rectan> rectans;
     if(index == 1){
-        //Í¼Æ¬1
+        //å›¾ç‰‡1
         Rectan rec(1490,250,100,100);
         Rectan rec2(1800,250,50,50);
         rectans.push_back(rec);
@@ -3065,7 +3070,7 @@ void MainWindow::drawUiLabel(Mat image, int index){
     }
 
     if(index == 2){
-        //Í¼Æ¬2
+        //å›¾ç‰‡2
         Rectan rec3(2600,10,100,100);
         rectans.clear();
         rectans.push_back(rec3);
@@ -3077,7 +3082,7 @@ void MainWindow::drawUiLabel(Mat image, int index){
     }
 
     if(index == 5){
-        //Í¼Æ¬5
+        //å›¾ç‰‡5
         Point point1(75,60);
         Point point2(110,40);
         Point point3(75,60);
@@ -3103,7 +3108,7 @@ void MainWindow::drawUiLabel(Mat image, int index){
         //delete imgLabel5;
     }
     if(index == 6){
-        //Í¼Æ¬6
+        //å›¾ç‰‡6
         Point point11(75,60);
         Point point21(110,39);
         Point point31(75,60);
@@ -3129,24 +3134,24 @@ void MainWindow::drawUiLabel(Mat image, int index){
 
 
 
-//---xiaotian   ¼ÓÔØÍ¼Æ¬µ½labelÉÏ¡£
+//---xiaotian   åŠ è½½å›¾ç‰‡åˆ°labelä¸Šã€‚
 void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
     QPixmap pixmap1 = QPixmap::fromImage(image);
     label->setPixmap(pixmap1);
     label->setScaledContents(true);
-    //ÊÍ·Åimage
+    //é‡Šæ”¾image
     //delete & image;
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label1ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label1ä¸Š
 void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label,imgLabel1);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel1);
     QPainter painter(&pixmap1);
     if(isRect){
 
-        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //ÉèÖÃ»­±ÊĞÎÊ½
-        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //ÉèÖÃ»­Ë¢ĞÎÊ½
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //è®¾ç½®ç”»ç¬”å½¢å¼
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //è®¾ç½®ç”»åˆ·å½¢å¼
         painter.drawRect(qrect);
     }
     if(isDefiningRegion){
@@ -3156,7 +3161,7 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(4);
+        pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -3170,9 +3175,9 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
             painter.drawLine(p1,p2);
         }
 
-//        if(size>2&&widget1->completeRDefine == true){
-//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
-//        }
+        //        if(size>2&&widget1->completeRDefine == true){
+        //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+        //        }
 
 
     }
@@ -3180,15 +3185,15 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
     label->setPixmap(pixmap1);
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label2ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label2ä¸Š
 void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label2,imgLabel2);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel2);
     QPainter painter(&pixmap1);
     if(isRect){
 
-        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //ÉèÖÃ»­±ÊĞÎÊ½
-        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //ÉèÖÃ»­Ë¢ĞÎÊ½
+        painter.setPen(QPen(Qt::red,4,Qt::SolidLine)); //è®¾ç½®ç”»ç¬”å½¢å¼
+        //painter.setBrush(QBrush(Qt::red,Qt::SolidPattern)); //è®¾ç½®ç”»åˆ·å½¢å¼
         painter.drawRect(qrect);
 
     }
@@ -3213,16 +3218,16 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
             painter.drawLine(p1,p2);
         }
 
-//        if(size>2&&widget2->completeRDefine == true){
-//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
-//        }
+        //        if(size>2&&widget2->completeRDefine == true){
+        //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+        //        }
 
     }
     label2->setScaledContents(true);
     label2->setPixmap(pixmap1);
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label3ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label3ä¸Š
 void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label3,imgLabel3);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel3);
@@ -3234,7 +3239,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(4);
+        pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         if(rectRegion.width() > 0){
@@ -3247,17 +3252,17 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
             painter.drawLine(p1,p2);
         }
 
-//        if(size>2&&widget3->completeRDefine == true){
-//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
-//        }
+        //        if(size>2&&widget3->completeRDefine == true){
+        //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+        //        }
 
 
 
     }
-    zWZoomIn->setText("·Å´ó");
+    zWZoomIn->setText("æ”¾å¤§");
     zWZoomIn->setGeometry(10,10,60,30);
     zWZoomIn->setToolTip(QString::number(3));
-    zWZoomout->setText("ËõĞ¡");
+    zWZoomout->setText("ç¼©å°");
     zWZoomout->setGeometry(80,10,60,30);
     zWZoomout->setToolTip(QString::number(3));
     connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
@@ -3267,7 +3272,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
 
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label4ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label4ä¸Š
 void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label4,imgLabel4);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel4);
@@ -3278,7 +3283,7 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
         qc.setGreen(co.val[1]);
         qc.setBlue(co.val[0]);
         QPen pen;
-         pen.setWidth(4);
+        pen.setWidth(4);
         pen.setColor(qc);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
@@ -3292,16 +3297,16 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
-//        if(size>2&&widget4->completeRDefine == true){
-//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
-//        }
+        //        if(size>2&&widget4->completeRDefine == true){
+        //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+        //        }
 
     }
 
-    n1WZoomIn->setText("·Å´ó");
+    n1WZoomIn->setText("æ”¾å¤§");
     n1WZoomIn->setGeometry(10,10,60,30);
     n1WZoomIn->setToolTip(QString::number(4));
-    n1WZoomout->setText("ËõĞ¡");
+    n1WZoomout->setText("ç¼©å°");
     n1WZoomout->setGeometry(80,10,60,30);
     n1WZoomout->setToolTip(QString::number(4));
     connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
@@ -3311,12 +3316,12 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
 
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label5ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label5ä¸Š
 void MainWindow::loadPictureToLabel5(){
     loadPictureToLabel(label5,imgLabel5);
 }
 
-//¼ÓÔØÍ¼Æ¬µ½Label6ÉÏ
+//åŠ è½½å›¾ç‰‡åˆ°Label6ä¸Š
 void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps){
     //loadPictureToLabel(label6,imgLabel6);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel6);
@@ -3329,7 +3334,7 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         qc.setBlue(co.val[0]);
         QPen pen;
         pen.setColor(qc);
-         pen.setWidth(4);
+        pen.setWidth(4);
         pen.setStyle(Qt::SolidLine);
         painter.setPen(pen);
         painter.drawRect(rectRegion);
@@ -3342,16 +3347,16 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         }
 
 
-//        if(size>2&&widget6->completeRDefine == true){
-//            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
-//        }
+        //        if(size>2&&widget6->completeRDefine == true){
+        //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
+        //        }
 
 
     }
 
-    n2WZoomIn->setText("·Å´ó");
+    n2WZoomIn->setText("æ”¾å¤§");
     n2WZoomIn->setGeometry(10,10,60,30);
-    n2WZoomout->setText("ËõĞ¡");
+    n2WZoomout->setText("ç¼©å°");
     n2WZoomout->setGeometry(80,10,60,30);
     connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
@@ -3363,9 +3368,9 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
 void MainWindow::loadPictureToLabel7(){
     loadPictureToLabel(label7,imgLabel7);
 }
-//---xiaotian   Í¼ÏñÉÏ»æÖÆ¾ØĞÎ¿ò
+//---xiaotian   å›¾åƒä¸Šç»˜åˆ¶çŸ©å½¢æ¡†
 void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
-    //ÔÚÍ¼ÏñÉÏ»­¾ØĞÎ¡£
+    //åœ¨å›¾åƒä¸Šç”»çŸ©å½¢ã€‚
     int num_objs = rectans.size();
     for (int i = 0; i < num_objs;i++)
     {
@@ -3376,28 +3381,28 @@ void MainWindow::drawRecOnPic(Mat image, vector<Rectan> rectans){
         rect.height = rectans[i].getHeight();
         rectangle(image,rect,Scalar(0,0,255),4,1,0);
 
-      //  cv::cvtColor(image, image, CV_BGR2RGB);
+        //  cv::cvtColor(image, image, CV_BGR2RGB);
     }
-   // cv::cvtColor(image,image,CV_BGR2RGB);
+    // cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
 
 }
 
-//»æÖÆÊó±êÑ¡È¡µÄ¾ØĞÎ
+//ç»˜åˆ¶é¼ æ ‡é€‰å–çš„çŸ©å½¢
 void MainWindow::drawRecOnPic2(Mat image, Rect rect){
-    //ÔÚÍ¼ÏñÉÏ»­¾ØĞÎ¡£
+    //åœ¨å›¾åƒä¸Šç”»çŸ©å½¢ã€‚
     rectangle(image,rect,Scalar(0,0,255),1,1,0);
-   // cv::cvtColor(image, image, CV_BGR2RGB);
+    // cv::cvtColor(image, image, CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    //return imgLabel;
 }
 
-//---xiaotian  Í¼ÏñÉÏ»æÖÆ±ê³ßºÍ¾ØĞÎ¿ò
+//---xiaotian  å›¾åƒä¸Šç»˜åˆ¶æ ‡å°ºå’ŒçŸ©å½¢æ¡†
 void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double startw, double starth){
-    //ÔÚÍ¼ÏñÉÏ»­¾ØĞÎ¡£
+    //åœ¨å›¾åƒä¸Šç”»çŸ©å½¢ã€‚
     int num_objs = rectans.size();
     for (int i = 0; i < num_objs;i++)
     {
@@ -3407,19 +3412,19 @@ void MainWindow::drawScaleAndRecOnPic(Mat image, vector<Rectan> rectans, double 
         rect.width = rectans[i].getWidth();
         rect.height = rectans[i].getHeight();
         rectangle(image,rect,Scalar(0,0,255),4,1,0);
-     //   cv::cvtColor(image, image, CV_BGR2RGB);
+        //   cv::cvtColor(image, image, CV_BGR2RGB);
     }
-    //ÔÚÍ¼ÏñÉÏ»­±ê³ß
+    //åœ¨å›¾åƒä¸Šç”»æ ‡å°º
     paintScale(image,startw,starth);
-  //  cv::cvtColor(image,image,CV_BGR2RGB);
+    //  cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel3;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
 }
 
-//---xiaotian  Í¼ÏñÉÏ»æÖÆ¶à±ßĞÎºÍÔ²
+//---xiaotian  å›¾åƒä¸Šç»˜åˆ¶å¤šè¾¹å½¢å’Œåœ†
 void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, double y){
-    //ÔÚÍ¼ÏñÉÏ»­¶à±ßĞÎ
+    //åœ¨å›¾åƒä¸Šç”»å¤šè¾¹å½¢
     int num_objs = point.size();
     for (int i = 0; i <num_objs;i+=2)
     {
@@ -3427,16 +3432,16 @@ void MainWindow::drawCircleOnPic(Mat image, vector<Point> point, double x, doubl
         Point point2 = point[i+1];
         line(image,point1,point2,Scalar(255,255,0),1,8,0);
     }
-    //ÔÚÍ¼ÏñÉÏ»­Ô²µã
+    //åœ¨å›¾åƒä¸Šç”»åœ†ç‚¹
     paintCircle(image,x,y);
-  //  cv::cvtColor(image,image,CV_BGR2RGB);
+    //  cv::cvtColor(image,image,CV_BGR2RGB);
     //QImage imglabel;
     //    imgLabel = MatToQImage(image);
     //    return imgLabel;
 }
 
 
-//¾ØĞÎ
+//çŸ©å½¢
 void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double height)
 {
     Rect rect;
@@ -3446,23 +3451,23 @@ void MainWindow:: paintRectangle(Mat image,double x,double y,double width,double
     rect.width = width;
     rect.height = height;
     rectangle(image,rect,Scalar(0,0,255),4,1,0);
- //   cv::cvtColor(image, image, CV_BGR2RGB);
+    //   cv::cvtColor(image, image, CV_BGR2RGB);
     //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
     //return img;
 }
-//Ô²
+//åœ†
 void MainWindow::paintCircle(Mat image,double x,double y)
 {
     //QImage img;
-    Point pointInterest;//ÌØÕ÷µã£¬ÓÃÒÔ»­ÔÚÍ¼ÏñÖĞ,»­Ô²ĞÎµãµÄÔ²ĞÄ
-    pointInterest.x=x;//ÌØÕ÷µãÔÚÍ¼ÏñÖĞºá×ø±ê
-    pointInterest.y=y;//ÌØÕ÷µãÔÚÍ¼ÏñÖĞ×İ×ø±ê
-    circle(image, pointInterest, 2, Scalar(255, 0,0 ),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
+    Point pointInterest;//ç‰¹å¾ç‚¹ï¼Œç”¨ä»¥ç”»åœ¨å›¾åƒä¸­,ç”»åœ†å½¢ç‚¹çš„åœ†å¿ƒ
+    pointInterest.x=x;//ç‰¹å¾ç‚¹åœ¨å›¾åƒä¸­æ¨ªåæ ‡
+    pointInterest.y=y;//ç‰¹å¾ç‚¹åœ¨å›¾åƒä¸­çºµåæ ‡
+    circle(image, pointInterest, 2, Scalar(255, 0,0 ),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
     //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
     //return img;
 }
 
-//»­±ê³ß
+//ç”»æ ‡å°º
 void MainWindow::paintScale(Mat image,double startw,double starth)
 {
     //QImage img;
@@ -3474,7 +3479,7 @@ void MainWindow::paintScale(Mat image,double startw,double starth)
         int i=t-startw;
         if(i%2 == 0){
             line(image,Point(i*c,0),Point(i*c,20),Scalar(255,255,255),2,8,0);
-            //±ê³ßÉÏĞ´×Ö
+            //æ ‡å°ºä¸Šå†™å­—
             QString text = QString::number(t,10);
             string str = text.toStdString();
             putText(image,str,Point(i*c-10,50),FONT_HERSHEY_SIMPLEX,10,Scalar(255,255,255),5,8,0);
@@ -3578,55 +3583,55 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
     }
 }
 
-//Æô¶¯/Í£Ö¹
+//å¯åŠ¨/åœæ­¢
 void MainWindow::startStopFunction()
 {
     //if(startStopSet=="./icon/1_2.png")
-//    if (isQidong)
-//    {
-//        startStop->setIcon(QPixmap("./icon/²¥·Å.png"));
-//        startStop->setToolTip("Æô¶¯");
-//        //startStopSet="./icon/1_1.png";
-//        isQidong = false;
-//    }
-//    else
-//    {
-//        startStop->setIcon(QPixmap("./icon/1_1.png"));
-//        startStop->setToolTip("Í£Ö¹");
-//        isQidong = true;
-//        //startStopSet="./icon/1_2.png";
-//    }
+    //    if (isQidong)
+    //    {
+    //        startStop->setIcon(QPixmap("./icon/æ’­æ”¾.png"));
+    //        startStop->setToolTip("å¯åŠ¨");
+    //        //startStopSet="./icon/1_1.png";
+    //        isQidong = false;
+    //    }
+    //    else
+    //    {
+    //        startStop->setIcon(QPixmap("./icon/1_1.png"));
+    //        startStop->setToolTip("åœæ­¢");
+    //        isQidong = true;
+    //        //startStopSet="./icon/1_2.png";
+    //    }
 
 }
-//ÔİÍ£/¼ÌĞø¼ÇÂ¼µ±Ç°³¡¾°
+//æš‚åœ/ç»§ç»­è®°å½•å½“å‰åœºæ™¯
 void MainWindow::mstopFunction()
 {
     //if(mstopSet=="./icon/2_2.png")
     if(isJixu)
     {
-        //mstop->setIcon(QPixmap("./icon/2_1»Ò.png"));
-        mstop->setToolTip("ÔİÍ£");
+        //mstop->setIcon(QPixmap("./icon/2_1ç°.png"));
+        mstop->setToolTip("æš‚åœ");
         isJixu = false;
         //mstopSet="./icon/2_1.png";
     }
     else
     {
-       // mstop->setIcon(QPixmap("./icon/2_1.png"));
-        mstop->setToolTip("¿ªÆô");
+        // mstop->setIcon(QPixmap("./icon/2_1.png"));
+        mstop->setToolTip("å¼€å¯");
         isJixu = true;
         //mstopSet="./icon/2_2.png";
         //        dialogLabel->setText(tr("Information Message Box"));
-        //        QMessageBox::information(this,tr("ºìÍâÈ«¾°ÏµÍ³"),tr("Í¨¹ı½ğÀÏÊ¦SDK£¬ÊµÏÖ¼à¿Ø¼ÌĞø¡£"));
+        //        QMessageBox::information(this,tr("çº¢å¤–å…¨æ™¯ç³»ç»Ÿ"),tr("é€šè¿‡é‡‘è€å¸ˆSDKï¼Œå®ç°ç›‘æ§ç»§ç»­ã€‚"));
     }
 
 }
-//Ö´ĞĞ·Ç¾ùÔÈĞÔĞ£Õı
+//æ‰§è¡Œéå‡åŒ€æ€§æ ¡æ­£
 void MainWindow::backFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("Ö´ĞĞ·Ç¾ùÔÈĞÔĞ£Õı"),tr("Ïû³ıÍ¼ÏñÖĞµÄ·Ç¾ùÔÈĞÔÁÁ¶È²î£¬ÈôÊÇ²ÉÓÃÃæÕó´«¸ĞÆ÷£¬¼õÉÙÆ´½ÓÏßÁ½±ßµÄÍ¼ÏñÁÁ¶È²îÒì£¬Í¼ÏñÆ´½ÓËã·¨µÄÒ»¸öÉèÖÃ²ÎÊı¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("æ‰§è¡Œéå‡åŒ€æ€§æ ¡æ­£"),tr("æ¶ˆé™¤å›¾åƒä¸­çš„éå‡åŒ€æ€§äº®åº¦å·®ï¼Œè‹¥æ˜¯é‡‡ç”¨é¢é˜µä¼ æ„Ÿå™¨ï¼Œå‡å°‘æ‹¼æ¥çº¿ä¸¤è¾¹çš„å›¾åƒäº®åº¦å·®å¼‚ï¼Œå›¾åƒæ‹¼æ¥ç®—æ³•çš„ä¸€ä¸ªè®¾ç½®å‚æ•°ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 }
-//»Ø·Å
+//å›æ”¾
 void MainWindow::openFunction()
 {
     if(is_open==true){
@@ -3636,24 +3641,24 @@ void MainWindow::openFunction()
         return;
     }
     dateEdit=new QDateEdit(QDate::currentDate());
-    startTime=new QLabel(QWidget::tr("ÆğÊ¼Ê±¼ä"));
-    //¿ªÊ¼Ê±¼äÑ¡Ôñ¿ò
+    startTime=new QLabel(QWidget::tr("èµ·å§‹æ—¶é—´"));
+    //å¼€å§‹æ—¶é—´é€‰æ‹©æ¡†
     startTimeSet=new QTimeEdit(QTime::currentTime().addSecs(-300), this);
     //startTimeSet->setCalendarPopup(true);
     startTimeSet->setDisplayFormat("HH:mm:ss");
-    //½áÊøÊ±¼äÑ¡Ôñ¿ò
-    stopTime=new QLabel(QWidget::tr("½áÊøÊ±¼ä"));
+    //ç»“æŸæ—¶é—´é€‰æ‹©æ¡†
+    stopTime=new QLabel(QWidget::tr("ç»“æŸæ—¶é—´"));
     stopTimeSet=new QTimeEdit(QTime::currentTime(), this);
     //stopTimeSet->setCalendarPopup(true);
     stopTimeSet->setDisplayFormat("HH:mm:ss");
-    queDing=new QPushButton("È·¶¨",this);
+    queDing=new QPushButton("ç¡®å®š",this);
     connect(queDing,SIGNAL(clicked()),this,SLOT(queDingFunction()));
-    quXiao=new QPushButton("È¡Ïû",this);
+    quXiao=new QPushButton("å–æ¶ˆ",this);
     connect(quXiao,SIGNAL(clicked()),this,SLOT(quXiaoFunction()));
-    //²ÉÓÃÍø¸ñ²¼¾Ö
+    //é‡‡ç”¨ç½‘æ ¼å¸ƒå±€
     //gridLayout=new QGridLayout(this);
     gridLayout=new QGridLayout();
-    gridLayout->addWidget(new QLabel(QWidget::tr("ÈÕÆÚ")));
+    gridLayout->addWidget(new QLabel(QWidget::tr("æ—¥æœŸ")));
     gridLayout->addWidget(dateEdit,0,1);
     gridLayout->addWidget(startTime,0,2);
     gridLayout->addWidget(startTimeSet,0,3);
@@ -3672,7 +3677,7 @@ void MainWindow::openFunction()
         is_open=true;
     }
 
-    widgetNew->setWindowTitle("Ê±¼äÑ¡Ôñ¿ò");
+    widgetNew->setWindowTitle("æ—¶é—´é€‰æ‹©æ¡†");
     widgetNew->setLayout(gridLayout);
     widgetNew->setMinimumSize(QSize(600,150));
     widgetNew->setMaximumSize(QSize(600,150));
@@ -3699,7 +3704,7 @@ void MainWindow::videoClick(){
     int index=act->data().toInt();
     qDebug()<<"video click "<<index;
     int size=video.size();
-    index=size-1-index;//ÒòÎª×î½üµÄ·Åµ½µÚÒ»Î»£¬×î½üµÄÔÚqueueÀïÊÇ×îºóÒ»Î»
+    index=size-1-index;//å› ä¸ºæœ€è¿‘çš„æ”¾åˆ°ç¬¬ä¸€ä½ï¼Œæœ€è¿‘çš„åœ¨queueé‡Œæ˜¯æœ€åä¸€ä½
     if(backwindow!=0)
         delete backwindow;
     backwindow=new BackWindow(videoDate.at(index),video.at(index),videoEnd.at(index));
@@ -3717,46 +3722,46 @@ void MainWindow::queDingFunction()
     int dif=dateTimeStart.secsTo(dateTimeStop);
     if(date>QDate::currentDate())
     {
-        QMessageBox::information(widgetNew,tr("¾¯¸æ"),tr("ÈÕÆÚ²»ÄÜ´óÓÚ½ñÌì"));
+        QMessageBox::information(widgetNew,tr("è­¦å‘Š"),tr("æ—¥æœŸä¸èƒ½å¤§äºä»Šå¤©"));
         //        widgetNew->close();
         //        widgetNew->show();
         return;
     }
     if(dif==0)
     {
-        QMessageBox::information(widgetNew,tr("¾¯¸æ"),tr("¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼äÏàÍ¬"));
+        QMessageBox::information(widgetNew,tr("è­¦å‘Š"),tr("å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´ç›¸åŒ"));
         widgetNew->close();
         widgetNew->show();
     }
     else if(dif<0)
     {
-        QMessageBox::information(widgetNew,tr("¾¯¸æ"),tr("¿ªÊ¼Ê±¼ä´óÓÚ½áÊøÊ±¼ä"));
+        QMessageBox::information(widgetNew,tr("è­¦å‘Š"),tr("å¼€å§‹æ—¶é—´å¤§äºç»“æŸæ—¶é—´"));
         widgetNew->close();
         widgetNew->show();
     }
     else
     {
-//        if(video.size()<6){
-//            video.insert(dateTimeStart,dateTimeStart);
-//        }
-//        else{
-//            video<QTime> ::iterator it = video.end()-1;
-//            video.erase(it);
-//            video.insert(dateTimeStart,dateTimeStart);
-//        }
-                if(video.size()<6){
-                    video.enqueue(dateTimeStart);
-                    videoEnd.enqueue(dateTimeStop);//recent
-                    videoDate.enqueue(date);
-                }
-                else{
-                    video.dequeue();
-                    videoEnd.dequeue();//recent
-                    video.enqueue(dateTimeStart);
-                    videoEnd.enqueue(dateTimeStop);
-                    videoDate.dequeue();
-                    videoDate.enqueue(date);
-                }
+        //        if(video.size()<6){
+        //            video.insert(dateTimeStart,dateTimeStart);
+        //        }
+        //        else{
+        //            video<QTime> ::iterator it = video.end()-1;
+        //            video.erase(it);
+        //            video.insert(dateTimeStart,dateTimeStart);
+        //        }
+        if(video.size()<6){
+            video.enqueue(dateTimeStart);
+            videoEnd.enqueue(dateTimeStop);//recent
+            videoDate.enqueue(date);
+        }
+        else{
+            video.dequeue();
+            videoEnd.dequeue();//recent
+            video.enqueue(dateTimeStart);
+            videoEnd.enqueue(dateTimeStop);
+            videoDate.dequeue();
+            videoDate.enqueue(date);
+        }
 
         flushRecentVideo();//recent
         widgetNew->close();
@@ -3771,14 +3776,14 @@ void MainWindow::quXiaoFunction()
 {
     widgetNew->close();
 }
-//Í¼Ïñ
-//³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı
+//å›¾åƒ
+//æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°
 void MainWindow::chexiaoFunction(){
-    QMessageBox::information(this,tr("³·ÏúÊÖ¶¯¶Ô±È¶È²ÎÊı"),tr("»Ö¸´µ½×îºóÒ»´Îµ÷Õû²Ù×÷Ö®Ç°£¿¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("æ’¤é”€æ‰‹åŠ¨å¯¹æ¯”åº¦å‚æ•°"),tr("æ¢å¤åˆ°æœ€åä¸€æ¬¡è°ƒæ•´æ“ä½œä¹‹å‰ï¼Ÿç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
-//×Ô¶¯
+//è‡ªåŠ¨
 void MainWindow::automFunction()
 {
     bright_TrackbarValue = 0;
@@ -3807,50 +3812,50 @@ void MainWindow::updateBright(Mat &mat1 )
         }
     }
 }
-//Ôö¼ÓÁÁ¶È
+//å¢åŠ äº®åº¦
 void MainWindow::addBrightnessFunction()
 {
     bright_TrackbarValue+=20;
     adjustment();
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-   // trackBar->setWindowTitle("ÁÁ¶È");
+    // trackBar->setWindowTitle("äº®åº¦");
     //trackBar->show();
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //trackBar->activateWindow();
     //trackBar->move(trackBar->x(),trackBar->y());
-//    if(brightnessSet=="./icon/7_1.png")
-//    {
-//        brightness->setIcon(QPixmap("./icon/7_1.png"));
-//        brightnessSet="./icon/7_1.png";
-//    }
-//    else
-//    {
-//        brightness->setIcon(QPixmap("./icon/7_1.png"));
-//        brightnessSet="./icon/7_1.png";
-//    }
+    //    if(brightnessSet=="./icon/7_1.png")
+    //    {
+    //        brightness->setIcon(QPixmap("./icon/7_1.png"));
+    //        brightnessSet="./icon/7_1.png";
+    //    }
+    //    else
+    //    {
+    //        brightness->setIcon(QPixmap("./icon/7_1.png"));
+    //        brightnessSet="./icon/7_1.png";
+    //    }
 }
 
-//½µµÍÁÁ¶È
+//é™ä½äº®åº¦
 void MainWindow::reduceBrightnessFunction()
 {
     bright_TrackbarValue-=20;
     adjustment();
-//    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-//    trackBar->setWindowTitle("ÁÁ¶È");
-//    trackBar->show();
+    //    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //    trackBar->setWindowTitle("äº®åº¦");
+    //    trackBar->show();
 
-//    //trackBar->activateWindow();
-//    trackBar->move(trackBar->x(),trackBar->y());
-//    if(brightnessSet=="./icon/7_1.png")
-//    {
-//        brightness->setIcon(QPixmap("./icon/7_1.png"));
-//        brightnessSet="./icon/7_1.png";
-//    }
-//    else
-//    {
-//        brightness->setIcon(QPixmap("./icon/7_1.png"));
-//        brightnessSet="./icon/7_1.png";
-//    }
+    //    //trackBar->activateWindow();
+    //    trackBar->move(trackBar->x(),trackBar->y());
+    //    if(brightnessSet=="./icon/7_1.png")
+    //    {
+    //        brightness->setIcon(QPixmap("./icon/7_1.png"));
+    //        brightnessSet="./icon/7_1.png";
+    //    }
+    //    else
+    //    {
+    //        brightness->setIcon(QPixmap("./icon/7_1.png"));
+    //        brightnessSet="./icon/7_1.png";
+    //    }
 }
 
 void MainWindow::updateContrast(Mat &mat1){
@@ -3873,113 +3878,113 @@ void MainWindow::updateContrast(Mat &mat1){
     }
 
 }
-//Ôö¼Ó¶Ô±È¶È
+//å¢åŠ å¯¹æ¯”åº¦
 void MainWindow::addSaturationFunction()
 {
     alpha_contrast+=20;
     adjustment();
-//    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-//    strackBar->setWindowTitle("¶Ô±È¶È");
-//    strackBar->show();
-//    strackBar->activateWindow();
-//    strackBar->move(strackBar->x(),strackBar->y());
+    //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //    strackBar->setWindowTitle("å¯¹æ¯”åº¦");
+    //    strackBar->show();
+    //    strackBar->activateWindow();
+    //    strackBar->move(strackBar->x(),strackBar->y());
 
-//    if(saturationSet=="./icon/8_1.png")
-//    {
-//        saturation->setIcon(QPixmap("./icon/8_1.png"));
-//        saturationSet="./icon/8_1.png";
-//    }
-//    else
-//    {
-//        saturation->setIcon(QPixmap("./icon/8_1.png"));
-//        saturationSet="./icon/8_1.png";
-//    }
+    //    if(saturationSet=="./icon/8_1.png")
+    //    {
+    //        saturation->setIcon(QPixmap("./icon/8_1.png"));
+    //        saturationSet="./icon/8_1.png";
+    //    }
+    //    else
+    //    {
+    //        saturation->setIcon(QPixmap("./icon/8_1.png"));
+    //        saturationSet="./icon/8_1.png";
+    //    }
 }
 
-//½µµÍ¶Ô±È¶È
+//é™ä½å¯¹æ¯”åº¦
 void MainWindow::reduceSaturationFunction()
 {
     alpha_contrast-=20;
     adjustment();
-//    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
-//    strackBar->setWindowTitle("¶Ô±È¶È");
-//    strackBar->show();
-//    strackBar->activateWindow();
-//    strackBar->move(strackBar->x(),strackBar->y());
+    //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //    strackBar->setWindowTitle("å¯¹æ¯”åº¦");
+    //    strackBar->show();
+    //    strackBar->activateWindow();
+    //    strackBar->move(strackBar->x(),strackBar->y());
 
-//    if(saturationSet=="./icon/8_1.png")
-//    {
-//        saturation->setIcon(QPixmap("./icon/8_1.png"));
-//        saturationSet="./icon/8_1.png";
-//    }
-//    else
-//    {
-//        saturation->setIcon(QPixmap("./icon/8_1.png"));
-//        saturationSet="./icon/8_1.png";
-//    }
+    //    if(saturationSet=="./icon/8_1.png")
+    //    {
+    //        saturation->setIcon(QPixmap("./icon/8_1.png"));
+    //        saturationSet="./icon/8_1.png";
+    //    }
+    //    else
+    //    {
+    //        saturation->setIcon(QPixmap("./icon/8_1.png"));
+    //        saturationSet="./icon/8_1.png";
+    //    }
 }
-//Î±²ÊÉ«
+//ä¼ªå½©è‰²
 void MainWindow::pseudoColorFunction()
 {
     isPseudo=!isPseudo;
     adjustment();
 }
-//µÚÈı×é
-//ÏÔÊ¾µã»÷´¦Î»ÖÃ
+//ç¬¬ä¸‰ç»„
+//æ˜¾ç¤ºç‚¹å‡»å¤„ä½ç½®
 void MainWindow::objectAttributeFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
     //const QString &objectstring = "oid =" ;
-    // QMessageBox::information(this,"Ä¿±êÊôĞÔÁĞ±í",&objectstring);
-//    if(objectAttributes)
-//    {
-//        delete objectAttributes;
-//    }
-//    this->objectAttributes=new ObjectAttributes(widget1->objs);
-//    this->objectAttributes->setWindowFlags(Qt::FramelessWindowHint);
-//    this->objectAttributes->activateWindow();
-//    //this->objectAttributes->setWindowTitle("Ä¿±êÊôĞÔÁĞ±í");
-//    QDesktopWidget* desktopWidget = QApplication::desktop();
-//    QRect screenRect = desktopWidget->screenGeometry();  //ÆÁÄ»ÇøÓò
-//    int width = screenRect.width();
-//    int height = screenRect.height();
-//    this->objectAttributes->setGeometry(width/4,height/4,width/2,height/3);
+    // QMessageBox::information(this,"ç›®æ ‡å±æ€§åˆ—è¡¨",&objectstring);
+    //    if(objectAttributes)
+    //    {
+    //        delete objectAttributes;
+    //    }
+    //    this->objectAttributes=new ObjectAttributes(widget1->objs);
+    //    this->objectAttributes->setWindowFlags(Qt::FramelessWindowHint);
+    //    this->objectAttributes->activateWindow();
+    //    //this->objectAttributes->setWindowTitle("ç›®æ ‡å±æ€§åˆ—è¡¨");
+    //    QDesktopWidget* desktopWidget = QApplication::desktop();
+    //    QRect screenRect = desktopWidget->screenGeometry();  //å±å¹•åŒºåŸŸ
+    //    int width = screenRect.width();
+    //    int height = screenRect.height();
+    //    this->objectAttributes->setGeometry(width/4,height/4,width/2,height/3);
 
-//    // this->objectAttributes->tr("oid");
-//    // this->objectAttributes->resize(300,500);
-//    //this->objectAttributes->setText("oid=: ");
-//    //this->objectAttributes->setText("cenPoint");
-//    //QString s=QString("oid:")+myobjects.oid+"\nÄ¿±êÖĞĞÄ×ø±ê:<"+myobjects.cenPoint.x+","+myobjects.cenPoint.y
-//    //            +">/n¼à²â¿ò´óĞ¡:<"+myobjects.blocksize.width+","+myobjects.blocksize.height;
-//    //QString s1=QString(">\nÔË¶¯ËÙÂÊ:")+myobjects.Velocity
-//    //            +"\nÔË¶¯·½Ïò£º"+myobjects.MotionDerection+"\nÄ¿±êÃæ»ı:"+myobjects.area+"\nË®Æ½Öá³¤¶È:"+myobjects.horizontalAxisLength
-//    //            +"\nÊúÖ±Öá³¤¶È:"+myobjects.verticalAxisLength+"\n¾ø¶ÔÇ¿¶È:"+myobjects.absoluteIntensity+"\nÏà¶ÔÇ¿¶È"+myobjects.relativeIntensity
-//    //            +"\nÄ¿±ê³ß¶È:"+myobjects.targetScale+"\nÖĞÑëÖÜÎ§¶Ô±È¶ÈµÄÏàÓ¦Ç¿¶È:"+myobjects.CenSueEintensity+"\nÄ¿±ê±³¾°ĞÅÔÓ±È"+myobjects.SCRValue;
-//    //    qDebug()<<"22222222222";
-//    //    this->objectAttributes->setText(s);
-//    //    this->objectAttributes->show();
-//    this->objectAttributes->show();
+    //    // this->objectAttributes->tr("oid");
+    //    // this->objectAttributes->resize(300,500);
+    //    //this->objectAttributes->setText("oid=: ");
+    //    //this->objectAttributes->setText("cenPoint");
+    //    //QString s=QString("oid:")+myobjects.oid+"\nç›®æ ‡ä¸­å¿ƒåæ ‡:<"+myobjects.cenPoint.x+","+myobjects.cenPoint.y
+    //    //            +">/nç›‘æµ‹æ¡†å¤§å°:<"+myobjects.blocksize.width+","+myobjects.blocksize.height;
+    //    //QString s1=QString(">\nè¿åŠ¨é€Ÿç‡:")+myobjects.Velocity
+    //    //            +"\nè¿åŠ¨æ–¹å‘ï¼š"+myobjects.MotionDerection+"\nç›®æ ‡é¢ç§¯:"+myobjects.area+"\næ°´å¹³è½´é•¿åº¦:"+myobjects.horizontalAxisLength
+    //    //            +"\nç«–ç›´è½´é•¿åº¦:"+myobjects.verticalAxisLength+"\nç»å¯¹å¼ºåº¦:"+myobjects.absoluteIntensity+"\nç›¸å¯¹å¼ºåº¦"+myobjects.relativeIntensity
+    //    //            +"\nç›®æ ‡å°ºåº¦:"+myobjects.targetScale+"\nä¸­å¤®å‘¨å›´å¯¹æ¯”åº¦çš„ç›¸åº”å¼ºåº¦:"+myobjects.CenSueEintensity+"\nç›®æ ‡èƒŒæ™¯ä¿¡æ‚æ¯”"+myobjects.SCRValue;
+    //    //    qDebug()<<"22222222222";
+    //    //    this->objectAttributes->setText(s);
+    //    //    this->objectAttributes->show();
+    //    this->objectAttributes->show();
 
     location = !location;
     if(location){
-        objectAttribute->setToolTip(tr("¹Ø±ÕÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢"));
+        objectAttribute->setToolTip(tr("å…³é—­æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯"));
     }
     if(!location){
-         objectAttribute->setToolTip(tr("¿ªÆôÏÔÊ¾µã»÷´¦µÄÎ»ÖÃĞÅÏ¢"));
+        objectAttribute->setToolTip(tr("å¼€å¯æ˜¾ç¤ºç‚¹å‡»å¤„çš„ä½ç½®ä¿¡æ¯"));
     }
-    //QMessageBox::information(this,tr("ÏÔÊ¾µã»÷´¦Î»ÖÃ"),tr("Êó±êÔÚÌõ´øÏÔÊ¾Çø×ó¼üµã»÷Ê±£¬ÏÔÊ¾Î»ÖÃĞÅÏ¢£¬ĞèÒª¶¨Î»»ò±ê¶¨£¿¼ÌĞøÅ¬Á¦¡£"));
+    //QMessageBox::information(this,tr("æ˜¾ç¤ºç‚¹å‡»å¤„ä½ç½®"),tr("é¼ æ ‡åœ¨æ¡å¸¦æ˜¾ç¤ºåŒºå·¦é”®ç‚¹å‡»æ—¶ï¼Œæ˜¾ç¤ºä½ç½®ä¿¡æ¯ï¼Œéœ€è¦å®šä½æˆ–æ ‡å®šï¼Ÿç»§ç»­åŠªåŠ›ã€‚"));
 }
 
-//ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ
+//å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ
 void MainWindow::stabilityFunction(){
-     QMessageBox::information(this,tr("ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ"),tr("ÆôÓÃ´¹Ö±ÎÈ¶¨Í¼Ïñ¡£¼ÌĞøÅ¬Á¦£¡"));
+    QMessageBox::information(this,tr("å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒ"),tr("å¯ç”¨å‚ç›´ç¨³å®šå›¾åƒã€‚ç»§ç»­åŠªåŠ›ï¼"));
 }
 
-//Ôö¼Ó±êÇ©
+//å¢åŠ æ ‡ç­¾
 void MainWindow::manualFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("Ôö¼Ó±êÇ©"),tr("Ôö¼Ó±êÇ©£¿É¶ÒâË¼£¿¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å¢åŠ æ ‡ç­¾"),tr("å¢åŠ æ ‡ç­¾ï¼Ÿå•¥æ„æ€ï¼Ÿç»§ç»­åŠªåŠ›ã€‚"));
 
     //    string imageurl="./s1/1.bmp";
     //    Mat mat1 =imread(imageurl);
@@ -3998,197 +4003,197 @@ void MainWindow::manualFunction()
 }
 
 
-//¸æ¾¯
-//ÆôÓÃ/½ûÓÃÌ½²â¹¦ÄÜ
+//å‘Šè­¦
+//å¯ç”¨/ç¦ç”¨æ¢æµ‹åŠŸèƒ½
 void MainWindow::openCloseFunction()
 {
     isGaojing = !isGaojing;
-    QPixmap pixmap1("./iconUpdate/±¨¾¯µÆ-ºì.png");
-    QPixmap pixmap2("./iconUpdate/±¨¾¯µÆ-ÂÌ.png");
-//      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    QPixmap pixmap1("./iconUpdate/æŠ¥è­¦ç¯-çº¢.png");
+    QPixmap pixmap2("./iconUpdate/æŠ¥è­¦ç¯-ç»¿.png");
+    //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
-  if(isGaojing){
-      light->setIcon(pixmap1);
-  }else
-      light->setIcon(pixmap2);
-//    QDesktopWidget* desktopWidget = QApplication::desktop();
-//    QRect screenRect = desktopWidget->screenGeometry();
-//    const int buttonSize=(screenRect.width()*0.7)/21.6;
-//    QPixmap pixmap1("./icon/16_1.png");
-//    QPixmap pixmap2("./icon/16_2.png");
-//    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-//    //vector<MyObject> vec = in.getObjs2();
-//   // vector<MyObject> vec = in.getObjs();
-//    if(isGaojing)
-//    {
-//        openClose->setIcon(QPixmap("./icon/11_1.png"));
-//        openClose->setToolTip("¹Ø±Õ¸æ¾¯");
-//        if(num_objs==0)
-//        {
-//            lights[0]->setPixmap(fitpixmap2);
-//            lights[1]->setPixmap(fitpixmap2);
-//            lights[2]->setPixmap(fitpixmap2);
-//            lights[3]->setPixmap(fitpixmap2);
-//            lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap2);
-////            light2->setPixmap(fitpixmap2);
-////            light3->setPixmap(fitpixmap2);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//        }
-//        else if(num_objs==1)
-//        {
-//            lights[0]->setPixmap(fitpixmap1);
-//            lights[1]->setPixmap(fitpixmap2);
-//            lights[2]->setPixmap(fitpixmap2);
-//            lights[3]->setPixmap(fitpixmap2);
-//            lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap2);
-////            light3->setPixmap(fitpixmap2);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//        }
-//        else if(num_objs==2)
-//        {
-//            lights[0]->setPixmap(fitpixmap1);
-//            lights[1]->setPixmap(fitpixmap1);
-//            lights[2]->setPixmap(fitpixmap2);
-//            lights[3]->setPixmap(fitpixmap2);
-//            lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap2);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//        }
-//        else if(num_objs==3)
-//        {
-//            lights[0]->setPixmap(fitpixmap1);
-//            lights[1]->setPixmap(fitpixmap1);
-//            lights[2]->setPixmap(fitpixmap1);
-//            lights[3]->setPixmap(fitpixmap2);
-//            lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap2);
-////            light5->setPixmap(fitpixmap2);
-//        }
-//        else if(num_objs==4)
-//        {
-//            lights[0]->setPixmap(fitpixmap1);
-//            lights[1]->setPixmap(fitpixmap1);
-//            lights[2]->setPixmap(fitpixmap1);
-//            lights[3]->setPixmap(fitpixmap1);
-//            lights[4]->setPixmap(fitpixmap2);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap1);
-////            light5->setPixmap(fitpixmap2);
-//        }
-//        else if(num_objs>= 5 )
-//        {
-//            lights[0]->setPixmap(fitpixmap1);
-//            lights[1]->setPixmap(fitpixmap1);
-//            lights[2]->setPixmap(fitpixmap1);
-//            lights[3]->setPixmap(fitpixmap1);
-//            lights[4]->setPixmap(fitpixmap1);
-////            light1->setPixmap(fitpixmap1);
-////            light2->setPixmap(fitpixmap1);
-////            light3->setPixmap(fitpixmap1);
-////            light4->setPixmap(fitpixmap1);
-////            light5->setPixmap(fitpixmap1);
-//      }
-//    }
-//    else
-//    {
-//        openClose->setIcon(QPixmap("./icon/11_2.png"));
-//        openClose->setToolTip("´ò¿ª¸æ¾¯");
+    if(isGaojing){
+        light->setIcon(pixmap1);
+    }else
+        light->setIcon(pixmap2);
+    //    QDesktopWidget* desktopWidget = QApplication::desktop();
+    //    QRect screenRect = desktopWidget->screenGeometry();
+    //    const int buttonSize=(screenRect.width()*0.7)/21.6;
+    //    QPixmap pixmap1("./icon/16_1.png");
+    //    QPixmap pixmap2("./icon/16_2.png");
+    //    fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //    fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //    //vector<MyObject> vec = in.getObjs2();
+    //   // vector<MyObject> vec = in.getObjs();
+    //    if(isGaojing)
+    //    {
+    //        openClose->setIcon(QPixmap("./icon/11_1.png"));
+    //        openClose->setToolTip("å…³é—­å‘Šè­¦");
+    //        if(num_objs==0)
+    //        {
+    //            lights[0]->setPixmap(fitpixmap2);
+    //            lights[1]->setPixmap(fitpixmap2);
+    //            lights[2]->setPixmap(fitpixmap2);
+    //            lights[3]->setPixmap(fitpixmap2);
+    //            lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap2);
+    ////            light2->setPixmap(fitpixmap2);
+    ////            light3->setPixmap(fitpixmap2);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //        }
+    //        else if(num_objs==1)
+    //        {
+    //            lights[0]->setPixmap(fitpixmap1);
+    //            lights[1]->setPixmap(fitpixmap2);
+    //            lights[2]->setPixmap(fitpixmap2);
+    //            lights[3]->setPixmap(fitpixmap2);
+    //            lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap2);
+    ////            light3->setPixmap(fitpixmap2);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //        }
+    //        else if(num_objs==2)
+    //        {
+    //            lights[0]->setPixmap(fitpixmap1);
+    //            lights[1]->setPixmap(fitpixmap1);
+    //            lights[2]->setPixmap(fitpixmap2);
+    //            lights[3]->setPixmap(fitpixmap2);
+    //            lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap2);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //        }
+    //        else if(num_objs==3)
+    //        {
+    //            lights[0]->setPixmap(fitpixmap1);
+    //            lights[1]->setPixmap(fitpixmap1);
+    //            lights[2]->setPixmap(fitpixmap1);
+    //            lights[3]->setPixmap(fitpixmap2);
+    //            lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap2);
+    ////            light5->setPixmap(fitpixmap2);
+    //        }
+    //        else if(num_objs==4)
+    //        {
+    //            lights[0]->setPixmap(fitpixmap1);
+    //            lights[1]->setPixmap(fitpixmap1);
+    //            lights[2]->setPixmap(fitpixmap1);
+    //            lights[3]->setPixmap(fitpixmap1);
+    //            lights[4]->setPixmap(fitpixmap2);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap1);
+    ////            light5->setPixmap(fitpixmap2);
+    //        }
+    //        else if(num_objs>= 5 )
+    //        {
+    //            lights[0]->setPixmap(fitpixmap1);
+    //            lights[1]->setPixmap(fitpixmap1);
+    //            lights[2]->setPixmap(fitpixmap1);
+    //            lights[3]->setPixmap(fitpixmap1);
+    //            lights[4]->setPixmap(fitpixmap1);
+    ////            light1->setPixmap(fitpixmap1);
+    ////            light2->setPixmap(fitpixmap1);
+    ////            light3->setPixmap(fitpixmap1);
+    ////            light4->setPixmap(fitpixmap1);
+    ////            light5->setPixmap(fitpixmap1);
+    //      }
+    //    }
+    //    else
+    //    {
+    //        openClose->setIcon(QPixmap("./icon/11_2.png"));
+    //        openClose->setToolTip("æ‰“å¼€å‘Šè­¦");
 
-//        lights[0]->setPixmap(fitpixmap2);
-//        lights[1]->setPixmap(fitpixmap2);
-//        lights[2]->setPixmap(fitpixmap2);
-//        lights[3]->setPixmap(fitpixmap2);
-//        lights[4]->setPixmap(fitpixmap2);
-////        light1->setPixmap(fitpixmap2);
-////        light2->setPixmap(fitpixmap2);
-////        light3->setPixmap(fitpixmap2);
-////        light4->setPixmap(fitpixmap2);
-////        light5->setPixmap(fitpixmap2);
-//   }
-    //QMessageBox::information(this,tr("ÆôÓÃ/½ûÓÃÌ½²â¹¦ÄÜ"),tr("Æô¶¯»ò¹Ø±Õ¸æ¾¯¡£¼ÌĞøÅ¬Á¦¡£"));
+    //        lights[0]->setPixmap(fitpixmap2);
+    //        lights[1]->setPixmap(fitpixmap2);
+    //        lights[2]->setPixmap(fitpixmap2);
+    //        lights[3]->setPixmap(fitpixmap2);
+    //        lights[4]->setPixmap(fitpixmap2);
+    ////        light1->setPixmap(fitpixmap2);
+    ////        light2->setPixmap(fitpixmap2);
+    ////        light3->setPixmap(fitpixmap2);
+    ////        light4->setPixmap(fitpixmap2);
+    ////        light5->setPixmap(fitpixmap2);
+    //   }
+    //QMessageBox::information(this,tr("å¯ç”¨/ç¦ç”¨æ¢æµ‹åŠŸèƒ½"),tr("å¯åŠ¨æˆ–å…³é—­å‘Šè­¦ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 }
 
-//µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶
+//è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§
 void MainWindow::objectsFunction()
 {
-//    //if(objectSet=="./icon/13_2.png")
-//    if(isMubiao)
+    //    //if(objectSet=="./icon/13_2.png")
+    //    if(isMubiao)
+    //    {
+    //        objects->setIcon(QPixmap("./icon/13_1.png"));
+    //        isMubiao = false;
+    //        //objectSet="./icon/13_1.png";
+    //        objects->setToolTip("å¼€å¯ç›®æ ‡å±æ€§è·Ÿéš");
+    //    }
+    //    else
+    //    {
+    //        objects->setIcon(QPixmap("./icon/13_1.png"));
+    //        isMubiao = true;
+    //        //objectSet="./icon/13_2.png";
+    //        objects->setToolTip("å…³é—­ç›®æ ‡å±æ€§è·Ÿéš");
+    //    }
+    QMessageBox::information(this,tr("è°ƒæ•´æ¢æµ‹çµæ•åº¦ç­‰çº§"),tr("è°ƒæ•´æ¢æµ‹çµæ•åº¦å°±æ˜¯ç›®æ ‡è¯†åˆ«çš„é˜ˆå€¼ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
+}
+//ç›®æ ‡å±æ€§åˆ—è¡¨
+void MainWindow::lightFunction()
+{
+    //QMessageBox::information(this,tr("å±æ€§è®¾ç½®ç•Œé¢ï¼Œæœ‰å¾…å®ç°ã€‚"),tr("ç»§ç»­åŠªåŠ›ã€‚"));
+}
+//å£°éŸ³
+//void MainWindow::voiceFunction()
+//{
+
+//    //if(voiceSet=="./icon/15_2.png")
+//    isVoice = !isVoice;
+//    cmixer->SetMute(isVoice);
+//    if(isVoice == false)
+////        this->sound->play();
+//    //     QImage icon;
+//    //     icon = QImage("./icon/15_1.png");
+//    //    Mat micon;
+//    //    micon =  QImageToMat(icon);
+//    //    cv::cvtColor(micon, micon, CV_RGB2GRAY);
+//    //icon = QImage((unsigned char*)micon.data,micon.cols,micon.rows,micon.step,QImage::Format_RGB16);
+
+//    if(isShengyin)
 //    {
-//        objects->setIcon(QPixmap("./icon/13_1.png"));
-//        isMubiao = false;
-//        //objectSet="./icon/13_1.png";
-//        objects->setToolTip("¿ªÆôÄ¿±êÊôĞÔ¸úËæ");
+//        // voice->setIcon(QPixmap("./icon/15_1ç°.png"));
+//        isShengyin = false;
+//        //voiceSet="./icon/15_1.png";
+//        voice->setToolTip("æ‰“å¼€å£°éŸ³");
 //    }
 //    else
 //    {
-//        objects->setIcon(QPixmap("./icon/13_1.png"));
-//        isMubiao = true;
-//        //objectSet="./icon/13_2.png";
-//        objects->setToolTip("¹Ø±ÕÄ¿±êÊôĞÔ¸úËæ");
+//        //voice->setIcon(QPixmap("./icon/15_1.png"));
+//        isShengyin = true;
+//        //voiceSet="./icon/15_2.png";
+//        voice->setToolTip("å…³é—­å£°éŸ³");
+
 //    }
-    QMessageBox::information(this,tr("µ÷ÕûÌ½²âÁéÃô¶ÈµÈ¼¶"),tr("µ÷ÕûÌ½²âÁéÃô¶È¾ÍÊÇÄ¿±êÊ¶±ğµÄãĞÖµ¡£¼ÌĞøÅ¬Á¦¡£"));
-}
-//Ä¿±êÊôĞÔÁĞ±í
-void MainWindow::lightFunction()
-{
-    //QMessageBox::information(this,tr("ÊôĞÔÉèÖÃ½çÃæ£¬ÓĞ´ıÊµÏÖ¡£"),tr("¼ÌĞøÅ¬Á¦¡£"));
-}
-//ÉùÒô
-void MainWindow::voiceFunction()
-{
-
-    //if(voiceSet=="./icon/15_2.png")
-    isVoice = !isVoice;
-    cmixer->SetMute(isVoice);
-    if(isVoice == false)
-        this->sound->play();
-//     QImage icon;
-//     icon = QImage("./icon/15_1.png");
-//    Mat micon;
-//    micon =  QImageToMat(icon);
-//    cv::cvtColor(micon, micon, CV_RGB2GRAY);
-    //icon = QImage((unsigned char*)micon.data,micon.cols,micon.rows,micon.step,QImage::Format_RGB16);
-
-    if(isShengyin)
-    {
-       // voice->setIcon(QPixmap("./icon/15_1»Ò.png"));
-        isShengyin = false;
-        //voiceSet="./icon/15_1.png";
-        voice->setToolTip("´ò¿ªÉùÒô");
-    }
-    else
-    {
-        //voice->setIcon(QPixmap("./icon/15_1.png"));
-        isShengyin = true;
-        //voiceSet="./icon/15_2.png";
-        voice->setToolTip("¹Ø±ÕÉùÒô");
-
-    }
-}
+//}
 
 void MainWindow::exitFunction(){
     QApplication::closeAllWindows();
 }
 
-//ÍË³öÏµÍ³ÊÂ¼ş
+//é€€å‡ºç³»ç»Ÿäº‹ä»¶
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-      writeRgs();
+    writeRgs();
 }
 
 //void MainWindow::adjustbrightness()
@@ -4198,57 +4203,57 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::test()
 {
-    QMessageBox::information(this,tr("ÊôĞÔÉèÖÃ½çÃæ£¬ÓĞ´ıÊµÏÖ¡£"),tr("¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å±æ€§è®¾ç½®ç•Œé¢ï¼Œæœ‰å¾…å®ç°ã€‚"),tr("ç»§ç»­åŠªåŠ›ã€‚"));
 }
 
 void MainWindow :: timeLineFunction(){}
 
 
 void MainWindow::flash(){
-//    static bool flag = false;
-//    if(num_objs-newObjCount<5){
-//        for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
-//            if(num_objs+addOneLight-newObjCount>4)
-//                break;
-//            else{
-//                if(flag)
-//                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap1);
-//                else
-//                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap2);
-//            }
-//        }
-//    }else{
-//        if(flag)
-//             lights[4]->setPixmap(fitpixmap1);
-//        else
-//             lights[4]->setPixmap(fitpixmap2);
-//    }
-//    flag = !flag;
-//
+    //    static bool flag = false;
+    //    if(num_objs-newObjCount<5){
+    //        for(addOneLight=0;addOneLight<newObjCount;addOneLight++){
+    //            if(num_objs+addOneLight-newObjCount>4)
+    //                break;
+    //            else{
+    //                if(flag)
+    //                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap1);
+    //                else
+    //                   lights[num_objs+addOneLight-newObjCount]->setPixmap(fitpixmap2);
+    //            }
+    //        }
+    //    }else{
+    //        if(flag)
+    //             lights[4]->setPixmap(fitpixmap1);
+    //        else
+    //             lights[4]->setPixmap(fitpixmap2);
+    //    }
+    //    flag = !flag;
+    //
 }
-//²Ëµ¥À¸²Ûº¯Êı
+//èœå•æ æ§½å‡½æ•°
 void MainWindow::connectionClicked(){
-    QMessageBox::information(this,tr("Á¬½Ó²Ëµ¥Ïî"),tr("µ¥²¥·½Ê½Á¬½ÓÏà»ú¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("è¿æ¥èœå•é¡¹"),tr("å•æ’­æ–¹å¼è¿æ¥ç›¸æœºã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 }
 
 void MainWindow::connectionplusClicked(){
-    QMessageBox::information(this,tr("Á¬½Ó...²Ëµ¥Ïî"),tr("¶à²¥·½Ê½Á¬½ÓÏà»ú£¿Á¬½ÓÏà»úÇ°×öÒ»ÏµÁĞ¶¯×÷£¿¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("è¿æ¥...èœå•é¡¹"),tr("å¤šæ’­æ–¹å¼è¿æ¥ç›¸æœºï¼Ÿè¿æ¥ç›¸æœºå‰åšä¸€ç³»åˆ—åŠ¨ä½œï¼Ÿç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::disconnectionClicked(){
-    QMessageBox::information(this,tr("¶Ï¿ª²Ëµ¥Ïî"),tr("¶Ï¿ªÓëÏà»úµÄÁ¬½Ó¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("æ–­å¼€èœå•é¡¹"),tr("æ–­å¼€ä¸ç›¸æœºçš„è¿æ¥ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::openplusClicked(){
     openFunction();
-    //QMessageBox::information(this,tr("´ò¿ª...²Ëµ¥Ïî"),tr("´ò¿ª±£´æµÄ¼ÇÂ¼ÎÄ¼ş£¬×÷Îª»Ø·ÅÆğµã¡£¼ÌĞøÅ¬Á¦¡£"));
+    //QMessageBox::information(this,tr("æ‰“å¼€...èœå•é¡¹"),tr("æ‰“å¼€ä¿å­˜çš„è®°å½•æ–‡ä»¶ï¼Œä½œä¸ºå›æ”¾èµ·ç‚¹ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::backplusClicked(){
-    QMessageBox::information(this,tr("»Ø·Å²Ëµ¥Ïî"),tr("»Ø·Å²Ëµ¥Ïî¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å›æ”¾èœå•é¡¹"),tr("å›æ”¾èœå•é¡¹ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
@@ -4257,16 +4262,16 @@ void MainWindow::closeClicked(){
     timerSysTime->stop();
     timerFlash->stop();
     this->close();
-   // QMessageBox::information(this,tr("¹Ø±Õ²Ëµ¥Ïî"),tr("¹Ø±Õ»Ø·ÅµÄÎÄ¼ş´°¿Ú£¬·µ»ØÊµÊ±¡£¼ÌĞøÅ¬Á¦¡£"));
+    // QMessageBox::information(this,tr("å…³é—­èœå•é¡¹"),tr("å…³é—­å›æ”¾çš„æ–‡ä»¶çª—å£ï¼Œè¿”å›å®æ—¶ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::recentvidioClicked(){
-//      videoMenu = new QMenu();
-//      videoMenu->addActions()
-//    backwindow=new BackWindow(date,dateTimeStart,dateTimeStop);
-//    backwindow->show();
-   // QMessageBox::information(this,tr("×î½üÊÓÆµ²Ëµ¥Ïî"),tr("±£´æÈô¸É¸ö×î½ü²¥·ÅµÄÊÓÆµÎÄ¼ş¡£¼ÌĞøÅ¬Á¦¡£"));
+    //      videoMenu = new QMenu();
+    //      videoMenu->addActions()
+    //    backwindow=new BackWindow(date,dateTimeStart,dateTimeStop);
+    //    backwindow->show();
+    // QMessageBox::information(this,tr("æœ€è¿‘è§†é¢‘èœå•é¡¹"),tr("ä¿å­˜è‹¥å¹²ä¸ªæœ€è¿‘æ’­æ”¾çš„è§†é¢‘æ–‡ä»¶ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
@@ -4274,12 +4279,12 @@ void MainWindow::changeuserClicked(){
     in = MyInterface();
     hide();
     welcome->show();
-    //QMessageBox::information(this,tr("ÇĞ»»ÓÃ»§²Ëµ¥Ïî"),tr("Ö§³ÖÓÃ»§µÇÂ¼£¬ÓĞÓÃ»§µÇÂ¼½çÃæ£¬Ìæ´úÔ­ÓĞµÄ»¶Ó­½çÃæ£¬ÉèÖÃÄ¬ÈÏÓÃ»§Ãû/¿ÚÁî¡£¼ÌĞøÅ¬Á¦¡£"));
+    //QMessageBox::information(this,tr("åˆ‡æ¢ç”¨æˆ·èœå•é¡¹"),tr("æ”¯æŒç”¨æˆ·ç™»å½•ï¼Œæœ‰ç”¨æˆ·ç™»å½•ç•Œé¢ï¼Œæ›¿ä»£åŸæœ‰çš„æ¬¢è¿ç•Œé¢ï¼Œè®¾ç½®é»˜è®¤ç”¨æˆ·å/å£ä»¤ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::installationClicked(){
-    QMessageBox::information(this,tr("Æô¶¯°²×°Ïòµ¼²Ëµ¥Ïî"),tr("ÖØĞÂ°²×°±¾Èí¼ş¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å¯åŠ¨å®‰è£…å‘å¯¼èœå•é¡¹"),tr("é‡æ–°å®‰è£…æœ¬è½¯ä»¶ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
@@ -4291,11 +4296,11 @@ void MainWindow::exitClicked(){
 
 void MainWindow::configurationClicked(){
 
-    QMessageBox::information(this,tr("ÅäÖÃ...²Ëµ¥Ïî"),tr("¸ù¾İÎÒÃÇµÄÊµ¼ÊÇé¿ö£¬°üÀ¨Ïà»ú²ÎÊı¡¢×ªÌ¨²ÎÊı¡¢¼ì²âËã·¨²ÎÊı¡¢Èí¼ş²ÎÊı£¬¶¨Î»²ÎÊıµÈµÄÉèÖÃ¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("é…ç½®...èœå•é¡¹"),tr("æ ¹æ®æˆ‘ä»¬çš„å®é™…æƒ…å†µï¼ŒåŒ…æ‹¬ç›¸æœºå‚æ•°ã€è½¬å°å‚æ•°ã€æ£€æµ‹ç®—æ³•å‚æ•°ã€è½¯ä»¶å‚æ•°ï¼Œå®šä½å‚æ•°ç­‰çš„è®¾ç½®ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 }
 
 void MainWindow::saveconfigurationClicked(){
-    QMessageBox::information(this,tr("±£´æµ±Ç°ÉèÖÃ²Ëµ¥Ïî"),tr("½«ÉèÖÃÖĞÉèÖÃµÄ²ÎÊı±£´æÔÚÅäÖÃÎÄ¼şÖĞ¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("ä¿å­˜å½“å‰è®¾ç½®èœå•é¡¹"),tr("å°†è®¾ç½®ä¸­è®¾ç½®çš„å‚æ•°ä¿å­˜åœ¨é…ç½®æ–‡ä»¶ä¸­ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
@@ -4304,9 +4309,8 @@ void MainWindow::regionClicked(){
     if(monitor == NULL){
         monitor = new Monitor(this);
     }
-
     //this->monitor->setWindowFlags(/*Qt::WindowStaysOnTopHint|*/Qt::FramelessWindowHint);
-    this->monitor->setWindowTitle("´´½¨»ò±à¼­ÇøÓò²Ëµ¥Ïî");
+    this->monitor->setWindowTitle(QString("åˆ›å»ºæˆ–ç¼–è¾‘åŒºåŸŸèœå•é¡¹"));
     this->monitor->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
     QRect screenRect = desktop->screenGeometry();
@@ -4315,43 +4319,46 @@ void MainWindow::regionClicked(){
     this->monitor->setGeometry(width/4,height/4,width/3,height/3);
     this->monitor->show();
     this->monitor->widgetShow();
-   // QMessageBox::information(this,tr("´´½¨»ò±à¼­ÇøÓò²Ëµ¥Ïî"),tr("ÔÚ¸æ¾¯ÇøÓòµÄÉèÖÃ´°¿ÚÖĞ£¬Íê³É¶ÔÓ¦µÄÉèÖÃÒÔºó£¬°üÀ¨·Ö×é¡¢×éÑÕÉ«¡¢µÈ¼¶µÈ£¬ÔÚÌõ´øÏÔÊ¾ÇøºÍÖ÷ÏÔÊ¾ÇøÍê³É¸æ¾¯ÇøÓòµÄÊµ¼Ê»æÖÆ£¬Ö§³ÖÁ½ÖÖĞÎ×´£º¾ØĞÎºÍ²»¹æÔò¶à±ßĞÎ¡£²¢ÊµÏÖ¸æ¾¯ÇøÓòµÄ±£´æ¡£¼ÌĞøÅ¬Á¦¡£"));
+    // QMessageBox::information(this,tr("åˆ›å»ºæˆ–ç¼–è¾‘åŒºåŸŸèœå•é¡¹"),tr("åœ¨å‘Šè­¦åŒºåŸŸçš„è®¾ç½®çª—å£ä¸­ï¼Œå®Œæˆå¯¹åº”çš„è®¾ç½®ä»¥åï¼ŒåŒ…æ‹¬åˆ†ç»„ã€ç»„é¢œè‰²ã€ç­‰çº§ç­‰ï¼Œåœ¨æ¡å¸¦æ˜¾ç¤ºåŒºå’Œä¸»æ˜¾ç¤ºåŒºå®Œæˆå‘Šè­¦åŒºåŸŸçš„å®é™…ç»˜åˆ¶ï¼Œæ”¯æŒä¸¤ç§å½¢çŠ¶ï¼šçŸ©å½¢å’Œä¸è§„åˆ™å¤šè¾¹å½¢ã€‚å¹¶å®ç°å‘Šè­¦åŒºåŸŸçš„ä¿å­˜ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::figureClicked(){
-    QString capture = QString("./ÆÁÄ»½ØÍ¼");
+    QString capture = QString("./å±å¹•æˆªå›¾");
     bool exist = directory->exists(capture);
     if(!exist){
         directory->mkdir(capture);
     }
-    QString filename = QString("./ÆÁÄ»½ØÍ¼/")+QDateTime::currentDateTime().toString("yyyyÄêMMÔÂddÈÕhhÊ±mm·ÖssÃë")+".bmp";
+    QString filename = QString("./å±å¹•æˆªå›¾/")+QDateTime::currentDateTime().toString("yyyyå¹´MMæœˆddæ—¥hhæ—¶mmåˆ†ssç§’")+".bmp";
+
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect screenRect = desktopWidget->screenGeometry();
 
     QPixmap pix;
-//    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
-    pix = QPixmap::grabWindow(QApplication::desktop()->winId());
+    //    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
+    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),screenRect.x(),screenRect.y(),screenRect.width(),screenRect.height());
     if(pix.save(filename,"bmp")){
-        QMessageBox::information(this,"ÆÁÄ»½ØÍ¼","½ØÆÁ±£´æ³É¹¦£¡",QMessageBox::Ok);
+        QMessageBox::information(this,"å±å¹•æˆªå›¾","æˆªå±ä¿å­˜æˆåŠŸï¼",QMessageBox::Ok);
     }
 }
 
 void MainWindow::openalertClicked(){
-    QMessageBox::information(this,tr("´ò¿ª±¨¾¯ĞÅÏ¢²Ëµ¥Ïî"),tr("´ò¿ª±¨¾¯ĞÅÏ¢¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("æ‰“å¼€æŠ¥è­¦ä¿¡æ¯èœå•é¡¹"),tr("æ‰“å¼€æŠ¥è­¦ä¿¡æ¯ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::closealertClicked(){
-    QMessageBox::information(this,tr("Òş²Ø±¨¾¯ĞÅÏ¢²Ëµ¥Ïî"),tr("Òş²Ø±¨¾¯ĞÅÏ¢¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("éšè—æŠ¥è­¦ä¿¡æ¯èœå•é¡¹"),tr("éšè—æŠ¥è­¦ä¿¡æ¯ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::helpClicked(){
-    QMessageBox::information(this,tr("°ïÖú²Ëµ¥Ïî"),tr("´ò¿ª°ïÖúÎÄµµ¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å¸®åŠ©èœå•é¡¹"),tr("æ‰“å¼€å¸®åŠ©æ–‡æ¡£ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 
 void MainWindow::aboutClicked(){
-    QMessageBox::information(this,tr("¹ØÓÚ²Ëµ¥Ïî"),tr("¸»¼ªÈğ¹«Ë¾¼°±¾²úÆ·¼ò½é¡£¼ÌĞøÅ¬Á¦¡£"));
+    QMessageBox::information(this,tr("å…³äºèœå•é¡¹"),tr("å¯Œå‰ç‘å…¬å¸åŠæœ¬äº§å“ç®€ä»‹ã€‚ç»§ç»­åŠªåŠ›ã€‚"));
 
 }
 void MainWindow::readRgs(){
@@ -4405,7 +4412,7 @@ void MainWindow::readRgs(){
 }
 
 void MainWindow::writeRgs(){
-    int size = rgs.size();//×îºóÒ»¸öÊÇÎ´Íê³ÉµÄ¼à¿Ø×é
+    int size = rgs.size();//æœ€åä¸€ä¸ªæ˜¯æœªå®Œæˆçš„ç›‘æ§ç»„
     if(size <= 1)
         return;
     QFile file(QString("./config/rgs.config"));

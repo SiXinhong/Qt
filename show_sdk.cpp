@@ -1,4 +1,4 @@
-#include "socket.h"
+ï»¿#include "socket.h"
 
 #include "show_sdk.h"
 
@@ -13,10 +13,10 @@ DetectorParams dp;
 TrackingParameters tp;
 StitchParmeters sp;
 /*
-   ÉèÖÃÈıÖÖ²ÎÊı
-   1.mode=0:Ëã·¨²ÎÊı£¬´ËÊ±idÄ¬ÈÏÎª0£¬ÎŞÒâÒå
-   2.mode=1:×ªÌ¨²ÎÊı
-   3.mode=3:ÉãÏñÍ·²ÎÊı
+   è®¾ç½®ä¸‰ç§å‚æ•°
+   1.mode=0:ç®—æ³•å‚æ•°ï¼Œæ­¤æ—¶idé»˜è®¤ä¸º0ï¼Œæ— æ„ä¹‰
+   2.mode=1:è½¬å°å‚æ•°
+   3.mode=3:æ‘„åƒå¤´å‚æ•°
 */
 int SetAlgorithmPara();
 int SetControlPara(int id);
@@ -38,16 +38,16 @@ int string_to_alg_para(char *data, int datalen);
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
 int para_to_string(char *s, int &datalen);
 
-/****************************************************************Ö÷½Ó¿Ú**********************************************************************/
+/****************************************************************ä¸»æ¥å£**********************************************************************/
 int SetSystemPara(int mode, int id)
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	if (mode != 0 && mode != 1 && mode != 2)
         return ERROR_MODE;
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 
-	//¸ù¾İmode·Ö±ğÉèÖÃ²ÎÊı
+	//æ ¹æ®modeåˆ†åˆ«è®¾ç½®å‚æ•°
 	switch (mode)
 	{
 	case 0:
@@ -69,7 +69,7 @@ int SetSystemPara(int mode, int id)
 
 int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 {
-	//¼ì²éÊäÈë
+	//æ£€æŸ¥è¾“å…¥
 	if (mode != 0 && mode != 1)
         return ERROR_MODE;
 	switch (mode)
@@ -90,10 +90,10 @@ int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 
 int GetSystemPara(int mode, int id)
 {
-	//ÊäÈë¼ì²é
+	//è¾“å…¥æ£€æŸ¥
 	if (mode != 0 && mode != 1 && mode != 2)
         return ERROR_MODE;
-	//»ñÈ¡²ÎÊı
+	//è·å–å‚æ•°
 	switch (mode)
 	{
 	case 0:
@@ -113,10 +113,10 @@ int GetSystemPara(int mode, int id)
 }
 
 
-/**************************************************************µ÷ÓÃ×Óº¯Êı************************************************************************/
+/**************************************************************è°ƒç”¨å­å‡½æ•°************************************************************************/
 int SetAlgorithmPara()
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	
 	int result = 0;
 	char *data = (char *)malloc(para_data_len+1);
@@ -125,7 +125,7 @@ int SetAlgorithmPara()
 	para_to_string(data,datalen);
 	result=MySend(hSocket, 0, sendbuffer, SEND_BUFFER_SIZE, data, datalen);
 	free(data);
-    //¼ì²éstringµÄÄÚÈİÊÇ·ñ·ûºÏ±ê×¼
+    //æ£€æŸ¥stringçš„å†…å®¹æ˜¯å¦ç¬¦åˆæ ‡å‡†
 	if (result == 0){
 		return SetParaSuccess;
 	}
@@ -136,13 +136,13 @@ int SetAlgorithmPara()
 
 int SetControlPara(int id)
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 	
-	//¼ì²éstringµÄÄÚÈİÊÇ·ñ·ûºÏ±ê×¼
+	//æ£€æŸ¥stringçš„å†…å®¹æ˜¯å¦ç¬¦åˆæ ‡å‡†
 	int result=0; //= MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
-	//¼ì²éstringµÄÄÚÈİÊÇ·ñ·ûºÏ±ê×¼
+	//æ£€æŸ¥stringçš„å†…å®¹æ˜¯å¦ç¬¦åˆæ ‡å‡†
 	if (result == 0){
 		return SetParaSuccess;
 	}
@@ -154,14 +154,14 @@ int SetControlPara(int id)
 
 int SetCameraPara(int id)
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 
-	//¼ì²éstringµÄÄÚÈİÊÇ·ñ·ûºÏ±ê×¼
+	//æ£€æŸ¥stringçš„å†…å®¹æ˜¯å¦ç¬¦åˆæ ‡å‡†
 	int result=0;// = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
 	//std::cout << "strlen(para_string) "<<strlen(para_string) << std::endl;
-	//¼ì²éstringµÄÄÚÈİÊÇ·ñ·ûºÏ±ê×¼
+	//æ£€æŸ¥stringçš„å†…å®¹æ˜¯å¦ç¬¦åˆæ ‡å‡†
 	if (result == 0){
 		return SetParaSuccess;
 	}
@@ -170,7 +170,7 @@ int SetCameraPara(int id)
 	}
 }
 
-//¸üĞÂ£¬¼ÓÈëÊ±¼ä
+//æ›´æ–°ï¼ŒåŠ å…¥æ—¶é—´
 int  Getpanorama(IntegratedData *&data)
 {
 	if (data == NULL)
@@ -318,7 +318,7 @@ int  GetObjectFeature(IntegratedData *&data)
 	//target.relativeIntensity = p[i++];
 
 
-	////Ä¿±êÂÖÀª
+	////ç›®æ ‡è½®å»“
 	//int index = i;
 	//vector<cv::Point> continus;
 	//for (; i < length; i=i+2)
@@ -366,7 +366,7 @@ int GetAlgorithmPara()
 
 int GetControlPara(int id)
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 
@@ -377,7 +377,7 @@ int GetControlPara(int id)
 
 int GetCameraPara(int id)
 {
-	//¼ì²éÊäÈë²ÎÊı
+	//æ£€æŸ¥è¾“å…¥å‚æ•°
 	if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
 
@@ -387,8 +387,8 @@ int GetCameraPara(int id)
 }
 
 
-/**************************************************************¸¨Öú×Óº¯Êı************************************************************************/
-//½«Êı×é×ª»¯ÎªËã·¨²ÎÊı ¸üĞÂËã·¨²ÎÊı
+/**************************************************************è¾…åŠ©å­å‡½æ•°************************************************************************/
+//å°†æ•°ç»„è½¬åŒ–ä¸ºç®—æ³•å‚æ•° æ›´æ–°ç®—æ³•å‚æ•°
 int string_to_alg_para(char *data, int datalen)
 {
 	if (datalen != 40)
@@ -448,7 +448,7 @@ int string_to_alg_para(char *data, int datalen)
 }
 
 
-//¸üĞÂ ½«Êı×é×ª»»ÎªÄ¿±ê¼¯ºÏ 
+//æ›´æ–° å°†æ•°ç»„è½¬æ¢ä¸ºç›®æ ‡é›†åˆ 
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target)
 {
     realtime_target.clear();
@@ -492,7 +492,7 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 		}
 }
 
-//½«Ëã·¨²ÎÊı×ª»¯ÎªÊı×éĞÎÊ½
+//å°†ç®—æ³•å‚æ•°è½¬åŒ–ä¸ºæ•°ç»„å½¢å¼
 int para_to_string(char *s, int &datalen)
 	{
 		//sp

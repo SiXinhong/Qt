@@ -1,4 +1,4 @@
-#include "monitor.h"
+ï»¿#include "monitor.h"
 #include <QColorDialog>
 #include <QColor>
 #include <QInputDialog>
@@ -27,49 +27,49 @@ void Monitor::widgetShow(){
     cenWidget = new QWidget(this);
 
     QToolButton *create = new QToolButton(cenWidget);
-    create->setText("´´½¨¼à¿ØÇøÓò×é");
+    create->setText("åˆ›å»ºç›‘æ§åŒºåŸŸç»„");
     connect(create,SIGNAL(clicked()),this,SLOT(createRG()));
 
     if(mw->rgs.size() <= 1){
-        QLabel *label = new QLabel(QString("Î´¶¨Òå¼à¿ØÇøÓò"),cenWidget);
+        QLabel *label = new QLabel(QString("æœªå®šä¹‰ç›‘æ§åŒºåŸŸ"),cenWidget);
         layout->addWidget(label,0,0);
     }
 
 
     if(mw->rgs.size() == 0){
-        QMessageBox::information(this,tr("´íÎó"),tr("rgs×îÉÙÓĞÒ»¸ö"));
+        QMessageBox::information(this,tr("é”™è¯¯"),tr("rgsæœ€å°‘æœ‰ä¸€ä¸ª"));
         return;
     }
 
     for(int i = 0;i < mw->rgs.size()-1;i++){
-        QString tip = QString::number(i);//ÈÃslotÄÜ¹»ÖªµÀÊÇµÚ¼¸¸ö¼à¿Ø×é
-        //²»Ê¹ÓÃQLabelµÄÔ­ÒòÊÇQLabelÃ»ÓĞclickĞÅºÅ
+        QString tip = QString::number(i);//è®©slotèƒ½å¤ŸçŸ¥é“æ˜¯ç¬¬å‡ ä¸ªç›‘æ§ç»„
+        //ä¸ä½¿ç”¨QLabelçš„åŸå› æ˜¯QLabelæ²¡æœ‰clickä¿¡å·
         QToolButton *label=new QToolButton(cenWidget);
-        label->setText(QString("¼à¿ØÇøÓò×é£º").append(mw->rgs[i].name));
-        label->setStyleSheet("border-style: flat;");//È¥µô±ß¿ò£¬¿´ÆğÀ´Ïñlabel£¬¶ø²»ÊÇ°´Å¥
+        label->setText(QString("ç›‘æ§åŒºåŸŸç»„ï¼š").append(mw->rgs[i].name));
+        label->setStyleSheet("border-style: flat;");//å»æ‰è¾¹æ¡†ï¼Œçœ‹èµ·æ¥åƒlabelï¼Œè€Œä¸æ˜¯æŒ‰é’®
         label->setToolTip(tip);
         connect(label,SIGNAL(clicked()),this,SLOT(onClickName()));
 
         QToolButton *regionGroup = new QToolButton(cenWidget);
         if(mw->rgs[i].isActive){
-            regionGroup->setText(QString("Òş²Ø¸Ã¼à¿ØÇøÓò×é"));
+            regionGroup->setText(QString("éšè—è¯¥ç›‘æ§åŒºåŸŸç»„"));
         }else{
-            regionGroup->setText(QString("ÏÔÊ¾¸Ã¼à¿ØÇøÓò×é"));
+            regionGroup->setText(QString("æ˜¾ç¤ºè¯¥ç›‘æ§åŒºåŸŸç»„"));
         }
         regionGroup->setToolTip(tip);
         connect(regionGroup,SIGNAL(clicked()),this,SLOT(groupShow()));
 
         QToolButton *active = new QToolButton(cenWidget);
         if(mw->rgs[i].isAlert){
-            active->setText(QString("È¡Ïû±¨¾¯"));
+            active->setText(QString("å–æ¶ˆæŠ¥è­¦"));
         }else{
-            active->setText(QString("±¨¾¯"));
+            active->setText(QString("æŠ¥è­¦"));
         }
         active->setToolTip(tip);
         connect(active,SIGNAL(clicked()),this,SLOT(setAlert()));
 
         QToolButton *attributes = new QToolButton(cenWidget);
-        attributes->setText(QString("ÑÕÉ«"));
+        attributes->setText(QString("é¢œè‰²"));
         attributes->setToolTip(tip);
         Scalar color=mw->rgs[i].color;
         attributes->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
@@ -79,7 +79,7 @@ void Monitor::widgetShow(){
 
 //        User *user = new User();
 //        user->nID = tip.toInt();
-        edit->setText(QString("±à¼­"));
+        edit->setText(QString("ç¼–è¾‘"));
 
         edit->setToolTip(tip);
         //edit->setUserData(Qt::UserRole,user);
@@ -87,18 +87,22 @@ void Monitor::widgetShow(){
 
         QToolButton *details = new QToolButton(cenWidget);
 
-            details->setText(QString("ÏêÏ¸ĞÅÏ¢"));
-
-
+        details->setText(QString("è¯¦ç»†ä¿¡æ¯"));
         details->setToolTip(tip);
         connect(details,SIGNAL(clicked()),this,SLOT(detailsShow()));
+
+//        QToolButton *timeCon = new QToolButton(cenWidget);
+//        timeCon->setText("å‘Šè­¦æ—¶é—´æ®µè®¾ç½®");
+//        timeCon->setToolTip(tip);
+//        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
 
         layout->addWidget(label,i,0);
         layout->addWidget(regionGroup,i,1);
         layout->addWidget(active,i,2);
         layout->addWidget(attributes,i,3);
         layout->addWidget(edit,i,4);
-        layout->addWidget(details,i,6);
+        layout->addWidget(details,i,5);
+       // layout->addWidget(timeCon,i,6);
 
     }
     if(old!=0){
@@ -122,14 +126,14 @@ void Monitor::groupShow(){
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
     int index = button->toolTip().toInt();
-    if( button->text()== "Òş²Ø¸Ã¼à¿ØÇøÓò×é"){
-        button->setText("ÏÔÊ¾¸Ã¼à¿ØÇøÓò×é");
+    if( button->text()== "éšè—è¯¥ç›‘æ§åŒºåŸŸç»„"){
+        button->setText("æ˜¾ç¤ºè¯¥ç›‘æ§åŒºåŸŸç»„");
         for(int k=0;k<mw->rgs[index].rs.size();k++){
             mw->rgs.at(index).rs[k].isActive = false;
         }
 
-    }else if(button->text()=="ÏÔÊ¾¸Ã¼à¿ØÇøÓò×é"){
-        button->setText("Òş²Ø¸Ã¼à¿ØÇøÓò×é");
+    }else if(button->text()=="æ˜¾ç¤ºè¯¥ç›‘æ§åŒºåŸŸç»„"){
+        button->setText("éšè—è¯¥ç›‘æ§åŒºåŸŸç»„");
         for(int k=0;k<mw->rgs[index].rs.size();k++){
             mw->rgs.at(index).rs[k].isActive = true;
         }
@@ -142,10 +146,10 @@ void Monitor::setAlert(){
 
     QObject* obj = sender();
        QToolButton* button = dynamic_cast<QToolButton*>(obj);
-       if( button->text()== "È¡Ïû±¨¾¯"){
-            button->setText("±¨¾¯");
-       }else if(button->text()=="±¨¾¯"){
-           button->setText("È¡Ïû±¨¾¯");
+       if( button->text()== "å–æ¶ˆæŠ¥è­¦"){
+            button->setText("æŠ¥è­¦");
+       }else if(button->text()=="æŠ¥è­¦"){
+           button->setText("å–æ¶ˆæŠ¥è­¦");
        }
 
        int index = button->toolTip().toInt();
@@ -182,12 +186,12 @@ void Monitor::onClickName(){
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
     int index = button->toolTip().toInt();
 
-    QString newName = QInputDialog::getText(this,QString("ÇëÊäÈëĞÂµÄ×é¼à¿ØÃû×Ö£¬°´È·¶¨ĞŞ¸Ä"),QString("ĞÂÃû×Ö"));
+    QString newName = QInputDialog::getText(this,QString("è¯·è¾“å…¥æ–°çš„ç»„ç›‘æ§åå­—ï¼ŒæŒ‰ç¡®å®šä¿®æ”¹"),QString("æ–°åå­—"));
 
     if(newName == "" || newName == mw->rgs[index].name){
         return;
     }
-    button->setText(QString("¼à¿ØÇøÓò×é£º").append(newName));
+    button->setText(QString("ç›‘æ§åŒºåŸŸç»„ï¼š").append(newName));
     mw->rgs[index].name = newName;
 }
 
@@ -214,7 +218,7 @@ void Monitor::detailsShow(){
 
         DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
         //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
-        detailsOfRG->setWindowTitle(QString("¼à¿ØÇøÓò×é").append(mw->rgs[index].name).append("µÄÏêÏ¸ĞÅÏ¢"));
+        detailsOfRG->setWindowTitle(QString("ç›‘æ§åŒºåŸŸç»„").append(mw->rgs[index].name).append("çš„è¯¦ç»†ä¿¡æ¯"));
         detailsOfRG->activateWindow();
         QDesktopWidget *desktop= QApplication::desktop();
         QRect screenRect = desktop->screenGeometry();
@@ -223,5 +227,23 @@ void Monitor::detailsShow(){
         detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
         detailsOfRG->show();
         detailsOfRG->detailsShow();
+
+}
+
+void Monitor::timeControl(){
+//    QObject* obj = sender();
+//    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+//    int index = button->toolTip().toInt();
+//    TimeControl *timeC = new TimeControl(mw);
+//    timeC->setWindowTitle(QString("ç›‘æ§åŒºåŸŸç»„").append(mw->rgs[index].name).append("çš„å‘Šè­¦æ—¶é—´è®¾ç½®"));
+//    timeC->activateWindow();
+//    QDesktopWidget *desktop= QApplication::desktop();
+//    QRect screenRect = desktop->screenGeometry();
+//    int width = screenRect.width();
+//    int height = screenRect.height();
+//    timeC->setGeometry(7*width/12,5*height/12,width/3,height/3);
+//    timeC->show();
+//    timeC->timeInfo();
+
 
 }

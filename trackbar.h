@@ -1,4 +1,4 @@
-#ifndef TRACKBAR_H
+﻿#ifndef TRACKBAR_H
 #define TRACKBAR_H
 #include "mainwindow.h"
 

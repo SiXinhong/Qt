@@ -1,4 +1,4 @@
-//OpenCVͷ�ļ�
+﻿//OpenCV头文件
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -122,8 +122,8 @@ void Region::draw1Time(Mat &mat){
 
     }
 }
-boolean Region::isInner(Point2f p){
-    boolean in = false;
+bool Region::isInner(Point2f p){
+    bool in = false;
     if(isRect && this->isActive){
         in = this->rect.contains(p);
         this->hasObjects = this->rect.contains(p);

@@ -1,4 +1,4 @@
-#ifndef HWIDGET_H
+ï»¿#ifndef HWIDGET_H
 #define HWIDGET_H
 
 #include "rectan.h"
@@ -13,7 +13,7 @@
 #include <QLabel>
 //#include <qmath.h>
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -42,10 +42,10 @@ public:
 
     Mat mat;
 
-    //È«¾°Í¼Ïñ
+    //å…¨æ™¯å›¾åƒ
     Mat pano;
 
-    //vector<Rect> rects;//°üº¬µÄÄ¿±êµÄbox
+    //vector<Rect> rects;//åŒ…å«çš„ç›®æ ‡çš„box
     vector<MyObject> objs;
 
     vector<MyObject> objs3;

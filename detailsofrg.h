@@ -1,4 +1,4 @@
-#ifndef DETAILSOFRG_H
+﻿#ifndef DETAILSOFRG_H
 #define DETAILSOFRG_H
 
 #include <QMainWindow>

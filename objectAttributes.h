@@ -1,4 +1,4 @@
-#ifndef OBJECTATTRIBUTES_H
+﻿#ifndef OBJECTATTRIBUTES_H
 #define OBJECTATTRIBUTES_H
 
 #include <QMainWindow>

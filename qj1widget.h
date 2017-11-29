@@ -1,4 +1,4 @@
-#ifndef QJ1WIDGET_H
+ï»¿#ifndef QJ1WIDGET_H
 #define QJ1WIDGET_H
 
 #include "rectan.h"
@@ -16,7 +16,7 @@
 #include <QLabel>
 #include <QPainter>
 
-//OpenCVÍ·ÎÄ¼þ
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -61,10 +61,10 @@ public:
 
     Mat twoPano;
 
-    //È«¾°1Ëù°üº¬µÄÔË¶¯Ä¿±ê
+    //å…¨æ™¯1æ‰€åŒ…å«çš„è¿åŠ¨ç›®æ ‡
     vector<MyObject> objs;
 
-    //È«¾°1Ëù°üº¬µÄÔË¶¯Ä¿±ê¹ì¼£
+    //å…¨æ™¯1æ‰€åŒ…å«çš„è¿åŠ¨ç›®æ ‡è½¨è¿¹
     vector<MyObjectTrack> tracks;
 
     QPoint position1;
@@ -88,19 +88,19 @@ public:
     int x_position2;
     int y_position2;
 
-    //¶¨Òå¾ØÐÎ¼à¿ØÇøÓòµÄ±äÁ¿
+    //å®šä¹‰çŸ©å½¢ç›‘æŽ§åŒºåŸŸçš„å˜é‡
     Rect rectRegion;
-    //¶¨Òå¶à±ßÐÎ¼à¿ØÇøÓòµÄ±äÁ¿
+    //å®šä¹‰å¤šè¾¹å½¢ç›‘æŽ§åŒºåŸŸçš„å˜é‡
     vector<Point> points;
-    //ÁÙÊ±´æ´¢±¾´Î¶¨ÒåµÄ¼à¿ØÇøÓò
+    //ä¸´æ—¶å­˜å‚¨æœ¬æ¬¡å®šä¹‰çš„ç›‘æŽ§åŒºåŸŸ
     vector<Region> rs;
 
-    //ÅÐ¶ÏÊÇ²»ÊÇµÚÒ»´ÎÊó±êµã»÷ÊÂ¼þ£¬ÓÃÓÚ¾ØÐÎ¼à¿ØÇøÓòµÄ»æÖÆ
+    //åˆ¤æ–­æ˜¯ä¸æ˜¯ç¬¬ä¸€æ¬¡é¼ æ ‡ç‚¹å‡»äº‹ä»¶ï¼Œç”¨äºŽçŸ©å½¢ç›‘æŽ§åŒºåŸŸçš„ç»˜åˆ¶
     boolean isFirstDoubleClick;
     QPoint position11;
     QPoint position22;
 
-    //»ñµÃÈ«¾°Í¼ÖÐÈÎÒâÒ»µãµÄ×ø±ê
+    //èŽ·å¾—å…¨æ™¯å›¾ä¸­ä»»æ„ä¸€ç‚¹çš„åæ ‡
     double locationX;
     double locationY;
 
@@ -191,29 +191,29 @@ public:
 signals:
 
 public slots:
-    //È¡ÏûÑ¡Ôñ
+    //å–æ¶ˆé€‰æ‹©
     void CancelSelect();
-    //µ½Ö÷ÏÔÊ¾ÇøÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼þ
+    //åˆ°ä¸»æ˜¾ç¤ºåŒºæ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
     void ToZhu();
-    //µ½ÄýÊÓÏÔÊ¾ÇøÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼þ
+    //åˆ°å‡è§†æ˜¾ç¤ºåŒºæ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
     void ToNingshi1();
 
     void ToNingshi2();
-    //µ½µ¯³ö´°¿ÚÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼þ
+    //åˆ°å¼¹å‡ºçª—å£æ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
     //void ToTanchu();
-    //¶¨Òå¾ØÐÎ¼à¿ØÇøÓò
+    //å®šä¹‰çŸ©å½¢ç›‘æŽ§åŒºåŸŸ
     void DefineRect();
-    //¶¨Òå¶à±ßÐÎ¼à¿ØÇøÓò
+    //å®šä¹‰å¤šè¾¹å½¢ç›‘æŽ§åŒºåŸŸ
     void DefinePoly();
 
-    //È¡Ïû¼à¿ØÇøÓò¶¨Òå
+    //å–æ¶ˆç›‘æŽ§åŒºåŸŸå®šä¹‰
     void CancelRDefining();
 
-    //È¡Ïû¼à¿ØÇøÓò×é¶¨Òå
+    //å–æ¶ˆç›‘æŽ§åŒºåŸŸç»„å®šä¹‰
     void CancelRGDefining();
-    //Íê³É¼à¿ØÇøÓò¶¨Òå
+    //å®Œæˆç›‘æŽ§åŒºåŸŸå®šä¹‰
     void CompleteRDefining();
-    //Íê³É¼à¿ØÇøÓò×é¶¨Òå
+    //å®Œæˆç›‘æŽ§åŒºåŸŸç»„å®šä¹‰
     void CompleteRGDefining();
 };
 

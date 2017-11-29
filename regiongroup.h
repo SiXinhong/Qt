@@ -31,17 +31,17 @@ public:
     QString name;
 
     //是否显示
-    boolean isActive;
+    bool isActive;
 
     //是否报警
-    boolean isAlert;
+    bool isAlert;
     //多边形
     vector<Region> rs;
 
 
     void draw(Mat &mat);
 
-    boolean isInner(Point2f p);
+    bool isInner(Point2f p);
 
     vector<Region> hasObjects();
 

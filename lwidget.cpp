@@ -1,11 +1,11 @@
-#include "lwidget.h"
+ï»¿#include "lwidget.h"
 #include "mainwindow.h"
 #include "myobject.h"
 
 #include <QtCore/qmath.h>
 #include <math.h>
 
-//opencvµÄÍ·ÎÄ¼ş
+//opencvçš„å¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -63,9 +63,9 @@ vector<MyObject> LWidget::getObjects4(){
     return this->objs4;
 }
 
-//¼ÆËãÔÚ»·´øÏÔÊ¾ÇøµÄ×ø±ê£¬ÊäÈëÊÇÔË¶¯Ä¿±êÔÚÈ«¾°Í¼ÏñÖĞµÄÎ»ÖÃ
+//è®¡ç®—åœ¨ç¯å¸¦æ˜¾ç¤ºåŒºçš„åæ ‡ï¼Œè¾“å…¥æ˜¯è¿åŠ¨ç›®æ ‡åœ¨å…¨æ™¯å›¾åƒä¸­çš„ä½ç½®
 double LWidget::getDirectionX(double x, double y){
-   //Ë³Ê±Õë90¶È
+   //é¡ºæ—¶é’ˆ90åº¦
     double x90;
     if(x< 3*pano.cols/4)
         x90 = x+pano.cols/4;
@@ -76,7 +76,7 @@ double LWidget::getDirectionX(double x, double y){
 }
 
 double LWidget::getDirectionY(double x, double y){
-    //Ë³Ê±Õë90¶È
+    //é¡ºæ—¶é’ˆ90åº¦
     double x90;
     if(x < 3*pano.cols/4)
         x90 = x+pano.cols/4;
@@ -103,7 +103,7 @@ Point LWidget::getPoint(Point p){
     return Point(xaa,yaa);
 }
 
-//ÄıÊÓÏÔÊ¾ÇøµÄ£¬»ñµÃ»­¶à±ßĞÎµÄÁù¸öµã£¬ĞèÒª¼ÆËãÖ÷ÏÔÊ¾ÇøËù¹Ø×¢µÄ¶ÔÏó¼¯ºÏµÄ×ø±êÀ´È·¶¨¡£
+//å‡è§†æ˜¾ç¤ºåŒºçš„ï¼Œè·å¾—ç”»å¤šè¾¹å½¢çš„å…­ä¸ªç‚¹ï¼Œéœ€è¦è®¡ç®—ä¸»æ˜¾ç¤ºåŒºæ‰€å…³æ³¨çš„å¯¹è±¡é›†åˆçš„åæ ‡æ¥ç¡®å®šã€‚
 void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -167,7 +167,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
        line(tmat,p11,p3,Scalar(255,255,0),1,8,0);
 
        line(tmat,p22,p3,Scalar(255,255,0),1,8,0);
-       //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+       //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
        double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
        double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -181,11 +181,11 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
            angle1+=360;
        }
        ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,255,0));
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    double xtemp1 = this->pano.cols;
 //    double ytemp1 = this->pano.rows;
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -201,17 +201,17 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //            ytemp2 = obj.getCenPoint().y;
 //        }
 //    }
-//    //ÔÙÏò×óÉÏ¿¿¿¿
+//    //å†å‘å·¦ä¸Šé é 
 //    if(xtemp1-5>=0 && ytemp1-5 >= 0){
 //        xtemp1 -= 5;
 //        ytemp1 -= 5;
 //    }
-//    //ÔÙÏòÓÒÏÂ¿¿¿¿
+//    //å†å‘å³ä¸‹é é 
 //    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
 //        xtemp2 += 5;
 //        ytemp2 += 5;
 //    }
-//    //ÖØĞÂÕÒ×îĞ¡µã
+//    //é‡æ–°æ‰¾æœ€å°ç‚¹
 //    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
 //        xtemp1 = 0;
 
@@ -242,7 +242,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //    line(tmat,p11,p3,Scalar(255,255,0),1,8,0);
 
 //    line(tmat,p22,p3,Scalar(255,255,0),1,8,0);
-//    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+//    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
 //    double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
 //    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -267,7 +267,7 @@ void LWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
 //    //cv::cvtColor(tmat,tmat,CV_BGR2RGB);
 }
 
-//Ö÷ÏÔÊ¾ÇøµÄ£¬»ñµÃ»­¶à±ßĞÎµÄÁù¸öµã£¬ĞèÒª¼ÆËãÖ÷ÏÔÊ¾ÇøËù¹Ø×¢µÄ¶ÔÏó¼¯ºÏµÄ×ø±êÀ´È·¶¨¡£
+//ä¸»æ˜¾ç¤ºåŒºçš„ï¼Œè·å¾—ç”»å¤šè¾¹å½¢çš„å…­ä¸ªç‚¹ï¼Œéœ€è¦è®¡ç®—ä¸»æ˜¾ç¤ºåŒºæ‰€å…³æ³¨çš„å¯¹è±¡é›†åˆçš„åæ ‡æ¥ç¡®å®šã€‚
 void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
     if(sobjs.size()==0)
            return;
@@ -331,7 +331,7 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
        line(tmat,p11,p3,Scalar(255,0,0),1,8,0);
 
        line(tmat,p22,p3,Scalar(255,0,0),1,8,0);
-       //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+       //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
        double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
        double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -345,11 +345,11 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
            angle1+=360;
        }
        ellipse(tmat,p3,Size(r, r),0,angle1,angle2,Scalar(255,0,0));
-//    //ÕÒ³ö¶ÔÏó¼¯ºÏÖĞ×î×ó±ßµÄµã£¬ºÍ×îÓÒ±ßµÄµã£¬¾ÍÊÇxµÄ×îĞ¡µãºÍ×î´óµã
-//    //ÏÈÕÒ×îĞ¡µã
+//    //æ‰¾å‡ºå¯¹è±¡é›†åˆä¸­æœ€å·¦è¾¹çš„ç‚¹ï¼Œå’Œæœ€å³è¾¹çš„ç‚¹ï¼Œå°±æ˜¯xçš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹
+//    //å…ˆæ‰¾æœ€å°ç‚¹
 //    double xtemp1 = this->pano.cols;
 //    double ytemp1 = this->pano.rows;
-//    //ÔÙÕÒ×î´óµã
+//    //å†æ‰¾æœ€å¤§ç‚¹
 //    double xtemp2 = 0;
 //    double ytemp2 = 0;
 
@@ -365,17 +365,17 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //            ytemp2 = obj.getCenPoint().y;
 //        }
 //    }
-//    //ÔÙÏò×óÉÏ¿¿¿¿
+//    //å†å‘å·¦ä¸Šé é 
 //    if(xtemp1-5>=0 && ytemp1-5 >= 0){
 //        xtemp1 -= 5;
 //        ytemp1 -= 5;
 //    }
-//    //ÔÙÏòÓÒÏÂ¿¿¿¿
+//    //å†å‘å³ä¸‹é é 
 //    if(xtemp2+5<= this->pano.cols && ytemp2+5<= this->pano.rows){
 //        xtemp2 += 5;
 //        ytemp2 += 5;
 //    }
-//    //ÖØĞÂÕÒ×îĞ¡µã
+//    //é‡æ–°æ‰¾æœ€å°ç‚¹
 //    if((sobjs.size() > 0) && (xtemp2 - xtemp1 > this->pano.cols/2)){
 //        xtemp1 = 0;
 
@@ -406,7 +406,7 @@ void LWidget::drawArc3(vector<MyObject> sobjs, Mat tmat){
 //    line(tmat,p11,p3,Scalar(255,0,0),1,8,0);
 
 //    line(tmat,p22,p3,Scalar(255,0,0),1,8,0);
-//    //p11ºÍp22Ö®¼äÊÇÒ»¶ÎÔ²»¡
+//    //p11å’Œp22ä¹‹é—´æ˜¯ä¸€æ®µåœ†å¼§
 //    double angle1 = 180*qAtan((p22.y-y0)/(p22.x-x0))/M_PI;
 //    double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
@@ -451,9 +451,9 @@ void LWidget::draw(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-    Mat tmat = this->mat.clone();//Ò»¶¨ÒªÔÚ¿ËÂ¡ÉÏ»­
+    Mat tmat = this->mat.clone();//ä¸€å®šè¦åœ¨å…‹éš†ä¸Šç”»
 
-    //»­Èı½ÇĞÎ
+    //ç”»ä¸‰è§’å½¢
 //    vector<Point> points = this->getPoints(mw->widget3->getObjects());
 //    int count = points.size();
 //    for (int i = 0; i <count;i+=2)
@@ -469,12 +469,12 @@ void LWidget::draw(){
     if(mw->widget4->getObjects().size() > 0){
        this->drawArc4(mw->widget4->getObjects(),tmat);
     }
-    //ÔÚÍ¼ÏñÉÏ»­Ô²µã
+    //åœ¨å›¾åƒä¸Šç”»åœ†ç‚¹
     int count = objs.size();
     for (int i = 0; i < count; i++){
         cv::Point p = objs[i].getCenPoint();
         Scalar color = objs[i].getColor();
-        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
+        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
        // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
    // cv::cvtColor(tmat,tmat,CV_BGR2RGB);

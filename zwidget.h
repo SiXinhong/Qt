@@ -1,4 +1,4 @@
-#ifndef ZWIDGET_H
+ï»¿#ifndef ZWIDGET_H
 #define ZWIDGET_H
 
 #include "rectan.h"
@@ -14,7 +14,7 @@
 #include <QMouseEvent>
 #include <QLabel>
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -30,7 +30,7 @@ class ZWidget : public QWidget
 
 private:
 
-    //°Ñ¼à¿ØÇøµÄ×ø±ê×ª»»³ÉÔÚÈ«¾°ÊÓÍ¼µÄ×ø±ê
+    //æŠŠç›‘æ§åŒºçš„åæ ‡è½¬æ¢æˆåœ¨å…¨æ™¯è§†å›¾çš„åæ ‡
     int convertToOriginX(int x);
     int convertToOriginY(int y);
     int convertToOriginWidth(int width);
@@ -58,7 +58,7 @@ public:
 
     Rect rect;
 
-    Rect realRect;//´ÓÈ«¾°ÏÔÊ¾Çø¸´ÖÆÊ±ÕæÊµÊ¹ÓÃµÄrect
+    Rect realRect;//ä»å…¨æ™¯æ˜¾ç¤ºåŒºå¤åˆ¶æ—¶çœŸå®ä½¿ç”¨çš„rect
     Mat twopanos;
 
     Mat pano;
@@ -73,14 +73,14 @@ public:
 
     int from;
 
-    //¶¨Òå¾ØĞÎ¼à¿ØÇøÓòµÄ±äÁ¿
+    //å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸçš„å˜é‡
     Rect rectRegion;
-    //¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓòµÄ±äÁ¿
+    //å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸçš„å˜é‡
     vector<Point> points;
-    //ÁÙÊ±´æ´¢±¾´Î¶¨ÒåµÄ¼à¿ØÇøÓò
+    //ä¸´æ—¶å­˜å‚¨æœ¬æ¬¡å®šä¹‰çš„ç›‘æ§åŒºåŸŸ
     vector<Region> rs;
 
-    //ÅĞ¶ÏÊÇ²»ÊÇµÚÒ»´ÎÊó±êµã»÷ÊÂ¼ş£¬ÓÃÓÚ¾ØĞÎ¼à¿ØÇøÓòµÄ»æÖÆ
+    //åˆ¤æ–­æ˜¯ä¸æ˜¯ç¬¬ä¸€æ¬¡é¼ æ ‡ç‚¹å‡»äº‹ä»¶ï¼Œç”¨äºçŸ©å½¢ç›‘æ§åŒºåŸŸçš„ç»˜åˆ¶
     boolean isFirstDoubleClick;
     QPoint position11;
     QPoint position22;
@@ -160,24 +160,24 @@ public slots:
 
     void Wubianxing();
 
-    //¶¨Òå¾ØĞÎ¼à¿ØÇøÓò
+    //å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ
     void DefineRect();
-    //¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò
+    //å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ
     void DefinePoly();
 
-    //È¡Ïû¼à¿ØÇøÓò¶¨Òå
+    //å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰
     void CancelRDefining();
 
-    //È¡Ïû¼à¿ØÇøÓò×é¶¨Òå
+    //å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
     void CancelRGDefining();
-    //Íê³É¼à¿ØÇøÓò¶¨Òå
+    //å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰
     void CompleteRDefining();
-    //Íê³É¼à¿ØÇøÓò×é¶¨Òå
+    //å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
     void CompleteRGDefining();
 
-    //·Å´ó
+    //æ”¾å¤§
     void ZoomIn();
-    //ËõĞ¡
+    //ç¼©å°
     void ZoomOut();
 
 };

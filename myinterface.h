@@ -1,4 +1,4 @@
-#ifndef MYINTERFACE_H
+ï»¿#ifndef MYINTERFACE_H
 #define MYINTERFACE_H
 
 
@@ -8,7 +8,7 @@
 #include "myobject.h"
 #include <QString>
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -21,7 +21,7 @@ using namespace std;
 class MyInterface
 {
 private:
-    //ÒÔÏÂÊÇÁÙÊ±±äÁ¿£¬ÎªÄ£Äâ´Ó½Ó¿ÚÀ´µÄ²»Í¬µÄÍ¼Ïñ-------
+    //ä»¥ä¸‹æ˜¯ä¸´æ—¶å˜é‡ï¼Œä¸ºæ¨¡æ‹Ÿä»æ¥å£æ¥çš„ä¸åŒçš„å›¾åƒ-------
     QString filename1;
     QString filename2;
     QString filename3;
@@ -48,13 +48,13 @@ private:
     int indexx;
     int indexy;
 
-    int index1;//¶ÁÈ¡µÚ¼¸ÕÅÍ¼Æ¬
+    int index1;//è¯»å–ç¬¬å‡ å¼ å›¾ç‰‡
 
-    vector<QString> vc1;//´æ´¢µÚÒ»À¸µÄÍ¼Æ¬
-    int index2;//¶ÁÈ¡µÚ¶şÀ¸µÚ¼¸ÕÅÍ¼Æ¬
-    vector<QString> vc2;//´æ´¢µÚ¶şÀ¸µÄÍ¼Æ¬
+    vector<QString> vc1;//å­˜å‚¨ç¬¬ä¸€æ çš„å›¾ç‰‡
+    int index2;//è¯»å–ç¬¬äºŒæ ç¬¬å‡ å¼ å›¾ç‰‡
+    vector<QString> vc2;//å­˜å‚¨ç¬¬äºŒæ çš„å›¾ç‰‡
     vector<QString> vc;
-    //ÁÙÊ±±äÁ¿½áÊø------------------------------
+    //ä¸´æ—¶å˜é‡ç»“æŸ------------------------------
 
     //IntegratedData  *data;
 
@@ -62,31 +62,31 @@ public:
     MyInterface();
     ~MyInterface();
 
-    //È«¾°ÏÔÊ¾Çø1µÄÍ¼Æ¬µÄURL
+    //å…¨æ™¯æ˜¾ç¤ºåŒº1çš„å›¾ç‰‡çš„URL
     QString qj1;
-    //È«¾°ÏÔÊ¾Çø2µÄÍ¼Æ¬µÄURL
+    //å…¨æ™¯æ˜¾ç¤ºåŒº2çš„å›¾ç‰‡çš„URL
     QString qj2;
-    //»·´øÏÔÊ¾ÇøµÄÍ¼Æ¬µÄURL
+    //ç¯å¸¦æ˜¾ç¤ºåŒºçš„å›¾ç‰‡çš„URL
     QString hd;
-    //À×´ïÏÔÊ¾ÇøµÄÍ¼Æ¬µÄURL
+    //é›·è¾¾æ˜¾ç¤ºåŒºçš„å›¾ç‰‡çš„URL
     QString ld;
 
-    //´Ó½ğÀÏÊ¦´«¹ıÀ´µÄpanoImageÇĞ³ÉÁ½·ùÍ¼Ïñ,È«¾°1ºÍÈ«¾°2
+    //ä»é‡‘è€å¸ˆä¼ è¿‡æ¥çš„panoImageåˆ‡æˆä¸¤å¹…å›¾åƒ,å…¨æ™¯1å’Œå…¨æ™¯2
     Mat qj1mat;
 
     Mat qj2mat;
 
-    //¶ÔÏó¼¯ºÏ
+    //å¯¹è±¡é›†åˆ
     vector<MyObject> objs;
     vector<MyObject> objs_self;
     int sizeOfobjs;
-    //Î»ÓÚÈ«¾°ÏÔÊ¾Çø1ÖĞµÄ¶ÔÏó
+    //ä½äºå…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„å¯¹è±¡
     vector<MyObject> objs1;
 
-    //Î»ÓÚÈ«¾°ÏÔÊ¾Çø2ÖĞµÄ¶ÔÏó
+    //ä½äºå…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­çš„å¯¹è±¡
     vector<MyObject> objs2;
 
-    //¶ÔÏóµÄ¹ì¼£¼¯ºÏ
+    //å¯¹è±¡çš„è½¨è¿¹é›†åˆ
 
     vector<MyObjectTrack> tracks;
 
@@ -130,25 +130,25 @@ public:
 
     vector<MyObject> getObjs();
     void setObjs(vector<MyObject> os);
-    //»ñµÃ×Ô¶¨ÒåµÄÊµÑéÊı¾İ
+    //è·å¾—è‡ªå®šä¹‰çš„å®éªŒæ•°æ®
     vector<MyObject> getObjs2();
-    //Éú³ÉËæ»ú¸ö¶ÔÏó
+    //ç”Ÿæˆéšæœºä¸ªå¯¹è±¡
     vector<MyObject> getRandomObjs();
-    //Ìî³äËæ»ú¸öobj³õÊ¼»¯¶ÔÏó
+    //å¡«å……éšæœºä¸ªobjåˆå§‹åŒ–å¯¹è±¡
     void fillObjs();
-    //»ñµÃÈ«¾°ÏÔÊ¾Çø1ÖĞµÄ¶ÔÏó
+    //è·å¾—å…¨æ™¯æ˜¾ç¤ºåŒº1ä¸­çš„å¯¹è±¡
     vector<MyObject> getQj1Objs();
-    //»ñµÃÈ«¾°ÏÔÊ¾Çø2ÖĞµÄ¶ÔÏó
+    //è·å¾—å…¨æ™¯æ˜¾ç¤ºåŒº2ä¸­çš„å¯¹è±¡
     vector<MyObject> getQj2Objs();
-    //»ñµÃ×ÛºÏÊı¾İ
+    //è·å¾—ç»¼åˆæ•°æ®
     int getIntegratedData();
 
     int getIntegratedData2();
-    //´æ´¢ID
+    //å­˜å‚¨ID
     vector<int> idSets;
-//    //ÉèÖÃÏµÍ³²ÎÊı
+//    //è®¾ç½®ç³»ç»Ÿå‚æ•°
 //    int SetSysPara(int mode, const char *para_string, int id = 0);
-//    //»ñµÃÏµÍ³²ÎÊı
+//    //è·å¾—ç³»ç»Ÿå‚æ•°
 //    int GetSysPara(int mode, char *para_string, int id = 0);
 
 };

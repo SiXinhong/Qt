@@ -1,4 +1,4 @@
-#ifndef TIMELINE_H
+﻿#ifndef TIMELINE_H
 #define TIMELINE_H
 #include "backwindow.h"
 class TimeLine:public QWidget

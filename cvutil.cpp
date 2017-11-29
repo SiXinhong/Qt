@@ -1,6 +1,6 @@
-#include "cvutil.h"
+ï»¿#include "cvutil.h"
 
-//OpenCVÍ·ÎÄ¼þ
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -99,7 +99,7 @@ QImage CVUtil::MatToQImage(const cv::Mat& mat, QImage imgLabel)
     }
 }
 
-//»­±ê³ß
+//ç”»æ ‡å°º
 void CVUtil::paintScale(Mat image,double startw,double starth, double endw, double endh)
 {
     //QImage img;
@@ -111,7 +111,7 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
      int i=t-(int)startw;
      if(i%2 == 0){
         line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
-        //±ê³ßÉÏÐ´×Ö
+        //æ ‡å°ºä¸Šå†™å­—
         int ii = (int)(startw+i*(endw-startw)/30);
         if(ii > 270){
             ii = ii -360;

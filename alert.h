@@ -1,9 +1,9 @@
-#ifndef ALERT_H
+﻿#ifndef ALERT_H
 #define ALERT_H
 
 #include <QMainWindow>
 #include "mainwindow.h"
-#include "myobject.h"
+
 
 class Alert : public QMainWindow
 {

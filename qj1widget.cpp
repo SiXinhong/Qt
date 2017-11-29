@@ -1,4 +1,4 @@
-
+ï»¿
 #include "qj1widget.h"
 #include "mainwindow.h"
 #include "myobject.h"
@@ -27,19 +27,19 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
 
         isFirstDoubleClick = false;
 
-        Cancel_Select = new QAction(tr("È¡ÏûÑ¡Ôñ"),this);
-        To_Zhu= new QAction(tr("µ½Ö÷ÏÔÊ¾Çø"), this);
-        To_Ningshi1 = new QAction(tr("µ½¸¨ÖúÏÔÊ¾Çø1"), this);
-        To_Ningshi2 = new QAction(tr("µ½¸¨ÖúÏÔÊ¾Çø2"), this);
-        //To_Tanchu = new QAction(tr("µ½µ¯³ö´°¿Ú"),this);
+        Cancel_Select = new QAction(tr("å–æ¶ˆé€‰æ‹©"),this);
+        To_Zhu= new QAction(tr("åˆ°ä¸»æ˜¾ç¤ºåŒº"), this);
+        To_Ningshi1 = new QAction(tr("åˆ°è¾…åŠ©æ˜¾ç¤ºåŒº1"), this);
+        To_Ningshi2 = new QAction(tr("åˆ°è¾…åŠ©æ˜¾ç¤ºåŒº2"), this);
+        //To_Tanchu = new QAction(tr("åˆ°å¼¹å‡ºçª—å£"),this);
 
-        Define_Rect = new QAction(tr("¶¨Òå¾ØĞÎ¼à¿ØÇøÓò"), this);
-        Define_Poly = new QAction(tr("¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò"), this);
+        Define_Rect = new QAction(tr("å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ"), this);
+        Define_Poly = new QAction(tr("å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ"), this);
 
-        Cancel_RDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò¶¨Òå"), this);
-        Cancel_RGDefining = new QAction(tr("È¡Ïû¼à¿ØÇøÓò×é¶¨Òå"), this);
-        Complete_RDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò¶¨Òå"), this);
-        Complete_RGDefining = new QAction(tr("Íê³É¼à¿ØÇøÓò×é¶¨Òå"), this);
+        Cancel_RDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+        Cancel_RGDefining = new QAction(tr("å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
+        Complete_RDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰"), this);
+        Complete_RGDefining = new QAction(tr("å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰"), this);
 
         connect(Cancel_Select, SIGNAL(triggered()), this, SLOT(CancelSelect()));
         connect(To_Zhu, SIGNAL(triggered()), this, SLOT(ToZhu()));
@@ -121,11 +121,11 @@ vector<MyObjectTrack> Qj1Widget::getTracks(){
 void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
-    menu->addAction(Cancel_Select); //Ìí¼Ó²Ëµ¥Ïî1
-    menu->addAction(To_Zhu); //Ìí¼Ó²Ëµ¥Ïî1
-    menu->addAction(To_Ningshi1); //Ìí¼Ó²Ëµ¥Ïî2
-    menu->addAction(To_Ningshi2); //Ìí¼Ó²Ëµ¥Ïî2
-    //menu->addAction(To_Tanchu);//Ìí¼Ó²Ëµ¥Ïî3
+    menu->addAction(Cancel_Select); //æ·»åŠ èœå•é¡¹1
+    menu->addAction(To_Zhu); //æ·»åŠ èœå•é¡¹1
+    menu->addAction(To_Ningshi1); //æ·»åŠ èœå•é¡¹2
+    menu->addAction(To_Ningshi2); //æ·»åŠ èœå•é¡¹2
+    //menu->addAction(To_Tanchu);//æ·»åŠ èœå•é¡¹3
     menu->addSeparator();
     menu->addAction(Define_Rect);
     menu->addAction(Define_Poly);
@@ -134,7 +134,7 @@ void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
     menu->addAction(Cancel_RGDefining);
     menu->addAction(Complete_RDefining);
     menu->addAction(Complete_RGDefining);
-    menu->exec(cur.pos()); //¹ØÁªµ½¹â±ê
+    menu->exec(cur.pos()); //å…³è”åˆ°å…‰æ ‡
 }
 
 void Qj1Widget::CancelSelect(){
@@ -148,10 +148,10 @@ void Qj1Widget::draw(){
 //    int count = this->objs.size();
 //    for (int i = 0; i < count;i++)
 //    {
-//        //»­¶ÔÏóµÄbox
+//        //ç”»å¯¹è±¡çš„box
 //        MyObject obj = objs[i];
 //        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
-//        //»­¹ì¼£
+//        //ç”»è½¨è¿¹
 //        for(int ii = 0; ii < this->tracks.size(); ii++){
 //            MyObjectTrack track = this->tracks[ii];
 //            int id = track.getId();
@@ -159,7 +159,7 @@ void Qj1Widget::draw(){
 //            if(id == obj.getID()){
 //                for(int iii = 0; iii < points.size(); iii++){
 //                    Point point = points[iii];
-//                    circle(mat, point, 2, obj.getColor(),-1,8,2);//ÔÚÍ¼ÏñÖĞ»­³öÌØÕ÷µã£¬2ÊÇÔ²µÄ°ë¾¶
+//                    circle(mat, point, 2, obj.getColor(),-1,8,2);//åœ¨å›¾åƒä¸­ç”»å‡ºç‰¹å¾ç‚¹ï¼Œ2æ˜¯åœ†çš„åŠå¾„
 //                    if(iii >= 1){
 //                        Point point2 = points[iii-1];
 //                        line(mat,point,point2,obj.getColor(),1,8,0);
@@ -167,7 +167,7 @@ void Qj1Widget::draw(){
 //                }
 //            }
 //        }
-//        //»­¶ÔÏóÖĞĞÄµãµÄÎ»ÖÃ
+//        //ç”»å¯¹è±¡ä¸­å¿ƒç‚¹çš„ä½ç½®
 //        if(mw->isMubiao){
 //            int x = (int)(this->getDirectionX(obj.getCenPoint().x));
 //            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
@@ -214,7 +214,7 @@ void Qj1Widget::draw(){
 boolean Qj1Widget::isObjSelected3(MyObject obj){
     boolean isSelected = false;
         if(this->rectan3.contains(obj.getCenPoint())){
-            //µ÷ÕûÑ¡Ôñ¿òÒÔÊ¹µÃÄ¿±êµÄboxÔÚÑ¡Ôñ¿òÖ®ÄÚ
+            //è°ƒæ•´é€‰æ‹©æ¡†ä»¥ä½¿å¾—ç›®æ ‡çš„boxåœ¨é€‰æ‹©æ¡†ä¹‹å†…
             if(obj.getRect().x<this->rectan3.x){
                 this->rectan3.x = obj.getRect().x - 5;
                 this->rectan3.width += this->rectan3.x - obj.getRect().x + 5;
@@ -241,7 +241,7 @@ boolean Qj1Widget::isObjSelected3(MyObject obj){
 boolean Qj1Widget::isObjSelected4(MyObject obj){
     boolean isSelected = false;
     if(this->rectan4.contains(obj.getCenPoint())){
-        //µ÷ÕûÑ¡Ôñ¿òÒÔÊ¹µÃÄ¿±êµÄboxÔÚÑ¡Ôñ¿òÖ®ÄÚ
+        //è°ƒæ•´é€‰æ‹©æ¡†ä»¥ä½¿å¾—ç›®æ ‡çš„boxåœ¨é€‰æ‹©æ¡†ä¹‹å†…
         if(obj.getRect().x<this->rectan4.x){
             this->rectan4.x = obj.getRect().x - 5;
             this->rectan4.width += this->rectan4.x - obj.getRect().x + 5;
@@ -268,7 +268,7 @@ boolean Qj1Widget::isObjSelected4(MyObject obj){
 boolean Qj1Widget::isObjSelected6(MyObject obj){
     boolean isSelected = false;
     if(this->rectan6.contains(obj.getCenPoint())){
-        //µ÷ÕûÑ¡Ôñ¿òÒÔÊ¹µÃÄ¿±êµÄboxÔÚÑ¡Ôñ¿òÖ®ÄÚ
+        //è°ƒæ•´é€‰æ‹©æ¡†ä»¥ä½¿å¾—ç›®æ ‡çš„boxåœ¨é€‰æ‹©æ¡†ä¹‹å†…
         if(obj.getRect().x<this->rectan6.x){
             this->rectan6.x = obj.getRect().x - 5;
             this->rectan6.width += this->rectan6.x - obj.getRect().x + 5;
@@ -295,7 +295,7 @@ boolean Qj1Widget::isObjSelected6(MyObject obj){
 
 void Qj1Widget::ToZhu()
 {
-    //qDebug()<<"µ½Ö÷ÏÔÊ¾Çø¡£";
+    //qDebug()<<"åˆ°ä¸»æ˜¾ç¤ºåŒºã€‚";
 
     this->isTo3 = true;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
@@ -326,10 +326,10 @@ void Qj1Widget::ToZhu()
 //    this->rectan3.width = this->newrect.width;
 //    this->rectan3.height = this->newrect.height;
 
-    //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÖ÷ÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+    //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨ä¸»æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
     //this->rectan3.width = this->rectan3.height * mw->widget3->width() / mw->widget3->height();
 
-    //¸üĞÂÖ÷ÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+    //æ›´æ–°ä¸»æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
     vector<MyObject> objs3;
     int count = this->objs.size();
     for(int i = 0; i < count; i++){
@@ -375,10 +375,10 @@ void Qj1Widget::ToZhu()
 
     isRect = false;
 }
-//µ½¸¨ÖúÏÔÊ¾Çø1ÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼ş
+//åˆ°è¾…åŠ©æ˜¾ç¤ºåŒº1æ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
 void Qj1Widget::ToNingshi1()
 {
-    //qDebug()<<"µ½Ö÷ÏÔÊ¾Çø¡£";
+    //qDebug()<<"åˆ°ä¸»æ˜¾ç¤ºåŒºã€‚";
 
     this->isTo4 = true;
 
@@ -405,9 +405,9 @@ void Qj1Widget::ToNingshi1()
         this->rectan4.height = this->newrect.height;
     }
 
-    //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÄıÊÓÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+    //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨å‡è§†æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
     //this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
-    //¸üĞÂÄıÊÓÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+    //æ›´æ–°å‡è§†æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
 
     vector<MyObject> objs4;
     int count = this->objs.size();
@@ -447,10 +447,10 @@ void Qj1Widget::ToNingshi1()
     isRect = false;
 }
 
-//µ½¸¨ÖúÏÔÊ¾Çø2ÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼ş
+//åˆ°è¾…åŠ©æ˜¾ç¤ºåŒº2æ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
 void Qj1Widget::ToNingshi2()
 {
-    //qDebug()<<"µ½Ö÷ÏÔÊ¾Çø¡£";
+    //qDebug()<<"åˆ°ä¸»æ˜¾ç¤ºåŒºã€‚";
 
     this->isTo6 = true;
 
@@ -478,9 +478,9 @@ void Qj1Widget::ToNingshi2()
 
     }
 
-    //µ÷ÕûËùÑ¡µÄ¾ØĞÎ¿ò£¬ÒÔÊ¹µÃÔÚÄıÊÓÏÔÊ¾ÇøÖĞµÄÏÔÊ¾²»±äĞÎ
+    //è°ƒæ•´æ‰€é€‰çš„çŸ©å½¢æ¡†ï¼Œä»¥ä½¿å¾—åœ¨å‡è§†æ˜¾ç¤ºåŒºä¸­çš„æ˜¾ç¤ºä¸å˜å½¢
     //this->rectan4.width = this->rectan4.height * mw->widget4->width() / mw->widget4->height();
-    //¸üĞÂÄıÊÓÏÔÊ¾ÇøËù°üº¬µÄÄ¿±ê
+    //æ›´æ–°å‡è§†æ˜¾ç¤ºåŒºæ‰€åŒ…å«çš„ç›®æ ‡
 
     vector<MyObject> objs6;
     int count = this->objs.size();
@@ -521,16 +521,16 @@ void Qj1Widget::ToNingshi2()
     isRect = false;
 }
 
-//µ½µ¯³ö´°¿ÚÏÔÊ¾²Ëµ¥´¦ÀíÊÂ¼ş
+//åˆ°å¼¹å‡ºçª—å£æ˜¾ç¤ºèœå•å¤„ç†äº‹ä»¶
 //void ToTanchu(){
-//    qDebug()<<"µ½µ¯³ö´°¿Ú¡£";
+//    qDebug()<<"åˆ°å¼¹å‡ºçª—å£ã€‚";
 //}
 
 //void QjWidget::mouseClickEvent(QMouseEvent *e){
 
 //}
 
-//¶¨Òå¾ØĞÎ¼à¿ØÇøÓò
+//å®šä¹‰çŸ©å½¢ç›‘æ§åŒºåŸŸ
 void Qj1Widget::DefineRect(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion = true;
@@ -549,7 +549,7 @@ void Qj1Widget::DefineRect(){
     }
 }
 
-//¶¨Òå¶à±ßĞÎ¼à¿ØÇøÓò
+//å®šä¹‰å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸ
 void Qj1Widget::DefinePoly(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     mw->isDefiningRegion = true;
@@ -567,7 +567,7 @@ void Qj1Widget::DefinePoly(){
     }
 }
 
-//È¡Ïû¼à¿ØÇøÓò¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸå®šä¹‰
 void Qj1Widget::CancelRDefining(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     this->rectRegion.x = 0;
@@ -579,7 +579,7 @@ void Qj1Widget::CancelRDefining(){
     mw->isDefiningRegion = false;
 }
 
-//È¡Ïû¼à¿ØÇøÓò×é¶¨Òå
+//å–æ¶ˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void Qj1Widget::CancelRGDefining(){
     this->rectRegion.x = 0;
     this->rectRegion.y = 0;
@@ -593,12 +593,12 @@ void Qj1Widget::CancelRGDefining(){
     this->isFirstDoubleClick = false;
 }
 
-//Íê³É¼à¿ØÇøÓò¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸå®šä¹‰
 void Qj1Widget::CompleteRDefining(){
    // this->completeRDefine = true;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(mw->isDefiningRectRegion && this->rectRegion.width == 0&&isFirstDoubleClick){
-        QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¾ØĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ĞèÒª¶¨ÒåÁ½¸ö¶¥µã¡£"));
+        QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("çŸ©å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œéœ€è¦å®šä¹‰ä¸¤ä¸ªé¡¶ç‚¹ã€‚"));
     }
     else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
@@ -613,7 +613,7 @@ void Qj1Widget::CompleteRDefining(){
         this->isFirstDoubleClick = false;
     }
     else if(!(mw->isDefiningRectRegion) && (this->points.size() <= 2&&isFirstDoubleClick)){
-        QMessageBox::information(this,tr("¼à¿ØÇøÓò¶¨Òå"),tr("¶à±ßĞÎ¼à¿ØÇøÓòµÄ¶¨ÒåÉĞÎ´Íê³É£¬ÖÁÉÙĞèÒª¶¨ÒåÈı¸ö¶¥µã"));
+        QMessageBox::information(this,tr("ç›‘æ§åŒºåŸŸå®šä¹‰"),tr("å¤šè¾¹å½¢ç›‘æ§åŒºåŸŸçš„å®šä¹‰å°šæœªå®Œæˆï¼Œè‡³å°‘éœ€è¦å®šä¹‰ä¸‰ä¸ªé¡¶ç‚¹"));
         this->isFirstDoubleClick = false;
     }
     else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
@@ -635,7 +635,7 @@ void Qj1Widget::CompleteRDefining(){
 
 }
 
-//Íê³É¼à¿ØÇøÓò×é¶¨Òå
+//å®Œæˆç›‘æ§åŒºåŸŸç»„å®šä¹‰
 void Qj1Widget::CompleteRGDefining(){
 
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
@@ -770,7 +770,7 @@ void Qj1Widget::mouseDoubleClickEvent(QMouseEvent *e){
 
 void Qj1Widget::mousePressEvent(QMouseEvent *e)
 {
-    //qDebug()<<"Êó±êÑ¹ÏÂÊÂ¼şÀ´×Ôqj1widget";
+    //qDebug()<<"é¼ æ ‡å‹ä¸‹äº‹ä»¶æ¥è‡ªqj1widget";
     if(e->button() == Qt::LeftButton)
     {
       //  isDrag = true;
@@ -818,7 +818,7 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
         QPainter p(&pixmap1);
         QPen pen;
         pen.setColor(QColor(255,255,255,255));
-        QFont font("Ó×Ô²", 80, QFont::Bold);
+        QFont font("å¹¼åœ†", 80, QFont::Bold);
         p.setFont(font);
         p.setPen(pen);
 //       if(locationX*this->width()>3*mat.cols/10){
@@ -831,7 +831,7 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
         mw->label->setScaledContents(true);
         mw->label->setPixmap(pixmap1);
     }
-    e->ignore();//Õâ¸ö¶«Î÷·Ç³£ÖØÒª£¬Ê¹µÃ¸¸ÀàµÄÊÂ¼ş´¦Àíº¯Êı¿ÉÒÔ±»Ö´ĞĞ
+    e->ignore();//è¿™ä¸ªä¸œè¥¿éå¸¸é‡è¦ï¼Œä½¿å¾—çˆ¶ç±»çš„äº‹ä»¶å¤„ç†å‡½æ•°å¯ä»¥è¢«æ‰§è¡Œ
 }
 
 void Qj1Widget::mouseMoveEvent(QMouseEvent *e)
@@ -1084,8 +1084,8 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
 
 //void Qj1Widget::paintEvent(QPaintEvent *){
 //     paint->begin(this);
-//     paint->setPen(QPen(Qt::red,4,Qt::SolidLine)); //ÉèÖÃ»­±ÊĞÎÊ½
-//     paint->setBrush(QBrush(Qt::red,Qt::SolidPattern)); //ÉèÖÃ»­Ë¢ĞÎÊ½
+//     paint->setPen(QPen(Qt::red,4,Qt::SolidLine)); //è®¾ç½®ç”»ç¬”å½¢å¼
+//     paint->setBrush(QBrush(Qt::red,Qt::SolidPattern)); //è®¾ç½®ç”»åˆ·å½¢å¼
 //     paint->drawRect(20,20,160,160);
 //     paint->end();
 //}
@@ -1115,22 +1115,22 @@ Rect Qj1Widget::getQRectan6(){
 
 }
 
-//ÓÉWidget×ø±êµÄX»ñµÃÍ¼ÏñÖĞµÄX
+//ç”±Widgetåæ ‡çš„Xè·å¾—å›¾åƒä¸­çš„X
 double Qj1Widget::getMatX(double x){
     return x*mat.cols/this->width();
 }
 
-//ÓÉWidget×ø±êµÄY»ñµÃÍ¼ÏñÖĞµÄY
+//ç”±Widgetåæ ‡çš„Yè·å¾—å›¾åƒä¸­çš„Y
 double Qj1Widget::getMatY(double y){
     return y*mat.rows/this->height();
 }
 
-//ÓÉÍ¼ÏñÖĞµÄX»ñµÃWidgetÖĞµÄX
+//ç”±å›¾åƒä¸­çš„Xè·å¾—Widgetä¸­çš„X
 double Qj1Widget::getWidgetX(double x){
     return x*this->width()/mat.cols;
 }
 
-//ÓÉÍ¼ÏñÖĞµÄY»ñµÃWidgetÖĞµÄY
+//ç”±å›¾åƒä¸­çš„Yè·å¾—Widgetä¸­çš„Y
 double Qj1Widget::getWidgetY(double y){
     return y*this->height()/mat.rows;
 }
@@ -1241,7 +1241,7 @@ vector<MyObject> Qj1Widget::getSelectedObjects3(){
     for(int i = 0; i < count; i++){
         MyObject obj = objs[i];
 
-        //ÒÑ¾­³öÏÖ¹ıµÄ£¬Ò²¸úÉÏ
+        //å·²ç»å‡ºç°è¿‡çš„ï¼Œä¹Ÿè·Ÿä¸Š
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
         vector<MyObject> aos = mw->widget3->objs;
@@ -1267,7 +1267,7 @@ vector<MyObject> Qj1Widget::getSelectedObjects3(){
     return os;
 }
 
-//Ñ¡ÔñµÄÄ¿±ê²»ÄÜÉÓÉÏ£¬Ö»ÄÜ¼õÉÙ
+//é€‰æ‹©çš„ç›®æ ‡ä¸èƒ½æä¸Šï¼Œåªèƒ½å‡å°‘
 vector<MyObject> Qj1Widget::getSelectedObjects4(){
     vector<MyObject> os;
     int count = this->objs.size();
@@ -1282,7 +1282,7 @@ vector<MyObject> Qj1Widget::getSelectedObjects4(){
     for(int i = 0; i < count; i++){
         MyObject obj = objs[i];
 
-        //ÒÑ¾­³öÏÖ¹ıµÄ£¬Ò²¸úÉÏ
+        //å·²ç»å‡ºç°è¿‡çš„ï¼Œä¹Ÿè·Ÿä¸Š
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
         vector<MyObject> aos = mw->widget4->objs;
@@ -1308,7 +1308,7 @@ vector<MyObject> Qj1Widget::getSelectedObjects4(){
     return os;
 }
 
-//Ñ¡ÔñµÄÄ¿±ê²»ÄÜÉÓÉÏ£¬Ö»ÄÜ¼õÉÙ
+//é€‰æ‹©çš„ç›®æ ‡ä¸èƒ½æä¸Šï¼Œåªèƒ½å‡å°‘
 vector<MyObject> Qj1Widget::getSelectedObjects6(){
     vector<MyObject> os;
     int count = this->objs.size();
@@ -1323,7 +1323,7 @@ vector<MyObject> Qj1Widget::getSelectedObjects6(){
     for(int i = 0; i < count; i++){
         MyObject obj = objs[i];
 
-        //ÒÑ¾­³öÏÖ¹ıµÄ£¬Ò²¸úÉÏ
+        //å·²ç»å‡ºç°è¿‡çš„ï¼Œä¹Ÿè·Ÿä¸Š
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
         vector<MyObject> aos = mw->widget6->objs;

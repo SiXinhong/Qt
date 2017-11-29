@@ -1,4 +1,4 @@
-#include "detailsofrg.h"
+ï»¿#include "detailsofrg.h"
 
 
 DetailsOfRG::DetailsOfRG(MainWindow *mw,int index) :
@@ -38,31 +38,31 @@ void DetailsOfRG::detailsShow(){
         name[i]= mw->rgs.at(index).rs[i].name;
         Scalar color = mw->rgs.at(index).rs[i].color;
         if(mw->rgs.at(index).rs[i].hasObjects){
-             hasObjects[i] ="ÓÐÄ¿±ê½øÈë¸ÃÇøÓò";
+             hasObjects[i] ="æœ‰ç›®æ ‡è¿›å…¥è¯¥åŒºåŸŸ";
         }else{
-             hasObjects[i] ="ÎÞÄ¿±ê½øÈë¸ÃÇøÓò";
+             hasObjects[i] ="æ— ç›®æ ‡è¿›å…¥è¯¥åŒºåŸŸ";
         }
 
         if(mw->rgs.at(index).rs[i].isRect ){
-            type[i] ="¾ØÐÎ";
+            type[i] ="çŸ©å½¢";
 
         }else
-            type[i] ="¶à±ßÐÎ";
+            type[i] ="å¤šè¾¹å½¢";
 
          isShow[i] = new QToolButton(cenWidget);
 
         if(mw->rgs.at(index).rs[i].isActive){
-            isShow[i]->setText("Òþ²Ø");
+            isShow[i]->setText("éšè—");
         }else
-            isShow[i]->setText("ÏÔÊ¾");
+            isShow[i]->setText("æ˜¾ç¤º");
 
         connect(isShow[i],SIGNAL(clicked()),this,SLOT(regionShow()));
         isShow[i]->setToolTip(  QString::number(i));
-        label1[i] = new QLabel(QString("¼à¿ØÇøÓò ").append(name[i]).append(":"),cenWidget);
+        label1[i] = new QLabel(QString("ç›‘æŽ§åŒºåŸŸ ").append(name[i]).append(":"),cenWidget);
         label2[i] = new QLabel(type[i],cenWidget);
 
         label4[i] = new QLabel(hasObjects[i],cenWidget);
-        label5[i] = new QLabel("ÑÕÉ«",cenWidget);
+        label5[i] = new QLabel("é¢œè‰²",cenWidget);
         label5[i]->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
 
         layout->addWidget(label1[i],i,0);
@@ -98,13 +98,13 @@ void DetailsOfRG::regionShow(){
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
     int rNo = button->toolTip().toInt();
 
-    if(button->text()=="ÏÔÊ¾"){
+    if(button->text()=="æ˜¾ç¤º"){
         mw->rgs.at(index).rs[rNo].isActive =true;
-        button->setText("Òþ²Ø");
+        button->setText("éšè—");
     }
-    else if(button->text()=="Òþ²Ø"){
+    else if(button->text()=="éšè—"){
         mw->rgs.at(index).rs[rNo].isActive =false;
-        button->setText("ÏÔÊ¾");
+        button->setText("æ˜¾ç¤º");
     }
 
 }

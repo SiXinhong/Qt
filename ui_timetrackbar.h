@@ -1,8 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'timetrackbar.ui'
 **
-** Created: Mon Nov 20 12:09:38 2017
-**      by: Qt User Interface Compiler version 4.7.3
+** Created by: Qt User Interface Compiler version 5.2.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -11,14 +10,14 @@
 #define UI_TIMETRACKBAR_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QHeaderView>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenuBar>
-#include <QtGui/QStatusBar>
-#include <QtGui/QWidget>
+#include <QtWidgets/QAction>
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QHeaderView>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QStatusBar>
+#include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
 
@@ -32,16 +31,16 @@ public:
     void setupUi(QMainWindow *timeTrackBar)
     {
         if (timeTrackBar->objectName().isEmpty())
-            timeTrackBar->setObjectName(QString::fromUtf8("timeTrackBar"));
+            timeTrackBar->setObjectName(QStringLiteral("timeTrackBar"));
         timeTrackBar->resize(800, 600);
         menubar = new QMenuBar(timeTrackBar);
-        menubar->setObjectName(QString::fromUtf8("menubar"));
+        menubar->setObjectName(QStringLiteral("menubar"));
         timeTrackBar->setMenuBar(menubar);
         centralwidget = new QWidget(timeTrackBar);
-        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        centralwidget->setObjectName(QStringLiteral("centralwidget"));
         timeTrackBar->setCentralWidget(centralwidget);
         statusbar = new QStatusBar(timeTrackBar);
-        statusbar->setObjectName(QString::fromUtf8("statusbar"));
+        statusbar->setObjectName(QStringLiteral("statusbar"));
         timeTrackBar->setStatusBar(statusbar);
 
         retranslateUi(timeTrackBar);
@@ -51,7 +50,7 @@ public:
 
     void retranslateUi(QMainWindow *timeTrackBar)
     {
-        timeTrackBar->setWindowTitle(QApplication::translate("timeTrackBar", "MainWindow", 0, QApplication::UnicodeUTF8));
+        timeTrackBar->setWindowTitle(QApplication::translate("timeTrackBar", "MainWindow", 0));
     } // retranslateUi
 
 };

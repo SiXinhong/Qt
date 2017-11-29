@@ -3,7 +3,7 @@
 
 //#define socket_debug
 #include <winsock2.h>
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 #pragma comment(lib, "ws2_32.lib")
 

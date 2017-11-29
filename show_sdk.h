@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <opencv.hpp>
+#include <opencv2/opencv.hpp>
 
 //#include "socket.h"
 //using namespace std;

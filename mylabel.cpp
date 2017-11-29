@@ -1,4 +1,4 @@
-#include "mylabel.h"
+ï»¿#include "mylabel.h"
 #include <QPainter>
 MyLabel::MyLabel(QWidget *parent) :
     QLabel(parent)
@@ -6,7 +6,7 @@ MyLabel::MyLabel(QWidget *parent) :
 }
 
 void MyLabel::paintEvent(QPaintEvent *){
-//        QLabel::paintEvent(event);//ÏÈµ÷ÓÃ¸¸ÀàµÄpaintEventÎªÁËÏÔÊ¾'±³¾°'!!!
+//        QLabel::paintEvent(event);//å…ˆè°ƒç”¨çˆ¶ç±»çš„paintEventä¸ºäº†æ˜¾ç¤º'èƒŒæ™¯'!!!
 //        QPainter *paint = new QPainter(this);
 //        paint->begin(this);
 //        paint->setPen(QPen(Qt::red,4,Qt::DashLine));

@@ -1,4 +1,4 @@
-//OpenCVͷ�ļ�
+﻿//OpenCV头文件
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -48,8 +48,8 @@ void RegionGroup::draw(Mat &mat){
 //    }
 }
 
-boolean RegionGroup::isInner(Point2f p){
-    boolean in = false;
+bool RegionGroup::isInner(Point2f p){
+    bool in = false;
     if(this->isAlert){
         for(int i = 0; i< this->rs.size(); i++){
             Region r = rs[i];

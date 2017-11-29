@@ -1,7 +1,7 @@
-#ifndef REGION_H
+ï»¿#ifndef REGION_H
 #define REGION_H
 
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <highgui.h>
 #include <cv.h>
@@ -13,7 +13,7 @@
 using namespace cv;
 using namespace std;
 
-//¼à¿ØÇøÓòÀà
+//ç›‘æ§åŒºåŸŸç±»
 class Region
 {
 public:
@@ -29,27 +29,27 @@ public:
 
     QString name;
 
-    boolean hasObjects;
+    bool hasObjects;
 
-    boolean isActive;
+    bool isActive;
 
-    //ÊÇ¾ØĞÎ»¹ÊÇ¶à±ßĞÎµÄ±êÖ¾
-    boolean isRect;
+    //æ˜¯çŸ©å½¢è¿˜æ˜¯å¤šè¾¹å½¢çš„æ ‡å¿—
+    bool isRect;
 
-    //ÑÕÉ«
+    //é¢œè‰²
     Scalar color;
 
-    //¾ØĞÎ
+    //çŸ©å½¢
     Rect rect;
 
-    //¶à±ßĞÎ
+    //å¤šè¾¹å½¢
     vector<Point> poly;
 
     void draw(Mat &mat);
 
-    //ÔÚÏÔÊ¾Çø»­£¬Ö»»­Ò»±ä£¬drawÔÚÖ÷matÖĞ£¨Á½¸öÈ«¾°Í¼Æ´½Ó£©»­Á½·İ
+    //åœ¨æ˜¾ç¤ºåŒºç”»ï¼Œåªç”»ä¸€å˜ï¼Œdrawåœ¨ä¸»matä¸­ï¼ˆä¸¤ä¸ªå…¨æ™¯å›¾æ‹¼æ¥ï¼‰ç”»ä¸¤ä»½
     void draw1Time(Mat &mat);
-    boolean isInner(Point2f p);
+    bool isInner(Point2f p);
 
 };
 #endif // REGION_H

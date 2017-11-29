@@ -1,4 +1,4 @@
-#ifndef RECTAN_H
+﻿#ifndef RECTAN_H
 #define RECTAN_H
 
 class Rectan

@@ -1,4 +1,4 @@
-#include "alert.h"
+ï»¿#include "alert.h"
 
 Alert::Alert(MainWindow *mw,vector<MyObject> os) :
     QMainWindow()
@@ -24,7 +24,7 @@ void Alert::alertInfo(){
             for(int j = 0; j < mw->rgs.size(); j++){
                 if(mw->rgs[j].isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
                     if(!alert){
-                         QLabel *title = new QLabel(QString("ÓÐÄ¿±ê½øÈë£º"),cenWidget);
+                         QLabel *title = new QLabel(QString("æœ‰ç›®æ ‡è¿›å…¥ï¼š"),cenWidget);
                          layout->addWidget(title,0,0);
                     }
                     alert = true;
@@ -32,7 +32,7 @@ void Alert::alertInfo(){
                     for(int k = 0; k<mw->rgs[j].rs.size();k++){
                         if(mw->rgs[j].rs[k].isInner(Point2f(mo.cenPoint.x, mo.cenPoint.y))){
                             QString region = mw->rgs[j].rs[k].name;
-                            QLabel *label = new QLabel(QString("¼à¿ØÇøÓò×é").append(group).append(":").append(region),cenWidget);
+                            QLabel *label = new QLabel(QString("ç›‘æŽ§åŒºåŸŸç»„").append(group).append(":").append(region),cenWidget);
                             layout->addWidget(label,index++,0);
                          }
 
@@ -43,7 +43,7 @@ void Alert::alertInfo(){
         }
 
         if(!alert){
-            QLabel*label = new QLabel(QString("ÎÞÄ¿±ê½øÈë¼à¿ØÇøÓò"),cenWidget);
+            QLabel*label = new QLabel(QString("æ— ç›®æ ‡è¿›å…¥ç›‘æŽ§åŒºåŸŸ"),cenWidget);
             layout->addWidget(label,0,0);
         }
 
