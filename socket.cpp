@@ -11,7 +11,7 @@ extern char sendbuffer[SEND_BUFFER_SIZE];				//定义的一个socket的发送缓
 //char recvbuffer[RECV_BUFFER_SIZE];				//定义的一个socket的接收缓冲区		
 //char* databuffer = (char *)malloc(DATA_BUFFER_SIZE);//存放数据的静态缓冲区
 //
-#define DATA_LENGTH_MAX     10*1024*1024
+#define DATA_LENGTH_MAX     45000*640*2
 #define DATA_LENGTH_MIN     9
 
 //char sendbuffer[SEND_BUFFER_SIZE];				//定义的一个socket的发送缓冲区
@@ -177,20 +177,20 @@ int MySocketInitial(void){
 	servAdr.sin_family = AF_INET;
     //////////////////////////////////////wangy/////////////////////
 
-    QFile file("./config/config.txt");
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug()<<"Can't open the file!"<<endl;
-    }
-    const char* ipstr;
-    if(!file.atEnd()){
-        QByteArray ipba = file.readLine();
-        ipstr = ipba.data();
-        qDebug()<<ipstr;
-    }
-    servAdr.sin_addr.s_addr = inet_addr(ipstr);
+    //QFile file("./config/config.txt");
+//    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+//        qDebug()<<"Can't open the file!"<<endl;
+//    }
+//    const char* ipstr;
+//    if(!file.atEnd()){
+//        QByteArray ipba = file.readLine();
+//        ipstr = ipba.data();
+//        qDebug()<<ipstr;
+//    }
+//    servAdr.sin_addr.s_addr = inet_addr(ipstr);
 
     //////////////////////////////////////wangy.end//////////////////
-    //servAdr.sin_addr.s_addr = inet_addr("192.168.1.1");
+    servAdr.sin_addr.s_addr = inet_addr("192.168.1.1");
     servAdr.sin_port = htons(atoi("8080"));
 
 

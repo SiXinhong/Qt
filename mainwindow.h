@@ -70,9 +70,9 @@ class MainWindow;
 #include "welcomewindow.h"
 #include <QQueue>
 #include<QMap>
+#include "configuration.h"
 #include "monitor.h"
 #include "alert.h"
-
 using namespace cv;
 using namespace std;
 
@@ -90,6 +90,7 @@ public slots:
   void onAlertTimer();
     
 public:
+
    QToolButton *zWZoomIn;
    QToolButton *zWZoomout;
    QToolButton *n1WZoomIn;
@@ -99,6 +100,7 @@ public:
   void readRgs();//读取监控组配置
   void writeRgs();//保存监控组配置
   Monitor *monitor;
+  Configuration *configure;
   class Alert *alert;
     bool location;
    QQueue<QTime> video;

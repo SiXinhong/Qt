@@ -531,7 +531,7 @@ void ZWidget::draw(){
             setMat(image33);
             //setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
-            CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
+            CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2(),2);
         }
         else{
             Rect trect;
@@ -546,7 +546,7 @@ void ZWidget::draw(){
             setMat(image33);
             //setMat(image3);
             //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
-            CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+            CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height),2);
         }
 
     }
@@ -623,7 +623,7 @@ void ZWidget::draw(){
 //          setMat(image33);
           setMat(image3);
          // rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(0,0,255),5,1,0);
-          CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+          CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height),2);
     }
     for(int j=0;j<this->rs.size();j++){
         this->rs[j].draw1Time(mat);

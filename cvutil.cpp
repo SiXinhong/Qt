@@ -100,7 +100,7 @@ QImage CVUtil::MatToQImage(const cv::Mat& mat, QImage imgLabel)
 }
 
 //画标尺
-void CVUtil::paintScale(Mat image,double startw,double starth, double endw, double endh)
+void CVUtil::paintScale(Mat image,double startw,double starth, double endw, double endh,int widget)
 {
     //QImage img;
     int c = image.cols/30;
@@ -118,7 +118,11 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
         }
         QString text = QString::number(ii,10);
         string str = text.toStdString();
-       putText(image,str,Point(i*c-10,35),FONT_HERSHEY_SCRIPT_SIMPLEX,1.1,Scalar(255,255,255),3,8,0);
+        if(widget==1){
+            putText(image,str,Point(i*c-10,35),FONT_HERSHEY_SCRIPT_SIMPLEX,1.1,Scalar(255,255,255),3,8,0);
+        }else if (widget == 2){
+            putText(image,str,Point(i*c-10,35),FONT_HERSHEY_SCRIPT_SIMPLEX,0.60,Scalar(255,255,255),2,8,0);
+        }
       //putText(image,str,Point(i*c-10,25),3,0.75,Scalar(255,255,255));
      }
      else{
@@ -137,8 +141,13 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
             string str2 = text2.toStdString();
 
             // putText(image,str2,Point(20,i*r+10),3,0.75,Scalar(255,255,255));
-            putText(image,str2,Point(20,i*r+20),FONT_HERSHEY_SCRIPT_SIMPLEX,1.1,Scalar(255,255,255),3,8,0);
+            if(widget ==1){
+                 putText(image,str2,Point(20,i*r+20),FONT_HERSHEY_SCRIPT_SIMPLEX,1.1,Scalar(255,255,255),3,8,0);
+             }
+            else if (widget == 2){
+                putText(image,str2,Point(20,i*r+20),FONT_HERSHEY_SCRIPT_SIMPLEX,0.60,Scalar(255,255,255),2,8,0);
 
+            }
         }
         else{
             line(image,Point(0,i*r),Point(8,i*r),Scalar(255,255,255),2,8,0);

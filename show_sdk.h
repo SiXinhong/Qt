@@ -22,7 +22,7 @@ using cv::Size;
 using cv::Mat;
 
 #define MIN_ID 0
-#define MAX_ID 2
+#define MAX_ID 5
 
 //返回值宏定义
 #define SetParaSuccess 0

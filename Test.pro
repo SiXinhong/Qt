@@ -46,7 +46,8 @@ SOURCES += main.cpp\
     monitor.cpp \
     detailsofrg.cpp \
     alert.cpp \
-    timecontrol.cpp
+    timecontrol.cpp \
+    configuration.cpp
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -79,7 +80,8 @@ HEADERS  += mainwindow.h \
     monitor.h \
     detailsofrg.h \
     alert.h \
-    timecontrol.h
+    timecontrol.h \
+    configuration.h
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

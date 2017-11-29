@@ -29,6 +29,7 @@ INPUT(
 ./debug\detailsofrg.o
 ./debug\alert.o
 ./debug\timecontrol.o
+./debug\configuration.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
@@ -44,4 +45,5 @@ INPUT(
 ./debug\moc_detailsofrg.o
 ./debug\moc_alert.o
 ./debug\moc_timecontrol.o
+./debug\moc_configuration.o
 );

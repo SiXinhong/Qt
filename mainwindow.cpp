@@ -77,15 +77,21 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
         //        connect(timerInit, SIGNAL(timeout()), SLOT(init()));
     }else{
         init();
+        //configurationClicked();
     }
 }
 
 void MainWindow::init(){
+
+    configure = 0;
+
     monitor = 0;
+
     this->setWindowTitle("红外全景控制系统");
     location = false;
     directory = new QDir();
     widgetNew=NULL;
+
     this->setWindowFlags(Qt::FramelessWindowHint);
     // this->objectAttributes=new ObjectAttributes(&this->in);
     this->objectAttributes = 0;
@@ -118,7 +124,9 @@ void MainWindow::init(){
     //判断是否处于定义监控区域的状态
     this->isDefiningRegion = false;
     this->isDefiningRectRegion = true;
+
     readRgs();
+
     //临时的，监控区域的定义需要由定义监控区域的界面来打开
     char name  = 'a'+rgs.size();
     rg = RegionGroup((QString)name, Scalar(0,255,0));
@@ -132,7 +140,7 @@ void MainWindow::init(){
 
     QWidget *tempW = new QWidget(this);
     tempW->setGeometry(0,0,1,1);
-
+    qDebug()<<"ini()3";
     //    widget1 = new Qj1Widget(new QWidget(this));
     //    widget2 = new Qj2Widget(new QWidget(this));
     //    widget3 = new ZWidget(new QWidget(this));
@@ -172,14 +180,14 @@ void MainWindow::init(){
 
     ////////////////zc///////////////////////
     //通信连接
-    //MySocketInitial();
-
+    MySocketInitial();
+    qDebug()<<"ini()6";
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
     selfProcessing();
     //this->jinProcessing();
     //---------------------------------------------------------
-
+    qDebug()<<"ini()4";
     //临时性处理，将来被金老师SDK替换--------------------------------
     //tempProcessing();
     //---------------------------------------------------------
@@ -238,7 +246,7 @@ void MainWindow::init(){
     this->setWindowState(Qt::WindowMaximized);
     this->trackBar=new TrackBar(this);
     this->strackBar = new STrackBar(this);
-
+ qDebug()<<"ini()5";
 
     //    double x = widget5->getDirectionX(1,2);
     //    qDebug()<<x<<"getDirectionX";
@@ -251,7 +259,7 @@ void MainWindow::init(){
 
         this->show();//BackWindow的show是由mainwindow中指定代码调用的
     }
-
+    qDebug()<<"ini()7";
 }
 
 MainWindow::~MainWindow(){
@@ -1624,7 +1632,7 @@ void MainWindow::adjustment()
 void MainWindow::onTimerOut()
 {
     //std::cout<<"ok1 "<<std::endl;
-    this->selfTimerout();
+    //this->selfTimerout();
     //this->jinTimerout();
 }
 
@@ -4295,8 +4303,24 @@ void MainWindow::exitClicked(){
 }
 
 void MainWindow::configurationClicked(){
+    if(configure == NULL){
+        configure = new Configuration(this);
+    }
+    this->configure->setWindowTitle(QString("转台控制"));
+    this->configure->activateWindow();
+    QDesktopWidget *desktop= QApplication::desktop();
+    QRect screenRect = desktop->screenGeometry();
+    int width = screenRect.width();
+    int height = screenRect.height();
+    this->configure->setGeometry(width/4,height/4,width/3,height/3);
+    this->configure->show();
+    this->configure->configure();
+//    if(welcome!=0){
+//        welcome->close();
 
-    QMessageBox::information(this,tr("配置...菜单项"),tr("根据我们的实际情况，包括相机参数、转台参数、检测算法参数、软件参数，定位参数等的设置。继续努力。"));
+//        this->show();//BackWindow的show是由mainwindow中指定代码调用的
+//    }
+    //QMessageBox::information(this,tr("配置...菜单项"),tr("根据我们的实际情况，包括相机参数、转台参数、检测算法参数、软件参数，定位参数等的设置。继续努力。"));
 }
 
 void MainWindow::saveconfigurationClicked(){
@@ -4365,11 +4389,12 @@ void MainWindow::readRgs(){
     QFile file(QString("./config/rgs.config"));
     if(!file.exists())
         return;
-
+    qDebug()<<"readconf";
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
     int size;
     in>>size;
+     qDebug()<<"readconf222";
     for(int i=0;i<size;i++){
         RegionGroup *rg = new RegionGroup();
         Scalar color;
@@ -4382,6 +4407,7 @@ void MainWindow::readRgs(){
 
         int regionSize;
         in>>regionSize;
+         qDebug()<<"readconf333";
         for(int j=0;j<regionSize;j++){
             Region *r = new Region();
             in>>r->name;
@@ -4407,7 +4433,9 @@ void MainWindow::readRgs(){
         }
         rg->setColor(color);
         rgs.push_back(*rg);
+         qDebug()<<"readconf444";
     }
+    qDebug()<<"readconf666";
     file.close();
 }
 
@@ -4459,11 +4487,11 @@ void MainWindow::alertInformation(){
     showAlert->setSingleShot(true);
     showAlert->start(5000);
     connect(showAlert,SIGNAL(timeout()),SLOT(onAlertTimer()));
-
+    qDebug()<<"alertINFO";
     if(alert == NULL){
         alert = new Alert(this,widget1->getObjects());
     }
-
+    qDebug()<<"alertINFO2";
     this->alert->setWindowFlags(Qt::FramelessWindowHint);
     this->alert->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
@@ -4471,6 +4499,7 @@ void MainWindow::alertInformation(){
     int width = screenRect.width();
     int height = screenRect.height();
     this->alert->setGeometry(8*width/10,height/10,width/10,height/10);
+    qDebug()<<"alertINFO3";
     if(isGaojing){
         this->alert->show();
         this->alert->alertInfo();

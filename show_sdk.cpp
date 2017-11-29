@@ -2,6 +2,7 @@
 
 #include "show_sdk.h"
 
+
 extern SOCKET hSocket;
 extern char sendbuffer[SEND_BUFFER_SIZE];
 extern WSANETWORKEVENTS netEvents;
@@ -12,15 +13,10 @@ int para_data_len = 40;
 DetectorParams dp;
 TrackingParameters tp;
 StitchParmeters sp;
-/*
-   设置三种参数
-   1.mode=0:算法参数，此时id默认为0，无意义
-   2.mode=1:转台参数
-   3.mode=3:摄像头参数
-*/
+
 int SetAlgorithmPara();
 int SetControlPara(int id);
-int SetCameraPara(int id);
+int SetCameraPara(int id,int mode);
 
 int  Getpanorama(IntegratedData *&data);
 int  GetObjectFeature(IntegratedData *&data);
@@ -39,32 +35,46 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 int para_to_string(char *s, int &datalen);
 
 /****************************************************************主接口**********************************************************************/
+/*
+   设置三种参数
+   1.mode=0:算法参数，此时id默认为0，无意义
+   2.mode=1:转台参数//buyong
+   3.mode=2:摄像头参数a
+   3.mode=3:摄像头参数b
+   3.mode=4:摄像头参数control
+*/
 int SetSystemPara(int mode, int id)
 {
-	//检查输入参数
-	if (mode != 0 && mode != 1 && mode != 2)
+    //检查输入参数
+    if (mode>20)
         return ERROR_MODE;
-	if (id<MIN_ID || id>MAX_ID)
+    if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
-
-	//根据mode分别设置参数
-	switch (mode)
-	{
-	case 0:
-		return SetAlgorithmPara();//ok
-		break;
-	case 1:
-		return SetControlPara(id);
-		break;
-	case 2:
-		return SetCameraPara(id);
-		break;
-	default:
+    //根据mode分别设置参数
+    switch (mode)
+    {
+    case 0:
+        return SetAlgorithmPara();//ok
+        break;
+    case 1:
+        return SetControlPara(id);
+        break;
+    case 2:
+        return SetCameraPara(0,id);//a
+        break;
+    case 3:
+        return SetCameraPara(1,id);//b
+        break;
+    case 4:
+        return SetCameraPara(2, id);//control
+        break;
+    default:
         return ERROR_MODE;
-		break;
-	}
+        break;
+    }
 
 }
+
 
 
 int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
@@ -152,23 +162,124 @@ int SetControlPara(int id)
 	
 }
 
-int SetCameraPara(int id)
+//11.11修改
+/*
+id=0代表A相机
+	mode=0:状态查询
+	mode=1:调焦近处
+	mode=2:调焦远处
+	mode=3:背景校正
+	mode=4:快门校正
+	mode=5:调焦停止
+id=1代表B相机
+	mode=0:状态查询
+	mode=1:调焦近处
+	mode=2:调焦远处
+	mode=3:背景校正
+	mode=4:快门校正
+	mode=5:调焦停止
+id=2代表转台
+	mode=0:停止周视
+	mode=1:启动周视
+*/
+int SetCameraPara(int id,int mode)
 {
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
-        return ERROR_Id;
+		return ERROR_Id;
 
-	//检查string的内容是否符合标准
-	int result=0;// = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, const_cast<char*>(para_string), strlen(para_string));
-	//std::cout << "strlen(para_string) "<<strlen(para_string) << std::endl;
+	int result = 0;
+	if (id == 0){
+		//相机A参数设置
+         std::cout<<"mode: "<<mode<<std::endl;
+		if (mode == 0){
+			//状态查询
+			char send_mode = 0;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 1){
+			//调焦近处
+			char send_mode = 1;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 2){
+			//调焦远处
+			char send_mode = 2;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 3){
+			//背景校正
+			char send_mode = 3;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 4){
+			//快门校正
+			char send_mode = 4;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 5){
+			//调焦停止
+			char send_mode =5;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+	}
+	else if (id == 1){
+		//相机B参数设置
+		if (mode == 0){
+			//状态查询
+			char send_mode = 6;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 1){
+			//调焦近处
+			char send_mode = 7;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 2){
+			//调焦远处
+			char send_mode = 8;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 3){
+			//背景校正
+			char send_mode = 9;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 4){
+			//快门校正
+			char send_mode = 10;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 5){
+			//调焦停止
+			char send_mode = 11;
+			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+	}
+	else if (id == 2 ){
+		//转台参数设置
+		if (mode == 0){
+			//停止周视
+			char send_mode = 12;
+			result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+		else if (mode == 1){
+			//启动周视
+            std::cout<<"mode";
+			char send_mode = 13;
+			result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+		}
+	}
+	
 	//检查string的内容是否符合标准
 	if (result == 0){
 		return SetParaSuccess;
 	}
 	else{
-        return ERROR_SetFail;
+		return ERROR_SetFail;
 	}
 }
+
 
 //更新，加入时间
 int  Getpanorama(IntegratedData *&data)

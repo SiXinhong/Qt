@@ -1,4 +1,4 @@
-#ifndef IMAGEDEAL_H
+ï»¿#ifndef IMAGEDEAL_H
 #define IMAGEDEAL_H
 
 class ImageDeal
@@ -6,7 +6,7 @@ class ImageDeal
 public:
     ImageDeal();
     QImage Img;
-    QImage AdjustBrightness(QImage Img, int iBrightValue);//µ÷ÁÁ¶È
+    QImage AdjustBrightness(QImage Img, int iBrightValue);//è°ƒäº®åº¦
 };
 
 #endif // IMAGEDEAL_H

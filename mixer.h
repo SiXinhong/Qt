@@ -1,4 +1,4 @@
-// Mixer.h: interface for the CMixer class.
+ï»¿// Mixer.h: interface for the CMixer class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -18,7 +18,7 @@ public:
 CMixer();
 virtual ~CMixer();
 
-void SetMute(bool vol);     //ÉèÖÃÉè±¸¾²Òô
+void SetMute(bool vol);     //è®¾ç½®è®¾å¤‡é™éŸ³
 
 private:
 void SetMuteValue(HMIXER hmixer ,MIXERCONTROL *mxc, bool mute);

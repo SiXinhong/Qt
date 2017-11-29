@@ -82,6 +82,7 @@ void WelcomeWindow::exitClicked(){
 void WelcomeWindow::loginClicked(){
     if(!start){
          mainwindow->init();
+       // mainwindow->configurationClicked();
          start =true;
     }
     else{

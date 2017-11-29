@@ -388,7 +388,7 @@ void NWidget1::draw(){
                 cv::resize(image4, image44,dsize);
                 setMat(image44);
                 //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
-                CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2());
+                CVUtil::paintScale(mat, getDirectionX((double)rect.x), getDirectionY((double)rect.y), getDirectionX2(), getDirectionY2(),1);
             }
             else{
                 Rect trect;
@@ -403,7 +403,7 @@ void NWidget1::draw(){
                 setMat(image44);
                // setMat(image4);
                 //rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
-                CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+                CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height),1);
             }
         }
     //    else if(this->getFrom() == 2){
@@ -479,7 +479,7 @@ void NWidget1::draw(){
 //              setMat(image44);
               setMat(image4);
             //  rectangle(mat,Rect(5,0,mat.cols-5,mat.rows),Scalar(255,255,0),5,1,0);
-              CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height));
+              CVUtil::paintScale(mat, getDirectionX((double)trect.x), getDirectionY((double)trect.y), getDirectionX(trect.x+trect.width), getDirectionY(trect.y+trect.height),1);
 
         }
 
@@ -512,25 +512,45 @@ void NWidget1::DefineRect(){
 }
 
 void NWidget1::ZoomIn(){
-//    if(this->rect.x + 1/8 * this->rect.width >= 0){
-        this->rect.x = this->rect.x + 1/8 * this->rect.width;
+////    if(this->rect.x + 1/8 * this->rect.width >= 0){
+//        this->rect.x = this->rect.x + 1/8 * this->rect.width;
+//        this->rect.width = this->rect.width *3/4;
+////    }
+////    if(this->rect.y + 1/8 * this->rect.height >= 0){
+//        this->rect.y = this->rect.y + 1/8 * this->rect.height;
+//        this->rect.height = this->rect.height *3/4;
+////    }
+
+    if(/*this->rect.x + this->rect.width/8 <= pano.cols && */this->rect.width*3/4>0){
+        //this->rect.x = this->rect.x + this->rect.width/8;
         this->rect.width = this->rect.width *3/4;
-//    }
-//    if(this->rect.y + 1/8 * this->rect.height >= 0){
-        this->rect.y = this->rect.y + 1/8 * this->rect.height;
+    }
+    if(/*this->rect.y + this->rect.height/8 <=pano.rows && */this->rect.height*3/4>0){
+        //this->rect.y = this->rect.y + this->rect.height/8;
         this->rect.height = this->rect.height *3/4;
-//    }
+    }
 }
 
 void NWidget1::ZoomOut(){
-    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
-        this->rect.x = this->rect.x - 1/6 * this->rect.width;
+//    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
+//        this->rect.x = this->rect.x - 1/6 * this->rect.width;
+//        this->rect.width = this->rect.width *4/3;
+//    }
+//    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *7/6 < pano.rows)){
+//        this->rect.y = this->rect.y - 1/6 * this->rect.height;
+//        this->rect.height = this->rect.height *4/3;
+//    }
+
+    if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+        //this->rect.x = this->rect.x - this->rect.width/6;
         this->rect.width = this->rect.width *4/3;
     }
-    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *7/6 < pano.rows)){
-        this->rect.y = this->rect.y - 1/6 * this->rect.height;
+    if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+        //this->rect.y = this->rect.y - this->rect.height/6;
         this->rect.height = this->rect.height *4/3;
     }
+
+
 }
 
 

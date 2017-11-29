@@ -11,10 +11,17 @@ Alert::Alert(MainWindow *mw,vector<MyObject> os) :
 }
 
 void Alert::alertInfo(){
+    qDebug()<<"alert";
     QGridLayout* old=layout;
     layout=new QGridLayout;
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
+
+    if(mw->rgs.size() <= 1){
+        QLabel *noR = new QLabel(QString("未定义监控区域"),cenWidget);
+        layout->addWidget(noR,0,0);
+    }
+    else{
     int index = 1;
     QString group;
     if(mw->isGaojing){
@@ -41,10 +48,11 @@ void Alert::alertInfo(){
                 }
             }
         }
+            if(!alert){
+                QLabel*label = new QLabel(QString("无目标进入监控区域"),cenWidget);
+                layout->addWidget(label,0,0);
 
-        if(!alert){
-            QLabel*label = new QLabel(QString("无目标进入监控区域"),cenWidget);
-            layout->addWidget(label,0,0);
+        }
         }
 
         if(old!=0){
@@ -59,6 +67,7 @@ void Alert::alertInfo(){
             oldWidget->repaint();
             delete oldWidget;
         }
+
         cenWidget->setLayout(layout);
         this->setCentralWidget(cenWidget);
 }
