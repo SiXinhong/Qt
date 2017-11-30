@@ -11,7 +11,7 @@ Monitor::Monitor(MainWindow *mw) :
     cenWidget = 0;
     layout = 0;
     this->mw = mw;
-
+    hourWidget = new HourWidget(this);
 
 }
 
@@ -77,8 +77,8 @@ void Monitor::widgetShow(){
 
         QToolButton *edit = new QToolButton(cenWidget);
 
-//        User *user = new User();
-//        user->nID = tip.toInt();
+        //        User *user = new User();
+        //        user->nID = tip.toInt();
         edit->setText(QString("编辑"));
 
         edit->setToolTip(tip);
@@ -91,10 +91,10 @@ void Monitor::widgetShow(){
         details->setToolTip(tip);
         connect(details,SIGNAL(clicked()),this,SLOT(detailsShow()));
 
-//        QToolButton *timeCon = new QToolButton(cenWidget);
-//        timeCon->setText("告警时间段设置");
-//        timeCon->setToolTip(tip);
-//        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
+        QToolButton *timeCon = new QToolButton(cenWidget);
+        timeCon->setText("告警时间段设置");
+        timeCon->setToolTip(tip);
+        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
 
         layout->addWidget(label,i,0);
         layout->addWidget(regionGroup,i,1);
@@ -102,7 +102,7 @@ void Monitor::widgetShow(){
         layout->addWidget(attributes,i,3);
         layout->addWidget(edit,i,4);
         layout->addWidget(details,i,5);
-       // layout->addWidget(timeCon,i,6);
+        layout->addWidget(timeCon,i,6);
 
     }
     if(old!=0){
@@ -145,15 +145,15 @@ void Monitor::groupShow(){
 void Monitor::setAlert(){
 
     QObject* obj = sender();
-       QToolButton* button = dynamic_cast<QToolButton*>(obj);
-       if( button->text()== "取消报警"){
-            button->setText("报警");
-       }else if(button->text()=="报警"){
-           button->setText("取消报警");
-       }
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    if( button->text()== "取消报警"){
+        button->setText("报警");
+    }else if(button->text()=="报警"){
+        button->setText("取消报警");
+    }
 
-       int index = button->toolTip().toInt();
-       mw->rgs[index].isAlert = !mw->rgs[index].isAlert;
+    int index = button->toolTip().toInt();
+    mw->rgs[index].isAlert = !mw->rgs[index].isAlert;
 }
 
 void Monitor::attributesModify(){
@@ -174,10 +174,10 @@ void Monitor::attributesModify(){
 void Monitor::editFunction(){
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
-        int index = button->toolTip().toInt();
-        mw->rgsIndex = index;
-        mw->isDefiningRegion = true;
-        this->close();
+    int index = button->toolTip().toInt();
+    mw->rgsIndex = index;
+    mw->isDefiningRegion = true;
+    this->close();
 
 }
 
@@ -197,8 +197,8 @@ void Monitor::onClickName(){
 
 void Monitor::createRG(){
     this->close();
-     mw->widget1->CompleteRGDefining();
-     mw->isDefiningRegion = true;
+    mw->widget1->CompleteRGDefining();
+    mw->isDefiningRegion = true;
 }
 
 void Monitor::detailsShow(){
@@ -209,41 +209,47 @@ void Monitor::detailsShow(){
     // User *user = (User *)(button->userData(Qt::UserRole));
     //int index =user->nID;
 
-//    if(detailsOfRG==NULL||detailsOfRG->index == index){
-//        detailsOfRG   = new DetailsOfRG(mw,index);
-//    }
-//    else if(detailsOfRG!=NULL&&detailsOfRG->index==index){
-//        return;
-//    }
+    //    if(detailsOfRG==NULL||detailsOfRG->index == index){
+    //        detailsOfRG   = new DetailsOfRG(mw,index);
+    //    }
+    //    else if(detailsOfRG!=NULL&&detailsOfRG->index==index){
+    //        return;
+    //    }
 
-        DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
-        //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
-        detailsOfRG->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的详细信息"));
-        detailsOfRG->activateWindow();
-        QDesktopWidget *desktop= QApplication::desktop();
-        QRect screenRect = desktop->screenGeometry();
-        int width = screenRect.width();
-        int height = screenRect.height();
-        detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
-        detailsOfRG->show();
-        detailsOfRG->detailsShow();
+    DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
+    //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
+    detailsOfRG->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的详细信息"));
+    detailsOfRG->activateWindow();
+    QDesktopWidget *desktop= QApplication::desktop();
+    QRect screenRect = desktop->screenGeometry();
+    int width = screenRect.width();
+    int height = screenRect.height();
+    detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
+    detailsOfRG->show();
+    detailsOfRG->detailsShow();
 
 }
 
 void Monitor::timeControl(){
-//    QObject* obj = sender();
-//    QToolButton* button = dynamic_cast<QToolButton*>(obj);
-//    int index = button->toolTip().toInt();
-//    TimeControl *timeC = new TimeControl(mw);
-//    timeC->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的告警时间设置"));
-//    timeC->activateWindow();
-//    QDesktopWidget *desktop= QApplication::desktop();
-//    QRect screenRect = desktop->screenGeometry();
-//    int width = screenRect.width();
-//    int height = screenRect.height();
-//    timeC->setGeometry(7*width/12,5*height/12,width/3,height/3);
-//    timeC->show();
-//    timeC->timeInfo();
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    int index = button->toolTip().toInt();
+    timeIndex = index;
+    for(int i=0;i<7;i++){
+        for(int j=0;j<48;j++){
+            hourWidget->isActive[i][j] = mw->rgs[index].timeActive[i][j];
+        }
+    }
+    hourWidget->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的告警时间设置"));
+    hourWidget->activateWindow();
+    hourWidget->show();
+}
 
+void Monitor::onSelectTime(){
+    for(int i=0;i<7;i++){
+        for(int j=0;j<48;j++){
+            mw->rgs[timeIndex].timeActive[i][j] = hourWidget->isActive[i][j];
+        }
+    }
 
 }

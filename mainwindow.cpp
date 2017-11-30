@@ -1643,7 +1643,7 @@ void MainWindow::selfTimerout(){
     timerFlash->stop();
     //  qDebug()<<QTime::currentTime().toString("hh:mm:ss");
     QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-    // QDir *todayDir=new QDir();
+     //QDir *todayDir=new QDir();
     bool exist= directory->exists(today);
     if(!exist){
         directory->mkdir(today);
