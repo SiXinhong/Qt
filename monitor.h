@@ -18,7 +18,7 @@ class Monitor;
 #include "nwidget2.h"
 #include "mainwindow.h"
 #include "detailsofrg.h"
-#include "timecontrol.h"
+//#include "timecontrol.h"
 
 
 class Monitor : public QMainWindow

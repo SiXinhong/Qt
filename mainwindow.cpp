@@ -180,7 +180,7 @@ void MainWindow::init(){
 
     ////////////////zc///////////////////////
     //通信连接
-    MySocketInitial();
+    //MySocketInitial();
     qDebug()<<"ini()6";
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
