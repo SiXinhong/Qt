@@ -860,8 +860,10 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
                 mw->widget2->isTo3 = false;
             }else if(qjx > mat.cols/2){
                 qjx-=mat.cols/2;
+//                mw->widget1->isTo3 = false;
+//                mw->widget2->isTo3 =true;
                 mw->widget1->isTo3 = true;
-                mw->widget2->isTo3 =false;
+                mw->widget2->isTo3 = false;
             }
             if(qjx-width/2 >= 0){
                 xx2 = qjx- width/2;
@@ -908,6 +910,8 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
                 qjx-=mat.cols/2;
                 mw->widget1->isTo4 = true;
                 mw->widget2->isTo4 =false;
+//                mw->widget1->isTo6 = true;
+//                mw->widget2->isTo6 =false;
             }
             int height =mw->widget1->mat.rows/2;
             int width = height * mw->widget4->width() / mw->widget4->height();
@@ -963,6 +967,9 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
                 qjx-=mat.cols/2;
                 mw->widget1->isTo6 = true;
                 mw->widget2->isTo6 =false;
+//                mw->widget1->isTo6 = false;
+//                mw->widget2->isTo6 =true;
+
             }
 
             int height = mw->widget1->mat.rows/2;

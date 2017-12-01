@@ -10,6 +10,7 @@
 
 #include <QString>
 
+
 #include "region.h"
 
 using namespace cv;
@@ -49,6 +50,8 @@ public:
 
     void setColor(Scalar c);
 
+    bool timeActive[7][48];
 
+    bool isTimeAlertTrue();
 };
 #endif // REGIONGROUP_H

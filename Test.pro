@@ -47,7 +47,9 @@ SOURCES += main.cpp\
     detailsofrg.cpp \
     alert.cpp \
     #timecontrol.cpp \
-    configuration.cpp
+
+    configuration.cpp \
+    hourwidget.cpp \
 
 HEADERS  += mainwindow.h \
     mylabel.h \
@@ -81,7 +83,9 @@ HEADERS  += mainwindow.h \
     detailsofrg.h \
     alert.h \
     #timecontrol.h \
-    configuration.h
+
+    configuration.h \
+    hourwidget.h \
 
 FORMS    += mainwindow.ui\
 #    backwindow.ui \

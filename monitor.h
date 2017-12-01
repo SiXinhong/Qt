@@ -19,6 +19,7 @@ class Monitor;
 #include "mainwindow.h"
 #include "detailsofrg.h"
 //#include "timecontrol.h"
+#include "hourwidget.h"
 
 
 class Monitor : public QMainWindow
@@ -29,7 +30,9 @@ public:
 
 public:
     explicit Monitor(MainWindow *mw);
-
+    int timeIndex;
+    void onSelectTime();
+    HourWidget *hourWidget;
 
 
 private:
