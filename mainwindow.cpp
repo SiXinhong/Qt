@@ -4455,7 +4455,8 @@ void MainWindow::writeRgs(){
         out<<rgs[i].name;
         out<<rgs[i].isActive;
         out<<rgs[i].isAlert;
-        out<<rgs[i].rs.size();
+        int size2 = rgs[i].rs.size();
+        out<<size2;
         for(int j=0;j<rgs[i].rs.size();j++){
             out<<rgs[i].rs[j].name;
             out<<rgs[i].rs[j].hasObjects;
@@ -4467,7 +4468,8 @@ void MainWindow::writeRgs(){
                 out<<rgs[i].rs[j].rect.width;
                 out<<rgs[i].rs[j].rect.height;
             }else{
-                out<<rgs[i].rs[j].poly.size();
+                size2 = rgs[i].rs[j].poly.size();
+                out<<size2;
                 for(int k=0;k<rgs[i].rs[j].poly.size();k++){
                     out<<rgs[i].rs[j].poly[k].x;
                     out<<rgs[i].rs[j].poly[k].y;
