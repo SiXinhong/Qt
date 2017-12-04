@@ -28,6 +28,8 @@ public:
     //void timeLineFunction();
     void onTimerOut2();
     map<int,MyObject*> objmap;
+
+
 };
 
 #endif // BACKWINDOW_H

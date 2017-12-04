@@ -467,7 +467,7 @@ protected slots:
      void lightFunction();
 //     void voiceFunction();
      void stabilityFunction();
-     void alertInformation();
+     virtual void alertInformation();
 
 
      virtual void exitFunction();

@@ -27,10 +27,10 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
 
         isFirstDoubleClick = false;
 
-        Cancel_Select = new QAction(tr("取消选择"),this);
-        To_Zhu= new QAction(tr("到主显示区"), this);
-        To_Ningshi1 = new QAction(tr("到辅助显示区1"), this);
-        To_Ningshi2 = new QAction(tr("到辅助显示区2"), this);
+        //Cancel_Select = new QAction(tr("取消选择"),this);
+        //To_Zhu= new QAction(tr("到主显示区"), this);
+        //To_Ningshi1 = new QAction(tr("到辅助显示区1"), this);
+        //To_Ningshi2 = new QAction(tr("到辅助显示区2"), this);
         //To_Tanchu = new QAction(tr("到弹出窗口"),this);
 
         Define_Rect = new QAction(tr("定义矩形监控区域"), this);
@@ -41,10 +41,10 @@ Qj1Widget::Qj1Widget(QWidget *parent) :
         Complete_RDefining = new QAction(tr("完成监控区域定义"), this);
         Complete_RGDefining = new QAction(tr("完成监控区域组定义"), this);
 
-        connect(Cancel_Select, SIGNAL(triggered()), this, SLOT(CancelSelect()));
-        connect(To_Zhu, SIGNAL(triggered()), this, SLOT(ToZhu()));
-        connect(To_Ningshi1, SIGNAL(triggered()), this, SLOT(ToNingshi1()));
-        connect(To_Ningshi2, SIGNAL(triggered()), this, SLOT(ToNingshi2()));
+//        connect(Cancel_Select, SIGNAL(triggered()), this, SLOT(CancelSelect()));
+//        connect(To_Zhu, SIGNAL(triggered()), this, SLOT(ToZhu()));
+//        connect(To_Ningshi1, SIGNAL(triggered()), this, SLOT(ToNingshi1()));
+//        connect(To_Ningshi2, SIGNAL(triggered()), this, SLOT(ToNingshi2()));
         //connect(To_Tanchu, SIGNAL(triggered()), this, SLOT(ToTanchu()));
 
         connect(Define_Rect, SIGNAL(triggered()), this, SLOT(DefineRect()));
@@ -121,17 +121,18 @@ vector<MyObjectTrack> Qj1Widget::getTracks(){
 void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
     QCursor cur=this->cursor();
     QMenu *menu=new QMenu(this);
-    menu->addAction(Cancel_Select); //添加菜单项1
-    menu->addAction(To_Zhu); //添加菜单项1
-    menu->addAction(To_Ningshi1); //添加菜单项2
-    menu->addAction(To_Ningshi2); //添加菜单项2
-    //menu->addAction(To_Tanchu);//添加菜单项3
-    menu->addSeparator();
+   //menu->addAction(Cancel_Select); //添加菜单项1
+   //menu->addAction(To_Zhu); //添加菜单项1
+   //menu->addAction(To_Ningshi1); //添加菜单项2
+   //menu->addAction(To_Ningshi2); //添加菜单项2
+   //menu->addAction(To_Tanchu);//添加菜单项3
+    //menu->addSeparator();
     menu->addAction(Define_Rect);
     menu->addAction(Define_Poly);
     menu->addSeparator();
     menu->addAction(Cancel_RDefining);
     menu->addAction(Cancel_RGDefining);
+    menu->addSeparator();
     menu->addAction(Complete_RDefining);
     menu->addAction(Complete_RGDefining);
     menu->exec(cur.pos()); //关联到光标

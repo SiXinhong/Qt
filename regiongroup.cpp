@@ -29,6 +29,11 @@ RegionGroup::RegionGroup(QString name, Scalar c){
     this->color = c;
     this->isActive = true;
     this->isAlert = true;
+    for(int i=0;i<7;i++){
+        for(int j=0;j<48;j++){
+            timeActive[i][j] = true;
+        }
+    }
 }
 
 RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
@@ -40,6 +45,11 @@ RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
     }
     this->isActive = true;
     this->isAlert = true;
+    for(int i=0;i<7;i++){
+        for(int j=0;j<48;j++){
+            timeActive[i][j] = true;
+        }
+    }
 }
 
 void RegionGroup::draw(Mat &mat){

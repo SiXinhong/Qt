@@ -3637,7 +3637,7 @@ void MainWindow::mstopFunction()
 void MainWindow::backFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("执行非均匀性校正"),tr("消除图像中的非均匀性亮度差，若是采用面阵传感器，减少拼接线两边的图像亮度差异，图像拼接算法的一个设置参数。继续努力。"));
+   // QMessageBox::information(this,tr("执行非均匀性校正"),tr("消除图像中的非均匀性亮度差，若是采用面阵传感器，减少拼接线两边的图像亮度差异，图像拼接算法的一个设置参数。继续努力。"));
 }
 //回放
 void MainWindow::openFunction()
@@ -3787,7 +3787,7 @@ void MainWindow::quXiaoFunction()
 //图像
 //撤销手动对比度参数
 void MainWindow::chexiaoFunction(){
-    QMessageBox::information(this,tr("撤销手动对比度参数"),tr("恢复到最后一次调整操作之前？继续努力。"));
+    //QMessageBox::information(this,tr("撤销手动对比度参数"),tr("恢复到最后一次调整操作之前？继续努力。"));
 
 }
 
@@ -3985,14 +3985,14 @@ void MainWindow::objectAttributeFunction()
 
 //启用垂直稳定图像
 void MainWindow::stabilityFunction(){
-    QMessageBox::information(this,tr("启用垂直稳定图像"),tr("启用垂直稳定图像。继续努力！"));
+    //QMessageBox::information(this,tr("启用垂直稳定图像"),tr("启用垂直稳定图像。继续努力！"));
 }
 
 //增加标签
 void MainWindow::manualFunction()
 {
     //dialogLabel->setText(tr("Information Message Box"));
-    QMessageBox::information(this,tr("增加标签"),tr("增加标签？啥意思？继续努力。"));
+    //QMessageBox::information(this,tr("增加标签"),tr("增加标签？啥意思？继续努力。"));
 
     //    string imageurl="./s1/1.bmp";
     //    Mat mat1 =imread(imageurl);
@@ -4154,7 +4154,7 @@ void MainWindow::objectsFunction()
     //        //objectSet="./icon/13_2.png";
     //        objects->setToolTip("关闭目标属性跟随");
     //    }
-    QMessageBox::information(this,tr("调整探测灵敏度等级"),tr("调整探测灵敏度就是目标识别的阈值。继续努力。"));
+   // QMessageBox::information(this,tr("调整探测灵敏度等级"),tr("调整探测灵敏度就是目标识别的阈值。继续努力。"));
 }
 //目标属性列表
 void MainWindow::lightFunction()
@@ -4389,12 +4389,12 @@ void MainWindow::readRgs(){
     QFile file(QString("./config/rgs.config"));
     if(!file.exists())
         return;
-    qDebug()<<"readconf";
+    //qDebug()<<"readconf";
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);
     int size;
     in>>size;
-     qDebug()<<"readconf222";
+     //qDebug()<<"readconf222";
     for(int i=0;i<size;i++){
         RegionGroup *rg = new RegionGroup();
         Scalar color;
@@ -4407,7 +4407,13 @@ void MainWindow::readRgs(){
 
         int regionSize;
         in>>regionSize;
-         qDebug()<<"readconf333";
+
+        for(int k=0;k<7;k++){
+            for(int p=0;p<48;p++){
+                in>>rg->timeActive[k][p];
+            }
+        }
+
         for(int j=0;j<regionSize;j++){
             Region *r = new Region();
             in>>r->name;
@@ -4433,9 +4439,7 @@ void MainWindow::readRgs(){
         }
         rg->setColor(color);
         rgs.push_back(*rg);
-         qDebug()<<"readconf444";
     }
-    qDebug()<<"readconf666";
     file.close();
 }
 
@@ -4457,6 +4461,14 @@ void MainWindow::writeRgs(){
         out<<rgs[i].isAlert;
         int size2 = rgs[i].rs.size();
         out<<size2;
+
+        for(int k=0;k<7;k++){
+            for(int p=0;p<48;p++){
+                out<<rgs[i].timeActive[k][p];
+            }
+        }
+
+
         for(int j=0;j<rgs[i].rs.size();j++){
             out<<rgs[i].rs[j].name;
             out<<rgs[i].rs[j].hasObjects;
@@ -4482,6 +4494,7 @@ void MainWindow::writeRgs(){
 }
 
 void MainWindow::alertInformation(){
+    qDebug()<<"alert....";
     this->onAlertTimer();
     if(showAlert->isActive()){
         showAlert->stop();
