@@ -71,11 +71,14 @@ void BackWindow::selfTimerout(){
         currentFileTime=fileInfo->at(fileIndex).fileName().left(8);
        // qDebug()<<"filetime"<<currentFileTime;
     }
+
+    //qDebug()<<"fileinfo"<<fileInfo->count();
     while(fileIndex<fileInfo->count()){
+       // qDebug()<<"huifang11111111111";
         if(currentFileTime.compare(fileInfo->at(fileIndex).fileName().left(8)) != 0)
             break;
         QFile file(fileInfo->at(fileIndex).filePath());
-        //qDebug()<<fileInfo->at(fileIndex).filePath();
+        qDebug()<<fileInfo->at(fileIndex).filePath();
         file.open(QIODevice::ReadOnly);
         QDataStream in(&file);
         int id;
@@ -97,7 +100,7 @@ void BackWindow::selfTimerout(){
         file.close();
         fileIndex++;
     }
-
+ //qDebug()<<"huifang22222222222222222222";
     Mat pano;
     if(panoIndex<filepano->count()){
         QFile file(filepano->at(panoIndex).filePath());
@@ -116,13 +119,13 @@ void BackWindow::selfTimerout(){
 //        widget1->draw();
 //        widget2->setObjects(objs);
 //        widget2->draw();
-        widget5->setObjects(objs);
-        widget5->draw();
+//        widget5->setObjects(objs);
+//        widget5->draw();
         widget6->setObjects(objs);
         widget6->draw();
         return;
  }
-
+//qDebug()<<"huifang333333333333333333333333333333333";
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
 //    QRect screenRect = desktopWidget->screenGeometry();
 //    const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -221,7 +224,7 @@ void BackWindow::selfTimerout(){
 //    widget6->setPano(mat1);
 //    widget6->setObjects(objs);
 //    widget6->draw();
-
+//qDebug()<<"huifang444444444444444444444444444444";
 
     Mat pano1 = pano.clone();
     Mat pano2 = pano.clone();
@@ -268,6 +271,7 @@ void BackWindow::selfTimerout(){
            }
        }
 }
+       //qDebug()<<"huifang55555";
        //画对象中心点的位置
        if(isMubiao){
            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -327,7 +331,7 @@ void BackWindow::selfTimerout(){
    widget1->setObjects(objs);
    widget1->setTracks(in.getTracks());
    widget1->draw();
-
+ //qDebug()<<"huifang6666";
    //qDebug()<<s1;
    //图片2
    //图片1
@@ -371,10 +375,10 @@ void BackWindow::selfTimerout(){
    //QString imageurl5=in.getHD();
    //Mat mat5 =imread(imageurl5.toStdString());
    //widget5->setMat(mat5);
-   widget5->setPano(newpano);
-   //widget5->setPano(in.getPano());
-   widget5->setObjects(objs);
-   widget5->draw();
+//   widget5->setPano(newpano);
+//   //widget5->setPano(in.getPano());
+//   widget5->setObjects(objs);
+//   widget5->draw();
    //drawUiLabel(mat5,5);
    //图片6
    //QString imageurl6= in.getLD();
@@ -399,66 +403,66 @@ void BackWindow::selfTimerout(){
    }
    num_objs = objs.size();
 
-   if(isGaojing)
-   {
-       if(num_objs==0)
-       {
-           lights[0]->setPixmap(fitpixmap2);
-           lights[1]->setPixmap(fitpixmap2);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==1)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap2);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==2)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap2);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==3)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap2);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else if(num_objs==4)
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap1);
-           lights[4]->setPixmap(fitpixmap2);
-       }
-       else
-       {
-           lights[0]->setPixmap(fitpixmap1);
-           lights[1]->setPixmap(fitpixmap1);
-           lights[2]->setPixmap(fitpixmap1);
-           lights[3]->setPixmap(fitpixmap1);
-           lights[4]->setPixmap(fitpixmap1);
-     }
-   }
-   else
-   {
-       lights[0]->setPixmap(fitpixmap2);
-       lights[1]->setPixmap(fitpixmap2);
-       lights[2]->setPixmap(fitpixmap2);
-       lights[3]->setPixmap(fitpixmap2);
-       lights[4]->setPixmap(fitpixmap2);
+//   if(isGaojing)
+//   {
+//       if(num_objs==0)
+//       {
+//           lights[0]->setPixmap(fitpixmap2);
+//           lights[1]->setPixmap(fitpixmap2);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==1)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap2);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==2)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap2);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==3)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap2);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else if(num_objs==4)
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap1);
+//           lights[4]->setPixmap(fitpixmap2);
+//       }
+//       else
+//       {
+//           lights[0]->setPixmap(fitpixmap1);
+//           lights[1]->setPixmap(fitpixmap1);
+//           lights[2]->setPixmap(fitpixmap1);
+//           lights[3]->setPixmap(fitpixmap1);
+//           lights[4]->setPixmap(fitpixmap1);
+//     }
+//   }
+//   else
+//   {
+//       lights[0]->setPixmap(fitpixmap2);
+//       lights[1]->setPixmap(fitpixmap2);
+//       lights[2]->setPixmap(fitpixmap2);
+//       lights[3]->setPixmap(fitpixmap2);
+//       lights[4]->setPixmap(fitpixmap2);
 
-  }
+//  }
 }
 
 void BackWindow::exitFunction(){
