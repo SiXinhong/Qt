@@ -884,7 +884,8 @@ vector<MyObject> NWidget2::getSelectedObjects(){
 
 double NWidget2::getDirectionX(double x){
     //double x = this->rectan.x;
-    return 360*x/pano.cols -90;
+   // return 360*x/pano.cols -90;
+    return 360*x/pano.cols;
 }
 
 double NWidget2::getDirectionY(double y){
@@ -897,7 +898,8 @@ double NWidget2::getDirectionY(double y){
 
 double NWidget2::getDirectionX2(){
     double x = this->rect.x+this->rect.width;
-    return 360*x/pano.cols -90;
+    //return 360*x/pano.cols -90;
+    return 360*x/pano.cols;
 }
 
 double NWidget2::getDirectionY2(){

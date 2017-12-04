@@ -113,7 +113,7 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
         line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
         //标尺上写字
         int ii = (int)(startw+i*(endw-startw)/30);
-        if(ii > 270){
+        if(ii > 360){
             ii = ii -360;
         }
         QString text = QString::number(ii,10);

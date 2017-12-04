@@ -1031,7 +1031,8 @@ vector<MyObject> ZWidget::getSelectedObjects(){
 
 double ZWidget::getDirectionX(double x){
     //double x = this->rectan.x;
-    return 360*x/pano.cols -90;
+    //return 360*x/pano.cols -90;
+      return 360*x/pano.cols;
 }
 
 double ZWidget::getDirectionY(double y){
@@ -1044,7 +1045,8 @@ double ZWidget::getDirectionY(double y){
 
 double ZWidget::getDirectionX2(){
     double x = this->rect.x+this->rect.width;
-    return 360*x/pano.cols -90;
+   // return 360*x/pano.cols -90;
+    return 360*x/pano.cols;
 }
 
 double ZWidget::getDirectionY2(){

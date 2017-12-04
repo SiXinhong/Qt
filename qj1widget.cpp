@@ -815,6 +815,8 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
     if(mw->location){
    locationX = this->getMatX(position1.x());
    locationY = this->getMatY(position1.y());
+   int angleX = mw->widget4->getDirectionX(locationX);
+   int angleY = mw->widget4->getDirectionY(locationY);
         QPixmap pixmap1 = QPixmap::fromImage(mw->imgLabel1);
         QPainter p(&pixmap1);
         QPen pen;
@@ -826,9 +828,9 @@ void Qj1Widget::mousePressEvent(QMouseEvent *e)
 //         p.drawText(locationX-20,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
 //       }
 //       else
-         p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
-       //p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
-
+        // p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(position1.x()).append("  ")).append(QString("y:")).append(QString::number(position1.y())));
+      // p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(this->locationX)).append("  ").append(QString("y:")).append(QString::number(this->locationY)));
+     p.drawText(locationX-2,locationY+2,QString("x:").append(QString::number(angleX)).append("  ").append(QString("y:")).append(QString::number(angleY)));
         mw->label->setScaledContents(true);
         mw->label->setPixmap(pixmap1);
     }
