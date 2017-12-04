@@ -4306,7 +4306,7 @@ void MainWindow::configurationClicked(){
     if(configure == NULL){
         configure = new Configuration(this);
     }
-    this->configure->setWindowTitle(QString("转台控制"));
+    this->configure->setWindowTitle(QString("配置"));
     this->configure->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
     QRect screenRect = desktop->screenGeometry();

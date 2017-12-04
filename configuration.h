@@ -14,6 +14,7 @@ public:
     MainWindow* mw;
     QGridLayout* layout;
     QWidget *cenWidget;
+    QWidget *menuWidget;
     bool isStart;
      QToolButton *start;
 
@@ -26,6 +27,10 @@ public slots:
     void backgroundCorrct();
     void shuttleCorrct();
     void okF();
+
+    void cameraShow();
+    void algorithmShow();
+    void softwareShow();
 };
 
 #endif // CONFIGURATION_H

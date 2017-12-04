@@ -7,15 +7,45 @@ Configuration::Configuration(MainWindow *mw)
     cenWidget = 0;
     isStart = false;
     start = NULL;
+    menuWidget = new QWidget(this);
+
+
 }
 
 void Configuration::configure(){
+    qDebug()<<"config11";
+    QGridLayout *leftLayout = new QGridLayout();
+     qDebug()<<"config22";
+    QToolButton *camera = new QToolButton(menuWidget);
+    camera->setText("转台配置");
+    connect(camera,SIGNAL(clicked()),this,SLOT(cameraShow()));
+     qDebug()<<"config33";
+    QToolButton *algorithm = new QToolButton(menuWidget);
+    algorithm->setText("算法配置");
+    connect(algorithm,SIGNAL(clicked()),this,SLOT(algorithmShow()));
+
+    QToolButton *software = new QToolButton(menuWidget);
+    software->setText("软件配置");
+    connect(software,SIGNAL(clicked()),this,SLOT(softwareShow()));
+
+
+      leftLayout->addWidget(camera,0,0);
+      leftLayout->addWidget(algorithm,0,1);
+      leftLayout->addWidget(software,0,2);
+
+      menuWidget->setLayout(leftLayout);
+      //this->setCentralWidget(menuWidget);
+        this->setMenuWidget(menuWidget);
+
+}
+
+void Configuration::cameraShow(){
     QGridLayout* old=layout;
     layout=new QGridLayout;
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
 
-   start = new QToolButton(cenWidget);
+    start = new QToolButton(cenWidget);
     start->setText("启动");
     connect(start,SIGNAL(clicked()),this,SLOT(startF()));
 
@@ -39,13 +69,14 @@ void Configuration::configure(){
      background->setText("背景校正");
      connect(background,SIGNAL(clicked()),this,SLOT(backgroundCorrct()));
 
-             QToolButton *shuttle = new QToolButton(cenWidget);
-             shuttle->setText("快门校正");
-             connect(shuttle,SIGNAL(clicked()),this,SLOT(shuttleCorrct()));
+     QToolButton *shuttle = new QToolButton(cenWidget);
+     shuttle->setText("快门校正");
+     connect(shuttle,SIGNAL(clicked()),this,SLOT(shuttleCorrct()));
 
-             QToolButton *ok = new QToolButton(cenWidget);
-             ok->setText("确定");
-             connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
+     QToolButton *ok = new QToolButton(cenWidget);
+     ok->setText("确定");
+     connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
+
 
       layout->addWidget(start,0,0);
       layout->addWidget(state,1,0);
@@ -56,22 +87,78 @@ void Configuration::configure(){
       layout->addWidget(shuttle,4,0);
       layout->addWidget(ok,5,0);
 
-                     if(old!=0){
-                         delete old;
-                     }
-                     if(oldWidget!=0){
-                         QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
-                         foreach (QWidget* btn, btns)
-                         {
-                             delete btn;
-                         }
-                         oldWidget->repaint();
-                         delete oldWidget;
-                     }
 
-                     cenWidget->setLayout(layout);
-                     this->setCentralWidget(cenWidget);
 
+    if(old!=0){
+        delete old;
+    }
+    if(oldWidget!=0){
+        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
+        foreach (QWidget* btn, btns)
+        {
+            delete btn;
+        }
+        oldWidget->repaint();
+        delete oldWidget;
+    }
+
+    cenWidget->setLayout(layout);
+    this->setCentralWidget(cenWidget);
+
+}
+
+void Configuration::softwareShow(){
+    QGridLayout* old=layout;
+    layout=new QGridLayout;
+    QWidget *oldWidget = cenWidget;
+    cenWidget = new QWidget(this);
+
+    QLabel * name = new QLabel("软件配置",this);
+
+     layout->addWidget(name,0,0);
+
+    if(old!=0){
+        delete old;
+    }
+    if(oldWidget!=0){
+        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
+        foreach (QWidget* btn, btns)
+        {
+            delete btn;
+        }
+        oldWidget->repaint();
+        delete oldWidget;
+    }
+
+    cenWidget->setLayout(layout);
+    this->setCentralWidget(cenWidget);
+
+}
+
+void Configuration::algorithmShow(){
+    QGridLayout* old=layout;
+    layout=new QGridLayout;
+    QWidget *oldWidget = cenWidget;
+    cenWidget = new QWidget(this);
+
+    QLabel * name = new QLabel("算法配置",this);
+
+     layout->addWidget(name,0,0);
+    if(old!=0){
+        delete old;
+    }
+    if(oldWidget!=0){
+        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
+        foreach (QWidget* btn, btns)
+        {
+            delete btn;
+        }
+        oldWidget->repaint();
+        delete oldWidget;
+    }
+
+    cenWidget->setLayout(layout);
+    this->setCentralWidget(cenWidget);
 
 }
 
@@ -115,6 +202,26 @@ void Configuration::backgroundCorrct(){
 }
 
 void Configuration::okF(){
-    this->close();
-    //mw->init();
+    QGridLayout* old=layout;
+    layout=new QGridLayout;
+    QWidget *oldWidget = cenWidget;
+    cenWidget = new QWidget(this);
+
+    if(old!=0){
+        delete old;
+    }
+    if(oldWidget!=0){
+        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
+        foreach (QWidget* btn, btns)
+        {
+            delete btn;
+        }
+        oldWidget->repaint();
+        delete oldWidget;
+    }
+
+    cenWidget->setLayout(layout);
+    this->setCentralWidget(cenWidget);
 }
+
+
