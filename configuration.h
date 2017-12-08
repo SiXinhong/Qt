@@ -3,6 +3,7 @@
 
 class Configuration;
 #include <QMainWindow>
+#include <QColorDialog>
 #include "mainwindow.h"
 
 class Configuration : public QMainWindow
@@ -31,6 +32,8 @@ public slots:
     void cameraShow();
     void algorithmShow();
     void softwareShow();
+
+    void colorSet();
 };
 
 #endif // CONFIGURATION_H

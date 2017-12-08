@@ -82,7 +82,6 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 }
 
 void MainWindow::init(){
-
     configure = 0;
     alert = 0;
     monitor = 0;
@@ -4340,11 +4339,12 @@ void MainWindow::regionClicked(){
     QRect screenRect = desktop->screenGeometry();
     int width = screenRect.width();
     int height = screenRect.height();
-    this->monitor->setGeometry(width/4,height/4,width/3,height/3);
+    this->monitor->setGeometry(screenRect.x(),height/4,4*width/6,3*height/5);
     this->monitor->show();
     this->monitor->widgetShow();
+    qDebug()<<"monitor main width"<<monitor->geometry().width();
+    qDebug()<<"monitor main height"<<monitor->geometry().height();
     // QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
-
 }
 
 void MainWindow::figureClicked(){

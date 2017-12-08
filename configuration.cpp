@@ -13,9 +13,8 @@ Configuration::Configuration(MainWindow *mw)
 }
 
 void Configuration::configure(){
-    qDebug()<<"config11";
     QGridLayout *leftLayout = new QGridLayout();
-     qDebug()<<"config22";
+
     QToolButton *camera = new QToolButton(menuWidget);
     camera->setText("转台配置");
     connect(camera,SIGNAL(clicked()),this,SLOT(cameraShow()));
@@ -113,9 +112,30 @@ void Configuration::softwareShow(){
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
 
-    QLabel * name = new QLabel("软件配置",this);
+//    QLabel * name = new QLabel("软件配置",this);
+//     layout->addWidget(name,0,0);
 
-     layout->addWidget(name,0,0);
+    QToolButton *zColor = new QToolButton(cenWidget);
+    zColor->setText("主显示区边框颜色");
+    //zColor->setToolTip(QString::number(1));
+    connect(zColor,SIGNAL(clicked()),this,SLOT(colorSet()));
+
+    QToolButton *n1Color = new QToolButton(cenWidget);
+    n1Color->setText("辅助显示区1边框颜色");
+    //n1Color->setToolTip(QString::number(2));
+    connect(n1Color,SIGNAL(clicked()),this,SLOT(colorSet()));
+
+    QToolButton *n2Color = new QToolButton(cenWidget);
+    n2Color->setText("辅助显示区2边框颜色");
+   // n2Color->setToolTip(QString::number(3));
+    connect(n2Color,SIGNAL(clicked()),this,SLOT(colorSet()));
+
+
+
+    layout->addWidget(zColor,0,0);
+    layout->addWidget(n1Color,0,1);
+    layout->addWidget(n2Color,0,2);
+
 
     if(old!=0){
         delete old;
@@ -225,3 +245,27 @@ void Configuration::okF(){
 }
 
 
+void Configuration::colorSet(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    //int index = button->toolTip().toInt();
+    QColor color = QColorDialog::getColor(Qt::black,this);
+
+    if(!color.isValid()){
+        return;
+    }
+    button->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+
+    //Scalar c(color.blue(),color.green(),color.red());
+    if(button->text()=="主显示区边框颜色"){
+      //mw->widget3->setStyleSheet(QString::fromUtf8("border:3px").append("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+    }
+    else if(button->text()=="辅助显示区1边框颜色"){
+
+
+    }
+    else if (button->text() == "辅助显示区2边框颜色"){
+
+
+    }
+}

@@ -99,6 +99,7 @@ public:
    QToolButton *n2WZoomout;
   void readRgs();//读取监控组配置
   void writeRgs();//保存监控组配置
+
   Monitor *monitor;
   Configuration *configure;
   class Alert *alert;

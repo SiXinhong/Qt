@@ -16,14 +16,20 @@ public:
     void paintEvent(QPaintEvent *);
     void mouseReleaseEvent(QMouseEvent *e);
 
-private:
+
     int xStart;
     int yStart;
     int w;
     int h;
+private:
+
     QString stringOfDay[7];
     QToolButton *btn;
     Monitor *monitor;
+    QLabel *use;
+    QLabel *noUse;
+    QLabel *unit;
+
 
 signals:
 

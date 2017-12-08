@@ -9,6 +9,9 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QObjectUserData>
+#include <QListWidget>
+#include <QStackedLayout>
+#include <QSplitter>
 
 class Monitor;
 #include "qj1widget.h"
@@ -27,12 +30,15 @@ class Monitor : public QMainWindow
     Q_OBJECT
 public:
     MainWindow *mw;
+    QStackedLayout *stackedLayout;
+    QListWidget *listWidget;
 
 public:
     explicit Monitor(MainWindow *mw);
     int timeIndex;
     void onSelectTime();
     HourWidget *hourWidget;
+
 
 
 private:
@@ -55,6 +61,8 @@ public slots:
     void createRG();
     void detailsShow();
     void timeControl();
+    void regionShow();
+    void listWidgetChange(int);
 };
 
 #endif // MONITOR_H

@@ -9,6 +9,7 @@ using namespace std;
 ZWidget::ZWidget(QWidget *parent) :
     QWidget(parent){
     setStyleSheet(QString::fromUtf8("border:3px solid red"));
+    //setStyleSheet(QString::fromUtf8("border:3px solid red"));
      this->isShow = true;
     isGaojing = true;
     this->from = 0;
