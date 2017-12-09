@@ -18,6 +18,18 @@ public:
     QWidget *menuWidget;
     bool isStart;
      QToolButton *start;
+     QColor color;
+     int zRed;
+     int zBlue;
+     int zGreen;
+
+     int n1Red;
+     int n1Blue;
+     int n1Green;
+
+     int n2Red;
+     int n2Blue;
+     int n2Green;
 
 public slots:
     void startF();

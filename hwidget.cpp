@@ -200,10 +200,36 @@ void HWidget::drawArc4(Mat tmat, Rect re){
     Point p22 = getDirectionPoint(Point(re.x + re.width, re.y + re.height));
 
     Point p3 = Point(x0, y0);
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
 
-    line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
-
-    line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
+    int red;
+    int green;
+    int blue;
+    if(mw->configure==NULL){
+        red = 0;
+        green = 255;
+        blue = 255;
+    }
+    else{
+        if(mw->configure->n1Red==0&&mw->configure->n1Blue==0&&mw->configure->n1Green==0){
+            red = 0;
+            green = 255;
+            blue = 255;
+        }else{
+            red = mw->configure->n1Red;
+            green = mw->configure->n1Green;
+            blue = mw->configure->n1Blue;
+        }
+    }
+    //line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
+    //qDebug()<<"   ddddddddddddddd";
+    line(tmat,p11,p12,Scalar(blue,green,red),1,8,0);
+    //line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
+//    qDebug()<<"red"<<red;
+//    qDebug()<<"green"<<green;
+//    qDebug()<<"blue "<<blue;
+    //line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
+    line(tmat,p21,p22,Scalar(blue,green,red),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
@@ -221,9 +247,12 @@ void HWidget::drawArc4(Mat tmat, Rect re){
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
     double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
 
-    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,255,0));
+    //ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,255,0));
 
-    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(blue,green,red));
+
+   // ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,255,0));
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(blue,green,red));
 }
 
 //辅助显示区1的，获得画多边形的八个点，需要计算辅助显示区1所关注的对象集合的坐标来确定。
@@ -344,8 +373,14 @@ void HWidget::drawArc4(vector<MyObject> sobjs, Mat tmat){
     Point p21 = this->getPoint1(p2);
     Point p22 = this->getPoint2(p2);
 
-    line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
-
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    Configuration* config  =new Configuration(mw);
+    int red = config->color.red();
+    int green = config->color.green();
+    int blue = config->color.blue();
+    //line(tmat,p11,p12,Scalar(255,255,0),1,8,0);
+    qDebug()<<"   ddddddddddddddd";
+    line(tmat,p11,p12,Scalar(blue,green,red),1,8,0);
     line(tmat,p21,p22,Scalar(255,255,0),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
@@ -396,9 +431,32 @@ void HWidget::drawArc6(Mat tmat, Rect re){
 
     Point p3 = Point(x0, y0);
 
-    line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
+     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    int red;
+    int green;
+    int blue;
+    if(mw->configure==NULL){
+        red = 0;
+        green = 0;
+        blue = 255;
+    }
+    else{
+        if(mw->configure->n2Red==0&&mw->configure->n2Blue==0&&mw->configure->n2Green==0){
+            red = 0;
+            green = 0;
+            blue = 255;
+        }else{
+            red = mw->configure->n2Red;
+            green = mw->configure->n2Green;
+            blue = mw->configure->n2Blue;
+        }
+    }
 
-    line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
+   // line(tmat,p11,p12,Scalar(255,0,0),1,8,0);
+    line(tmat,p11,p12,Scalar(blue,green,red),1,8,0);
+
+   // line(tmat,p21,p22,Scalar(255,0,0),1,8,0);
+    line(tmat,p21,p22,Scalar(blue,green,red),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
@@ -416,9 +474,10 @@ void HWidget::drawArc6(Mat tmat, Rect re){
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
     double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
 
-    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,0,0));
-
-    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,0,0));
+ //   ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(255,0,0));
+ ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(blue,green,red));
+   // ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(255,0,0));
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(blue,green,red));
 }
 
 //辅助显示区2的，获得画多边形的八个点，需要计算辅助显示区2所关注的对象集合的坐标来确定。
@@ -590,9 +649,32 @@ void HWidget::drawArc3(Mat tmat, Rect re){
 
     Point p3 = Point(x0, y0);
 
-    line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
+     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    int red;
+    int green;
+    int blue;
+    if(mw->configure==NULL){
+        red = 255;
+        green = 0;
+        blue = 0;
+    }
+    else{
+        if(mw->configure->zRed==0&&mw->configure->zBlue==0&&mw->configure->zGreen==0){
+            red = 255;
+            green = 0;
+            blue = 0;
+        }else{
+            red = mw->configure->zRed;
+            green = mw->configure->zGreen;
+            blue = mw->configure->zBlue;
+        }
+    }
 
-    line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
+    //line(tmat,p11,p12,Scalar(0,0,255),1,8,0);
+    line(tmat,p11,p12,Scalar(blue,green,red),1,8,0);
+
+   // line(tmat,p21,p22,Scalar(0,0,255),1,8,0);
+    line(tmat,p21,p22,Scalar(blue,green,red),1,8,0);
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
@@ -610,9 +692,11 @@ void HWidget::drawArc3(Mat tmat, Rect re){
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
     double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
 
-    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(0,0,255));
+    //ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(0,0,255));
 
-    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(0,0,255));
+    ellipse(tmat,p3,Size(r11, r11),0,angle1,angle2,Scalar(blue,green,red));
+    //ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(0,0,255));
+    ellipse(tmat,p3,Size(r12, r12),0,angle1,angle2,Scalar(blue,green,red));
 }
 
 //主显示区的，获得画多边形的八个点，需要计算主显示区所关注的对象集合的坐标来确定。
