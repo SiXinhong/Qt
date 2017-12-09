@@ -899,12 +899,12 @@ void MainWindow::addMyMenuBar(){
     DisplayMenu = new QMenu("显示");
     HelpMenu = new QMenu("帮助");
 
-    connection = new QAction("连接",this);
-    connectionplus = new QAction("连接...",this);
-    disconnection = new QAction("断开",this);
-    openplus = new QAction("打开...",this);
+    connection = new QAction("单播连接",this);
+    connectionplus = new QAction("多播连接",this);
+    disconnection = new QAction("断开连接",this);
+    openplus = new QAction("打开回放",this);
     backplus = new QAction("回放",this);
-    closeaction = new QAction("关闭",this);
+    closeaction = new QAction("关闭回放",this);
     //recentvidio = new QAction("最近视频",this);
     recentvidio = new QMenu("最近视频");//recent 有单独的子菜单，所以定义成menu
     changeuser = new QAction("切换用户",this);
@@ -928,9 +928,13 @@ void MainWindow::addMyMenuBar(){
     FileMenu->addAction(connection);
     FileMenu->addAction(connectionplus);
     FileMenu->addAction(disconnection);
-    FileMenu->addAction(openplus);
-    FileMenu->addAction(backplus);
-    FileMenu->addAction(closeaction);
+    if(!backwindow){
+        FileMenu->addAction(openplus);
+    }
+    //FileMenu->addAction(backplus);
+    if(backwindow){
+        FileMenu->addAction(closeaction);
+    }
     FileMenu->addMenu(recentvidio);
     FileMenu->addAction(changeuser);
     FileMenu->addAction(installation);
@@ -4240,16 +4244,16 @@ void MainWindow::flash(){
 }
 //菜单栏槽函数
 void MainWindow::connectionClicked(){
-    QMessageBox::information(this,tr("连接菜单项"),tr("单播方式连接相机。继续努力。"));
+    //QMessageBox::information(this,tr("连接菜单项"),tr("单播方式连接相机。继续努力。"));
 }
 
 void MainWindow::connectionplusClicked(){
-    QMessageBox::information(this,tr("连接...菜单项"),tr("多播方式连接相机？连接相机前做一系列动作？继续努力。"));
+    //QMessageBox::information(this,tr("连接...菜单项"),tr("多播方式连接相机？连接相机前做一系列动作？继续努力。"));
 
 }
 
 void MainWindow::disconnectionClicked(){
-    QMessageBox::information(this,tr("断开菜单项"),tr("断开与相机的连接。继续努力。"));
+    //QMessageBox::information(this,tr("断开菜单项"),tr("断开与相机的连接。继续努力。"));
 
 }
 
@@ -4260,15 +4264,20 @@ void MainWindow::openplusClicked(){
 }
 
 void MainWindow::backplusClicked(){
-    QMessageBox::information(this,tr("回放菜单项"),tr("回放菜单项。继续努力。"));
+    //QMessageBox::information(this,tr("回放菜单项"),tr("回放菜单项。继续努力。"));
 
 }
 
 void MainWindow::closeClicked(){
-    timer->stop();
-    timerSysTime->stop();
-    timerFlash->stop();
-    this->close();
+//    timer->stop();
+//    timerSysTime->stop();
+//    timerFlash->stop();
+    if(backwindow){
+        this->close();
+//        delete backwindow;
+//        backwindow = 0;
+    }
+    //this->close();
     // QMessageBox::information(this,tr("关闭菜单项"),tr("关闭回放的文件窗口，返回实时。继续努力。"));
 
 }
@@ -4323,7 +4332,7 @@ void MainWindow::configurationClicked(){
 }
 
 void MainWindow::saveconfigurationClicked(){
-    QMessageBox::information(this,tr("保存当前设置菜单项"),tr("将设置中设置的参数保存在配置文件中。继续努力。"));
+   // QMessageBox::information(this,tr("保存当前设置菜单项"),tr("将设置中设置的参数保存在配置文件中。继续努力。"));
 
 }
 
@@ -4367,22 +4376,29 @@ void MainWindow::figureClicked(){
 }
 
 void MainWindow::openalertClicked(){
-    QMessageBox::information(this,tr("打开报警信息菜单项"),tr("打开报警信息。继续努力。"));
+    isGaojing = true;
+    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+    light->setIcon(pixmap1);
+
+    //QMessageBox::information(this,tr("打开报警信息菜单项"),tr("打开报警信息。继续努力。"));
 
 }
 
 void MainWindow::closealertClicked(){
-    QMessageBox::information(this,tr("隐藏报警信息菜单项"),tr("隐藏报警信息。继续努力。"));
+    isGaojing = false;
+    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+    light->setIcon(pixmap2);
+   // QMessageBox::information(this,tr("隐藏报警信息菜单项"),tr("隐藏报警信息。继续努力。"));
 
 }
 
 void MainWindow::helpClicked(){
-    QMessageBox::information(this,tr("帮助菜单项"),tr("打开帮助文档。继续努力。"));
+   // QMessageBox::information(this,tr("帮助菜单项"),tr("打开帮助文档。继续努力。"));
 
 }
 
 void MainWindow::aboutClicked(){
-    QMessageBox::information(this,tr("关于菜单项"),tr("富吉瑞公司及本产品简介。继续努力。"));
+   // QMessageBox::information(this,tr("关于菜单项"),tr("富吉瑞公司及本产品简介。继续努力。"));
 
 }
 void MainWindow::readRgs(){

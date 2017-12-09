@@ -30,6 +30,7 @@ public:
      int n2Red;
      int n2Blue;
      int n2Green;
+      QToolButton *zhan ;
 
 public slots:
     void startF();
@@ -46,6 +47,7 @@ public slots:
     void softwareShow();
 
     void colorSet();
+    void zhanModify();
 };
 
 #endif // CONFIGURATION_H

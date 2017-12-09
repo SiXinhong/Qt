@@ -287,7 +287,8 @@ public:
      QImage image;
      QImage image2;
      //-----------------------------------------------
-
+         QString zhanwei;
+          QLabel *zhanweiLabel;
 
 protected:
      double getDirectionX(double x, Mat mat);
@@ -371,7 +372,7 @@ protected:
      QLabel *setup;
      QLabel *alarm;
      QLabel *position;
-     QLabel *zhanweiLabel;
+
 
      QString objectAttributeSet;//显示点击处位置
      QString manualSet;//增加标签
@@ -386,7 +387,7 @@ protected:
      QString voiceSet;
      QString lightSet;
      QString exitSet;
-     QString zhanwei;
+
 
      QToolButton *openClose;//开/关
      QToolButton *objects;//目标对象的属性是否跟随目标

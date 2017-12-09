@@ -10,7 +10,7 @@ BackWindow::BackWindow():MainWindow()
 }
 BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     setWindowTitle("回放");
-    this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowStaysOnTopHint);
+    this->setWindowFlags(Qt::FramelessWindowHint);
    // this->setWindowFlags(Qt::WindowStaysOnTopHint);
     QString day=QString("./回放/")+date.toString("yyyy-MM-dd");
     QDir *dir=new QDir(day);
@@ -48,7 +48,7 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     this->stop=stop;
     this->date=date;
 
-
+    //qDebug()<<"huifang1111111111111111111111";
 }
 BackWindow::~BackWindow()
 {
@@ -60,7 +60,9 @@ BackWindow::~BackWindow()
     }
 }
 void BackWindow::selfTimerout(){
+    //qDebug()<<"huifangself11111";
     timerFlash->stop();
+     //qDebug()<<"huifangself2222";
     if(!isJixu){
     return;
     }
@@ -589,35 +591,35 @@ void BackWindow::addMyToolBar_backWindow()
         //vbox1->addWidget(new QLabel(" "));
 
         //后退
-        back = new QToolButton(this);
-        back->setToolTip(tr("执行非均匀性校正"));
-        back->setMinimumHeight(buttonSize);
-        back->setMaximumHeight(buttonSize);
-        back->setMinimumWidth(buttonSize);
-        back->setMaximumWidth(buttonSize);
-        back->setStyleSheet("border-style:flat;background-color:2E302D");
-        backSet="./iconUpdate/执行非均匀性矫正.png";
-        back->setIcon(QPixmap(backSet));
-        back->setIconSize(QSize(buttonSize,buttonSize));
-        back->setCheckable(true);
-        vbox1->addWidget(back);
-        connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
-        //vbox1->addWidget(new QLabel(" "));
+//        back = new QToolButton(this);
+//        back->setToolTip(tr("执行非均匀性校正"));
+//        back->setMinimumHeight(buttonSize);
+//        back->setMaximumHeight(buttonSize);
+//        back->setMinimumWidth(buttonSize);
+//        back->setMaximumWidth(buttonSize);
+//        back->setStyleSheet("border-style:flat;background-color:2E302D");
+//        backSet="./iconUpdate/执行非均匀性矫正.png";
+//        back->setIcon(QPixmap(backSet));
+//        back->setIconSize(QSize(buttonSize,buttonSize));
+//        back->setCheckable(true);
+//        vbox1->addWidget(back);
+//        connect(back,SIGNAL(clicked()),this,SLOT(backFunction()));
+//        //vbox1->addWidget(new QLabel(" "));
 
-        //回放
-        open = new QToolButton(this);
-        open->setToolTip(tr("显示隐藏时间轴"));
-        open->setMinimumHeight(buttonSize);
-        open->setMaximumHeight(buttonSize);
-        open->setMinimumWidth(buttonSize);
-        open->setMaximumWidth(buttonSize);
-        open->setStyleSheet("border-style:flat;background-color:2E302D");
-        openSet="./iconUpdate/显示隐藏时间轴.png";
-        open->setIcon(QPixmap(openSet));
-        open->setIconSize(QSize(buttonSize,buttonSize));
-        open->setCheckable(true);
-        vbox1->addWidget(open);
-        connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
+//        //回放
+//        open = new QToolButton(this);
+//        open->setToolTip(tr("显示隐藏时间轴"));
+//        open->setMinimumHeight(buttonSize);
+//        open->setMaximumHeight(buttonSize);
+//        open->setMinimumWidth(buttonSize);
+//        open->setMaximumWidth(buttonSize);
+//        open->setStyleSheet("border-style:flat;background-color:2E302D");
+//        openSet="./iconUpdate/显示隐藏时间轴.png";
+//        open->setIcon(QPixmap(openSet));
+//        open->setIconSize(QSize(buttonSize,buttonSize));
+//        open->setCheckable(true);
+//        vbox1->addWidget(open);
+//        connect(open,SIGNAL(clicked()),this,SLOT(openFunction()));
 
 
         vbox1->addWidget(new QLabel("  "));

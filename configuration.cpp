@@ -1,4 +1,5 @@
 ﻿#include "configuration.h"
+#include <QInputDialog>
 
 Configuration::Configuration(MainWindow *mw)
 {
@@ -17,6 +18,7 @@ Configuration::Configuration(MainWindow *mw)
     n2Red = 0;
     n2Blue = 0;
     n2Green = 0;
+    zhan = 0;
 
 }
 
@@ -84,7 +86,6 @@ void Configuration::cameraShow(){
      ok->setText("确定");
      connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
 
-
       layout->addWidget(start,0,0);
       layout->addWidget(state,1,0);
       layout->addWidget(minus,2,0);
@@ -120,8 +121,19 @@ void Configuration::softwareShow(){
     QWidget *oldWidget = cenWidget;
     cenWidget = new QWidget(this);
 
-//    QLabel * name = new QLabel("软件配置",this);
-//     layout->addWidget(name,0,0);
+    QVBoxLayout *zhanlayout = new QVBoxLayout(cenWidget);
+
+    QLabel * zhanwei = new QLabel("站位配置：",this);
+    zhanlayout->addWidget(zhanwei);
+
+    zhan = new QToolButton;
+    zhan->setText(mw->zhanwei.append("(点击可修改)"));
+    connect(zhan,SIGNAL(clicked()),this,SLOT(zhanModify()));
+    zhan->setStyleSheet("border-style: flat;");
+    zhanlayout->addWidget(zhan);
+
+    QLabel *color = new QLabel("边框颜色配置：",this);
+    zhanlayout->addWidget(color);
 
     QToolButton *zColor = new QToolButton(cenWidget);
     zColor->setText("主显示区边框颜色");
@@ -138,12 +150,12 @@ void Configuration::softwareShow(){
    // n2Color->setToolTip(QString::number(3));
     connect(n2Color,SIGNAL(clicked()),this,SLOT(colorSet()));
 
+    layout->addWidget(zColor,1,0);
+    layout->addWidget(n1Color,1,1);
+    layout->addWidget(n2Color,1,2);
 
-
-    layout->addWidget(zColor,0,0);
-    layout->addWidget(n1Color,0,1);
-    layout->addWidget(n2Color,0,2);
-
+    zhanlayout->addLayout(layout);
+    zhanlayout->addStretch();
 
     if(old!=0){
         delete old;
@@ -292,4 +304,18 @@ void Configuration::colorSet(){
        mw->widget3->setColor(mw->widget3->getColor());
        mw->widget4->setColor(mw->widget4->getColor());
     }
+}
+
+void Configuration::zhanModify(){
+    QString newName = QInputDialog::getText(this,QString("请输入新的站位"),QString("新站位"));
+
+    if(newName == ""){
+        return;
+    }
+
+    zhan->setText(newName.append("站位"));
+    mw->zhanweiLabel->setText(newName);
+
+
+
 }
