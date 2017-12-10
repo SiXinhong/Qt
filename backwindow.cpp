@@ -11,7 +11,7 @@ BackWindow::BackWindow():MainWindow()
 BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     setWindowTitle("回放");
     this->setWindowFlags(Qt::FramelessWindowHint);
-   // this->setWindowFlags(Qt::WindowStaysOnTopHint);
+   //this->setWindowFlags(Qt::WindowStaysOnTopHint);
     QString day=QString("./回放/")+date.toString("yyyy-MM-dd");
     QDir *dir=new QDir(day);
     QStringList filter;//创建过滤器，只看.dat结尾的文件
