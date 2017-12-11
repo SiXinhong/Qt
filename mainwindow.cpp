@@ -179,12 +179,12 @@ void MainWindow::init(){
 
     ////////////////zc///////////////////////
     //通信连接
-    //MySocketInitial();
+    MySocketInitial();
     qDebug()<<"ini()6";
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
-    selfProcessing();
-    //this->jinProcessing();
+    //selfProcessing();
+    this->jinProcessing();
     //---------------------------------------------------------
     qDebug()<<"ini()4";
     //临时性处理，将来被金老师SDK替换--------------------------------
@@ -1635,8 +1635,8 @@ void MainWindow::adjustment()
 void MainWindow::onTimerOut()
 {
     //std::cout<<"ok1 "<<std::endl;
-    this->selfTimerout();
-    //this->jinTimerout();
+    //this->selfTimerout();
+    this->jinTimerout();
 }
 
 //自定义接口定时器
