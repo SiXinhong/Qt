@@ -69,6 +69,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
     //因为Backwindow继承了MainWindow，Backwindow不需要启动界面，给构造函数传递空指针，
     //这时候一定要立即执行init()，否则Backwindow以为初始化工作完成开始执行别的代码时就报错了
     if(welcome != 0){
+        backwindow =0;
         welcome->show();
         //        timerInit=new QTimer();
         //        timerInit->setInterval(100);
@@ -76,6 +77,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
         //        timerInit->start();
         //        connect(timerInit, SIGNAL(timeout()), SLOT(init()));
     }else{
+        backwindow = (BackWindow*)this;
         init();
         //configurationClicked();
     }
@@ -270,9 +272,11 @@ MainWindow::~MainWindow(){
         delete objectAttributes;
     if(monitor)
         delete monitor;
-    delete cmixer;
+//   delete cmixer;
 //    delete sound;
-    delete welcome;
+    if(welcome){
+        delete welcome;
+    }
     delete directory;
     //cv::pointPolygonTest()//判断点是不是落在多边形之内的函数
     //cv::polylines()//绘制多边形

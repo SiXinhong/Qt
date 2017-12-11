@@ -4,8 +4,6 @@
 Configuration::Configuration(MainWindow *mw)
 {
     this->mw = mw;
-    layout = 0;
-    cenWidget = 0;
     isStart = false;
     start = NULL;
     menuWidget = new QWidget(this);
@@ -19,7 +17,20 @@ Configuration::Configuration(MainWindow *mw)
     n2Blue = 0;
     n2Green = 0;
     zhan = 0;
+    buildCenWidgetCamera();
+    buildCenWidgetSoftWare();
+    buildCenWidgetAlgorithm();
+    stackedLayout = new QStackedLayout();
 
+    stackedLayout->addWidget(new QWidget(this));//先显示空白的
+    stackedLayout->addWidget(cenWidgetCamera);
+    stackedLayout->addWidget(cenWidgetSoftWare);
+    stackedLayout->addWidget(cenWidgetAlgorithm);
+
+    QWidget *cenWidget = new QWidget();
+    cenWidget->setLayout(stackedLayout);
+
+    this->setCentralWidget(cenWidget);
 }
 
 void Configuration::configure(){
@@ -47,81 +58,81 @@ void Configuration::configure(){
         this->setMenuWidget(menuWidget);
 
 }
+void Configuration::buildCenWidgetCamera(){
+    layoutCamera=new QGridLayout;
+    cenWidgetCamera = new QWidget(this);
 
-void Configuration::cameraShow(){
-    QGridLayout* old=layout;
-    layout=new QGridLayout;
-    QWidget *oldWidget = cenWidget;
-    cenWidget = new QWidget(this);
-
-    start = new QToolButton(cenWidget);
+    start = new QToolButton(cenWidgetCamera);
     start->setText("启动");
     connect(start,SIGNAL(clicked()),this,SLOT(startF()));
 
-    QToolButton *state = new QToolButton(cenWidget);
+    QToolButton *state = new QToolButton(cenWidgetCamera);
     state->setText("状态查询");
     connect(state,SIGNAL(clicked()),this,SLOT(stateSearch()));
 
-    QToolButton *minus = new QToolButton(cenWidget);
+    QToolButton *minus = new QToolButton(cenWidgetCamera);
     minus->setText("-");
     connect(minus,SIGNAL(clicked()),this,SLOT(minusF()));
 
-    QToolButton *add = new QToolButton(cenWidget);
+    QToolButton *add = new QToolButton(cenWidgetCamera);
     add->setText("+");
     connect(add,SIGNAL(clicked()),this,SLOT(addF()));
 
-     QToolButton *stop = new QToolButton(cenWidget);
+     QToolButton *stop = new QToolButton(cenWidgetCamera);
      stop->setText("停止");
      connect(stop,SIGNAL(clicked()),this,SLOT(stopF()));
 
-     QToolButton *background = new QToolButton(cenWidget);
+     QToolButton *background = new QToolButton(cenWidgetCamera);
      background->setText("背景校正");
      connect(background,SIGNAL(clicked()),this,SLOT(backgroundCorrct()));
 
-     QToolButton *shuttle = new QToolButton(cenWidget);
+     QToolButton *shuttle = new QToolButton(cenWidgetCamera);
      shuttle->setText("快门校正");
      connect(shuttle,SIGNAL(clicked()),this,SLOT(shuttleCorrct()));
 
-     QToolButton *ok = new QToolButton(cenWidget);
+     QToolButton *ok = new QToolButton(cenWidgetCamera);
      ok->setText("确定");
      connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
 
-      layout->addWidget(start,0,0);
-      layout->addWidget(state,1,0);
-      layout->addWidget(minus,2,0);
-      layout->addWidget(add,2,1);
-      layout->addWidget(stop,2,2);
-      layout->addWidget(background,3,0);
-      layout->addWidget(shuttle,4,0);
-      layout->addWidget(ok,5,0);
+     imageWidget = new QWidget();
+     imageLabel = new QLabel(imageWidget);
+
+     //先从全景图截取了一块显示看看效果，以后这里要改
+     Mat mat1;
+     mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
+
+     setCameraMat(mat1);
 
 
 
-    if(old!=0){
-        delete old;
-    }
-    if(oldWidget!=0){
-        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
-        foreach (QWidget* btn, btns)
-        {
-            delete btn;
-        }
-        oldWidget->repaint();
-        delete oldWidget;
-    }
+     layoutCamera->addWidget(start,0,0);
+     layoutCamera->addWidget(state,1,0);
+     layoutCamera->addWidget(minus,2,0);
+     layoutCamera->addWidget(add,2,1);
+     layoutCamera->addWidget(stop,2,2);
+     layoutCamera->addWidget(background,3,0);
+     layoutCamera->addWidget(shuttle,4,0);
+     layoutCamera->addWidget(ok,5,0);
 
-    cenWidget->setLayout(layout);
-    this->setCentralWidget(cenWidget);
+     layoutCamera->addWidget(imageWidget,0,3,6,1);
+     layoutCamera->setColumnStretch(0,1);
+     layoutCamera->setColumnStretch(1,1);
+     layoutCamera->setColumnStretch(2,1);
+     layoutCamera->setColumnStretch(3,7);
 
+     cenWidgetCamera->setLayout(layoutCamera);
 }
 
-void Configuration::softwareShow(){
-    QGridLayout* old=layout;
-    layout=new QGridLayout;
-    QWidget *oldWidget = cenWidget;
-    cenWidget = new QWidget(this);
+void Configuration::cameraShow(){
+    stackedLayout->setCurrentIndex(1);
+    imageLabel->resize(imageWidget->size());
+}
 
-    QVBoxLayout *zhanlayout = new QVBoxLayout(cenWidget);
+void Configuration::buildCenWidgetSoftWare(){
+    layoutSoftWare=new QGridLayout;
+    cenWidgetSoftWare = new QWidget(this);
+
+    QVBoxLayout *zhanlayout = new QVBoxLayout(cenWidgetSoftWare);
 
     QLabel * zhanwei = new QLabel("站位配置：",this);
     zhanlayout->addWidget(zhanwei);
@@ -135,70 +146,50 @@ void Configuration::softwareShow(){
     QLabel *color = new QLabel("边框颜色配置：",this);
     zhanlayout->addWidget(color);
 
-    QToolButton *zColor = new QToolButton(cenWidget);
+    QToolButton *zColor = new QToolButton(cenWidgetSoftWare);
     zColor->setText("主显示区边框颜色");
     //zColor->setToolTip(QString::number(1));
     connect(zColor,SIGNAL(clicked()),this,SLOT(colorSet()));
 
-    QToolButton *n1Color = new QToolButton(cenWidget);
+    QToolButton *n1Color = new QToolButton(cenWidgetSoftWare);
     n1Color->setText("辅助显示区1边框颜色");
     //n1Color->setToolTip(QString::number(2));
     connect(n1Color,SIGNAL(clicked()),this,SLOT(colorSet()));
 
-    QToolButton *n2Color = new QToolButton(cenWidget);
+    QToolButton *n2Color = new QToolButton(cenWidgetSoftWare);
     n2Color->setText("辅助显示区2边框颜色");
    // n2Color->setToolTip(QString::number(3));
     connect(n2Color,SIGNAL(clicked()),this,SLOT(colorSet()));
 
-    layout->addWidget(zColor,1,0);
-    layout->addWidget(n1Color,1,1);
-    layout->addWidget(n2Color,1,2);
+    layoutSoftWare->addWidget(zColor,1,0);
+    layoutSoftWare->addWidget(n1Color,1,1);
+    layoutSoftWare->addWidget(n2Color,1,2);
 
-    zhanlayout->addLayout(layout);
+    zhanlayout->addLayout(layoutSoftWare);
     zhanlayout->addStretch();
 
-    if(old!=0){
-        delete old;
-    }
-    if(oldWidget!=0){
-        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
-        foreach (QWidget* btn, btns)
-        {
-            delete btn;
-        }
-        oldWidget->repaint();
-        delete oldWidget;
-    }
-
-    cenWidget->setLayout(layout);
-    this->setCentralWidget(cenWidget);
-
+    cenWidgetSoftWare->setLayout(layoutSoftWare);
 }
 
-void Configuration::algorithmShow(){
-    QGridLayout* old=layout;
-    layout=new QGridLayout;
-    QWidget *oldWidget = cenWidget;
-    cenWidget = new QWidget(this);
+void Configuration::softwareShow(){
+    stackedLayout->setCurrentIndex(2);
+}
+
+void Configuration::buildCenWidgetAlgorithm(){
+    layoutAlgorithm=new QGridLayout;
+    cenWidgetAlgorithm = new QWidget(this);
 
     QLabel * name = new QLabel("算法配置",this);
 
-     layout->addWidget(name,0,0);
-    if(old!=0){
-        delete old;
-    }
-    if(oldWidget!=0){
-        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
-        foreach (QWidget* btn, btns)
-        {
-            delete btn;
-        }
-        oldWidget->repaint();
-        delete oldWidget;
-    }
+    layoutAlgorithm->addWidget(name,0,0);
 
-    cenWidget->setLayout(layout);
-    this->setCentralWidget(cenWidget);
+
+    cenWidgetAlgorithm->setLayout(layoutAlgorithm);
+}
+
+void Configuration::algorithmShow(){
+
+    stackedLayout->setCurrentIndex(3);
 
 }
 
@@ -242,26 +233,7 @@ void Configuration::backgroundCorrct(){
 }
 
 void Configuration::okF(){
-    QGridLayout* old=layout;
-    layout=new QGridLayout;
-    QWidget *oldWidget = cenWidget;
-    cenWidget = new QWidget(this);
-
-    if(old!=0){
-        delete old;
-    }
-    if(oldWidget!=0){
-        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
-        foreach (QWidget* btn, btns)
-        {
-            delete btn;
-        }
-        oldWidget->repaint();
-        delete oldWidget;
-    }
-
-    cenWidget->setLayout(layout);
-    this->setCentralWidget(cenWidget);
+    stackedLayout->setCurrentIndex(0);
 }
 
 
@@ -318,4 +290,16 @@ void Configuration::zhanModify(){
 
 
 
+}
+void Configuration::setCameraMat(Mat mat){
+    QImage image;
+    image = mw->MatToQImage(mat,image);
+    QPixmap pixmap = QPixmap::fromImage(image);
+    imageLabel->setScaledContents(true);
+    imageLabel->setPixmap(pixmap);
+}
+
+
+void Configuration::resizeEvent(QResizeEvent *){
+    imageLabel->resize(imageWidget->size());
 }
