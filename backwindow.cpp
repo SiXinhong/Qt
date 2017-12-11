@@ -260,8 +260,8 @@ void BackWindow::selfTimerout(){
                for(int iii = 0; iii < points.size(); iii++){
                    Point point = points[iii];
                    Point point2 = Point(point.x+pano.cols, point.y);
-                   circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                   circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                   circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                   circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
                    if(iii >= 1){
                        Point point3 = points[iii-1];
                        Point point4 = Point(point3.x+pano.cols, point3.y);

@@ -911,7 +911,7 @@ void HWidget::draw(){
 //        qDebug()<<this->getDirectionPoint(p).x;
 //        qDebug()<<this->getDirectionPoint(p).y;
         Scalar color = objs[i].getColor();
-        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,2);//在图像中画出特征点，2是圆的半径
+        circle(tmat, this->getDirectionPoint(p), 2, color,-1,8,0);//在图像中画出特征点，2是圆的半径
        // cv::cvtColor(tmat,tmat,CV_BGR2RGB);
     }
  //   cv::cvtColor(tmat,tmat,CV_BGR2RGB);
