@@ -44,7 +44,6 @@ SOURCES += main.cpp\
     region.cpp \
     regiongroup.cpp \
     monitor.cpp \
-    detailsofrg.cpp \
     alert.cpp \
     #timecontrol.cpp \
     configuration.cpp \
@@ -78,7 +77,6 @@ HEADERS  += mainwindow.h \
     region.h \
     regiongroup.h \
     monitor.h \
-    detailsofrg.h \
     alert.h \
     #timecontrol.h \
     configuration.h \

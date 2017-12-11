@@ -8,6 +8,8 @@ class Configuration;
 #include <QLabel>
 #include <QWidget>
 #include <QStackedLayout>
+#include "s_trackbar.h"
+#include "trackbar.h"
 
 class Configuration : public QMainWindow
 {
@@ -45,6 +47,11 @@ public:
      void buildCenWidgetAlgorithm();
      void buildCenWidgetSoftWare();
      void setCameraMat(Mat mat);
+     void setAlgorithmMat(Mat mat);
+
+
+     STrackBar *strackbar;
+     TrackBar *trackbar;
 
 public slots:
     void startF();

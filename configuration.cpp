@@ -17,6 +17,10 @@ Configuration::Configuration(MainWindow *mw)
     n2Blue = 0;
     n2Green = 0;
     zhan = 0;
+
+    strackbar = new STrackBar(this);
+    trackbar = new TrackBar(this);
+
     buildCenWidgetCamera();
     buildCenWidgetSoftWare();
     buildCenWidgetAlgorithm();
@@ -178,18 +182,37 @@ void Configuration::softwareShow(){
 void Configuration::buildCenWidgetAlgorithm(){
     layoutAlgorithm=new QGridLayout;
     cenWidgetAlgorithm = new QWidget(this);
+    QLabel * contrast = new QLabel("对比度调节(0到2):");
+    QLabel *light = new QLabel("亮度调节(-500到500):");
+   // strackbar->resize(this->width()/4,this->height()/10);
 
-    QLabel * name = new QLabel("算法配置",this);
+    layoutAlgorithm->addWidget(contrast,0,0);
+    layoutAlgorithm->addWidget(strackbar,1,0);
+    layoutAlgorithm->addWidget(light,2,0);
+    layoutAlgorithm->addWidget(trackbar,3,0);
 
-    layoutAlgorithm->addWidget(name,0,0);
+    imageWidget = new QWidget();
+    imageLabel = new QLabel(imageWidget);
 
+    //先从全景图截取了一块显示看看效果，以后这里要改
+    Mat mat1;
+    mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
+
+    setAlgorithmMat(mat1);
+
+    layoutAlgorithm->addWidget(imageWidget,0,1,10,10);
+
+    layoutAlgorithm->setColumnStretch(0,1);
+    layoutAlgorithm->setColumnStretch(1,10);
 
     cenWidgetAlgorithm->setLayout(layoutAlgorithm);
+
 }
 
 void Configuration::algorithmShow(){
 
     stackedLayout->setCurrentIndex(3);
+    imageLabel->resize(imageWidget->size());
 
 }
 
@@ -299,6 +322,15 @@ void Configuration::setCameraMat(Mat mat){
     imageLabel->setPixmap(pixmap);
 }
 
+
+
+void Configuration::setAlgorithmMat(Mat mat){
+    QImage image;
+    image = mw->MatToQImage(mat,image);
+    QPixmap pixmap = QPixmap::fromImage(image);
+    imageLabel->setScaledContents(true);
+    imageLabel->setPixmap(pixmap);
+}
 
 void Configuration::resizeEvent(QResizeEvent *){
     imageLabel->resize(imageWidget->size());

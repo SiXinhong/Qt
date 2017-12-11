@@ -20,8 +20,6 @@ class Monitor;
 #include "nwidget1.h"
 #include "nwidget2.h"
 #include "mainwindow.h"
-#include "detailsofrg.h"
-//#include "timecontrol.h"
 #include "hourwidget.h"
 
 
@@ -59,7 +57,7 @@ public slots:
     void editFunction();
     void onClickName();
     void createRG();
-    void detailsShow();
+    //void detailsShow();
     void timeControl();
     void regionShow();
     void listWidgetChange(int);

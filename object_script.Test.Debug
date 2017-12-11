@@ -26,7 +26,6 @@ INPUT(
 ./debug\region.o
 ./debug\regiongroup.o
 ./debug\monitor.o
-./debug\detailsofrg.o
 ./debug\alert.o
 ./debug\configuration.o
 ./debug\hourwidget.o
@@ -37,12 +36,12 @@ INPUT(
 ./debug\moc_lwidget.o
 ./debug\moc_qj1widget.o
 ./debug\moc_qj2widget.o
+./debug\moc_s_trackbar.o
 ./debug\moc_objectAttributes.o
 ./debug\moc_welcomewindow.o
 ./debug\moc_nwidget1.o
 ./debug\moc_nwidget2.o
 ./debug\moc_monitor.o
-./debug\moc_detailsofrg.o
 ./debug\moc_alert.o
 ./debug\moc_configuration.o
 ./debug\moc_hourwidget.o

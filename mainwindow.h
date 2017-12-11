@@ -51,10 +51,7 @@
 #include <QSlider>
 #include<QLineEdit>
 #include<QWidgetAction>
-#include "trackbar.h"
-#include "s_trackbar.h"
 
-//#include"ltrackbar.h"
 //回放所需要的头文件
 
 #include<QDateEdit>
@@ -513,8 +510,8 @@ public slots:
 //private:
 public:
     Ui::MainWindow *ui;
-class TrackBar* trackBar;
-class STrackBar* strackBar;
+//class TrackBar* trackBar;
+//class STrackBar* strackBar;
 Mat setPseudocolor(Mat& image);
 
 private slots:

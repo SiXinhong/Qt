@@ -101,10 +101,10 @@ void Monitor::widgetShow(){
         attributes->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
         connect(attributes,SIGNAL(clicked()),this,SLOT(attributesModify()));
 
-        QToolButton *timeCon = new QToolButton(cenWidget);
-        timeCon->setText("告警时间段设置");
-        timeCon->setToolTip(tip);
-        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
+//        QToolButton *timeCon = new QToolButton(cenWidget);
+//        timeCon->setText("告警时间段设置");
+//        timeCon->setToolTip(tip);
+//        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
 
         QToolButton *edit = new QToolButton(cenWidget);
         edit->setText(QString("编辑"));
@@ -121,9 +121,9 @@ void Monitor::widgetShow(){
 //        layout->addWidget(regionGroup);
 //        layout->addWidget(active);
 //        layout->addWidget(attributes);
-        layout->addWidget(edit,0,6);
+        layout->addWidget(edit,0,5);
         //layout->addWidget(details,i,5);
-        layout->addWidget(timeCon,0,5);
+        //layout->addWidget(timeCon,0,5);
 
         //layout->addStretch();
         QGridLayout * layout1 = new QGridLayout;
@@ -377,34 +377,34 @@ void Monitor::createRG(){
     mw->isDefiningRegion = true;
 }
 
-void Monitor::detailsShow(){
-    QObject* obj = sender();
-    QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    int index = button->toolTip().toInt();
+//void Monitor::detailsShow(){
+//    QObject* obj = sender();
+//    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+//    int index = button->toolTip().toInt();
 
-    // User *user = (User *)(button->userData(Qt::UserRole));
-    //int index =user->nID;
+//    // User *user = (User *)(button->userData(Qt::UserRole));
+//    //int index =user->nID;
 
-    //    if(detailsOfRG==NULL||detailsOfRG->index == index){
-    //        detailsOfRG   = new DetailsOfRG(mw,index);
-    //    }
-    //    else if(detailsOfRG!=NULL&&detailsOfRG->index==index){
-    //        return;
-    //    }
+//    //    if(detailsOfRG==NULL||detailsOfRG->index == index){
+//    //        detailsOfRG   = new DetailsOfRG(mw,index);
+//    //    }
+//    //    else if(detailsOfRG!=NULL&&detailsOfRG->index==index){
+//    //        return;
+//    //    }
 
-    DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
-    //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
-    detailsOfRG->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的详细信息"));
-    detailsOfRG->activateWindow();
-    QDesktopWidget *desktop= QApplication::desktop();
-    QRect screenRect = desktop->screenGeometry();
-    int width = screenRect.width();
-    int height = screenRect.height();
-    detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
-    detailsOfRG->show();
-    detailsOfRG->detailsShow();
+//    DetailsOfRG  *detailsOfRG = new DetailsOfRG(mw,index);
+//    //detailsOfRG->setWindowFlags(Qt::WindowStaysOnTopHint);
+//    detailsOfRG->setWindowTitle(QString("监控区域组").append(mw->rgs[index].name).append("的详细信息"));
+//    detailsOfRG->activateWindow();
+//    QDesktopWidget *desktop= QApplication::desktop();
+//    QRect screenRect = desktop->screenGeometry();
+//    int width = screenRect.width();
+//    int height = screenRect.height();
+//    detailsOfRG->setGeometry(7*width/12,5*height/12,width/3,height/3);
+//    detailsOfRG->show();
+//    detailsOfRG->detailsShow();
 
-}
+//}
 
 void Monitor::timeControl(){
     QObject* obj = sender();

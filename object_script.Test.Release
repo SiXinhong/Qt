@@ -26,7 +26,6 @@ INPUT(
 ./release\region.o
 ./release\regiongroup.o
 ./release\monitor.o
-./release\detailsofrg.o
 ./release\alert.o
 ./release\configuration.o
 ./release\hourwidget.o
@@ -37,12 +36,12 @@ INPUT(
 ./release\moc_lwidget.o
 ./release\moc_qj1widget.o
 ./release\moc_qj2widget.o
+./release\moc_s_trackbar.o
 ./release\moc_objectAttributes.o
 ./release\moc_welcomewindow.o
 ./release\moc_nwidget1.o
 ./release\moc_nwidget2.o
 ./release\moc_monitor.o
-./release\moc_detailsofrg.o
 ./release\moc_alert.o
 ./release\moc_configuration.o
 ./release\moc_hourwidget.o
