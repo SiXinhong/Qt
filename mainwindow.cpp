@@ -4324,7 +4324,7 @@ void MainWindow::configurationClicked(){
     QRect screenRect = desktop->screenGeometry();
     int width = screenRect.width();
     int height = screenRect.height();
-    this->configure->setGeometry(width/4,height/4,width/3,height/3);
+    this->configure->setGeometry(width/4,height/4,850,height/3);
     this->configure->show();
     this->configure->configure();
 //    if(welcome!=0){

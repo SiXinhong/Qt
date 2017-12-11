@@ -43,6 +43,8 @@ public:
       QToolButton *zhan ;
      QWidget *imageWidget;
      QLabel *imageLabel;
+     QWidget *imageWidgetAlgorithm;
+     QLabel *imageLabelAlgorithm;
      void buildCenWidgetCamera();
      void buildCenWidgetAlgorithm();
      void buildCenWidgetSoftWare();

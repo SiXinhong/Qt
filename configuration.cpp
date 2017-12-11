@@ -191,19 +191,19 @@ void Configuration::buildCenWidgetAlgorithm(){
     layoutAlgorithm->addWidget(light,2,0);
     layoutAlgorithm->addWidget(trackbar,3,0);
 
-    imageWidget = new QWidget();
-    imageLabel = new QLabel(imageWidget);
+    imageWidgetAlgorithm = new QWidget();
+    imageLabelAlgorithm = new QLabel(imageWidgetAlgorithm);
 
     //先从全景图截取了一块显示看看效果，以后这里要改
     Mat mat1;
-    mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
+    mw->widget1->pano(Rect(0,0,imageWidgetAlgorithm->width(),imageWidgetAlgorithm->height())).copyTo(mat1);
 
     setAlgorithmMat(mat1);
 
-    layoutAlgorithm->addWidget(imageWidget,0,1,10,10);
+    layoutAlgorithm->addWidget(imageWidgetAlgorithm,0,1,4,1);
 
     layoutAlgorithm->setColumnStretch(0,1);
-    layoutAlgorithm->setColumnStretch(1,10);
+    layoutAlgorithm->setColumnStretch(1,2);
 
     cenWidgetAlgorithm->setLayout(layoutAlgorithm);
 
@@ -212,7 +212,7 @@ void Configuration::buildCenWidgetAlgorithm(){
 void Configuration::algorithmShow(){
 
     stackedLayout->setCurrentIndex(3);
-    imageLabel->resize(imageWidget->size());
+    imageLabelAlgorithm->resize(imageWidgetAlgorithm->size());
 
 }
 
@@ -328,10 +328,11 @@ void Configuration::setAlgorithmMat(Mat mat){
     QImage image;
     image = mw->MatToQImage(mat,image);
     QPixmap pixmap = QPixmap::fromImage(image);
-    imageLabel->setScaledContents(true);
-    imageLabel->setPixmap(pixmap);
+    imageLabelAlgorithm->setScaledContents(true);
+    imageLabelAlgorithm->setPixmap(pixmap);
 }
 
 void Configuration::resizeEvent(QResizeEvent *){
     imageLabel->resize(imageWidget->size());
+    imageLabelAlgorithm->resize(imageWidgetAlgorithm->size());
 }
