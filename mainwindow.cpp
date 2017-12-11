@@ -396,8 +396,8 @@ void MainWindow::jinProcessing(){
                         for(int iii = 0; iii < points.size(); iii++){
                             Point point = points[iii];
                             Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
                             if(iii >= 1){
                                 Point point3 = points[iii-1];
                                 Point point4 = Point(point3.x+pano.cols, point3.y);
@@ -641,8 +641,8 @@ void MainWindow::selfProcessing(){
                     for(int iii = 0; iii < points.size(); iii++){
                         Point point = points[iii];
                         Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
                         if(iii >= 1){
                             Point point3 = points[iii-1];
                             Point point4 = Point(point3.x+pano.cols, point3.y);
@@ -1757,8 +1757,8 @@ void MainWindow::selfTimerout(){
                     for(int iii = 0; iii < points.size(); iii++){
                         Point point = points[iii];
                         Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
                         if(iii >= 1){
                             Point point3 = points[iii-1];
                             Point point4 = Point(point3.x+pano.cols, point3.y);
@@ -2155,8 +2155,8 @@ void MainWindow::jinTimerout(){
                         for(int iii = 0; iii < points.size(); iii++){
                             Point point = points[iii];
                             Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,2);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                            circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
                             if(iii >= 1){
                                 Point point3 = points[iii-1];
                                 Point point4 = Point(point3.x+pano.cols, point3.y);
@@ -3477,7 +3477,7 @@ void MainWindow::paintCircle(Mat image,double x,double y)
     Point pointInterest;//特征点，用以画在图像中,画圆形点的圆心
     pointInterest.x=x;//特征点在图像中横坐标
     pointInterest.y=y;//特征点在图像中纵坐标
-    circle(image, pointInterest, 2, Scalar(255, 0,0 ),-1,8,2);//在图像中画出特征点，2是圆的半径
+    circle(image, pointInterest, 2, Scalar(255, 0,0 ),-1,8,0);//在图像中画出特征点，2是圆的半径
     //img = QImage((const unsigned char*)(image.data),image.cols,image.rows, image.cols*image.channels(),  QImage::Format_RGB888);
     //return img;
 }
