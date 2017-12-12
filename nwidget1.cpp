@@ -373,7 +373,10 @@ void NWidget1::draw(){
             Mat mat1 = this->twopanos;
             Size dsize ;
             double scale = 0.5;
-            dsize = Size(rect.width*2,rect.height*2);
+            qDebug()<<"rect.width:"<<rect.width;
+            qDebug()<<"rect.height:"<<rect.height;
+           //dsize = Size(rect.width*2,rect.height*2);
+            dsize = Size(this->width(),this->height());
     //        Mat image11 = Mat(dsize,CV_32S);
     //        cv::resize(mat1, image11,dsize);
     //        mw->img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
@@ -471,7 +474,15 @@ void NWidget1::draw(){
     //        cv::resize(image3, image33,dsize);
     //        setMat(image33);
               Mat image4;
-              Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
+
+              QDesktopWidget* desktopWidget = QApplication::desktop();
+              QRect screenRect = desktopWidget->screenGeometry();
+              int screenWidth=screenRect.width();
+              int screenHeight  = screenRect.height();
+              Rect trect = Rect(0,0,screenWidth*0.4,screenHeight*0.385);
+
+
+             // Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
               mat1(trect).copyTo(image4);//mw->QImageToMat(mw->aa);
               realRect = trect;
 //              Mat image44 = Mat(dsize,CV_32S);
@@ -512,6 +523,7 @@ void NWidget1::DefineRect(){
 }
 
 void NWidget1::ZoomIn(){
+    qDebug()<<"n1widget:zoomin";
 ////    if(this->rect.x + 1/8 * this->rect.width >= 0){
 //        this->rect.x = this->rect.x + 1/8 * this->rect.width;
 //        this->rect.width = this->rect.width *3/4;

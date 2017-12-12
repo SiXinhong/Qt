@@ -173,6 +173,32 @@ void MainWindow::init(){
     n2WZoomIn = new QToolButton(label6);
     n2WZoomout = new QToolButton(label6);
 
+    zWZoomIn->setText("放大");
+    zWZoomIn->setGeometry(10,10,60,30);
+    zWZoomIn->setToolTip(QString::number(3));
+    zWZoomout->setText("缩小");
+    zWZoomout->setGeometry(80,10,60,30);
+    zWZoomout->setToolTip(QString::number(3));
+    connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+    connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+
+    n1WZoomIn->setText("放大");
+    n1WZoomIn->setGeometry(10,10,60,30);
+    n1WZoomIn->setToolTip(QString::number(4));
+    n1WZoomout->setText("缩小");
+    n1WZoomout->setGeometry(80,10,60,30);
+    n1WZoomout->setToolTip(QString::number(4));
+    connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+    connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+
+    n2WZoomIn->setText("放大");
+    n2WZoomIn->setGeometry(10,10,60,30);
+    n2WZoomIn->setToolTip(QString::number(6));
+    n2WZoomout->setText("缩小");
+    n2WZoomout->setGeometry(80,10,60,30);
+    n2WZoomout->setToolTip(QString::number(6));
+    connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+    connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
 
     //鼠标拖拽控制变量赋初值
     isDrag1 = false;
@@ -3274,14 +3300,15 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
 
 
     }
-    zWZoomIn->setText("放大");
-    zWZoomIn->setGeometry(10,10,60,30);
-    zWZoomIn->setToolTip(QString::number(3));
-    zWZoomout->setText("缩小");
-    zWZoomout->setGeometry(80,10,60,30);
-    zWZoomout->setToolTip(QString::number(3));
-    connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+
+//    zWZoomIn->setText("放大");
+//    zWZoomIn->setGeometry(10,10,60,30);
+//    zWZoomIn->setToolTip(QString::number(3));
+//    zWZoomout->setText("缩小");
+//    zWZoomout->setGeometry(80,10,60,30);
+//    zWZoomout->setToolTip(QString::number(3));
+//    connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+//    connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
     label3->setScaledContents(true);
     label3->setPixmap(pixmap1);
 
@@ -3318,14 +3345,14 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
 
     }
 
-    n1WZoomIn->setText("放大");
-    n1WZoomIn->setGeometry(10,10,60,30);
-    n1WZoomIn->setToolTip(QString::number(4));
-    n1WZoomout->setText("缩小");
-    n1WZoomout->setGeometry(80,10,60,30);
-    n1WZoomout->setToolTip(QString::number(4));
-    connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+//    n1WZoomIn->setText("放大");
+//    n1WZoomIn->setGeometry(10,10,60,30);
+//    n1WZoomIn->setToolTip(QString::number(4));
+//    n1WZoomout->setText("缩小");
+//    n1WZoomout->setGeometry(80,10,60,30);
+//    n1WZoomout->setToolTip(QString::number(4));
+//    connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+//    connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
     label4->setScaledContents(true);
     label4->setPixmap(pixmap1);
 
@@ -3366,15 +3393,15 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
         //        }
 
-
     }
-
-    n2WZoomIn->setText("放大");
-    n2WZoomIn->setGeometry(10,10,60,30);
-    n2WZoomout->setText("缩小");
-    n2WZoomout->setGeometry(80,10,60,30);
-    connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+//    n2WZoomIn->setText("放大");
+//    n2WZoomIn->setGeometry(10,10,60,30);
+//    n2WZoomIn->setToolTip(QString::number(6));
+//    n2WZoomout->setToolTip(QString::number(6));
+//    n2WZoomout->setText("缩小");
+//    n2WZoomout->setGeometry(80,10,60,30);
+//    connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
+//    connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
     label6->setScaledContents(true);
     label6->setPixmap(pixmap1);
 
@@ -4549,7 +4576,7 @@ void MainWindow::onAlertTimer(){
 }
 
 void MainWindow::zoomIn(){
-    qDebug()<<"zoomIN";
+    qDebug()<<"main:zoomIN";
     QObject* obj = sender();
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
     int index = button->toolTip().toInt();

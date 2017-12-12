@@ -616,7 +616,14 @@ void ZWidget::draw(){
 //        cv::resize(image3, image33,dsize);
 //        setMat(image33);
           Mat image3;
-          Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
+
+          QDesktopWidget* desktopWidget = QApplication::desktop();
+          QRect screenRect = desktopWidget->screenGeometry();
+          int screenWidth=screenRect.width();
+          int screenHeight  = screenRect.height();
+          Rect trect = Rect(0,0,screenWidth,screenHeight*0.46);
+
+          //Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
           mat1(trect).copyTo(image3);//mw->QImageToMat(mw->aa);
           realRect=trect;
 //          Mat image33 = Mat(dsize,CV_32S);
@@ -679,6 +686,7 @@ void ZWidget::draw(){
 }
 
 void ZWidget::ZoomIn(){
+    qDebug()<<"zwidget:zoomin";
     if(/*this->rect.x + this->rect.width/8 <= pano.cols && */this->rect.width*3/4>0){
         //this->rect.x = this->rect.x + this->rect.width/8;
         this->rect.width = this->rect.width *3/4;
@@ -687,7 +695,7 @@ void ZWidget::ZoomIn(){
         //this->rect.y = this->rect.y + this->rect.height/8;
         this->rect.height = this->rect.height *3/4;
     }
-    qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
+    //qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
 }
 
 void ZWidget::ZoomOut(){
