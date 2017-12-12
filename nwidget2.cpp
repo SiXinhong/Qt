@@ -477,10 +477,9 @@ void NWidget2::draw(){
               //Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
               QDesktopWidget* desktopWidget = QApplication::desktop();
               QRect screenRect = desktopWidget->screenGeometry();
-              int screenWidth=screenRect.width();
-              int screenHeight  = screenRect.height();
-
-              Rect trect = Rect(0,0,screenWidth*0.4,screenHeight*0.385);
+              int screenWidth=screenRect.width()*0.4;
+              int screenHeight  = screenRect.height()*0.385;
+              Rect trect = Rect(0,0,mat1.rows*screenWidth/screenHeight,mat1.rows);
               mat1(trect).copyTo(image4);//mw->QImageToMat(mw->aa);
               realRect =trect;
 //              Mat image44 = Mat(dsize,CV_32S);

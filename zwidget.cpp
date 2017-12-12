@@ -620,8 +620,8 @@ void ZWidget::draw(){
           QDesktopWidget* desktopWidget = QApplication::desktop();
           QRect screenRect = desktopWidget->screenGeometry();
           int screenWidth=screenRect.width();
-          int screenHeight  = screenRect.height();
-          Rect trect = Rect(0,0,screenWidth,screenHeight*0.46);
+          int screenHeight  = screenRect.height()*0.46;
+          Rect trect = Rect(0,0,mat1.rows*screenWidth/screenHeight,mat1.rows);
 
           //Rect trect = Rect(0,0,mat1.cols/4,mat1.rows);
           mat1(trect).copyTo(image3);//mw->QImageToMat(mw->aa);
