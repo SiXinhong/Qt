@@ -66,6 +66,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     this->welcome=welcome;
+    configure = 0;
     //因为Backwindow继承了MainWindow，Backwindow不需要启动界面，给构造函数传递空指针，
     //这时候一定要立即执行init()，否则Backwindow以为初始化工作完成开始执行别的代码时就报错了
     if(welcome != 0){
@@ -84,7 +85,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 }
 
 void MainWindow::init(){
-    configure = 0;
+//    configure = 0;
     alert = 0;
     monitor = 0;
 
@@ -114,7 +115,7 @@ void MainWindow::init(){
     //告警启动还是关闭
     isGaojing = true;
     //声音打开还是关闭
-    isShengyin = true;
+    isShengyin = false;
     //目标属性是否跟随
     isMubiao = true;
     //系统编号
@@ -174,28 +175,28 @@ void MainWindow::init(){
     n2WZoomout = new QToolButton(label6);
 
     zWZoomIn->setText("放大");
-    zWZoomIn->setGeometry(10,10,60,30);
+    zWZoomIn->setGeometry(40,40,50,30);
     zWZoomIn->setToolTip(QString::number(3));
     zWZoomout->setText("缩小");
-    zWZoomout->setGeometry(80,10,60,30);
+    zWZoomout->setGeometry(100,40,50,30);
     zWZoomout->setToolTip(QString::number(3));
     connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
 
     n1WZoomIn->setText("放大");
-    n1WZoomIn->setGeometry(10,10,60,30);
+    n1WZoomIn->setGeometry(40,40,50,30);
     n1WZoomIn->setToolTip(QString::number(4));
     n1WZoomout->setText("缩小");
-    n1WZoomout->setGeometry(80,10,60,30);
+    n1WZoomout->setGeometry(100,40,50,30);
     n1WZoomout->setToolTip(QString::number(4));
     connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
 
     n2WZoomIn->setText("放大");
-    n2WZoomIn->setGeometry(10,10,60,30);
+    n2WZoomIn->setGeometry(40,40,50,30);
     n2WZoomIn->setToolTip(QString::number(6));
     n2WZoomout->setText("缩小");
-    n2WZoomout->setGeometry(80,10,60,30);
+    n2WZoomout->setGeometry(100,40,50,30);
     n2WZoomout->setToolTip(QString::number(6));
     connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
@@ -207,12 +208,12 @@ void MainWindow::init(){
 
     ////////////////zc///////////////////////
     //通信连接
-    MySocketInitial();
+   // MySocketInitial();
     qDebug()<<"ini()6";
     //自定义接口处理，将来被金老师SDK替换--------------------------------
     in = MyInterface();
-    //selfProcessing();
-    this->jinProcessing();
+    selfProcessing();
+    //this->jinProcessing();
     //---------------------------------------------------------
     qDebug()<<"ini()4";
     //临时性处理，将来被金老师SDK替换--------------------------------
@@ -222,7 +223,7 @@ void MainWindow::init(){
     showAlert = new QTimer();
 
     timer=new QTimer();
-    timer->setInterval(3000);
+    timer->setInterval(1500);
     timer->start();
     connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
     //定时器，获取系统时间
@@ -281,11 +282,12 @@ void MainWindow::init(){
     //     x= widget5->getInverseDirectionX(x,y);
     //     qDebug()<<x<<"InverseDirectionX";
 
-    if(welcome!=0){
-        welcome->close();
+//    if(welcome!=0){
+//        welcome->close();
 
-        this->show();//BackWindow的show是由mainwindow中指定代码调用的
-    }
+//        this->show();//BackWindow的show是由mainwindow中指定代码调用的
+//    }
+ this->show();
     qDebug()<<"ini()7";
 }
 
@@ -362,6 +364,7 @@ void MainWindow::jinProcessing(){
         // delete todayDir;
 
         Mat pano = in.getPano();
+        qDebug()<<"jinPano.x.y"<<pano.cols<<pano.rows;
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
@@ -603,7 +606,8 @@ void MainWindow::selfProcessing(){
 
 
     in.getIntegratedData2();
-    vector<MyObject> objs = in.getObjs2();
+    qDebug()<<"selfpocessing1";
+    vector<MyObject> objs;// = in.getObjs2();
     num_objs =objs.size();
     // num_objs =0;
     for(int i=0;i<objs.size();i++){
@@ -619,6 +623,8 @@ void MainWindow::selfProcessing(){
         current_time.clear();
         current_path.clear();
     }
+
+     qDebug()<<"selfpocessing3";
     //    for(int i = 0; i < objs.size(); i++){
     //        MyObject obj = objs[i];
     //        qDebug()<<i;
@@ -639,11 +645,14 @@ void MainWindow::selfProcessing(){
 
     //在两个全景上画矩形，文字，轨迹等
     Mat pano = in.getPano();
-
+    qDebug()<<"selfpocessing6";
     Mat pano1 = pano.clone();
     Mat pano2 = pano.clone();
+
     Mat mat;
+     qDebug()<<"selfpocessing8";
     hconcat(pano1,pano2,mat);
+     qDebug()<<"selfpocessing7";
     //在全景上画矩形，文字，轨迹等
     //vector<MyObject> objs = in.getObjs();
     vector<MyObjectTrack> tracks = in.getTracks();
@@ -680,6 +689,7 @@ void MainWindow::selfProcessing(){
                 }
             }
         }
+         qDebug()<<"selfpocessing4";
         //画对象中心点的位置
         if(isMubiao){
             int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -711,6 +721,7 @@ void MainWindow::selfProcessing(){
         RegionGroup rg = rgs[iii];
         rg.draw(mat);
     }
+    qDebug()<<"selfpocessing2";
     //画矩形
     if(this->widget1->isTo3){
         //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
@@ -856,6 +867,7 @@ void MainWindow::selfProcessing(){
     widget6->setAllObjects(in.getObjs());
     widget6->draw();
     this->alertProcessing(objs);
+    qDebug()<<"selfpocessing";
 }
 //----------------------------------------------------------
 
@@ -1091,7 +1103,7 @@ void MainWindow::addMyToolBar()
     //回放
     backLabel = new QLabel(this);
     QPixmap pixmap4("./iconUpdate/回放.png");
-    fitpixmap4=pixmap4.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap4=pixmap4.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     backLabel->setPixmap(fitpixmap4);
     vbox1->addWidget(backLabel);
 
@@ -1103,7 +1115,7 @@ void MainWindow::addMyToolBar()
     mstop->setMinimumWidth(buttonSize);
     mstop->setMaximumWidth(buttonSize);
     mstop->setStyleSheet("border-style:flat;background-color:2E302D");
-    mstopSet="./iconUpdate/记录当前场景.png";
+    mstopSet="./iconUpdate/录像停.png";
     mstop->setIcon(QPixmap(mstopSet));
     mstop->setIconSize(QSize(buttonSize,buttonSize));
     mstop->setCheckable(true);
@@ -1135,7 +1147,7 @@ void MainWindow::addMyToolBar()
     open->setMinimumWidth(buttonSize);
     open->setMaximumWidth(buttonSize);
     open->setStyleSheet("border-style:flat;background-color:2E302D");
-    openSet="./iconUpdate/显示隐藏时间轴.png";
+    openSet="./iconUpdate/显示隐藏时间轴开.png";
     open->setIcon(QPixmap(openSet));
     open->setIconSize(QSize(buttonSize,buttonSize));
     open->setCheckable(true);
@@ -1157,7 +1169,7 @@ void MainWindow::addMyToolBar()
     //图像
     photo = new QLabel(this);
     QPixmap pixmap5("./iconUpdate/图像.png");
-    fitpixmap5=pixmap5.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap5=pixmap5.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     photo->setPixmap(fitpixmap5);
     vbox2->addWidget(photo);
 
@@ -1184,7 +1196,7 @@ void MainWindow::addMyToolBar()
     autom->setMinimumWidth(buttonSize);
     autom->setMaximumWidth(buttonSize);
     autom->setStyleSheet("border-style:flat;background-color:2E302D");
-    automSet="./iconUpdate/应用自动对比度.png";
+    automSet="./iconUpdate/应用自动对比度开.png";
     autom->setIcon(QPixmap(automSet));
     autom->setIconSize(QSize(buttonSize,buttonSize));
     autom->setCheckable(true);
@@ -1286,7 +1298,7 @@ void MainWindow::addMyToolBar()
     //站位
     position = new QLabel(this);
     QPixmap pixmap8("./iconUpdate/位置.png");
-    fitpixmap8=pixmap8.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap8=pixmap8.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     position->setPixmap(fitpixmap8);
     vbox8->addWidget(position);
 
@@ -1306,7 +1318,7 @@ void MainWindow::addMyToolBar()
     //时间组
     currentTime = new QLabel(this);
     QPixmap pixmap3("./iconUpdate/当前时间.png");
-    fitpixmap3=pixmap3.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap3=pixmap3.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     currentTime->setPixmap(fitpixmap3);
     vbox6->addWidget(currentTime);
 
@@ -1328,7 +1340,7 @@ void MainWindow::addMyToolBar()
 
     setup = new QLabel(this);
     QPixmap pixmap6("./iconUpdate/设置.png");
-    fitpixmap6=pixmap6.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap6=pixmap6.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     setup->setPixmap(fitpixmap6);
     vbox3->addWidget(setup);
 
@@ -1392,7 +1404,7 @@ void MainWindow::addMyToolBar()
 
     alarm = new QLabel(this);
     QPixmap pixmap7("./iconUpdate/告警.png");
-    fitpixmap7=pixmap7.scaled(1.2*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap7=pixmap7.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     alarm->setPixmap(fitpixmap7);
     vbox4->addWidget(alarm);
 
@@ -1405,7 +1417,7 @@ void MainWindow::addMyToolBar()
     openClose->setMinimumWidth(buttonSize);
     openClose->setMaximumWidth(buttonSize);
     openClose->setStyleSheet("border-style:flat;background-color:2E302D");
-    openCloseSet="./iconUpdate/启用探测功能.png";
+    openCloseSet="./iconUpdate/自动探测.png";
     openClose->setIcon(QPixmap(openCloseSet));
     openClose->setIconSize(QSize(buttonSize,buttonSize));
     openClose->setCheckable(true);
@@ -1445,7 +1457,7 @@ void MainWindow::addMyToolBar()
     voice->setIconSize(QSize(buttonSize,buttonSize));
     voice->setCheckable(true);
     vbox4->addWidget(voice);
-   // connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
+    connect(voice,SIGNAL(clicked()),this,SLOT(voiceFunction()));
 
 
     //mainToolBar->addWidget(new QLabel("   "));
@@ -1684,7 +1696,7 @@ void MainWindow::selfTimerout(){
 
 
     in.getIntegratedData2();
-    vector<MyObject> objs = in.getObjs2();
+    vector<MyObject> objs;// = in.getObjs2();
 
     //    QDesktopWidget* desktopWidget = QApplication::desktop();
     //    QRect screenRect = desktopWidget->screenGeometry();
@@ -1764,63 +1776,63 @@ void MainWindow::selfTimerout(){
     updateBright(mat);
     updateContrast(mat);
 
-    for (int i = 0; i < objs.size();i++)
-    {
-        //画对象的box
-        MyObject obj = objs[i];
-        Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
-        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
-        rectangle(mat,rect2,obj.getColor(),2,1,0);
-        //cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    for (int i = 0; i < objs.size();i++)
+//    {
+//        //画对象的box
+//        MyObject obj = objs[i];
+//        Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
+//        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+//        rectangle(mat,rect2,obj.getColor(),2,1,0);
+//        //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //画轨迹
-        if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
-                        }
-                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
-                    }
-                }
-            }
-        }
-        //画对象中心点的位置
-        if(isMubiao){
-            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-            QString tx = QString::number(x,10);
-            QString ty = QString::number(y,10);
-            QString tstr = "x="+tx+",y="+ty;
-            string str = tstr.toStdString();
-            QString idstr = "id="+QString::number(obj.getID(),10);
-            string idst = idstr.toStdString();
-            //qDebug()<<tstr;
-            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-            Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+//        //画轨迹
+//        if(isMubiao){
+//            for(int ii = 0; ii < tracks.size(); ii++){
+//                MyObjectTrack track = tracks[ii];
+//                int id = track.getId();
+//                vector<Point> points = track.getTrack();
+//                if(id == obj.getID()){
+//                    for(int iii = 0; iii < points.size(); iii++){
+//                        Point point = points[iii];
+//                        Point point2 = Point(point.x+pano.cols, point.y);
+//                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                        if(iii >= 1){
+//                            Point point3 = points[iii-1];
+//                            Point point4 = Point(point3.x+pano.cols, point3.y);
+//                            line(mat,point,point3,obj.getColor(),1,8,0);
+//                            line(mat,point2,point4,obj.getColor(),1,8,0);
+//                        }
+//                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
+//                    }
+//                }
+//            }
+//        }
+//        //画对象中心点的位置
+//        if(isMubiao){
+//            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
+//            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+//            QString tx = QString::number(x,10);
+//            QString ty = QString::number(y,10);
+//            QString tstr = "x="+tx+",y="+ty;
+//            string str = tstr.toStdString();
+//            QString idstr = "id="+QString::number(obj.getID(),10);
+//            string idst = idstr.toStdString();
+//            //qDebug()<<tstr;
+//            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+//            Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-            putText(mat,str,p,3,0.5,obj.getColor());
-            putText(mat,str,p2,3,0.5,obj.getColor());
+//            putText(mat,str,p,3,0.5,obj.getColor());
+//            putText(mat,str,p2,3,0.5,obj.getColor());
 
-            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+//            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+//            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
 
-            putText(mat,idst,p3,3,0.5,obj.getColor());
-            putText(mat,idst,p4,3,0.5,obj.getColor());
-        }
-        // cv::cvtColor(mat, mat, CV_BGR2RGB);
-    }
+//            putText(mat,idst,p3,3,0.5,obj.getColor());
+//            putText(mat,idst,p4,3,0.5,obj.getColor());
+//        }
+//        // cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    }
     // cv::cvtColor(mat, mat, CV_BGR2RGB);
     //画告警区域
     for(int iii = 0; iii < this->rgs.size(); iii++){
@@ -2094,7 +2106,9 @@ void MainWindow::jinTimerout(){
     //vector<MyObject> objs = in.getObjs2();
     //std::cout<<"ok2 "<<std::endl;
     //#if 1
+qDebug()<<"jinTimerout";
     int v=in.getIntegratedData();
+qDebug()<<"jinTimerOut2";
     if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
@@ -2114,6 +2128,8 @@ void MainWindow::jinTimerout(){
         //delete todayDir;
 
         Mat pano = in.getPano();
+        //cv::imshow("test",pano);
+        cv::imwrite("test.bmp",pano);
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
@@ -2165,7 +2181,7 @@ void MainWindow::jinTimerout(){
         {
             //画对象的box
             MyObject obj = objs[i];
-            //qDebug()<<"obj.point"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
+            qDebug()<<"obj.point!!!!!"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
@@ -2227,38 +2243,39 @@ void MainWindow::jinTimerout(){
             rg.draw(mat);
         }
 
-        //画矩形
-        if(this->widget1->isTo3){
-            //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
-            rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
-            rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
-        }
-        if(this->widget1->isTo4){
-            rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
-            rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
-        }
-        if(this->widget1->isTo6){
-            rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
-            rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-        }
-        if(this->widget2->isTo3){
-            rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
-            rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
-        }
-        if(this->widget2->isTo4){
-            rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
-            rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
-        }
-        if(this->widget2->isTo6){
-            rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
-            Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
-            rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-        }
+        Mat tmat = mat.clone();
+             //画矩形
+             if(this->widget1->isTo3){
+                 //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
+                 rectangle(tmat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
+                 rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
+             }
+             if(this->widget1->isTo4){
+                 rectangle(tmat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+                 rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
+             }
+             if(this->widget1->isTo6){
+                 rectangle(tmat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+                 rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
+             }
+             if(this->widget2->isTo3){
+                 rectangle(tmat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+                 rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
+             }
+             if(this->widget2->isTo4){
+                 rectangle(tmat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
+                 rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
+             }
+             if(this->widget2->isTo6){
+                 rectangle(tmat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+                 Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+                 rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
+             }
         //然后劈成2半
 
         //    Size dsize ;
@@ -2283,6 +2300,10 @@ void MainWindow::jinTimerout(){
         mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
         mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
+        Mat mat3,mat4;
+        tmat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat3);
+        tmat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat4);
+
         Mat newpano;
         hconcat(mat1,mat2,newpano);
 
@@ -2295,7 +2316,7 @@ void MainWindow::jinTimerout(){
         //               hsl->channels[color].saturation1 = saturation1 - 100;
         //               hsl->adjust(mat1, mat1);
         //           }
-        widget1->setMat(mat1);
+        widget1->setMat(mat3);
         widget1->setPano(newpano);
         widget1->setTwoPano(mat);
         widget1->setObjects(objs);
@@ -2305,7 +2326,7 @@ void MainWindow::jinTimerout(){
         widget2->setPano(newpano);
         widget2->setTwoPano(mat);
         //widget2->setPano(mat);
-        widget2->setMat(mat2);
+        widget2->setMat(mat4);
         widget2->setObjects(objs);
         widget2->setTracks(in.getTracks());
         widget2->draw();
@@ -2983,7 +3004,8 @@ Mat MainWindow::setPseudocolor(Mat& image){
 
 double MainWindow::getDirectionX(double x, Mat mat){
     //double x = this->rectan.x;
-    return 360*x/mat.cols -90;
+    //return 360*x/mat.cols -90;
+    return 360*x/mat.cols;
 }
 
 double MainWindow::getDirectionY(double y, Mat mat){
@@ -3651,14 +3673,15 @@ void MainWindow::mstopFunction()
     //if(mstopSet=="./icon/2_2.png")
     if(isJixu)
     {
-        //mstop->setIcon(QPixmap("./icon/2_1灰.png"));
+        mstop->setIcon(QPixmap("./iconUpdate/录像停.png"));
+
         mstop->setToolTip("暂停");
         isJixu = false;
         //mstopSet="./icon/2_1.png";
     }
     else
     {
-        // mstop->setIcon(QPixmap("./icon/2_1.png"));
+        mstop->setIcon(QPixmap("./iconUpdate/录像.png"));
         mstop->setToolTip("开启");
         isJixu = true;
         //mstopSet="./icon/2_2.png";
@@ -4052,13 +4075,18 @@ void MainWindow::openCloseFunction()
     isGaojing = !isGaojing;
     QPixmap pixmap1("./iconUpdate/报警灯-红.png");
     QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+    QPixmap pixmap3("./iconUpdate/自动探测.png");
+    QPixmap pixmap4("./iconUpdate/自动探测off.png");
     //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     if(isGaojing){
         light->setIcon(pixmap1);
-    }else
+        openClose->setIcon(pixmap3);
+    }else{
         light->setIcon(pixmap2);
+        openClose->setIcon(pixmap4);
+    }
     //    QDesktopWidget* desktopWidget = QApplication::desktop();
     //    QRect screenRect = desktopWidget->screenGeometry();
     //    const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -4196,37 +4224,37 @@ void MainWindow::lightFunction()
     //QMessageBox::information(this,tr("属性设置界面，有待实现。"),tr("继续努力。"));
 }
 //声音
-//void MainWindow::voiceFunction()
-//{
+void MainWindow::voiceFunction()
+{
 
-//    //if(voiceSet=="./icon/15_2.png")
-//    isVoice = !isVoice;
-//    cmixer->SetMute(isVoice);
-//    if(isVoice == false)
-////        this->sound->play();
-//    //     QImage icon;
-//    //     icon = QImage("./icon/15_1.png");
-//    //    Mat micon;
-//    //    micon =  QImageToMat(icon);
-//    //    cv::cvtColor(micon, micon, CV_RGB2GRAY);
-//    //icon = QImage((unsigned char*)micon.data,micon.cols,micon.rows,micon.step,QImage::Format_RGB16);
+    //if(voiceSet=="./icon/15_2.png")
+    isVoice = !isVoice;
+    //cmixer->SetMute(isVoice);
+    //if(isVoice == false)
+//        this->sound->play();
+    //     QImage icon;
+    //     icon = QImage("./icon/15_1.png");
+    //    Mat micon;
+    //    micon =  QImageToMat(icon);
+    //    cv::cvtColor(micon, micon, CV_RGB2GRAY);
+    //icon = QImage((unsigned char*)micon.data,micon.cols,micon.rows,micon.step,QImage::Format_RGB16);
 
-//    if(isShengyin)
-//    {
-//        // voice->setIcon(QPixmap("./icon/15_1灰.png"));
-//        isShengyin = false;
-//        //voiceSet="./icon/15_1.png";
-//        voice->setToolTip("打开声音");
-//    }
-//    else
-//    {
-//        //voice->setIcon(QPixmap("./icon/15_1.png"));
-//        isShengyin = true;
-//        //voiceSet="./icon/15_2.png";
-//        voice->setToolTip("关闭声音");
+    if(isShengyin)
+    {
+        voice->setIcon(QPixmap("./iconUpdate/告警音开关.png"));
+        isShengyin = false;
+        //voiceSet="./icon/15_1.png";
+        voice->setToolTip("打开声音");
+    }
+    else
+    {
+        voice->setIcon(QPixmap("./iconUpdate/告警音开.png"));
+        isShengyin = true;
+        //voiceSet="./icon/15_2.png";
+        voice->setToolTip("关闭声音");
 
-//    }
-//}
+    }
+}
 
 void MainWindow::exitFunction(){
     QApplication::closeAllWindows();
@@ -4323,7 +4351,7 @@ void MainWindow::recentvidioClicked(){
 }
 
 void MainWindow::changeuserClicked(){
-    in = MyInterface();
+    //in = MyInterface();
     hide();
     welcome->show();
     //QMessageBox::information(this,tr("切换用户菜单项"),tr("支持用户登录，有用户登录界面，替代原有的欢迎界面，设置默认用户名/口令。继续努力。"));
@@ -4351,7 +4379,9 @@ void MainWindow::configurationClicked(){
     QRect screenRect = desktop->screenGeometry();
     int width = screenRect.width();
     int height = screenRect.height();
-    this->configure->setGeometry(width/4,height/4,850,height/3);
+    //this->configure->setGeometry(width/4,height/4,850,height/3);
+    this->configure->setGeometry(width/4,height/8,600,640);
+    qDebug()<<"configure.height"<<configure->height();
     this->configure->show();
     this->configure->configure();
 //    if(welcome!=0){

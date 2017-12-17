@@ -4,8 +4,7 @@
   文件描述：显控端通信接口文件
   时间：2017.6.13
   作者：zc
-  更新：2017.8.15
-  注意：更新部分为注释中带有"注意："字样的。
+  更新：2017.12.10
 */
 
 #include <iostream>
@@ -22,7 +21,7 @@ using cv::Size;
 using cv::Mat;
 
 #define MIN_ID 0
-#define MAX_ID 5
+#define MAX_ID 2
 
 //返回值宏定义
 #define SetParaSuccess 0
@@ -61,7 +60,7 @@ struct SmallTarget
     Mat Snapshoot;                          // 目标快照
     Mat sihouette;                         // 目标剪影          !!
     
-    double timeInfo ;//= 0.0;                  //时间戳√ 新加
+	double timeInfo = 0.0;                  //时间戳√ 新加
 	
     double targetScale; // = 0;                 // 目标尺度            !!
     double CenSueEintensity; //= 0;            // 中央周围对比度的响应强度      !!
@@ -115,12 +114,23 @@ struct DetectorParams
 };//小目标检测参数
 //DetectorParams dp;
 
+
+
 //track参数
 struct TrackingParameters
 {
 	int tracking_para;// = 80;
 };
 //TrackingParameters tp;
+
+
+//界面轮廓点
+struct DetectROI
+{
+	int num;
+	std::vector<cv::Point> mask;
+};
+
 
 ///////////////////////////////////////注意：SetSystemPara接口改变
 /*
@@ -161,6 +171,18 @@ int GetSurveillanceData(int mode, IntegratedData  *&data);
         2.成功：返回值为0
 */
 int GetSystemPara(int mode, int id = 0);
+
+
+//12.10
+int GetOriPerImg(cv::Mat &oriImage);
+
+int GetOri16Img(cv::Mat &oriImage);
+
+int SetDuiBiDu(double alpha, double deta);
+
+int SetORIPoints(std::vector<std::vector<cv::Point> > _ROIPoints);
+
+int END();
 
 
 #endif

@@ -4,6 +4,7 @@
 class Configuration;
 #include <QMainWindow>
 #include <QColorDialog>
+#include <QTimer>
 #include "mainwindow.h"
 #include <QLabel>
 #include <QWidget>
@@ -50,10 +51,15 @@ public:
      void buildCenWidgetSoftWare();
      void setCameraMat(Mat mat);
      void setAlgorithmMat(Mat mat);
+     void closeEvent(QCloseEvent *event);
 
+    Mat gMat;
+    Mat image_8;
 
      STrackBar *strackbar;
      TrackBar *trackbar;
+    QTimer *timerCamera;
+bool isStartMw;
 
 public slots:
     void startF();
@@ -72,6 +78,16 @@ public slots:
     void colorSet();
     void zhanModify();
     void resizeEvent(QResizeEvent *);
+
+    void ontimerCamera();
+
+    void adjustment();
+
+    void sureF();
+
+    void textChange(QString);
+
+    void mainwindowShow();
 };
 
 #endif // CONFIGURATION_H

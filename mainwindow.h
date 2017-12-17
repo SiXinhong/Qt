@@ -118,7 +118,10 @@ public:
    void adjustment();
    int bright_TrackbarValue;
    int alpha_contrast;
+   int bOld;
+   int aOld;
    bool isPseudo;
+   bool oldPseudo;
    bool isVoice;
    int newObjCount;
    int addOneLight;
@@ -464,7 +467,7 @@ protected slots:
      void manualFunction();
      void objectsFunction();
      void lightFunction();
-//     void voiceFunction();
+    void voiceFunction();
      void stabilityFunction();
      virtual void alertInformation();
 
@@ -485,7 +488,7 @@ protected slots:
      void installationClicked();
      void exitClicked();
 
-     void configurationClicked();
+//     void configurationClicked();
      void saveconfigurationClicked();
      void regionClicked();
      void figureClicked();
@@ -506,7 +509,7 @@ protected slots:
 
 public slots:
     void init();
-
+void configurationClicked();
 //private:
 public:
     Ui::MainWindow *ui;

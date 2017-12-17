@@ -1,6 +1,11 @@
 ﻿#include "configuration.h"
 #include <QInputDialog>
 
+extern double coeffient;
+extern double deta;
+
+int text;
+
 Configuration::Configuration(MainWindow *mw)
 {
     this->mw = mw;
@@ -34,7 +39,13 @@ Configuration::Configuration(MainWindow *mw)
     QWidget *cenWidget = new QWidget();
     cenWidget->setLayout(stackedLayout);
 
+   // cv::namedWindow("bias",1);
     this->setCentralWidget(cenWidget);
+    if(mw->welcome!=0){
+        mw->welcome->close();
+    }
+    this->isStartMw = false;
+   MySocketInitial();
 }
 
 void Configuration::configure(){
@@ -52,10 +63,15 @@ void Configuration::configure(){
     software->setText("软件配置");
     connect(software,SIGNAL(clicked()),this,SLOT(softwareShow()));
 
+    QToolButton *startMw = new QToolButton(menuWidget);
+    startMw->setText("开启主界面");
+    connect(startMw,SIGNAL(clicked()),this,SLOT(mainwindowShow()));
+
 
       leftLayout->addWidget(camera,0,0);
       leftLayout->addWidget(algorithm,0,1);
       leftLayout->addWidget(software,0,2);
+      leftLayout->addWidget(startMw,0,3);
 
       menuWidget->setLayout(leftLayout);
       //this->setCentralWidget(menuWidget);
@@ -65,6 +81,14 @@ void Configuration::configure(){
 void Configuration::buildCenWidgetCamera(){
     layoutCamera=new QGridLayout;
     cenWidgetCamera = new QWidget(this);
+
+    QLabel *input = new QLabel("输入俯仰角度:",cenWidgetCamera);
+
+    QLineEdit *angle = new QLineEdit();
+    connect(angle,SIGNAL(textEdited(QString)),this,SLOT(textChange(QString)));
+
+
+
 
     start = new QToolButton(cenWidgetCamera);
     start->setText("启动");
@@ -102,21 +126,26 @@ void Configuration::buildCenWidgetCamera(){
      imageLabel = new QLabel(imageWidget);
 
      //先从全景图截取了一块显示看看效果，以后这里要改
-     Mat mat1;
-     mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
+//     Mat mat1;
+//     mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
 
-     setCameraMat(mat1);
+//     setCameraMat(mat1);
+     layoutCamera->addWidget(input,6,0);
+     layoutCamera->addWidget(angle,6,1);
 
-
-
+     //layoutCamera->addWidget(input,6,0);
      layoutCamera->addWidget(start,0,0);
      layoutCamera->addWidget(state,1,0);
      layoutCamera->addWidget(minus,2,0);
      layoutCamera->addWidget(add,2,1);
      layoutCamera->addWidget(stop,2,2);
+//     layoutCamera->addWidget(add,6,0);
+//     layoutCamera->addWidget(stop,7,0);
      layoutCamera->addWidget(background,3,0);
      layoutCamera->addWidget(shuttle,4,0);
      layoutCamera->addWidget(ok,5,0);
+
+
 
      layoutCamera->addWidget(imageWidget,0,3,6,1);
      layoutCamera->setColumnStretch(0,1);
@@ -124,12 +153,26 @@ void Configuration::buildCenWidgetCamera(){
      layoutCamera->setColumnStretch(2,1);
      layoutCamera->setColumnStretch(3,7);
 
+     qDebug()<<"imagewidget w:"<<imageWidget->width();
+     qDebug()<<"imagewidget h:"<<imageWidget->height();
      cenWidgetCamera->setLayout(layoutCamera);
 }
 
 void Configuration::cameraShow(){
+    timerCamera=new QTimer();
+    timerCamera->setTimerType(Qt::PreciseTimer);
+    timerCamera->setInterval(10);
+    timerCamera->start();
+    connect(timerCamera, SIGNAL(timeout()), SLOT(ontimerCamera()));
+//    cv::Mat image;
+//        GetOriPerImg(image);
+//        cv::imshow("camera",image);
+//        cv::waitKey((1));
+//        setCameraMat(image);
     stackedLayout->setCurrentIndex(1);
     imageLabel->resize(imageWidget->size());
+//    qDebug()<<"imageLabel:w "<<imageLabel->width();
+//    qDebug()<<"imageLabel:h "<<imageLabel->height();
 }
 
 void Configuration::buildCenWidgetSoftWare(){
@@ -191,14 +234,20 @@ void Configuration::buildCenWidgetAlgorithm(){
     layoutAlgorithm->addWidget(light,2,0);
     layoutAlgorithm->addWidget(trackbar,3,0);
 
+
+    QToolButton * sure = new QToolButton();
+    sure->setText("确定");
+    layoutAlgorithm->addWidget(sure,4,0);
+    connect(sure,SIGNAL(clicked()),this,SLOT(sureF()));
+
     imageWidgetAlgorithm = new QWidget();
     imageLabelAlgorithm = new QLabel(imageWidgetAlgorithm);
 
     //先从全景图截取了一块显示看看效果，以后这里要改
-    Mat mat1;
-    mw->widget1->pano(Rect(0,0,imageWidgetAlgorithm->width(),imageWidgetAlgorithm->height())).copyTo(mat1);
+ /*   Mat mat1;
+    mw->widget1->pano(Rect(0,0,imageWidgetAlgorithm->width(),imageWidgetAlgorithm->height())).copyTo(mat1)*/;
 
-    setAlgorithmMat(mat1);
+    setAlgorithmMat(image_8);
 
     layoutAlgorithm->addWidget(imageWidgetAlgorithm,0,1,4,1);
 
@@ -210,7 +259,7 @@ void Configuration::buildCenWidgetAlgorithm(){
 }
 
 void Configuration::algorithmShow(){
-
+    GetOri16Img(gMat);
     stackedLayout->setCurrentIndex(3);
     imageLabelAlgorithm->resize(imageWidgetAlgorithm->size());
 
@@ -256,7 +305,11 @@ void Configuration::backgroundCorrct(){
 }
 
 void Configuration::okF(){
+
+//    printf("333444\n");
+//    GetOri16Img(gMat);
     stackedLayout->setCurrentIndex(0);
+
 }
 
 
@@ -335,4 +388,52 @@ void Configuration::setAlgorithmMat(Mat mat){
 void Configuration::resizeEvent(QResizeEvent *){
     imageLabel->resize(imageWidget->size());
     imageLabelAlgorithm->resize(imageWidgetAlgorithm->size());
+}
+
+void Configuration::ontimerCamera(){
+     cv::Mat image;
+    // GetOriPerImg(image);
+     int width = image.cols;
+     int height = image.rows;
+//     qDebug()<<"width:"<<width;
+//     qDebug()<<"height"<<height;
+     //setCameraMat(image);
+}
+
+void Configuration::adjustment(){
+   double pixelSum=sum(gMat)[0];
+   if(gMat.empty())
+   {
+       return;
+   }
+   double meanPiexl=pixelSum/(gMat.rows*gMat.cols);
+   double bias=123-coeffient*meanPiexl;
+   gMat.convertTo(image_8,8,coeffient,deta+bias);
+    algorithmShow();
+   //buildCenWidgetAlgorithm();
+   cv::imshow("bias",image_8);
+   cv::waitKey(1);
+}
+
+void Configuration::closeEvent(QCloseEvent *event){
+    //END();
+}
+
+void Configuration::sureF(){
+    SetDuiBiDu(coeffient,deta);
+}
+
+
+void Configuration::textChange(QString str){
+    text = str.toInt();
+}
+
+void Configuration::mainwindowShow(){
+    END();
+    if(this->isStartMw == false){
+        this->mw->init();
+        this->isStartMw = true;
+    }
+    cv::destroyAllWindows();
+    this->close();
 }

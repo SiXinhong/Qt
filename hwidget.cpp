@@ -92,6 +92,18 @@ double HWidget::getDirectionX(double x, double y){
         x90 = x+pano.cols/4;
     else
         x90 = x-3*pano.cols/4;
+
+//    if(x90< 3*pano.cols/4)
+//        x90 = x90+pano.cols/4;
+//    else
+//        x90 = x90-3*pano.cols/4;
+
+//    if(x<pano.cols/2){
+//        x90=x+pano.cols/2;
+//    }
+//    else
+//        x90=x-pano.cols/2;
+
     //double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
     double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x90/pano.cols);
     return x2;
@@ -140,10 +152,21 @@ double HWidget::getDirectionY(double x, double y){
     //double y2 = y0 + (r/r0)*((r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x/pano.cols));
     //顺时针旋转90度
     double x90;
-    if(x< 3*pano.cols/4)
+  if(x< 3*pano.cols/4)
         x90 = x+pano.cols/4;
     else
         x90 = x-3*pano.cols/4;
+
+//    if(x< 3*pano.cols/4)
+//        x90 = x90+pano.cols/4;
+//    else
+//        x90 = x90-3*pano.cols/4;
+
+//    if(x<pano.cols/2){
+//        x90=x+pano.cols/2;
+//    }
+//    else
+//        x90=x-pano.cols/2;
 
     double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
     return y2;
@@ -1065,14 +1088,14 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             else{
                 xx2 = qjx- width/2 + this->pano.cols;
             }
-            if((qjy - height/2 >=0) && (qjy + height/2 <= mat.rows)){
+            if((qjy - height/2 >=0) && (qjy + height/2 <= mw->widget1->mat.rows)){
                 yy2 = qjy - height / 2;
             }
             else if(qjy - height/2 <=0){
                 yy2 = 0;
             }
-            else if(qjy + height/2 >= mat.rows){
-                yy2 = mat.rows / 2;
+            else if(qjy + height/2 >= mw->widget1->mat.rows){
+                yy2 = mw->widget1->mat.rows / 2;
             }
             Rect rectan;
             if(mw->widget1->isTo6){

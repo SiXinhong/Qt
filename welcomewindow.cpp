@@ -81,13 +81,16 @@ void WelcomeWindow::exitClicked(){
 
 void WelcomeWindow::loginClicked(){
     if(!start){
-         mainwindow->init();
-       // mainwindow->configurationClicked();
+         //mainwindow->init();
+        mainwindow->configurationClicked();
          start =true;
     }
     else{
+        qDebug()<<"welcome1";
         mainwindow->show();
+        qDebug()<<"welcome2";
         this->close();
+        qDebug()<<"welcome3";
 //        delete mainwindow;
 //        MainWindow *mainwindow1 = new MainWindow(this);
 //        mainwindow1->init();

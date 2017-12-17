@@ -2,13 +2,14 @@
 #include <QFile>
 #include <QByteArray>
 #include <QDebug>
+#include <time.h>
 
 /****************************定义的全局变量***************************************/
 extern SOCKET hSocket;			//事件对象连接的套接字
  extern WSAEVENT hEvent;			//套接字相连的事件对象	
 //int datalen;			//定义一个整数，表示从当前传输的数据中得到的数据长度
 extern char sendbuffer[SEND_BUFFER_SIZE];				//定义的一个socket的发送缓冲区
-//char recvbuffer[RECV_BUFFER_SIZE];				//定义的一个socket的接收缓冲区		
+extern char recvbuffer[RECV_BUFFER_SIZE];				//定义的一个socket的接收缓冲区
 //char* databuffer = (char *)malloc(DATA_BUFFER_SIZE);//存放数据的静态缓冲区
 //
 #define DATA_LENGTH_MAX     45000*640*2
@@ -190,7 +191,7 @@ int MySocketInitial(void){
 //    servAdr.sin_addr.s_addr = inet_addr(ipstr);
 
     //////////////////////////////////////wangy.end//////////////////
-    servAdr.sin_addr.s_addr = inet_addr("192.168.1.1");
+    servAdr.sin_addr.s_addr = inet_addr("192.168.1.100");
     servAdr.sin_port = htons(atoi("8080"));
 
 
@@ -328,20 +329,29 @@ int DataAnalyze(char data[], int* pdatalen){
 	else{
 		//得出了一帧的数据长度
 		if (CheckData(data, frame_len, "####", 4) == TRUE){
-        //std::cout << "数据校验通过" << std::endl;
+        //std::cout << "data check ok" << std::endl;
             if (data[4] == 3){
-                //std::cout << "收到一帧数据" << std::endl;
-				//int rows_length = (((uchar)data[13] * 256 + (uchar)data[14]) * 256 + (uchar)data[15]) * 256 + (uchar)data[16];
-				//int cols_length = (((uchar)data[17] * 256 + (uchar)data[18]) * 256 + (uchar)data[19]) * 256 + (uchar)data[20];
-				//cv::Mat or = GetImageFromBuffer(&data[21], rows_length, cols_length);
-                //imshow("pic", or);
-				//cv::waitKey(10000);
-				//cv::destroyWindow("pic");
+                std::cout << "收到一帧数据" << std::endl;
+                int rows_length = (((uchar)data[13] * 256 + (uchar)data[14]) * 256 + (uchar)data[15]) * 256 + (uchar)data[16];
+                int cols_length = (((uchar)data[17] * 256 + (uchar)data[18]) * 256 + (uchar)data[19]) * 256 + (uchar)data[20];
+//                std::cout<<"rows_length"<<rows_length<<std::endl;
+//                 std::cout<<"cols_length"<<cols_length<<std::endl;
 				return 2;
 				
 			}
             else if(data[4]==4)
             {
+                int rows_length = (((uchar)data[13] * 256 + (uchar)data[14]) * 256 + (uchar)data[15]) * 256 + (uchar)data[16];
+                int cols_length = (((uchar)data[17] * 256 + (uchar)data[18]) * 256 + (uchar)data[19]) * 256 + (uchar)data[20];
+                //std::cout<<"rows_length"<<rows_length<<std::endl;
+                return 2;
+            }
+            else if(data[4]==5){
+                //算法参数
+                return 2;
+            }
+            else if(data[4]==12){
+                //接收16位图
                 return 2;
             }
 			else{
@@ -378,48 +388,62 @@ int ReadHanding(SOCKET s, WSANETWORKEVENTS netEvents, char buf[], int buflen, ch
 	int buf_len = buflen;			//接收缓冲区中的数据长度
 	int data_len = *pdatalen;		//缓冲区中的数据长度
 
+    //std::cout<<"buflen"<<buflen<<std::endl;
+
 	while (1){
-		memset(buf, 0, buf_len);
+//        clock_t t3=clock();
+//        std::cout<<"t3:"<<t3<<std::endl;
+        //memset(buf, 0, buf_len);
 #ifdef socket_debug
         std::cout<<" myreceve before"<<std::endl;
 #endif
 		str_len = MyRecv(s, buf, buf_len);
+        //std::cout<<"str_len:"<<str_len<<std::endl;
 //#ifdef socket_debug
 //        std::cout<<" myreceve after"<<std::endl;
 //        std::cout<<data_len<<std::endl;
 //#endif
 		if (str_len > 0){
-			for (int j = 0; j < str_len; ++j){
-				data[data_len] = buf[j];
-				++data_len;
-			}
-			*pdatalen = data_len;
+
+            memcpy(&data[data_len],buf,str_len);
+
+//            for (int j = 0; j < str_len; ++j){
+//                data[data_len] = buf[j];
+//				++data_len;
+//            }
+            data_len+=str_len;
+            *pdatalen = data_len;
+            //std::cout<<"data_len"<<data_len<<std::endl;
 #ifdef socket_debug
         std::cout<<" myreceve after"<<std::endl;
         std::cout<<data_len<<std::endl;
 #endif
 		}
 		else if (str_len == 0){
-			//std::cout << "22222" << std::endl;
+
+            //::cout << "22222" << std::endl;
 			return 0;
 		}
 		else{
+            //printf("%d\n",GetLastError());
 			//发生错误，需要对错误代码分析
 			if (WSAGetLastError() == 10035){
+                //std::cout << "2222" << std::endl;
 				continue;
 			}
 			if (errno == EAGAIN){
 				//表示当前缓冲区已无数据可读
+                //std::cout << "5555" << std::endl;
 				;
 			}
 			else{
-				//std::cout << "3333" << std::endl;
+                //std::cout << "3333" << std::endl;
 				//其他原因
 				return 0;
 			}
 		}
 
-		if (DataAnalyze(data, pdatalen) == 2){
+        if (DataAnalyze(data, pdatalen) == 2){
 			break;
 		}
 

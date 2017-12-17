@@ -2,6 +2,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+
+double deta=0;
 TrackBar::TrackBar(Configuration *configuration):QWidget(configuration)
 {
     this->configuration=configuration;
@@ -21,6 +23,8 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
     else
         position=pos-5;//减5是因为显示的时候为了好看左边从5的位置开始显示，当作亮度0
     update();//触发重绘操作，生成paintEvent事件
+    deta = position*5-500;
+    configuration->adjustment();
 //    mainWindow->bright_TrackbarValue=position;
 //    mainWindow->adjustment();
 }

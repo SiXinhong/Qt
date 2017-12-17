@@ -699,15 +699,18 @@ void ZWidget::ZoomIn(){
 }
 
 void ZWidget::ZoomOut(){
-    if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
-        //this->rect.x = this->rect.x - this->rect.width/6;
-        this->rect.width = this->rect.width *4/3;
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(this->rect.height<mw->widget1->height()){
+        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+            //this->rect.x = this->rect.x - this->rect.width/6;
+            this->rect.width = this->rect.width *4/3;
+        }
+        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+            //this->rect.y = this->rect.y - this->rect.height/6;
+            this->rect.height = this->rect.height *4/3;
+        }
+        qDebug()<<rect.x<<","<<rect.y<<"width:"<<rect.width<<"heigth"<<rect.height;
     }
-    if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
-        //this->rect.y = this->rect.y - this->rect.height/6;
-        this->rect.height = this->rect.height *4/3;
-    }
-    qDebug()<<rect.x<<","<<rect.y<<"width:"<<rect.width<<"heigth"<<rect.height;
     //qDebug()<<"rect:x="<<rect.x<<",y="<<rect.y<<",width="<<rect.width<<",height="<<rect.height;
 }
 
@@ -828,6 +831,17 @@ void ZWidget::CompleteRGDefining(){
    for(int i = 0; i < mw->rs.size(); i++){
        mw->rgs[mw->rgsIndex].addRegion(mw->rs[i]);
    }
+   vector <vector<cv::Point> > polys;
+
+  for(int i= 0;i<mw->rs.size();i++){
+     //qDebug()<<"zwidget";
+       polys.push_back(mw->rs[i].poly);
+      for(int j = 0; j<mw->rs[i].poly.size();j++){
+          //qDebug()<<"x,y:"<<mw->rs[i].poly[j].x<<mw->rs[i].poly[j].y;
+      }
+  }
+
+   SetORIPoints(polys);
 
    mw->rs.clear();
    this->rs.clear();
@@ -840,6 +854,17 @@ void ZWidget::CompleteRGDefining(){
    }else{
        mw->rgsIndex = mw->rgs.size()-1;
    }
+//    vector <vector<cv::Point> > polys;
+
+//   for(int i= 0;i<mw->rgs.at(mw->rgsIndex).rs.size();i++){
+//       qDebug()<<"zwidget";
+//        polys.push_back(mw->rgs.at(mw->rgsIndex).rs[i].poly);
+//       for(int j = 0; j<mw->rgs.at(mw->rgsIndex).rs[i].poly.size();j++){
+//           qDebug()<<"x,y:"<<mw->rgs.at(mw->rgsIndex).rs[i].poly[j].x;/*<<mw->rgs.at(mw->rgsIndex).rs[i].poly.at[j].y;*/
+//       }
+//   }
+
+
 }
 
 void ZWidget::mouseDoubleClickEvent(QMouseEvent *e){

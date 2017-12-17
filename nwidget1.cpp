@@ -544,24 +544,32 @@ void NWidget1::ZoomIn(){
 }
 
 void NWidget1::ZoomOut(){
-//    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
-//        this->rect.x = this->rect.x - 1/6 * this->rect.width;
-//        this->rect.width = this->rect.width *4/3;
-//    }
-//    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *7/6 < pano.rows)){
-//        this->rect.y = this->rect.y - 1/6 * this->rect.height;
-//        this->rect.height = this->rect.height *4/3;
-//    }
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    //if(this->rect.height < mw->widget1->height()){
+         if(this->rect.height < 640){
+        //    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
+        //        this->rect.x = this->rect.x - 1/6 * this->rect.width;
+        //        this->rect.width = this->rect.width *4/3;
+        //    }
+        //    if((this->rect.y - 1/6 * this->rect.height >= 0)&&(this->rect.y + this->rect.height *7/6 < pano.rows)){
+        //        this->rect.y = this->rect.y - 1/6 * this->rect.height;
+        //        this->rect.height = this->rect.height *4/3;
+        //    }
 
-    if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
-        //this->rect.x = this->rect.x - this->rect.width/6;
-        this->rect.width = this->rect.width *4/3;
-    }
-    if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
-        //this->rect.y = this->rect.y - this->rect.height/6;
-        this->rect.height = this->rect.height *4/3;
+        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+            //this->rect.x = this->rect.x - this->rect.width/6;
+            this->rect.width = this->rect.width *4/3;
+        }
+        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+            //this->rect.y = this->rect.y - this->rect.height/6;
+            this->rect.height = this->rect.height *4/3;
+        }
+        qDebug()<<"IF  zoomOUT";
+
     }
 
+    qDebug()<<" rect:"<<this->rect.height;
+    //qDebug()<<" w1 hei:"<<mw->widget1->height();
 
 }
 

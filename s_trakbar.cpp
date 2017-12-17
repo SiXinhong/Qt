@@ -2,6 +2,10 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+
+double coeffient=0.5;
+
+
 STrackBar::STrackBar(Configuration *configuration):QWidget(configuration)
 {
    this->configuration = configuration;
@@ -21,6 +25,8 @@ void STrackBar:: mouseReleaseEvent(QMouseEvent *event){
     else
         position=pos-5;//减5是因为显示的时候为了好看左边从5的位置开始显示，当作饱和度0
     update();//触发重绘操作，生成paintEvent事件
+    coeffient = position/100;
+    configuration->adjustment();
 //    mainWindow->alpha_contrast=position;
 //    mainWindow->adjustment();
 

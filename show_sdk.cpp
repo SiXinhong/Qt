@@ -2,18 +2,32 @@
 
 #include "show_sdk.h"
 
+#include <iostream>
+#include <string>
+
+#include <time.h>
+using std::string;
+using namespace std;
 
 extern SOCKET hSocket;
 extern char sendbuffer[SEND_BUFFER_SIZE];
+extern char recvbuffer[RECV_BUFFER_SIZE];
 extern WSANETWORKEVENTS netEvents;
 extern int datalen;
+
+extern int text;
 
 int para_data_len = 40;
 
 DetectorParams dp;
 TrackingParameters tp;
 StitchParmeters sp;
-
+/*
+   设置三种参数
+   1.mode=0:算法参数，此时id默认为0，无意义
+   2.mode=1:转台参数
+   3.mode=3:摄像头参数
+*/
 int SetAlgorithmPara();
 int SetControlPara(int id);
 int SetCameraPara(int id,int mode);
@@ -34,15 +48,10 @@ int string_to_alg_para(char *data, int datalen);
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
 int para_to_string(char *s, int &datalen);
 
+
+int ROIPointsToChar(std::vector<std::vector<cv::Point> >, char *s, int &datalen);
+
 /****************************************************************主接口**********************************************************************/
-/*
-   设置三种参数
-   1.mode=0:算法参数，此时id默认为0，无意义
-   2.mode=1:转台参数//buyong
-   3.mode=2:摄像头参数a
-   3.mode=3:摄像头参数b
-   3.mode=4:摄像头参数control
-*/
 int SetSystemPara(int mode, int id)
 {
     //检查输入参数
@@ -50,6 +59,7 @@ int SetSystemPara(int mode, int id)
         return ERROR_MODE;
     if (id<MIN_ID || id>MAX_ID)
         return ERROR_Id;
+
     //根据mode分别设置参数
     switch (mode)
     {
@@ -75,8 +85,6 @@ int SetSystemPara(int mode, int id)
 
 }
 
-
-
 int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 {
 	//检查输入
@@ -96,7 +104,6 @@ int GetSurveillanceData(int mode, IntegratedData  *&data)//ok
 	}
 
 }
-
 
 int GetSystemPara(int mode, int id)
 {
@@ -122,6 +129,110 @@ int GetSystemPara(int mode, int id)
 
 }
 
+//12.10 加入上传标定界面内容
+
+//调焦用 上传8位图像
+int GetOriPerImg(cv::Mat &oriImage)
+{
+    //std::cout<<"begin"<<std::endl;
+	char *buff = (char *)malloc(DATA_BUFFER_SIZE);
+
+	int result = MySend(hSocket, 8, sendbuffer, SEND_BUFFER_SIZE, NULL, 0);
+    int datalen = 0;
+	if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
+	{
+       // std::cout<<"begin"<<std::endl;
+		int rows_length = (((uchar)buff[5] * 256 + (uchar)buff[6]) * 256 + (uchar)buff[7]) * 256 + (uchar)buff[8];
+		int cols_length = (((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
+		oriImage = cv::Mat(rows_length, cols_length, CV_8UC1, &buff[13]).clone();
+       // std::cout<<"begin"<<std::endl;
+		free(buff);
+		return 1;
+	}
+	else
+	{
+       // std::cout<<"error"<<std::endl;
+		free(buff);
+		return 0;
+	}
+}
+
+//上传一个16位图像 为了对比度亮度
+int GetOri16Img(cv::Mat &oriImage)
+{
+    //std::cout<<"333"<<std::endl;
+	char *buff = (char *)malloc(DATA_BUFFER_SIZE);
+
+	int result = MySend(hSocket, 12, sendbuffer, SEND_BUFFER_SIZE, NULL, 0);
+    //std::cout<<"result"<<result<<std::endl;
+	datalen = 0;
+	if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
+	{
+		int rows_length = (((uchar)buff[5] * 256 + (uchar)buff[6]) * 256 + (uchar)buff[7]) * 256 + (uchar)buff[8];
+		int cols_length = (((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
+		oriImage = cv::Mat(rows_length, cols_length, CV_16UC1, &buff[13]).clone();
+
+		free(buff);
+		return 1;
+	}
+	else
+	{
+		free(buff);
+		return 0;
+	}
+}
+
+//下发对比度亮度
+int SetDuiBiDu(double alpha,double deta)
+{
+	char *p = (char*)&alpha;
+	char a[16];
+	a[0] = *p;
+	a[1] = *(p + 1);
+	a[2] = *(p + 2);
+	a[3] = *(p + 3);
+	a[4] = *(p + 4);
+	a[5] = *(p + 5);
+	a[6] = *(p + 6);
+	a[7] = *(p + 7);
+	p = (char*)&deta;
+	a[8] = *p;
+	a[9] = *(p + 1);
+	a[10] = *(p + 2);
+	a[11] = *(p + 3);
+	a[12] = *(p + 4);
+	a[13] = *(p + 5);
+	a[14] = *(p + 6);
+	a[15] = *(p + 7);
+
+    std::cout<<alpha<<" "<<deta<<std::endl;
+
+    int result = MySend(hSocket, 9, sendbuffer, SEND_BUFFER_SIZE, a, 16);
+	return result;
+}
+
+
+//下发兴趣区
+int SetORIPoints(std::vector<std::vector<cv::Point> > _ROIPoints)
+{
+	char *s = (char *)malloc(1024 * 1024);
+	int datalen = 0;
+    std::cout<<"point"<<std::endl;
+	if (ROIPointsToChar(_ROIPoints, s, datalen) != 0)
+	{
+         std::cout<<"point1"<<std::endl;
+		return -1;
+	}
+     std::cout<<"point2 "<<datalen<<std::endl;
+	MySend(hSocket, 10, sendbuffer, SEND_BUFFER_SIZE, s, datalen);
+    return 0;
+}
+
+//标定结束
+int END()
+{
+	MySend(hSocket, 11, sendbuffer, SEND_BUFFER_SIZE, NULL, 0);
+}
 
 /**************************************************************调用子函数************************************************************************/
 int SetAlgorithmPara()
@@ -184,14 +295,13 @@ id=2代表转台
 */
 int SetCameraPara(int id,int mode)
 {
+     std::cout<<"..................................."<<std::endl;
 	//检查输入参数
 	if (id<MIN_ID || id>MAX_ID)
 		return ERROR_Id;
-
 	int result = 0;
 	if (id == 0){
 		//相机A参数设置
-         std::cout<<"mode: "<<mode<<std::endl;
 		if (mode == 0){
 			//状态查询
 			char send_mode = 0;
@@ -265,9 +375,15 @@ int SetCameraPara(int id,int mode)
 		}
 		else if (mode == 1){
 			//启动周视
-            std::cout<<"mode";
 			char send_mode = 13;
-			result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+            char data[5];
+            data[0]=send_mode;
+            data[1]=(char)(text>>24);
+            data[2]=(char)(text>>16);
+            data[3]=(char)(text>>8);
+            data[4]=(char)(text);
+            std::cout<<"text..................................."<<text<<std::endl;
+            result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, data, 5);
 		}
 	}
 	
@@ -284,64 +400,44 @@ int SetCameraPara(int id,int mode)
 //更新，加入时间
 int  Getpanorama(IntegratedData *&data)
 {
+
+   // std::cout<<"the time is "<<t1<<std::endl;
+    static int index=0;
+    char name[2];
 	if (data == NULL)
         return ERROR_DataStructIsNull;
 
-	char *buff = (char *)malloc(DATA_BUFFER_SIZE);
-   // std::cout<<"before mysend "<<std::endl;
+    char *buff = (char *)malloc(DATA_BUFFER_SIZE);
+
 	int result = MySend(hSocket, 3, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
-    //std::cout<<"after mysend "<<std::endl;
-    //return 0;
 #if 1
     datalen=0;
-    if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
+    clock_t t2;
+       clock_t t1=clock();
+    if (ReadHanding(hSocket, netEvents, recvbuffer, RECV_BUFFER_SIZE, buff, &datalen) == 1)
     {
+        t2=clock();
+        std::cout<<"the time is "<<t2-t1<<std::endl;
 		data->timeinfo=(((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
         int rows_length = (((uchar)buff[13] * 256 + (uchar)buff[14]) * 256 + (uchar)buff[15]) * 256 + (uchar)buff[16];
         int cols_length = (((uchar)buff[17] * 256 + (uchar)buff[18]) * 256 + (uchar)buff[19]) * 256 + (uchar)buff[20];
         cv::Mat c= cv::Mat(rows_length,cols_length, CV_8UC1, &buff[21]).clone();
         data->panoImage = c;
-//        cv::imshow("pic", c);
-//        cv::waitKey(10);
 
+        //std::cout<<rows_length<<" "<<cols_length<<std::endl;
+        //sprintf(name,"pic\\%d.bmp",index++);
+        //cv::imwrite(name,c);
 		free(buff);
+
 		return GetDataSuccess;
 	}
 	else
 	{
         free(buff);
         return ERROR_GetFail;
-		//std::cout << "error " << std::endl;
 	}
-#endif
-	//std::ifstream t;
-	//t.open("image\\1.txt", std::ios::in);      // open input file
-	//if (t.fail())
-	//	return SYSTEM_ERROR::ERROR_HasNoValidFile;
-	//int *p = new int[100];
 
-	//int d = 0;
-	//int i = 0;
-	//while (t >> d)
-	//{
-	//	p[i] = d;
-	//	i++;
-	//}
-	//int length = i;
-	////time
-	//i = 0;
-	//data->time.year = p[i++];
-	//data->time.month = p[i++];
-	//data->time.day = p[i++];
-	//data->time.hour = p[i++];
-	//data->time.minute = p[i++];
-	//data->time.seconds = p[i++];
-	//cv::Mat pano = cv::imread("image\\pano.bmp");
-	//if (pano.empty())
-	//	return SYSTEM_ERROR::ERROR_GetFail;
-	//data->panoImage = pano;
-	
-	
+#endif
 }
 
 int  GetObjectFeature(IntegratedData *&data)
@@ -574,15 +670,15 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 			index += 4;
 			temp.cenPointACS.y = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
 			
-
+            std::cout<<"point："<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
 			//blocksize
 			index += 4;
-
-			temp.blocksize.height = (uchar)buff[index];
-			temp.blocksize.width = (uchar)buff[index + 1];
+            temp.blocksize.height = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+            index+=4;
+            temp.blocksize.width = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
 
 			//area
-			index += 2;
+            index += 4;
 			temp.area = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
 
 			//horizontalAxisLength
@@ -595,10 +691,15 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 
 			//Snapshoot
 			index += 4;
-			cv::Mat ori = cv::Mat(12, 12, CV_8UC1, &buff[index]);
+
+            int rows=(uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+            index+=4;
+            int cols=(uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+            index+=4;
+            cv::Mat ori = cv::Mat(rows, cols, CV_8UC1, &buff[index]);
 			//memcpy(.data, &buff[index] temp.Snapshoot.rows*temp.Snapshoot.cols);
 			temp.Snapshoot = ori.clone();
-			index += 12 * 12;
+            index += cols*rows;
 			realtime_target.push_back(temp);
 		}
 }
@@ -692,3 +793,73 @@ int para_to_string(char *s, int &datalen)
 		datalen = index + 4;
 		return 0;
 	}
+
+
+int ROIPointsToChar(std::vector<std::vector<cv::Point> > _ROIPoints, char *s, int &datalen)
+{
+	//首先解析总数
+	int index = 0;
+	int numOfAllPoints = _ROIPoints.size();
+	char *pINT = (char *)&numOfAllPoints;
+	int _i = 0;
+	for (; _i < sizeof(int); _i++)
+	{
+		s[index + _i] = *(pINT + _i);
+	}
+	index += sizeof(int);
+
+	//依次解析点
+	int _num = 0;
+	for (; _num < numOfAllPoints; _num++)
+	{
+		//序号
+        int n=0;
+        pINT = (char *)&n;
+		_i = 0;
+		for (; _i < sizeof(int); _i++)
+		{
+			s[index + _i] = *(pINT + _i);
+		}
+		index += sizeof(int);
+
+		//点数
+        int sz = _ROIPoints[_num].size();
+		pINT = (char *)&sz;
+		_i = 0;
+		for (; _i < sizeof(int); _i++)
+		{
+			s[index + _i] = *(pINT + _i);
+		}
+		index += sizeof(int);
+
+		//x，y
+		int _j = 0;
+		for (; _j < sz; _j++)
+		{
+            int x = _ROIPoints[_num][_j].x;
+            int y = _ROIPoints[_num][_j].y;
+
+			//x
+			pINT = (char *)&x;
+			_i = 0;
+			for (; _i < sizeof(int); _i++)
+			{
+				s[index + _i] = *(pINT + _i);
+			}
+			index += sizeof(int);
+
+			//y
+			pINT = (char *)&y;
+			_i = 0;
+			for (; _i < sizeof(int); _i++)
+			{
+				s[index + _i] = *(pINT + _i);
+			}
+			index += sizeof(int);
+		}
+	}//for (; _num < numOfAllPoints; _num++)
+
+	//len
+	datalen = index;
+	return 0;
+}

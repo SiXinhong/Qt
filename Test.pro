@@ -11,10 +11,12 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = Test
 TEMPLATE = app
-INCLUDEPATH += D:\opencv-2.4.9-build\install\include
-INCLUDEPATH += D:\opencv-2.4.9-build\install\include\opencv
-
-LIBS += -L D:\opencv-2.4.9-build\install\x64\mingw\lib\libopencv_*.a\
+#INCLUDEPATH += D:\opencv-2.4.9-build\install\include
+#INCLUDEPATH += D:\opencv-2.4.9-build\install\include\opencv
+INCLUDEPATH += D:\Qt\opencv64\include
+INCLUDEPATH += D:\Qt\opencv64\include\opencv
+#LIBS += -L D:\opencv-2.4.9-build\install\x64\mingw\lib\libopencv_*.a\
+LIBS += -L D:\Qt\opencv64\hello\lib\libopencv_*.a\
 
 SOURCES += main.cpp\
         mainwindow.cpp \

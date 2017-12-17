@@ -284,10 +284,20 @@ vector<MyObject> MyInterface::getQj2Objs(){
 }
 
 int MyInterface::getIntegratedData2(){
+    qDebug()<<"getdata1";
     index1++;
-    QString qj = vc[(index1)%6];
+    //QString filename("./s1/1.bmp")
+    qDebug()<<"getdata2";
+    QString filename("./s1/");
+
+    //QString qj = vc[(index1)%6];
+    index1=index1%314;
+    qDebug()<<"getdata3";
+    filename = filename.append(QString::number(index1)).append(".bmp");
+    qDebug()<<"filename"<<filename;
     //QString qj = vc[0];
-    this->panoImage = imread(qj.toStdString());
+    this->panoImage = imread(filename.toStdString());
+    qDebug()<<"getdata4";
     //    Mat mat = this->panoImage;
     //    Size dsize ;
     //    double scale = 1;
@@ -308,13 +318,16 @@ int MyInterface::getIntegratedData2(){
     //    Mat image55 = Mat(dsize,CV_32S);
     //    cv::resize(image5, image55,dsize);
     //    this->qj2mat = image55;
+    //return 0;
 }
 
 //获得综合数据
 int MyInterface::getIntegratedData(){
     IntegratedData* data = new IntegratedData;
     int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
+    qDebug()<<"between"<<isfail_getdata;
     isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
+    qDebug()<<"getIntegratedDate"<<isfail_getdata;
     if (isfail_getdata == 0)
     {
         if (!data->panoImage.empty())
@@ -384,7 +397,7 @@ int MyInterface::getIntegratedData(){
             this->objs2.clear();
             this->targets = data->targets;
             //qDebug()<<QString("target:");
-            //qDebug()<<"targets.size "<<data->targets.size();
+            qDebug()<<"targets.size "<<data->targets.size();
             int count = this->targets.size();
             for (int i = 0; i < count;i++)
             {
@@ -515,7 +528,7 @@ int MyInterface::getIntegratedData(){
                 }
             }
 
-            cv::waitKey(0);
+            //cv::waitKey(0);
         }
         qDebug() << "Success to get data" << objs.size();
 

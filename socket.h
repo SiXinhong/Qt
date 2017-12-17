@@ -8,7 +8,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #define SEND_BUFFER_SIZE 1024
-#define RECV_BUFFER_SIZE 1024
+#define RECV_BUFFER_SIZE 2048
 #define DATA_BUFFER_SIZE 40*1024*1024
 
 //调整缓冲区，删除前面固定长度的数据，并将后面的数据依次前移
