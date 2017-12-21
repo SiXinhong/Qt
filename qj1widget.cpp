@@ -207,9 +207,14 @@ void Qj1Widget::draw(){
         this->rs[j].draw1Time(mat);
     }
 
+    clock_t tt1=clock();
     mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
+    clock_t tt2=clock();
     mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    clock_t tt3=clock();
+    printf("\t\t\t\tfunction MatToQImage costs time:%d\n",tt2-tt1);
+    printf("\t\t\t\tfunction loadPictureToLabel1 costs time:%d\n",tt3-tt2);
 }
 
 boolean Qj1Widget::isObjSelected3(MyObject obj){

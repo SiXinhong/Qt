@@ -40,7 +40,8 @@
 #include <QtGui/QPainter>
 #include "trackbar.h"
 #include <QDir>
-
+#include "stdio.h"
+#include <stdlib.h>
 
 //////////////////////////////ZC/////////////////
 SOCKET hSocket;			//事件对象连接的套接字
@@ -383,10 +384,34 @@ void MainWindow::jinProcessing(){
 
         }
 
+
         Mat pano1 = pano.clone();
         Mat pano2 = pano.clone();
         Mat mat;
         hconcat(pano1,pano2,mat);
+        //画轨迹
+        if(isMubiao){
+            for(int ii = 0; ii < in.tps.size(); ii++){
+                TrackingPoint tp = in.tps[ii];
+                int id = tp.id;
+                vector<Point> points = tp.track;
+                //if(id == obj.getID()){
+                    for(int iii = 0; iii < points.size(); iii++){
+                        Point point = points[iii];
+                        Point point2 = Point(point.x+pano.cols, point.y);
+                        //circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                       // circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+                        if(iii >= 1){
+                            Point point3 = points[iii-1];
+                            Point point4 = Point(point3.x+pano.cols, point3.y);
+                           // line(mat,point,point3,obj.getColor(),1,8,0);
+                            //line(mat,point2,point4,obj.getColor(),1,8,0);
+                        }
+                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
+                    }
+                //}
+            }
+        }
         //在全景上画矩形，文字，轨迹等
         vector<MyObject> objs = in.getObjs();
         for(int i=0;i<objs.size();i++){
@@ -415,52 +440,30 @@ void MainWindow::jinProcessing(){
             rectangle(mat,rect2,obj.getColor(),2,1,0);
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-            //画轨迹
-            if(isMubiao){
-                for(int ii = 0; ii < tracks.size(); ii++){
-                    MyObjectTrack track = tracks[ii];
-                    int id = track.getId();
-                    vector<Point> points = track.getTrack();
-                    if(id == obj.getID()){
-                        for(int iii = 0; iii < points.size(); iii++){
-                            Point point = points[iii];
-                            Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                            if(iii >= 1){
-                                Point point3 = points[iii-1];
-                                Point point4 = Point(point3.x+pano.cols, point3.y);
-                                line(mat,point,point3,obj.getColor(),1,8,0);
-                                line(mat,point2,point4,obj.getColor(),1,8,0);
-                            }
-                            // cv::cvtColor(mat, mat, CV_BGR2RGB);
-                        }
-                    }
-                }
-            }
-            //画对象中心点的位置
-            if(isMubiao){
-                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-                QString tx = QString::number(x,10);
-                QString ty = QString::number(y,10);
-                QString tstr = "x="+tx+",y="+ty;
-                string str = tstr.toStdString();
-                QString idstr = "id="+QString::number(obj.getID(),10);
-                string idst = idstr.toStdString();
-                //qDebug()<<tstr;
-                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-                putText(mat,str,p,3,0.5,obj.getColor());
-                putText(mat,str,p2,3,0.5,obj.getColor());
+//            //画对象中心点的位置
+//            if(isMubiao){
+//                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
+//                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+//                QString tx = QString::number(x,10);
+//                QString ty = QString::number(y,10);
+//                QString tstr = "x="+tx+",y="+ty;
+//                string str = tstr.toStdString();
+//                QString idstr = "id="+QString::number(obj.getID(),10);
+//                string idst = idstr.toStdString();
+//                //qDebug()<<tstr;
+//                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+//                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+//                putText(mat,str,p,3,0.5,obj.getColor());
+//                putText(mat,str,p2,3,0.5,obj.getColor());
 
-                putText(mat,idst,p3,3,0.5,obj.getColor());
-                putText(mat,idst,p4,3,0.5,obj.getColor());
-            }
+//                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+//                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+
+//                putText(mat,idst,p3,3,0.5,obj.getColor());
+//                putText(mat,idst,p4,3,0.5,obj.getColor());
+//            }
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
         // cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -2103,13 +2106,29 @@ void MainWindow::selfTimerout(){
 
 //与金老师接口的定时器处理
 void MainWindow::jinTimerout(){
+    /**********start*******************/
+    clock_t t1,t2,t3,t4,t5;
+    /**********end*******************/
+    /**********start*******************/
+    t1=clock();
+    /**********end*******************/
     //vector<MyObject> objs = in.getObjs2();
     //std::cout<<"ok2 "<<std::endl;
     //#if 1
+
+    //qDebug()<<"jinTimerout";
+  //  int v=in.getIntegratedData();
+   // qDebug()<<"jinTimerOut2";
+    /**********start*******************/
+    t2=clock();
+    /**********end*******************/
+
 qDebug()<<"jinTimerout";
     int v=in.getIntegratedData();
 qDebug()<<"jinTimerOut2";
+
     if(v == 0){
+
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
         //        QString s1=in.getQJ1();
@@ -2129,7 +2148,11 @@ qDebug()<<"jinTimerOut2";
 
         Mat pano = in.getPano();
         //cv::imshow("test",pano);
+
+        //cv::imwrite("test.bmp",pano);
+
         cv::imwrite("test.bmp",pano);
+
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
@@ -2153,10 +2176,12 @@ qDebug()<<"jinTimerOut2";
         Mat mat;
         hconcat(pano1,pano2,mat);
 
+
         //在全景上画矩形，文字，轨迹等
         //Mat mat = in.getPano().clone();
         vector<MyObject> objs = in.getObjs();
         qDebug()<<"mainwindow objs.size "<<objs.size();
+
         if(isJixu == true){
             for(int i=0;i<objs.size();i++){
                 QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -2171,68 +2196,101 @@ qDebug()<<"jinTimerOut2";
             }
         }
 
-        vector<MyObjectTrack> tracks = in.getTracks();
-        if(this->isPseudo==true)
-            mat=setPseudocolor(mat);
-        updateBright(mat);
-        updateContrast(mat);
+        //vector<MyObjectTrack> tracks = in.getTracks();
+//       if(this->isPseudo==true)
+//           mat=setPseudocolor(mat);
+//        updateBright(mat);
+///        updateContrast(mat);
+
+
+        if(isMubiao){
+            for(int ii = 0; ii < in.tps.size(); ii++){
+                TrackingPoint tp = in.tps[ii];
+                int id = tp.id;
+                vector<Point> points = tp.track;
+                //if(id == obj.getID()){
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    Point point2 = Point(point.x+pano.cols, point.y);
+                    //  std::cout<<"sdk point circle "<<point.x<<" "<<point.y<<std::endl;
+                    circle(mat, point, 2, Scalar(0,0,255),1,8,0);//在图像中画出特征点，2是圆的半径
+                    circle(mat, point2, 2, Scalar(0,0,255),1,8,0);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        //std::cout<<"sdk point line "<<std::endl;
+                        Point point3 = points[iii-1];
+                       // std::cout<<"sdk point3 circle "<<point3.x<<" "<<point3.y<<std::endl;
+                        Point point4 = Point(point3.x+pano.cols, point3.y);
+                        line(mat,point,point3,Scalar(0,0,255),1,8,0);
+                        line(mat,point2,point4,Scalar(0,0,255),1,8,0);
+                    }
+                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
+                }
+                //}
+            }
+        }
         num_objs = objs.size();
+
         for (int i = 0; i < num_objs;i++)
         {
             //画对象的box
             MyObject obj = objs[i];
+
+            //qDebug()<<"obj.point!!!!!"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
+
             qDebug()<<"obj.point!!!!!"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
+
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
             rectangle(mat,rect2,obj.getColor(),2,1,0);
             //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
             //画轨迹
-            if(isMubiao){
-                for(int ii = 0; ii < tracks.size(); ii++){
-                    MyObjectTrack track = tracks[ii];
-                    int id = track.getId();
-                    vector<Point> points = track.getTrack();
-                    if(id == obj.getID()){
-                        for(int iii = 0; iii < points.size(); iii++){
-                            Point point = points[iii];
-                            Point point2 = Point(point.x+pano.cols, point.y);
-                            circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                            circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                            if(iii >= 1){
-                                Point point3 = points[iii-1];
-                                Point point4 = Point(point3.x+pano.cols, point3.y);
-                                line(mat,point,point3,obj.getColor(),1,8,0);
-                                line(mat,point2,point4,obj.getColor(),1,8,0);
-                            }
-                            //cv::cvtColor(mat, mat, CV_BGR2RGB);
-                        }
-                    }
-                }
-            }
+//            if(isMubiao){
+//                for(int ii = 0; ii < tracks.size(); ii++){
+//                    MyObjectTrack track = tracks[ii];
+//                    int id = track.getId();
+//                    vector<Point> points = track.getTrack();
+//                    if(id == obj.getID()){
+//                        for(int iii = 0; iii < points.size(); iii++){
+//                            Point point = points[iii];
+//                            Point point2 = Point(point.x+pano.cols, point.y);
+//                            circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                            circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                            if(iii >= 1){
+//                                Point point3 = points[iii-1];
+//                                Point point4 = Point(point3.x+pano.cols, point3.y);
+//                                line(mat,point,point3,obj.getColor(),1,8,0);
+//                                line(mat,point2,point4,obj.getColor(),1,8,0);
+//                            }
+//                            //cv::cvtColor(mat, mat, CV_BGR2RGB);
+//                        }
+//                    }
+//                }
+//            }
+
             //画对象中心点的位置
-            if(isMubiao){
-                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-                QString tx = QString::number(x,10);
-                QString ty = QString::number(y,10);
-                QString tstr = "x="+tx+",y="+ty;
-                string str = tstr.toStdString();
-                QString idstr = "id="+QString::number(obj.getID(),10);
-                string idst = idstr.toStdString();
-                //qDebug()<<tstr;
-                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+//            if(isMubiao){
+//                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
+//                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+//                QString tx = QString::number(x,10);
+//                QString ty = QString::number(y,10);
+//                QString tstr = "x="+tx+",y="+ty;
+//                string str = tstr.toStdString();
+//                QString idstr = "id="+QString::number(obj.getID(),10);
+//                string idst = idstr.toStdString();
+//                //qDebug()<<tstr;
+//                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+//                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-                putText(mat,str,p,3,0.5,obj.getColor());
-                putText(mat,str,p2,3,0.5,obj.getColor());
+//                putText(mat,str,p,3,0.5,obj.getColor());
+//                putText(mat,str,p2,3,0.5,obj.getColor());
 
-                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+//                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+//                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
 
-                putText(mat,idst,p3,3,0.5,obj.getColor());
-                putText(mat,idst,p4,3,0.5,obj.getColor());
-            }
+//                putText(mat,idst,p3,3,0.5,obj.getColor());
+//                putText(mat,idst,p4,3,0.5,obj.getColor());
+//            }
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
         //  cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -2244,6 +2302,7 @@ qDebug()<<"jinTimerOut2";
         }
 
         Mat tmat = mat.clone();
+
              //画矩形
              if(this->widget1->isTo3){
                  //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
@@ -2276,7 +2335,10 @@ qDebug()<<"jinTimerOut2";
                  Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
                  rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
              }
-        //然后劈成2半
+
+
+             //然后劈成2半
+
 
         //    Size dsize ;
         //    double scale = 1;
@@ -2295,7 +2357,6 @@ qDebug()<<"jinTimerOut2";
         //    Mat image5 = CVUtil::QImageToMat(aa2);
         //    Mat image55 = Mat(dsize,CV_32S);
         //    cv::resize(image5, image55,dsize);
-
         Mat mat1, mat2;
         mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
         mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
@@ -2303,6 +2364,9 @@ qDebug()<<"jinTimerOut2";
         Mat mat3,mat4;
         tmat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat3);
         tmat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat4);
+
+        /*********************/
+
 
         Mat newpano;
         hconcat(mat1,mat2,newpano);
@@ -2316,13 +2380,19 @@ qDebug()<<"jinTimerOut2";
         //               hsl->channels[color].saturation1 = saturation1 - 100;
         //               hsl->adjust(mat1, mat1);
         //           }
+
         widget1->setMat(mat3);
         widget1->setPano(newpano);
         widget1->setTwoPano(mat);
         widget1->setObjects(objs);
         widget1->setTracks(in.getTracks());
+        /**********start*******************/
+        t3=clock();
+        /**********end*******************/
         widget1->draw();
-
+        /**********start*******************/
+        t4=clock();
+        /**********end*******************/
         widget2->setPano(newpano);
         widget2->setTwoPano(mat);
         //widget2->setPano(mat);
@@ -2330,6 +2400,7 @@ qDebug()<<"jinTimerOut2";
         widget2->setObjects(objs);
         widget2->setTracks(in.getTracks());
         widget2->draw();
+
         //qDebug()<<s2;
         //drawUiLabel(mat2,2);
         //图片3
@@ -2366,6 +2437,7 @@ qDebug()<<"jinTimerOut2";
         widget6->setAllObjects(widget1->objs);
         widget6->draw();
         this->alertProcessing(objs);
+
         //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
 
         //     if(isGaojing)
@@ -2471,7 +2543,18 @@ qDebug()<<"jinTimerOut2";
         //QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
         this->selfTimerout();
     }
+    /**************start******************/
+    t5=clock();
+    FILE *pFile=fopen("check_time.txt","a+");
+    fprintf(pFile,"socket time is %d\n",t2-t1);
+    fprintf(pFile,"total  time is %d\n\n",t5-t1);
 
+    fclose(pFile);
+    printf("\t\t\t\twidget1 draw()time is %d\n",t4-t3);
+    printf("\t\t\t\tsocket cost time is %d\n",t2-t1);
+    printf("\t\t\t\twang time is %d\n",t5-t2);
+    printf("\t\t\t\ttotal time is %d\n",t5-t1);
+    /**********end*******************/
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
@@ -3599,8 +3682,11 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if(mat.type() == CV_8UC1)
     {
+
         //QImage image(mat.cols, mat.rows, QImage::Format_Indexed8);
+
         imgLabel = QImage(mat.cols, mat.rows, QImage::Format_Indexed8);
+
         // Set the color table (used to translate colour indexes to qRgb values)
         imgLabel.setColorCount(256);
         for(int i = 0; i < 256; i++)
@@ -3610,6 +3696,7 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
         }
         // Copy input Mat
         uchar *pSrc = mat.data;
+
         for(int row = 0; row < mat.rows; row ++)
         {
             //uchar *pDest = image.scanLine(row);
@@ -3628,7 +3715,9 @@ QImage MainWindow::MatToQImage(const cv::Mat& mat, QImage imgLabel)
         // Create QImage with same dimensions as input Mat
         //QImage image(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
         imgLabel = QImage(pSrc, mat.cols, mat.rows, mat.step, QImage::Format_RGB888);
+         //imgLabel.rgbSwapped();
         return imgLabel.rgbSwapped();
+
     }
     else if(mat.type() == CV_8UC4)
     {

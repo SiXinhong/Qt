@@ -22,6 +22,7 @@ int para_data_len = 40;
 DetectorParams dp;
 TrackingParameters tp;
 StitchParmeters sp;
+
 /*
    设置三种参数
    1.mode=0:算法参数，此时id默认为0，无意义
@@ -50,6 +51,8 @@ int para_to_string(char *s, int &datalen);
 
 
 int ROIPointsToChar(std::vector<std::vector<cv::Point> >, char *s, int &datalen);
+
+int ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const int &datalen);
 
 /****************************************************************主接口**********************************************************************/
 int SetSystemPara(int mode, int id)
@@ -212,18 +215,48 @@ int SetDuiBiDu(double alpha,double deta)
 }
 
 
+//接收轨迹
+int GetTrack(std::vector<TrackingPoint>& _TrackPoints)
+{
+    std::cout<<"send track "<<std::endl;
+    char *buff = (char *)malloc(DATA_BUFFER_SIZE);
+
+    int result = MySend(hSocket, 13, sendbuffer, SEND_BUFFER_SIZE, NULL, 0);
+    //std::cout<<"result"<<result<<std::endl;
+    datalen = 0;
+    if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
+    {
+
+        ParseTrackingPoints(_TrackPoints,&buff[5],datalen-9);
+         //std::cout<<"ParseTrackingPoints "<<std::endl;
+        free(buff);
+        return 1;
+    }
+    else
+    {
+        free(buff);
+        return 0;
+    }
+}
+
+
+
 //下发兴趣区
 int SetORIPoints(std::vector<std::vector<cv::Point> > _ROIPoints)
 {
 	char *s = (char *)malloc(1024 * 1024);
 	int datalen = 0;
-    std::cout<<"point"<<std::endl;
+
+   // std::cout<<"point"<<std::endl;
+
 	if (ROIPointsToChar(_ROIPoints, s, datalen) != 0)
 	{
          std::cout<<"point1"<<std::endl;
 		return -1;
 	}
-     std::cout<<"point2 "<<datalen<<std::endl;
+
+    // std::cout<<"point2 "<<datalen<<std::endl;
+
 	MySend(hSocket, 10, sendbuffer, SEND_BUFFER_SIZE, s, datalen);
     return 0;
 }
@@ -412,8 +445,10 @@ int  Getpanorama(IntegratedData *&data)
 	int result = MySend(hSocket, 3, sendbuffer, SEND_BUFFER_SIZE, 0, 0);
 #if 1
     datalen=0;
+
     clock_t t2;
        clock_t t1=clock();
+
     if (ReadHanding(hSocket, netEvents, recvbuffer, RECV_BUFFER_SIZE, buff, &datalen) == 1)
     {
         t2=clock();
@@ -662,9 +697,21 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 		int index = 0;
 		while(index<datalen)
 		{
-						Target temp;
-			temp.cenPointACS.x = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
-			
+            Target temp;
+
+            //id
+            temp.id=*(int *)&buff[index];
+            index+=4;
+            //std::cout<<"sdk id "<<temp.id<<std::endl;
+            temp.cenPointACS.x = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
+            //temp.cenPointACS.y
+            index += 4;
+            temp.cenPointACS.y = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
+           // std::cout<<"sdk point "<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
+            //blocksize
+            index += 4;
 
 			//temp.cenPointACS.y
 			index += 4;
@@ -673,6 +720,7 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
             std::cout<<"point："<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
 			//blocksize
 			index += 4;
+
             temp.blocksize.height = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
             index+=4;
             temp.blocksize.width = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
@@ -863,3 +911,62 @@ int ROIPointsToChar(std::vector<std::vector<cv::Point> > _ROIPoints, char *s, in
 	datalen = index;
 	return 0;
 }
+
+
+//for show_sdk
+int ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const int &datalen)
+    {
+      //std::cout<<"begin parse"<<std::endl;
+      if(datalen==0)
+      {
+          return 1;
+      }
+        _TrackPoints.clear();//swap(std::vector<TrackingPoint>());
+        int index = 0;
+
+        //解析点数
+        int numOfTrack = *(int *)&s[index];
+        index += sizeof(int);
+
+        std::cout<<"numOfTrack "<<numOfTrack<<std::endl;
+        int j=0;
+        //解析轨迹
+        for (; j<numOfTrack; j++)
+        {
+            //std::cout<<"j "<<j<<" ";
+            TrackingPoint temp;
+
+            //parse id
+            temp.id = *(int *)&s[index];
+            index += sizeof(int);
+
+            //parse num
+            int numOfPoints = *(int *)&s[index];
+            index += sizeof(int);
+
+            //std::cout<<"numOfPoints "<<numOfPoints<<std::endl;
+            temp.track.clear();
+
+            //parse point
+            int jOfNum = 0;
+            for (; jOfNum < numOfPoints; jOfNum++)
+            {
+                Point p;
+                //x
+                p.x = *(int *)&s[index];
+                index += sizeof(int);
+
+                //std::cout<<"point x "<<p.x<<" ";
+                //y
+                p.y = *(int *)&s[index];
+                index += sizeof(int);
+
+                //std::cout<<"point y "<<p.y<<std::endl;
+                temp.track.push_back(p);
+            }
+            _TrackPoints.push_back(temp);
+
+        }
+
+    }
+

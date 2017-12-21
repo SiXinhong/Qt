@@ -54,14 +54,14 @@ Region::Region(QString name, Scalar c, vector<Point> ps){
 void Region::draw(Mat &mat){
     if(this->isRect && this->isActive){
         if(this->hasObjects){
-            rectangle(mat,this->rect,this->color,5,1,0);
-            Rect rect2 = Rect(this->rect.x+mat.cols/2, this->rect.y, this->rect.width, this->rect.height);
-            rectangle(mat,rect2,this->color,5,1,0);
-        }
-        else{
             rectangle(mat,this->rect,this->color,3,1,0);
             Rect rect2 = Rect(this->rect.x+mat.cols/2, this->rect.y, this->rect.width, this->rect.height);
             rectangle(mat,rect2,this->color,3,1,0);
+        }
+        else{
+            rectangle(mat,this->rect,this->color,2,1,0);
+            Rect rect2 = Rect(this->rect.x+mat.cols/2, this->rect.y, this->rect.width, this->rect.height);
+            rectangle(mat,rect2,this->color,2,1,0);
         }
 
     }
@@ -84,8 +84,8 @@ void Region::draw(Mat &mat){
             polylines(mat, ppt2, npt2, 1, true, this->color, 3);
         }
         else{
-            polylines(mat, ppt, npt, 1, true, this->color, 3);
-            polylines(mat, ppt2, npt2, 1, true, this->color, 3);
+            polylines(mat, ppt, npt, 1, true, this->color, 2);
+            polylines(mat, ppt2, npt2, 1, true, this->color, 2);
         }
     }
     else{
@@ -95,10 +95,10 @@ void Region::draw(Mat &mat){
 void Region::draw1Time(Mat &mat){
     if(this->isRect && this->isActive){
         if(this->hasObjects){
-            rectangle(mat,this->rect,this->color,5,1,0);
+            rectangle(mat,this->rect,this->color,3,1,0);
         }
         else{
-            rectangle(mat,this->rect,this->color,3,1,0);
+            rectangle(mat,this->rect,this->color,2,1,0);
         }
 
     }

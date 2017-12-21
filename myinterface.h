@@ -100,6 +100,8 @@ public:
 
     vector<MyObjectTrack> getTracks2();
 
+    vector<TrackingPoint> tps;
+
     double timett;
     cv::Mat panoImage;//
     vector< SmallTarget> targets;

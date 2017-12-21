@@ -167,7 +167,8 @@ int MySocketInitial(void){
 	if (hSocket == INVALID_SOCKET){
 		return 2;
 	}
-
+    const char chOpt=1;
+    int error=(hSocket,IPPROTO_TCP,TCP_NODELAY,&chOpt,sizeof(char));
 //	std::cout << "输入服务器端IP地址" << std::endl;
 //	fgets(server_ip, sizeof(server_ip), stdin);
 
@@ -352,6 +353,13 @@ int DataAnalyze(char data[], int* pdatalen){
             }
             else if(data[4]==12){
                 //接收16位图
+
+                return 2;
+            }
+            else if(data[4]==13){
+                //接收轨迹
+               //ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const int &datalen)
+
                 return 2;
             }
 			else{

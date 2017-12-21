@@ -132,6 +132,13 @@ struct DetectROI
 };
 
 
+
+struct TrackingPoint
+{
+    int id;
+    vector<Point> track;
+};
+
 ///////////////////////////////////////注意：SetSystemPara接口改变
 /*
   函数名：SetSystemPara
@@ -183,6 +190,9 @@ int SetDuiBiDu(double alpha, double deta);
 int SetORIPoints(std::vector<std::vector<cv::Point> > _ROIPoints);
 
 int END();
+
+
+int GetTrack(std::vector<TrackingPoint>& _TrackPoints);
 
 
 #endif
