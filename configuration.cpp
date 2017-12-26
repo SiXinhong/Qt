@@ -45,7 +45,7 @@ Configuration::Configuration(MainWindow *mw)
         mw->welcome->close();
     }
     this->isStartMw = false;
-   MySocketInitial();
+   //MySocketInitial();
 }
 
 void Configuration::configure(){

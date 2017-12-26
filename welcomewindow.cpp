@@ -37,6 +37,7 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
 //    passwordInput->setGeometry(150,515,90,30);
 //    logIn->setGeometry(80,590,60,25);
 //    exit->setGeometry(150,590,60,25);
+    qDebug()<<"welcome";
 }
 
 void WelcomeWindow::paintEvent(QPaintEvent *){

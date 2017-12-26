@@ -68,6 +68,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 {
     this->welcome=welcome;
     configure = 0;
+    qDebug()<<"mainwindow";
     //因为Backwindow继承了MainWindow，Backwindow不需要启动界面，给构造函数传递空指针，
     //这时候一定要立即执行init()，否则Backwindow以为初始化工作完成开始执行别的代码时就报错了
     if(welcome != 0){
@@ -1017,17 +1018,22 @@ void MainWindow::addMyMenuBar(){
     ToolMenu->addAction(figure);
     connect(figure,SIGNAL(triggered()),this,SLOT(figureClicked()));
 
+
     openalert = new QAction("显示报警信息",this);
     closealert = new QAction("关闭报警信息",this);
+    targetAtt = new QAction("目标属性列表",this);
 
     openalert->setShortcut(Qt::Key_F3);
     closealert->setShortcut(Qt::Key_F9);
 
     DisplayMenu->addAction(openalert);
     DisplayMenu->addAction(closealert);
+    DisplayMenu->addAction(targetAtt);
 
     connect(openalert,SIGNAL(triggered()),this,SLOT(openalertClicked()));
     connect(closealert,SIGNAL(triggered()),this,SLOT(closealertClicked()));
+    connect(targetAtt,SIGNAL(triggered()),this,SLOT(targetAttShow()));
+
 
     help = new QAction("帮助",this);
     about = new QAction("关于",this);
@@ -1837,6 +1843,7 @@ void MainWindow::selfTimerout(){
 //        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 //    }
     // cv::cvtColor(mat, mat, CV_BGR2RGB);
+    //qDebug()<<"目标个数："<<objs.size();
     //画告警区域
     for(int iii = 0; iii < this->rgs.size(); iii++){
         RegionGroup rg = rgs[iii];
@@ -4083,6 +4090,26 @@ void MainWindow::pseudoColorFunction()
     isPseudo=!isPseudo;
     adjustment();
 }
+
+
+void MainWindow::targetAttShow(){
+        if(objectAttributes)
+        {
+            delete objectAttributes;
+        }
+        this->objectAttributes=new ObjectAttributes(widget1->objs);
+        this->objectAttributes->setWindowFlags(Qt::FramelessWindowHint);
+        this->objectAttributes->activateWindow();
+        //this->objectAttributes->setWindowTitle("目标属性列表");
+        QDesktopWidget* desktopWidget = QApplication::desktop();
+        QRect screenRect = desktopWidget->screenGeometry();  //屏幕区域
+        int width = screenRect.width();
+        int height = screenRect.height();
+        this->objectAttributes->setGeometry(width/4,height/4,width/2,height/3);
+        this->objectAttributes->show();
+
+}
+
 //第三组
 //显示点击处位置
 void MainWindow::objectAttributeFunction()
@@ -4117,7 +4144,7 @@ void MainWindow::objectAttributeFunction()
     //    //    qDebug()<<"22222222222";
     //    //    this->objectAttributes->setText(s);
     //    //    this->objectAttributes->show();
-    //    this->objectAttributes->show();
+    //    this->objectribuAtttes->show();
 
     location = !location;
     if(location){

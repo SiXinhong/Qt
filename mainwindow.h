@@ -439,6 +439,8 @@ protected:
 
      QAction* figure;
 
+     QAction* targetAtt;
+
      QAction* openalert;
      QAction* closealert;
 
@@ -495,6 +497,7 @@ protected slots:
 
      void openalertClicked();
      void closealertClicked();
+     void targetAttShow();
 
      void helpClicked();
      void aboutClicked();
