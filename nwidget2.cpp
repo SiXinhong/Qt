@@ -520,6 +520,12 @@ void NWidget2::draw(){
     mw->loadPictureToLabel6(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
 
 }
+
+void NWidget2::ZoomInitial(){
+    rect.width=352;
+    rect.height = 160;
+}
+
 void NWidget2::ZoomIn(){
 ////    if(this->rect.x + 1/8 * this->rect.width >= 0){
 //        this->rect.x = this->rect.x + 1/8 * this->rect.width;
@@ -550,16 +556,16 @@ void NWidget2::ZoomOut(){
 //        this->rect.y = this->rect.y - 1/6 * this->rect.height;
 //        this->rect.height = this->rect.height *4/3;
 //    }
-
-    if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
-        //this->rect.x = this->rect.x - this->rect.width/6;
-        this->rect.width = this->rect.width *4/3;
+    if(this->rect.width < 594){
+        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+            //this->rect.x = this->rect.x - this->rect.width/6;
+            this->rect.width = this->rect.width *4/3;
+        }
+        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+            //this->rect.y = this->rect.y - this->rect.height/6;
+            this->rect.height = this->rect.height *4/3;
+        }
     }
-    if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
-        //this->rect.y = this->rect.y - this->rect.height/6;
-        this->rect.height = this->rect.height *4/3;
-    }
-
 
 }
 

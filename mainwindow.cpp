@@ -169,12 +169,20 @@ void MainWindow::init(){
     label6=new QLabel(widget6);
 
     //label7=new QLabel(widget7);
+
+
+    zWini = new QToolButton(label3);
     zWZoomIn = new QToolButton(label3);
     zWZoomout = new QToolButton(label3);
+
+    n1Wini = new QToolButton(label4);
     n1WZoomIn = new QToolButton(label4);
     n1WZoomout = new QToolButton(label4);
+
+    n2Wini = new QToolButton(label6);
     n2WZoomIn = new QToolButton(label6);
     n2WZoomout = new QToolButton(label6);
+
 
     zWZoomIn->setText("放大");
     zWZoomIn->setGeometry(40,40,50,30);
@@ -182,8 +190,12 @@ void MainWindow::init(){
     zWZoomout->setText("缩小");
     zWZoomout->setGeometry(100,40,50,30);
     zWZoomout->setToolTip(QString::number(3));
+    zWini->setText("还原");
+    zWini->setGeometry(160,40,50,30);
+    zWini->setToolTip(QString::number(3));
     connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+    connect(zWini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
 
     n1WZoomIn->setText("放大");
     n1WZoomIn->setGeometry(40,40,50,30);
@@ -191,8 +203,12 @@ void MainWindow::init(){
     n1WZoomout->setText("缩小");
     n1WZoomout->setGeometry(100,40,50,30);
     n1WZoomout->setToolTip(QString::number(4));
+    n1Wini->setText("还原");
+    n1Wini->setGeometry(160,40,50,30);
+    n1Wini->setToolTip(QString::number(4));
     connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+    connect(n1Wini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
 
     n2WZoomIn->setText("放大");
     n2WZoomIn->setGeometry(40,40,50,30);
@@ -200,8 +216,12 @@ void MainWindow::init(){
     n2WZoomout->setText("缩小");
     n2WZoomout->setGeometry(100,40,50,30);
     n2WZoomout->setToolTip(QString::number(6));
+    n2Wini->setText("还原");
+    n2Wini->setGeometry(160,40,50,30);
+    n2Wini->setToolTip(QString::number(6));
     connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
     connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
+    connect(n2Wini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
 
     //鼠标拖拽控制变量赋初值
     isDrag1 = false;
@@ -777,6 +797,7 @@ void MainWindow::selfProcessing(){
     //    Mat image5 = CVUtil::QImageToMat(aa2);
     //    Mat image55 = Mat(dsize,CV_32S);
     //    cv::resize(image5, image55,dsize);
+     qDebug()<<"selfpocessing999";
     if(this->isPseudo==true)
         mat=setPseudocolor(mat);
     updateBright(mat);
@@ -789,7 +810,6 @@ void MainWindow::selfProcessing(){
     Mat newpano;
 
     hconcat(mat1,mat2,newpano);
-
     //Mat mat1 = image44;
     //    if(this->isPseudo==true)
     //        mat1=setPseudocolor(mat1);
@@ -840,6 +860,7 @@ void MainWindow::selfProcessing(){
     //drawUiLabel(mat2,2);
     //图片3
     //Mat mat3 =imread(imageurl);
+
     widget3->setPano(newpano);
     widget3->setTwoPanos(mat);
     widget3->setAllObjects(in.getObjs());
@@ -4719,6 +4740,21 @@ void MainWindow::onAlertTimer(){
         delete alert;
         alert=0;
     }
+}
+
+void MainWindow::zoomInitial(){
+    QObject *obj = sender();
+    QToolButton *button = dynamic_cast<QToolButton*>(obj);
+    int index = button->toolTip().toInt();
+    if(index==3){
+        this->widget3->ZoomInitial();
+    }else if(index == 4){
+        this->widget4->ZoomInitial();
+    }
+    else if(index == 6){
+        this->widget6->ZoomInitial();
+    }
+
 }
 
 void MainWindow::zoomIn(){

@@ -185,7 +185,8 @@ public slots:
     void ZoomIn();
     //缩小
     void ZoomOut();
-
+    //还原
+    void ZoomInitial();
 };
 
 #endif // NWIDGET2_H

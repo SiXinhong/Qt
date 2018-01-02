@@ -88,10 +88,15 @@ public slots:
     
 public:
 
+   QToolButton *zWini;
    QToolButton *zWZoomIn;
    QToolButton *zWZoomout;
+
+   QToolButton *n1Wini;
    QToolButton *n1WZoomIn;
    QToolButton *n1WZoomout;
+
+   QToolButton *n2Wini;
    QToolButton *n2WZoomIn;
    QToolButton *n2WZoomout;
   void readRgs();//读取监控组配置
@@ -448,6 +453,7 @@ protected:
      QAction* about;
 
 protected slots:
+     void zoomInitial();
      void zoomIn();
      void zoomOut();
      void videoClick();//recent

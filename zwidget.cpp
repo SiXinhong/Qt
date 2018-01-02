@@ -676,8 +676,6 @@ void ZWidget::draw(){
 //           }
 //}
 
-
-
     mw->imgLabel3 = mw->MatToQImage(mat,mw->imgLabel3);
     //cv::cvtColor(mat,mat,CV_BGR2RGB);
     //mw->loadPictureToLabel3(rg.color, );
@@ -685,8 +683,16 @@ void ZWidget::draw(){
 
 }
 
+void ZWidget::ZoomInitial(){
+    rect.width=1485;
+    rect.height = 320;
+}
+
 void ZWidget::ZoomIn(){
     qDebug()<<"zwidget:zoomin";
+    qDebug()<<"rect.width:"<<rect.width;
+    qDebug()<<"rect.height:"<<rect.height;
+
     if(/*this->rect.x + this->rect.width/8 <= pano.cols && */this->rect.width*3/4>0){
         //this->rect.x = this->rect.x + this->rect.width/8;
         this->rect.width = this->rect.width *3/4;

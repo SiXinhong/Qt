@@ -522,8 +522,15 @@ void NWidget1::DefineRect(){
     }
 }
 
+void NWidget1::ZoomInitial(){
+    rect.width=352;
+    rect.height = 160;
+}
+
 void NWidget1::ZoomIn(){
     qDebug()<<"n1widget:zoomin";
+    qDebug()<<"rect.width:"<<rect.width;
+    qDebug()<<"rect.height:"<<rect.height;
 ////    if(this->rect.x + 1/8 * this->rect.width >= 0){
 //        this->rect.x = this->rect.x + 1/8 * this->rect.width;
 //        this->rect.width = this->rect.width *3/4;
@@ -546,7 +553,7 @@ void NWidget1::ZoomIn(){
 void NWidget1::ZoomOut(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     //if(this->rect.height < mw->widget1->height()){
-         if(this->rect.height < 640){
+         if(this->rect.width < 594){
         //    if((this->rect.x - 1/6 * this->rect.width >= 0)&&(this->rect.x + this->rect.width *7/6 < pano.cols)){
         //        this->rect.x = this->rect.x - 1/6 * this->rect.width;
         //        this->rect.width = this->rect.width *4/3;
