@@ -30,6 +30,8 @@ public:
     MainWindow *mw;
     QStackedLayout *stackedLayout;
     QListWidget *listWidget;
+     QWidget *mainWidget;
+     QWidget *regionWidget;
 
 public:
     explicit Monitor(MainWindow *mw);
@@ -61,6 +63,12 @@ public slots:
     void timeControl();
     void regionShow();
     void listWidgetChange(int);
+
+    //优先级
+    void inPri();
+    void dePri();
+
+    void deleteRegionG();
 };
 
 #endif // MONITOR_H

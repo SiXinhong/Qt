@@ -30,14 +30,32 @@ void Monitor::widgetShow(){
     }
     listWidget->setMaximumWidth(this->width()/6);
     QVBoxLayout *leftLayout = new QVBoxLayout;
-
+    //listWidget->setDragEnabled(true);
     QToolButton *create = new QToolButton(cenWidget);
     create->setText("创建新的监控区域组");
     connect(create,SIGNAL(clicked()),this,SLOT(createRG()));
 
-    leftLayout->addWidget(create);
+    QHBoxLayout *priorLayout = new QHBoxLayout;
+    QToolButton *incre = new QToolButton(cenWidget);
+    incre->setText("提高优先级");
+    //incre->setToolTip(listWidget->currentRow());
+    connect(incre,SIGNAL(clicked()),this,SLOT(inPri()));
 
+    QToolButton *decre = new QToolButton(cenWidget);
+    decre->setText("降低优先级");
+    connect(decre,SIGNAL(clicked()),this,SLOT(dePri()));
+
+    priorLayout->addWidget(incre);
+    priorLayout->addWidget(decre);
+
+    QToolButton *deleteG = new QToolButton(cenWidget);
+    deleteG->setText("删除该监控区域组");
+    connect(deleteG,SIGNAL(clicked()),this,SLOT(deleteRegionG()));
+
+    leftLayout->addWidget(create);
     leftLayout->addWidget(listWidget);
+    leftLayout->addLayout(priorLayout);
+    leftLayout->addWidget(deleteG);
 
     stackedLayout = new QStackedLayout;
     for(int i = 0;i < mw->rgs.size()-1;i++){
@@ -68,7 +86,7 @@ void Monitor::widgetShow(){
 
 //        hourWidget->show();
 //        hourWidget->raise();
-        QWidget *regionWidget = new QWidget;
+        regionWidget = new QWidget;
 
         QToolButton *namelabel=new QToolButton(regionWidget);
         namelabel->setText(QString("修改组名字"));
@@ -112,7 +130,6 @@ void Monitor::widgetShow(){
         connect(edit,SIGNAL(clicked()),this,SLOT(editFunction()));
 
         mlayout->addLayout(layout);
-
 
         layout->addWidget(namelabel,0,1);
         layout->addWidget(regionGroup,0,2);
@@ -159,8 +176,6 @@ void Monitor::widgetShow(){
            QLabel *label2 = new QLabel(type,regionWidget);
            QLabel *label4 = new QLabel(hasObjects,regionWidget);
 
-
-
             layout1->addWidget(label1,2+j,0);
             layout1->addWidget(isShow,2+j,1);
             layout1->addWidget(label2,2+j,2);
@@ -190,8 +205,9 @@ void Monitor::widgetShow(){
     mainLayout->setColumnStretch(1,4);
 
 
-    QWidget *mainWidget = new QWidget;
+    mainWidget = new QWidget;
     mainWidget->setLayout(mainLayout);
+
 
     setCentralWidget(mainWidget);
 
@@ -447,6 +463,9 @@ void Monitor::regionShow(){
 
 }
 void Monitor::listWidgetChange(int i){
+//    if(i<0){
+//        return;
+//    }
     timeIndex = i;
     for(int ii=0;ii<7;ii++){
         for(int j=0;j<48;j++){
@@ -454,5 +473,190 @@ void Monitor::listWidgetChange(int i){
         }
     }
     hourWidget->repaint();
+
+//    QStackedLayout* old=stackedLayout;
+//    QWidget *oldWidget = regionWidget;
+
+//    for(int i = 0;i < mw->rgs.size()-1;i++){
+//        QString tip = QString::number(i);
+//        QVBoxLayout * mlayout = new QVBoxLayout;
+//        QGridLayout * layout = new QGridLayout;
+
+//        hourWidget->resize(this->width()/2,this->height()/2);
+//        hourWidget->xStart = this->width()/17;
+//        hourWidget->yStart = 30;
+//        hourWidget->w = this->width()/65;
+//        hourWidget->h = 2*hourWidget->w;
+
+//        for(int ii=0;ii<7;ii++){
+//            for(int j=0;j<48;j++){
+//                hourWidget->isActive[ii][j] = mw->rgs[i].timeActive[ii][j];
+//            }
+//        }
+
+//        QToolButton *namelabel=new QToolButton(regionWidget);
+//        namelabel->setText(QString("修改组名字"));
+//        namelabel->setToolTip(tip);
+//        connect(namelabel,SIGNAL(clicked()),this,SLOT(onClickName()));
+
+//        QToolButton *regionGroup = new QToolButton(regionWidget);
+//        if(mw->rgs[i].isActive){
+//            regionGroup->setText(QString("隐藏该监控区域组"));
+//        }else{
+//            regionGroup->setText(QString("显示该监控区域组"));
+//        }
+//        regionGroup->setToolTip(tip);
+//        connect(regionGroup,SIGNAL(clicked()),this,SLOT(groupShow()));
+
+//        QToolButton *active = new QToolButton(regionWidget);
+//        if(mw->rgs[i].isAlert){
+//            active->setText(QString("取消报警"));
+//        }else{
+//            active->setText(QString("报警"));
+//        }
+//        active->setToolTip(tip);
+//        connect(active,SIGNAL(clicked()),this,SLOT(setAlert()));
+
+//        QToolButton *attributes = new QToolButton(regionWidget);
+//        attributes->setText(QString("颜色"));
+//        attributes->setToolTip(tip);
+//        Scalar color=mw->rgs[i].color;
+//        attributes->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
+//        connect(attributes,SIGNAL(clicked()),this,SLOT(attributesModify()));
+
+//        QToolButton *edit = new QToolButton(cenWidget);
+//        edit->setText(QString("编辑"));
+//        edit->setToolTip(tip);
+//        connect(edit,SIGNAL(clicked()),this,SLOT(editFunction()));
+
+//        mlayout->addLayout(layout);
+
+//        layout->addWidget(namelabel,0,1);
+//        layout->addWidget(regionGroup,0,2);
+//        layout->addWidget(active,0,3);
+//        layout->addWidget(attributes,0,4);
+//        layout->addWidget(edit,0,5);
+
+//        QGridLayout * layout1 = new QGridLayout;
+
+//        for(int j = 0;j< mw->rgs[i].rs.size();j++){
+//            QString name= mw->rgs.at(i).rs[j].name;
+
+//            QString hasObjects;
+//            if(mw->rgs.at(i).rs[j].hasObjects){
+//                hasObjects ="有目标进入该区域";
+//            }else{
+//                 hasObjects ="无目标进入该区域";
+//            }
+
+//            QString type;
+//            if(mw->rgs.at(i).rs[j].isRect ){
+//                type ="该区域形状为矩形";
+
+//            }else
+//                type ="该区域形状为多边形";
+
+//            QToolButton *isShow = new QToolButton(regionWidget);
+//            if(mw->rgs.at(i).rs[j].isActive){
+//                isShow->setText("隐藏");
+//            }else
+//                isShow->setText("显示");
+
+//            connect(isShow,SIGNAL(clicked()),this,SLOT(regionShow()));
+//            isShow->setToolTip(QString::number(j));
+
+//           QLabel *label1 = new QLabel(QString("监控区域 ").append(name).append(":"),regionWidget);
+//           QLabel *label2 = new QLabel(type,regionWidget);
+//           QLabel *label4 = new QLabel(hasObjects,regionWidget);
+
+//            layout1->addWidget(label1,2+j,0);
+//            layout1->addWidget(isShow,2+j,1);
+//            layout1->addWidget(label2,2+j,2);
+//            layout1->addWidget(label4,2+j,3);
+
+//        }
+
+//        mlayout->addLayout(layout1);
+//        regionWidget->setLayout(mlayout);
+//        stackedLayout->addWidget(regionWidget);
+//    }
+
+//    if(old!=0){
+//        delete old;
+//    }
+//    if(oldWidget!=0){
+//        QList<QWidget*> btns=oldWidget->findChildren<QWidget*>();
+//        foreach (QWidget* btn, btns)
+//        {
+//            delete btn;
+//        }
+//        oldWidget->repaint();
+//        delete oldWidget;
+//    }
+
     stackedLayout->setCurrentIndex(i);
+}
+
+void Monitor::inPri(){
+    int index = stackedLayout->currentIndex();
+    if(index>0){
+        RegionGroup tmp;
+        tmp = mw->rgs[index-1];
+        mw->rgs[index-1] = mw->rgs[index];
+        mw->rgs[index] = tmp;
+
+        QWidget *currentW = stackedLayout->currentWidget();
+        stackedLayout->removeWidget(currentW);
+        stackedLayout->insertWidget(index-1,currentW);
+
+        listWidget->clear();
+        for(int i =0;i<mw->rgs.size()-1;i++){
+            listWidget->addItem(QString("监控区域组：").append(mw->rgs[i].name));
+        }
+        listWidget->setCurrentRow(index-1);
+
+//      stackedLayout->setCurrentIndex(index);
+    }
+}
+
+void Monitor::dePri(){
+    int index = stackedLayout->currentIndex();
+    if(index<mw->rgs.size()-2){
+        RegionGroup tmp;
+        tmp = mw->rgs[index+1];
+        mw->rgs[index+1] = mw->rgs[index];
+        mw->rgs[index] = tmp;
+
+        QWidget *currentW = stackedLayout->currentWidget();
+        stackedLayout->removeWidget(currentW);
+        stackedLayout->insertWidget(index+1,currentW);
+
+        listWidget->clear();
+        for(int i =0;i<mw->rgs.size()-1;i++){
+            listWidget->addItem(QString("监控区域组：").append(mw->rgs[i].name));
+        }
+        listWidget->setCurrentRow(index+1);
+    }
+}
+
+void Monitor::deleteRegionG(){
+    int index = stackedLayout->currentIndex();
+    vector<RegionGroup> ::iterator ite = mw->rgs.begin()+index;
+    mw->rgs.erase(ite);
+
+    QWidget *currentW = stackedLayout->currentWidget();
+    stackedLayout->removeWidget(currentW);
+
+    listWidget->takeItem(index);
+
+
+    for(int ii=0;ii<7;ii++){
+        for(int j=0;j<48;j++){
+            hourWidget->isActive[ii][j] = mw->rgs[index].timeActive[ii][j];
+        }
+    }
+    hourWidget->repaint();
+
+    stackedLayout->setCurrentIndex(index);
+
 }
