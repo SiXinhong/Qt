@@ -1902,17 +1902,21 @@ void MainWindow::selfTimerout(){
    //Mat tmat = mat;
     if(this->widget1->isTo3){
         //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
-        rectangle(tmat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
+        //rectangle(tmat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,this->widget3->rect,this->widget3->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget3->rect.x+pano.cols, this->widget3->rect.y, this->widget3->rect.width, this->widget3->rect.height);
         rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
         //        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
         //        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget1->isTo4){
-        rectangle(tmat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+        rectangle(tmat,this->widget4->rect,this->widget4->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget4->rect.x+pano.cols, this->widget4->rect.y, this->widget4->rect.width, this->widget4->rect.height);
         rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
+//        rectangle(tmat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+//        rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
         //        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
         //        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
@@ -1922,32 +1926,42 @@ void MainWindow::selfTimerout(){
         //        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
         //        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-        rectangle(tmat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+//        rectangle(tmat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+//        rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
+        rectangle(tmat,this->widget6->rect,this->widget6->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget6->rect.x+pano.cols, this->widget6->rect.y, this->widget6->rect.width, this->widget6->rect.height);
         rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
     if(this->widget2->isTo3){
         //        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
         //        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
-        rectangle(tmat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+//        rectangle(tmat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+//        rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
+        rectangle(tmat,this->widget3->rect,this->widget3->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget3->rect.x+pano.cols, this->widget3->rect.y, this->widget3->rect.width, this->widget3->rect.height);
         rectangle(tmat,rect2,this->widget3->getColor(),4,1,0);
     }
     if(this->widget2->isTo4){
         //        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
         //        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
-        rectangle(tmat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
+        rectangle(tmat,this->widget4->rect,this->widget4->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget4->rect.x+pano.cols, this->widget4->rect.y, this->widget4->rect.width, this->widget4->rect.height);
         rectangle(tmat,rect2,this->widget4->getColor(),4,1,0);
     }
     if(this->widget2->isTo6){
         //        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
         //        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
         //        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-        rectangle(tmat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+//        rectangle(tmat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+//        rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
+
+        rectangle(tmat,this->widget6->rect,this->widget6->getColor(),4,1,0);
+        Rect rect2 = Rect(this->widget6->rect.x+pano.cols, this->widget6->rect.y, this->widget6->rect.width, this->widget6->rect.height);
         rectangle(tmat,rect2,this->widget6->getColor(),4,1,0);
     }
     //然后劈成2半
