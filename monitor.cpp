@@ -66,7 +66,7 @@ void Monitor::widgetShow(){
 //        QHBoxLayout *timelayout = new QHBoxLayout;
 //        timelayout->addWidget(hourWidget);
         //hourWidget->setGeometry(this->width()/2,0,1050,400);
-        hourWidget->resize(this->width()/2,this->height()/2);
+        hourWidget->resize(this->width()/3,this->height()/2);
         hourWidget->xStart = this->width()/17;
         hourWidget->yStart = 30;
         hourWidget->w = this->width()/65;

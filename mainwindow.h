@@ -194,6 +194,17 @@ public:
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
+
+    //判断目录所占大小
+    QString memoryUnit;
+
+    int unitSize;
+    int getMemory(const  QString  &path);
+    void removeFile(const  QString  &path);
+
+    //记录工作日志
+    void writeLogs();
+
     // void init();
     //添加属性设置中的变量
     //启动还是停止

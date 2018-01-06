@@ -1724,6 +1724,32 @@ void MainWindow::selfTimerout(){
         directory->mkdir(today);
     }
 
+    unitSize = getMemory(QString("./回放/"));
+    qDebug()<<"allM:"<<unitSize;
+
+//    if(unitSize>1024){
+//        unitSize/=1024;
+//        memoryUnit = "K";
+//        if(unitSize>1024){
+//            unitSize/=1024;
+//            memoryUnit = "M";
+//            if(unitSize>1024){
+//                unitSize/=1024;
+//                memoryUnit = "G";
+//                if(unitSize>1024){
+//                    unitSize/=1024;
+//                    memoryUnit = "T";
+//                }
+//            }
+//        }
+//    }
+//    qDebug()<<"memoryUnit:"<<unitSize<<memoryUnit;
+
+   // while(memoryUnit == "M" && unitSize >50){
+        while( unitSize >1024*1024*200){
+        qDebug()<<" inremove";
+        removeFile(QString("./回放/"));
+    }
 
     in.getIntegratedData2();
     vector<MyObject> objs;// = in.getObjs2();
@@ -4547,6 +4573,7 @@ void MainWindow::regionClicked(){
     int width = screenRect.width();
     int height = screenRect.height();
     this->monitor->setGeometry(screenRect.x(),height/4,4*width/6,3*height/5);
+    //this->monitor->setGeometry(screenRect.x(),height/4,width,3*height/5);
     this->monitor->show();
     this->monitor->widgetShow();
 //    qDebug()<<"monitor main width"<<monitor->geometry().width();
@@ -4655,6 +4682,10 @@ void MainWindow::readRgs(){
         rgs.push_back(*rg);
     }
     file.close();
+}
+
+void MainWindow::writeLogs(){
+
 }
 
 void MainWindow::writeRgs(){
@@ -4788,4 +4819,48 @@ void MainWindow::zoomOut(){
     else if(index == 6){
         this->widget6->ZoomOut();
     }
+}
+
+int MainWindow::getMemory(const  QString  &path){
+    memoryUnit = "k";
+    QDir dir(path);
+    if(!dir.exists())
+        return 0;
+    int allM = 0;
+
+    foreach(QFileInfo fileinfo,dir.entryInfoList(QDir::Files) ){
+        allM += fileinfo.size();
+        qDebug()<<"allM::::"<<allM;
+        qDebug()<<fileinfo.baseName();
+    }
+
+    foreach(QString subdir,dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot)){
+        allM += getMemory(path+QDir::separator()+subdir);
+    }
+
+    if(0 == allM){
+        dir.rmdir(dir.absolutePath());
+    }
+
+    return allM;
+}
+
+void MainWindow::removeFile(const  QString  &path){
+    QDir dir(path);
+    if(!dir.exists())
+        return;
+
+    if(!dir.entryInfoList(QDir::Files).isEmpty()){
+        QFileInfo fileinfo =dir.entryInfoList(QDir::Files).first();
+        qDebug()<<fileinfo.fileName();
+        if(fileinfo.absoluteDir().remove(fileinfo.fileName())){
+            unitSize-=fileinfo.size();
+        }
+    }
+
+    foreach(QString subdir,dir.entryList(QDir::Dirs|QDir::NoDotAndDotDot)){
+        removeFile(path+QDir::separator()+subdir);
+    }
+
+
 }
