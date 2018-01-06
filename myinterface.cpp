@@ -178,7 +178,7 @@ void MyInterface::fillObjs(){
         int h=r.height;
         int x=qrand()%this->panoImage.cols;//初始值随机
         int y=qrand()%this->panoImage.rows;
-        mo1.color = CVUtil::getRandomColor();
+        mo1.color = CVUtil::getRandomColor(mo1.getID()+1);
         mo1.setRect(Rect(x,y,w,h));
         mo1.setCenPoint(Point(x+w/2, y+h/2));
         mo1.setID(mo1.getID()+1);
@@ -417,6 +417,7 @@ int MyInterface::getIntegratedData(){
                 //新构建一个MyObject
                 MyObject mo = MyObject();
                 mo.setID(tar.id);
+                mo.color = CVUtil::getRandomColor(mo.getID());
                 mo.setCenPoint(tar.cenPointACS);
                 mo.setBlockSize(tar.blocksize);
                 mo.setVelocity(tar.Velocity);

@@ -156,6 +156,7 @@ void Configuration::buildCenWidgetCamera(){
      qDebug()<<"imagewidget w:"<<imageWidget->width();
      qDebug()<<"imagewidget h:"<<imageWidget->height();
      cenWidgetCamera->setLayout(layoutCamera);
+     qDebug()<<"configuration";
 }
 
 void Configuration::cameraShow(){

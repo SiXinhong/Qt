@@ -14,11 +14,11 @@ CVUtil::CVUtil(){
 
 }
 
-Scalar CVUtil::getRandomColor(){
+Scalar CVUtil::getRandomColor(int id ){
 //    int icolor = (unsigned) RNG((int)time(NULL));
 //    return Scalar(icolor&255, (icolor>>8)&255, (icolor>>16)&255);
 
-    cv::RNG rng(cvGetTickCount());
+    cv::RNG rng(id);
     return Scalar(rng.uniform(0,255),rng.uniform(0,255),rng.uniform(0,255));
 }
 

@@ -4,7 +4,7 @@
 #include"myinterface.h"
 
 MyObject::MyObject(){
-    this->color = CVUtil::getRandomColor();
+    //this->color = CVUtil::getRandomColor();
 
     oid = -1;
     cenPoint = cv::Point(-1, -1);         // 目标中心坐标
@@ -26,6 +26,7 @@ MyObject::MyObject(){
     SCRValue = 0;                    // 目标背景信杂比
     vector<double> theFeatures;             // 13维的小目标特征向量
 
+    this->color = CVUtil::getRandomColor(oid);
 }
 
 void MyObject::setID(int id1){
