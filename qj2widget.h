@@ -51,6 +51,9 @@ QRect qrect;
 //QAction* To_Tanchu;
 
 public:
+//bool hasRect3;
+//bool hasRect4;
+//bool hasRect6;
     //bool completeRDefine;
     bool isGaojing;
      bool isShow;

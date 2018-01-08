@@ -11,7 +11,9 @@ using namespace std;
 
 Qj2Widget::Qj2Widget(QWidget *parent) :
     QWidget(parent){
-
+//    hasRect3 = false;
+//    hasRect4 = false;
+//    hasRect6 = false;
    // completeRDefine = false;
      this->isShow = true;
     isGaojing = true;
@@ -914,18 +916,53 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
             mw->widget1->isTo3 = false;
             int xx = this->getMatX(posX);
             int yy = this->getMatY(posY);
-            int height = this->mat.rows;
-            int width = height * mw->widget3->width() / mw->widget3->height();
-            int xx2, yy2;
-//           if(xx-width/2 >= 0){
-                xx2 = xx- width/2;
-                yy2 = 0;
-//            }
-//            else{
-//                xx2 = xx- width/2 + this->pano.cols;
+
+            if(mw->widget1->hasRect3){
+                int height = mw->widget3->rect.height;
+                int width = mw->widget3->rect.width;
+
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    yy2 = 0;
+                }
+                this->rectan3 = Rect(xx2, yy2, width, height);
+
+            }
+            else{
+                int height = this->mat.rows;
+                int width = height * mw->widget3->width() / mw->widget3->height();
+                mw->widget1->hasRect3 = true;
+
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    yy2 = 0;
+                }
+                this->rectan3 = Rect(xx2, yy2, width, height);
+            }
+
+
+//            int height = this->mat.rows;
+//            int width = height * mw->widget3->width() / mw->widget3->height();
+//            int xx2, yy2;
+////           if(xx-width/2 >= 0){
+//                xx2 = xx- width/2;
 //                yy2 = 0;
-            //}
-            this->rectan3 = Rect(xx2, yy2, width, height);
+////            }
+////            else{
+////                xx2 = xx- width/2 + this->pano.cols;
+////                yy2 = 0;
+//            //}
+//            this->rectan3 = Rect(xx2, yy2, width, height);
 
             mw->widget3->setFrom(2);
 
@@ -951,27 +988,77 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
             mw->widget1->isTo4 = false;
             int xx = this->getMatX(posX);
             int yy = this->getMatY(posY);
-            int height = this->mat.rows/2;
-            int width = height * mw->widget4->width() / mw->widget4->height();
-            int xx2, yy2;
-//            if(xx-width/2 >= 0){
-                xx2 = xx- width/2;
-                //yy2 = 0;
-            //}
-//            else{
-//                xx2 = xx- width/2 + this->pano.cols;
+
+            if(mw->widget1->hasRect4){
+                int height = mw->widget4->rect.height;
+                int width = mw->widget4->rect.width;
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    //yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    //yy2 = 0;
+                }
+                if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                    yy2 = yy - height / 2;
+                }
+                else if(yy - height/2 <=0){
+                    yy2 = 0;
+                }
+                else if(yy + height/2 >= mat.rows){
+                    yy2 = mat.rows / 2;
+                }
+                this->rectan4 = Rect(xx2, yy2, width, height);
+}
+            else{
+                mw->widget1->hasRect4 = true;
+                int height = this->mat.rows/2;
+                int width = height * mw->widget4->width() / mw->widget4->height();
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    //yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    //yy2 = 0;
+                }
+                if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                    yy2 = yy - height / 2;
+                }
+                else if(yy - height/2 <=0){
+                    yy2 = 0;
+                }
+                else if(yy + height/2 >= mat.rows){
+                    yy2 = mat.rows / 2;
+                }
+                this->rectan4 = Rect(xx2, yy2, width, height);
+            }
+
+
+//            int height = this->mat.rows/2;
+//            int width = height * mw->widget4->width() / mw->widget4->height();
+//            int xx2, yy2;
+////            if(xx-width/2 >= 0){
+//                xx2 = xx- width/2;
 //                //yy2 = 0;
+//            //}
+////            else{
+////                xx2 = xx- width/2 + this->pano.cols;
+////                //yy2 = 0;
+////            }
+//            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+//                yy2 = yy - height / 2;
 //            }
-            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
-                yy2 = yy - height / 2;
-            }
-            else if(yy - height/2 <=0){
-                yy2 = 0;
-            }
-            else if(yy + height/2 >= mat.rows){
-                yy2 = mat.rows / 2;
-            }
-            this->rectan4 = Rect(xx2, yy2, width, height);
+//            else if(yy - height/2 <=0){
+//                yy2 = 0;
+//            }
+//            else if(yy + height/2 >= mat.rows){
+//                yy2 = mat.rows / 2;
+//            }
+//            this->rectan4 = Rect(xx2, yy2, width, height);
 
             mw->widget4->setFrom(2);
 
@@ -997,27 +1084,78 @@ void Qj2Widget::mouseReleaseEvent(QMouseEvent *e)
             mw->widget1->isTo6 = false;
             int xx = this->getMatX(posX);
             int yy = this->getMatY(posY);
-            int height = this->mat.rows/2;
-            int width = height * mw->widget6->width() / mw->widget6->height();
-            int xx2, yy2;
-//            if(xx-width/2 >= 0){
-                xx2 = xx- width/2;
-                //yy2 = 0;
-//            }
-//            else{
-//                xx2 = xx- width/2 + this->pano.cols;
+
+
+            if(mw->widget1->hasRect6){
+                int height = mw->widget6->rect.height;
+                int width = mw->widget6->rect.width;
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    //yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    //yy2 = 0;
+                }
+                if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                    yy2 = yy - height / 2;
+                }
+                else if(yy - height/2 <=0){
+                    yy2 = 0;
+                }
+                else if(yy + height/2 >= mat.rows){
+                    yy2 = mat.rows / 2;
+                }
+                this->rectan6 = Rect(xx2, yy2, width, height);
+
+            }
+            else{
+                mw->widget1->hasRect6 = true;
+                int height = this->mat.rows/2;
+                int width = height * mw->widget6->width() / mw->widget6->height();
+                int xx2, yy2;
+                if(xx-width/2 >= 0){
+                    xx2 = xx- width/2;
+                    //yy2 = 0;
+                }
+                else{
+                    xx2 = xx- width/2 + this->pano.cols;
+                    //yy2 = 0;
+                }
+                if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+                    yy2 = yy - height / 2;
+                }
+                else if(yy - height/2 <=0){
+                    yy2 = 0;
+                }
+                else if(yy + height/2 >= mat.rows){
+                    yy2 = mat.rows / 2;
+                }
+                this->rectan6 = Rect(xx2, yy2, width, height);
+            }
+
+//            int height = this->mat.rows/2;
+//            int width = height * mw->widget6->width() / mw->widget6->height();
+//            int xx2, yy2;
+////            if(xx-width/2 >= 0){
+//                xx2 = xx- width/2;
 //                //yy2 = 0;
+////            }
+////            else{
+////                xx2 = xx- width/2 + this->pano.cols;
+////                //yy2 = 0;
+////            }
+//            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
+//                yy2 = yy - height / 2;
 //            }
-            if((yy - height/2 >=0) && (yy + height/2 <= mat.rows)){
-                yy2 = yy - height / 2;
-            }
-            else if(yy - height/2 <=0){
-                yy2 = 0;
-            }
-            else if(yy + height/2 >= mat.rows){
-                yy2 = mat.rows / 2;
-            }
-            this->rectan6 = Rect(xx2, yy2, width, height);
+//            else if(yy - height/2 <=0){
+//                yy2 = 0;
+//            }
+//            else if(yy + height/2 >= mat.rows){
+//                yy2 = mat.rows / 2;
+//            }
+//            this->rectan6 = Rect(xx2, yy2, width, height);
 
             mw->widget6->setFrom(2);
 
