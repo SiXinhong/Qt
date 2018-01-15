@@ -45,7 +45,7 @@ Configuration::Configuration(MainWindow *mw)
         mw->welcome->close();
     }
     this->isStartMw = false;
-   //MySocketInitial();
+  // MySocketInitial();
 }
 
 void Configuration::configure(){
@@ -68,6 +68,23 @@ void Configuration::configure(){
     connect(startMw,SIGNAL(clicked()),this,SLOT(mainwindowShow()));
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       leftLayout->addWidget(camera,0,0);
       leftLayout->addWidget(algorithm,0,1);
       leftLayout->addWidget(software,0,2);
@@ -82,17 +99,21 @@ void Configuration::buildCenWidgetCamera(){
     layoutCamera=new QGridLayout;
     cenWidgetCamera = new QWidget(this);
 
-    QLabel *input = new QLabel("输入俯仰角度:",cenWidgetCamera);
+    QLabel *input = new QLabel("输入俯仰角度（范围：140万-166万）:",cenWidgetCamera);
 
     QLineEdit *angle = new QLineEdit();
     connect(angle,SIGNAL(textEdited(QString)),this,SLOT(textChange(QString)));
-
-
-
+    //connect(angle,SIGNAL(editingFinished()),this,SLOT(returnPressed()));
+    angle->setValidator(new QIntValidator(1400000,1660000,this));
+    //angle->setValidator(new QDoubleValidator(140.0,190.0,3,this));
 
     start = new QToolButton(cenWidgetCamera);
     start->setText("启动");
     connect(start,SIGNAL(clicked()),this,SLOT(startF()));
+
+    stop1 = new QToolButton(cenWidgetCamera);
+    stop1->setText("停止");
+    connect(stop1,SIGNAL(clicked()),this,SLOT(stopFF()));
 
     QToolButton *state = new QToolButton(cenWidgetCamera);
     state->setText("状态查询");
@@ -100,15 +121,19 @@ void Configuration::buildCenWidgetCamera(){
 
     QToolButton *minus = new QToolButton(cenWidgetCamera);
     minus->setText("-");
-    connect(minus,SIGNAL(clicked()),this,SLOT(minusF()));
+   // connect(minus,SIGNAL(clicked()),this,SLOT(minusF()));
+    connect(minus,SIGNAL(pressed()),this,SLOT(minusF()));
+    connect(minus,SIGNAL(released()),this,SLOT(stopF()));
 
     QToolButton *add = new QToolButton(cenWidgetCamera);
     add->setText("+");
-    connect(add,SIGNAL(clicked()),this,SLOT(addF()));
+    //connect(add,SIGNAL(clicked()),this,SLOT(addF()));
+     connect(add,SIGNAL(pressed()),this,SLOT(addF()));
+     connect(add,SIGNAL(released()),this,SLOT(stopF()));
 
-     QToolButton *stop = new QToolButton(cenWidgetCamera);
-     stop->setText("停止");
-     connect(stop,SIGNAL(clicked()),this,SLOT(stopF()));
+//     QToolButton *stop = new QToolButton(cenWidgetCamera);
+//     stop->setText("停止");
+//     connect(stop,SIGNAL(clicked()),this,SLOT(stopF()));
 
      QToolButton *background = new QToolButton(cenWidgetCamera);
      background->setText("背景校正");
@@ -118,9 +143,9 @@ void Configuration::buildCenWidgetCamera(){
      shuttle->setText("快门校正");
      connect(shuttle,SIGNAL(clicked()),this,SLOT(shuttleCorrct()));
 
-     QToolButton *ok = new QToolButton(cenWidgetCamera);
-     ok->setText("确定");
-     connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
+//     QToolButton *ok = new QToolButton(cenWidgetCamera);
+//     ok->setText("确定");
+//     connect(ok,SIGNAL(clicked()),this,SLOT(okF()));
 
      imageWidget = new QWidget();
      imageLabel = new QLabel(imageWidget);
@@ -129,23 +154,23 @@ void Configuration::buildCenWidgetCamera(){
 //     Mat mat1;
 //     mw->widget1->pano(Rect(0,0,imageWidget->width(),imageWidget->height())).copyTo(mat1);
 
-//     setCameraMat(mat1);
-     layoutCamera->addWidget(input,6,0);
-     layoutCamera->addWidget(angle,6,1);
+     //setCameraMat(image_8);
+
 
      //layoutCamera->addWidget(input,6,0);
      layoutCamera->addWidget(start,0,0);
-     layoutCamera->addWidget(state,1,0);
-     layoutCamera->addWidget(minus,2,0);
-     layoutCamera->addWidget(add,2,1);
-     layoutCamera->addWidget(stop,2,2);
-//     layoutCamera->addWidget(add,6,0);
-//     layoutCamera->addWidget(stop,7,0);
-     layoutCamera->addWidget(background,3,0);
-     layoutCamera->addWidget(shuttle,4,0);
-     layoutCamera->addWidget(ok,5,0);
+     layoutCamera->addWidget(stop1,0,1);
 
+     layoutCamera->addWidget(input,1,0);
+     layoutCamera->addWidget(angle,1,1);
 
+     layoutCamera->addWidget(state,2,0);
+     layoutCamera->addWidget(minus,3,0);
+     layoutCamera->addWidget(add,3,1);
+    // layoutCamera->addWidget(stop,2,2);
+     layoutCamera->addWidget(background,4,0);
+     layoutCamera->addWidget(shuttle,5,0);
+    // layoutCamera->addWidget(ok,6,0);
 
      layoutCamera->addWidget(imageWidget,0,3,6,1);
      layoutCamera->setColumnStretch(0,1);
@@ -163,7 +188,7 @@ void Configuration::cameraShow(){
     timerCamera=new QTimer();
     timerCamera->setTimerType(Qt::PreciseTimer);
     timerCamera->setInterval(10);
-    timerCamera->start();
+  //  timerCamera->start();
     connect(timerCamera, SIGNAL(timeout()), SLOT(ontimerCamera()));
 //    cv::Mat image;
 //        GetOriPerImg(image);
@@ -268,15 +293,22 @@ void Configuration::algorithmShow(){
 
 void Configuration::startF(){
     isStart=!isStart;
-    if(isStart){
-        start->setText("停止");
+    //if(isStart){
+        //start->setText("停止");
          SetSystemPara(4,1);
-    }else if(!isStart){
-        start->setText("启动");
-        SetSystemPara(4,0);
+    //}else if(!isStart){
+//        start->setText("启动");
+//        SetSystemPara(4,0);
+//        std::cout<<"zc:stop send ok "<<std::endl;
 
-    }
+    //}
 
+}
+
+void Configuration::stopFF(){
+    //start->setText("启动");
+    SetSystemPara(4,0);
+    std::cout<<"zc:stop send ok "<<std::endl;
 }
 
 void Configuration::stateSearch(){
@@ -393,12 +425,14 @@ void Configuration::resizeEvent(QResizeEvent *){
 
 void Configuration::ontimerCamera(){
      cv::Mat image;
-    // GetOriPerImg(image);
+     std::cout<<"recv begin"<<std::endl;
+    GetOriPerImg(image);
+    std::cout<<"recv ok"<<std::endl;
      int width = image.cols;
      int height = image.rows;
 //     qDebug()<<"width:"<<width;
 //     qDebug()<<"height"<<height;
-     //setCameraMat(image);
+     setCameraMat(image);
 }
 
 void Configuration::adjustment(){
@@ -425,8 +459,20 @@ void Configuration::sureF(){
 }
 
 
-void Configuration::textChange(QString str){
+//void Configuration::returnPressed(){
+//    QString str;
+//    int value = str.toInt();
+//    if(value>1660000||value<1400000){
+//        QMessageBox::information(this,tr("超过范围"),QString("请根据范围输入俯仰角度！"));
+//    }
+//    text = value;
+//}
+
+void Configuration:: textChange(QString str){
     text = str.toInt();
+//   if(1400000<value && value<1660000){
+//       text = value;
+//   }
 }
 
 void Configuration::mainwindowShow(){

@@ -49,11 +49,14 @@ int string_to_alg_para(char *data, int datalen);
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target);
 int para_to_string(char *s, int &datalen);
 
+int RecevAlgParaToProcessing(char *s, int datalen);
+int SendParaToProcessing(char *s, int &dataLen);
 
 int ROIPointsToChar(std::vector<std::vector<cv::Point> >, char *s, int &datalen);
 
 int ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const int &datalen);
 
+int CharToIntegratedData(char *data, const int datalen, cv::Mat &pano, vector<Target> &targets, std::vector<TrackingPoint>& _TrackPoints);
 /****************************************************************主接口**********************************************************************/
 int SetSystemPara(int mode, int id)
 {
@@ -137,24 +140,25 @@ int GetSystemPara(int mode, int id)
 //调焦用 上传8位图像
 int GetOriPerImg(cv::Mat &oriImage)
 {
-    //std::cout<<"begin"<<std::endl;
+    std::cout<<"begin GetOriPerImg"<<std::endl;
 	char *buff = (char *)malloc(DATA_BUFFER_SIZE);
 
 	int result = MySend(hSocket, 8, sendbuffer, SEND_BUFFER_SIZE, NULL, 0);
     int datalen = 0;
 	if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
 	{
-       // std::cout<<"begin"<<std::endl;
+       std::cout<<"zc::reading "<<std::endl;
 		int rows_length = (((uchar)buff[5] * 256 + (uchar)buff[6]) * 256 + (uchar)buff[7]) * 256 + (uchar)buff[8];
 		int cols_length = (((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
-		oriImage = cv::Mat(rows_length, cols_length, CV_8UC1, &buff[13]).clone();
-       // std::cout<<"begin"<<std::endl;
+        std::cout<<rows_length<<std::endl;
+        oriImage = cv::Mat(rows_length, cols_length, CV_8UC1, &buff[13]).clone();
+         std::cout<<"begin"<<std::endl;
 		free(buff);
 		return 1;
 	}
 	else
 	{
-       // std::cout<<"error"<<std::endl;
+       std::cout<<"error"<<std::endl;
 		free(buff);
 		return 0;
 	}
@@ -276,7 +280,9 @@ int SetAlgorithmPara()
 	char *data = (char *)malloc(para_data_len+1);
 	memset(data, 0, para_data_len + 1);
 	int datalen = 0;
-	para_to_string(data,datalen);
+	//para_to_string(data,datalen);
+    SendParaToProcessing(data, datalen);
+
 	result=MySend(hSocket, 0, sendbuffer, SEND_BUFFER_SIZE, data, datalen);
 	free(data);
     //检查string的内容是否符合标准
@@ -364,6 +370,7 @@ int SetCameraPara(int id,int mode)
 			//调焦停止
 			char send_mode =5;
 			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+            std::cout<<"mode = 5"<<std::endl;
 		}
 	}
 	else if (id == 1){
@@ -397,14 +404,17 @@ int SetCameraPara(int id,int mode)
 			//调焦停止
 			char send_mode = 11;
 			result = MySend(hSocket, 2, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+            std::cout<<"mode = 5"<<std::endl;
 		}
 	}
 	else if (id == 2 ){
 		//转台参数设置
 		if (mode == 0){
 			//停止周视
+
 			char send_mode = 12;
 			result = MySend(hSocket, 1, sendbuffer, SEND_BUFFER_SIZE, &send_mode, 1);
+            std::cout<<"zc::ok1 "<<result<<std::endl;
 		}
 		else if (mode == 1){
 			//启动周视
@@ -448,20 +458,27 @@ int  Getpanorama(IntegratedData *&data)
 
     clock_t t2;
        clock_t t1=clock();
+       std::cout<<"zc send "<<result<<std::endl;
 
     if (ReadHanding(hSocket, netEvents, recvbuffer, RECV_BUFFER_SIZE, buff, &datalen) == 1)
     {
         t2=clock();
-        std::cout<<"the time is "<<t2-t1<<std::endl;
-		data->timeinfo=(((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
-        int rows_length = (((uchar)buff[13] * 256 + (uchar)buff[14]) * 256 + (uchar)buff[15]) * 256 + (uchar)buff[16];
-        int cols_length = (((uchar)buff[17] * 256 + (uchar)buff[18]) * 256 + (uchar)buff[19]) * 256 + (uchar)buff[20];
-        cv::Mat c= cv::Mat(rows_length,cols_length, CV_8UC1, &buff[21]).clone();
-        data->panoImage = c;
+        std::cout<<"zc : the time is "<<t2-t1<<" "<<datalen<<std::endl;
+        //data->timeinfo=(((uchar)buff[9] * 256 + (uchar)buff[10]) * 256 + (uchar)buff[11]) * 256 + (uchar)buff[12];
+        //int rows_length = (((uchar)buff[13] * 256 + (uchar)buff[14]) * 256 + (uchar)buff[15]) * 256 + (uchar)buff[16];
+        //int cols_length = (((uchar)buff[17] * 256 + (uchar)buff[18]) * 256 + (uchar)buff[19]) * 256 + (uchar)buff[20];
+        //cv::Mat c= cv::Mat(rows_length,cols_length, CV_8UC1, &buff[21]).clone();
+        //data->panoImage = c;
 
         //std::cout<<rows_length<<" "<<cols_length<<std::endl;
         //sprintf(name,"pic\\%d.bmp",index++);
         //cv::imwrite(name,c);
+
+        //1.12 update
+        CharToIntegratedData(&buff[5],datalen-9,data->panoImage,data->targets,data->_TrackPoints);
+
+        std::cout<<"zc recv ok"<<std::endl;
+
 		free(buff);
 
 		return GetDataSuccess;
@@ -589,7 +606,8 @@ int GetAlgorithmPara()
 	{
 		 if (ReadHanding(hSocket, netEvents, sendbuffer, SEND_BUFFER_SIZE, buff, &datalen) == 1)
         {
-		   string_to_alg_para(&buff[5], datalen-9);
+		   //string_to_alg_para(&buff[5], datalen-9);
+		   RecevAlgParaToProcessing(&buff[5], datalen - 9);
 
 		   free(buff);
 		   return GetParaSuccess;
@@ -630,7 +648,7 @@ int GetCameraPara(int id)
 
 
 /**************************************************************辅助子函数************************************************************************/
-//将数组转化为算法参数 更新算法参数
+//将数组转化为算法参数 更新算法参数 替换为RecevAlgParaToProcessing
 int string_to_alg_para(char *data, int datalen)
 {
 	if (datalen != 40)
@@ -689,7 +707,41 @@ int string_to_alg_para(char *data, int datalen)
 	return 0;
 }
 
+int RecevAlgParaToProcessing(char *s, int datalen)
+{
+	int indexCount = 0;
+	if (datalen < 44)
+		return -1;
 
+	//dp
+	dp.filtermode = *(int *)s[indexCount];
+	indexCount += sizeof(int);
+
+	dp.blurthresh = *(double *)s[indexCount];
+	indexCount += sizeof(double);
+
+	dp.targetsizeL = *(int *)s[indexCount];
+	indexCount += sizeof(int);
+
+	dp.targetsizeH = *(int *)s[indexCount];
+	indexCount += sizeof(int);
+
+	dp.W_H_ratio = *(double *)s[indexCount];
+	indexCount += sizeof(double);
+
+	dp.H_W_ratio = *(double *)s[indexCount];
+	indexCount += sizeof(double);
+
+	//tp
+	tp.PeriodDisThre_0To400 = *(int *)s[indexCount];
+	indexCount += sizeof(int);
+
+	tp.PeriodDisThre_400To640 = *(int *)s[indexCount];
+	indexCount += sizeof(int);
+
+	return 0;
+
+}
 //更新 将数组转换为目标集合 
 void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_target)
 {
@@ -709,19 +761,12 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
             index += 4;
             temp.cenPointACS.y = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
 
-           // std::cout<<"sdk point "<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
-            //blocksize
-            index += 4;
-
-			//temp.cenPointACS.y
-			index += 4;
-			temp.cenPointACS.y = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
-			
-            std::cout<<"point："<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
+           std::cout<<"sdk point"<<temp.cenPointACS.x<<" "<<temp.cenPointACS.y<<std::endl;
 			//blocksize
 			index += 4;
 
             temp.blocksize.height = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
+
             index+=4;
             temp.blocksize.width = (uchar)buff[index] * (256 * 256 * 256) + (uchar)buff[index + 1] * 256 * 256 + (uchar)buff[index + 2] * 256 + (uchar)buff[index + 3];
 
@@ -752,7 +797,7 @@ void buff_to_target(char *buff, int datalen, vector<SmallTarget>& realtime_targe
 		}
 }
 
-//将算法参数转化为数组形式
+//将算法参数转化为数组形式 替换为int SendParaToProcessing(char *s, int &dataLen)
 int para_to_string(char *s, int &datalen)
 	{
 		//sp
@@ -842,6 +887,54 @@ int para_to_string(char *s, int &datalen)
 		return 0;
 	}
 
+int SendParaToProcessing(char *s, int &dataLen)
+{
+	int indexCount = 0;
+
+	//dp.filtermode
+	char *pInt = (char *)&dp.filtermode;
+	memcpy(&s[indexCount], pInt, sizeof(int));
+	indexCount += sizeof(int);
+
+	//dp.blurthresh
+	char *pDouble = (char *)&dp.blurthresh;
+	memcpy(&s[indexCount], pDouble, sizeof(double));
+	indexCount += sizeof(double);
+
+	//targetsizel
+	pInt = (char *)&dp.targetsizeL;
+	memcpy(&s[indexCount], pInt, sizeof(int));
+	indexCount += sizeof(int);
+
+	//targetsizeh
+	pInt = (char *)&dp.targetsizeH;
+	memcpy(&s[indexCount], pInt, sizeof(int));
+	indexCount += sizeof(int);
+
+	//w_h
+	pDouble = (char *)&dp.W_H_ratio;
+	memcpy(&s[indexCount], pDouble, sizeof(double));
+	indexCount += sizeof(double);
+
+	//H_w
+	pDouble = (char *)&dp.H_W_ratio;
+	memcpy(&s[indexCount], pDouble, sizeof(double));
+	indexCount += sizeof(double);
+
+
+	//tp
+	pInt = (char *)&tp.PeriodDisThre_0To400;
+	memcpy(&s[indexCount], pInt, sizeof(int));
+	indexCount += sizeof(int);
+
+	pInt = (char *)&tp.PeriodDisThre_400To640;
+	memcpy(&s[indexCount], pInt, sizeof(int));
+	indexCount += sizeof(int);
+
+	dataLen = indexCount;
+
+	return 0;
+}
 
 int ROIPointsToChar(std::vector<std::vector<cv::Point> > _ROIPoints, char *s, int &datalen)
 {
@@ -970,3 +1063,101 @@ int ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const 
 
     }
 
+
+//1.12 update
+int CharToIntegratedData(char *data, const int datalen, cv::Mat &pano, vector<Target> &targets, std::vector<TrackingPoint>& _TrackPoints)
+    {
+        int numCount = 0;
+
+
+        ////解析图像
+        int rows = *(int *)&data[numCount];
+        numCount += sizeof(int);
+
+        int cols = *(int *)&data[numCount];
+        numCount += sizeof(int);
+
+        std::cout<<"zc pano size "<<rows<<" "<<cols<<std::endl;
+        cv::Mat c = cv::Mat(rows, cols, CV_8UC1, &data[numCount]).clone();
+
+        pano = c;
+        numCount += pano.rows*pano.cols;
+
+        //std::cout<<"zc pano size "<<pano.size<<std::endl;
+        ////解析目标数据
+
+        int i = 0;
+
+        //目标个数
+        int targetSize = *(int *)&data[numCount];
+        numCount += sizeof(int);
+
+        targets.clear();
+
+        //目标数据
+        for (; i < targetSize; i++)
+        {
+            Target temp;
+            temp.cenPointACS.x = *(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            temp.cenPointACS.y =*(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            temp.blocksize.height = *(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            temp.blocksize.width = *(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            targets.push_back(temp);
+        }
+
+        std::cout<<"targets "<<targetSize<<std::endl;
+        ////trace
+
+        _TrackPoints.clear();
+        int index = 0;
+
+        //解析点数
+        int numOfTrack = *(int *)&data[numCount];
+        numCount += sizeof(int);
+        std::cout<<"track  "<<numOfTrack<<std::endl;
+
+
+        //解析轨迹
+        for (int i=0; i<numOfTrack; i++)
+        {
+            TrackingPoint temp;
+
+            //parse id
+            temp.id = *(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            //parse num
+            int numOfPoints = *(int *)&data[numCount];
+            numCount += sizeof(int);
+
+            temp.track.clear();
+
+            //parse point
+            int jOfNum = 0;
+            for (; jOfNum < numOfPoints; jOfNum++)
+            {
+                Point p;
+                //x
+                p.x = *(int *)&data[numCount];
+                numCount += sizeof(int);
+
+                //y
+                p.y = *(int *)&data[numCount];
+                numCount += sizeof(int);
+
+                temp.track.push_back(p);
+            }
+            _TrackPoints.push_back(temp);
+        }
+
+
+     return 0;
+    }

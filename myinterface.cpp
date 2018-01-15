@@ -288,10 +288,10 @@ int MyInterface::getIntegratedData2(){
     index1++;
     //QString filename("./s1/1.bmp")
     qDebug()<<"getdata2";
-    QString filename("./s1/");
+    QString filename("./s/");
 
     //QString qj = vc[(index1)%6];
-    index1=index1%314;
+    index1=index1%6;
     qDebug()<<"getdata3";
     filename = filename.append(QString::number(index1)).append(".bmp");
     qDebug()<<"filename"<<filename;
@@ -327,18 +327,21 @@ int MyInterface::getIntegratedData(){
     clock_t tt1=clock();
     int isfail_getdata = GetSurveillanceData(0, data);//获取周试图
 
+    std::cout<<"isfail "<<isfail_getdata<<std::endl;
+
     clock_t tt2=clock();
-    isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取目标点
+    //isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取目标点
     clock_t tt3=clock();
 
     printf("tt2-tt1=%d\n",tt2-tt1);
     printf("tt3-tt2=%d\n",tt3-tt2);
     qDebug()<<"between"<<isfail_getdata;
     tps.clear();
-    int iTrack = GetTrack(tps);//获取轨迹
+    tps = data->_TrackPoints;
+    //int iTrack = GetTrack(tps);//获取轨迹
 
     qDebug()<<"between"<<isfail_getdata;
-    isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
+   // isfail_getdata = isfail_getdata&GetSurveillanceData(1, data);//获取周试图
 
     qDebug()<<"getIntegratedDate"<<isfail_getdata;
     if (isfail_getdata == 0)

@@ -271,6 +271,30 @@ int MySend(SOCKET s, char mode, char buf[], int buflen, char data[], int datalen
 			return error_result;
 		}
 	}
+    /*zt1 1.11 start*/
+    str_len = buflen;
+    memset(buf,0,buflen);
+    while (str_len>0)
+    {
+        wt_cnt = send(s, buf, str_len, 0);
+        if (wt_cnt >= 0){
+            str_len = str_len - wt_cnt;
+        }
+        else{
+            int error_result = 0;
+            error_result = WSAGetLastError();
+            if (error_result == WSAEWOULDBLOCK){
+                error_result = 0;
+                continue;
+            }
+            return error_result;
+        }
+    }
+    std::cout<<"send ok"<<std::endl;
+    /*zt1 1.11 end*/
+
+
+
 	return 0;
 }
 
@@ -332,7 +356,7 @@ int DataAnalyze(char data[], int* pdatalen){
 		if (CheckData(data, frame_len, "####", 4) == TRUE){
         //std::cout << "data check ok" << std::endl;
             if (data[4] == 3){
-                std::cout << "收到一帧数据" << std::endl;
+                //std::cout << "收到一帧数据" << std::endl;
                 int rows_length = (((uchar)data[13] * 256 + (uchar)data[14]) * 256 + (uchar)data[15]) * 256 + (uchar)data[16];
                 int cols_length = (((uchar)data[17] * 256 + (uchar)data[18]) * 256 + (uchar)data[19]) * 256 + (uchar)data[20];
 //                std::cout<<"rows_length"<<rows_length<<std::endl;
@@ -362,8 +386,14 @@ int DataAnalyze(char data[], int* pdatalen){
 
                 return 2;
             }
+            else if(data[4]==8){
+                //接收8位图
+               //ParseTrackingPoints(std::vector<TrackingPoint>& _TrackPoints, char *s,const int &datalen)
+
+                return 2;
+            }
 			else{
-				std::cout << "其他指令" << std::endl;
+                std::cout << "other commond" << std::endl;
 				AdjustBuffer(data, pdatalen, frame_len);						//调整接收缓冲区，将缓冲区中前面无用的数据删除，同时后面的数据前移
 				return 3;
 			}

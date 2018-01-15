@@ -29,6 +29,7 @@ public:
     QWidget *menuWidget;
     bool isStart;
      QToolButton *start;
+     QToolButton *stop1;
      QColor color;
      int zRed;
      int zBlue;
@@ -63,6 +64,7 @@ bool isStartMw;
 
 public slots:
     void startF();
+    void stopFF();
     void stateSearch();
     void minusF();
     void addF();
@@ -86,6 +88,8 @@ public slots:
     void sureF();
 
     void textChange(QString);
+
+    //void returnPressed();
 
     void mainwindowShow();
 };

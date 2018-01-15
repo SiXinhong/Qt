@@ -21,7 +21,7 @@ using cv::Size;
 using cv::Mat;
 
 #define MIN_ID 0
-#define MAX_ID 2
+#define MAX_ID 10
 
 //返回值宏定义
 #define SetParaSuccess 0
@@ -70,6 +70,12 @@ struct SmallTarget
 
 typedef SmallTarget Target;
 
+struct TrackingPoint
+{
+    int id;
+    vector<Point> track;
+};
+
 struct imageInfo
 {
     double timeInfo;                  // 时间戳
@@ -80,7 +86,6 @@ struct imageInfo
 
 };
 
-
 ///////////////////////////////////////注意：timeinfo 类型的修改
 //综合数据结构体
 struct IntegratedData
@@ -88,6 +93,9 @@ struct IntegratedData
     double timeinfo;//修改时间
 	cv::Mat panoImage;// 
 	vector< SmallTarget> targets;
+    //1.12 update
+    std::vector<TrackingPoint> _TrackPoints;
+
 };
 
 ///////////////////////////////////////注意：算法参数添加
@@ -102,16 +110,34 @@ struct StitchParmeters
 //StitchParmeters sp;
 struct DetectorParams
 {
-	size_t blurkersize;// =5;
-	double blurthresh;// = 3;
-	double spatialthresh;// = 2;
+	// 滤波方法啊
+	int filtermode = 0; // 0 - 中值滤波； 1 - 保护带中值滤波； 2 - 均值滤波； 3 - 快速中值滤波； 4 - 保护带均值滤波
 
-	int contourSizeThresh;// = 10;
+	//  缩放系数，系数为1表示不动，
+	double ScaleDown_x = 1;
+	double ScaleDown_y = 1;
 
-	double targetSCRthresh;// = 1;
-	double hessianThresh;// = 10;
-	int disThresh;// = 10;//检测滤波算法阈值
+	size_t blurkersize = 5;//5
+	// 目标背景分割模式
+	int segMode = 1; // 0 - 大津阈值分割； 1 - 高斯统计分割
+	double blurthresh = 2;
+	double spatialthresh = 2;   // 没用上
+
+	int contourSizeThresh = 10;   // 没用上
+	// 目标长宽阈值
+	int targetsizeL = 3;
+	int targetsizeH = 12;
+	// 目标长宽比
+	double W_H_ratio = 3;
+	double H_W_ratio = 3;
+	// 中央周围对比度阈值
+	double MeanDiffThresh = 3;
+
+	double targetSCRthresh = 1;  // 没用上
+	double hessianThresh = 10;   // 没用上
+	int disThresh = 10;//检测滤波算法阈值   没用上
 };//小目标检测参数
+
 //DetectorParams dp;
 
 
@@ -119,8 +145,26 @@ struct DetectorParams
 //track参数
 struct TrackingParameters
 {
-	int tracking_para;// = 80;
+	int tracking_para = 80;
+	int PeriodDisThre = 80;   //跨周期的运动距离阈值; 程序中怎么更新？ 
+	int PeriodDisThre_400To640 = 180;
+	int PeriodDisThre_0To400 = 60;
+	int yThre = 400;
+
+	int RealObjCountThre = 3;
+	double minSpeed = 0.12; //10/84 = 0.119
+
+	double maxAngleChange = 90;
+	int StartSpeedCheckPeriodNum = 2; //目标轨迹累计到这个数量后，开始进行速度预测的验证
+
+	double areaRatioDownThre = 0.7;
+	double areaRatiorUpThre = 1.3;
+
+	double maxLWRatio = 1.3; //不同项目可能不一样。。。
+	double LW_ratio_diff_down = 0.7;
+	double LW_ratio_diff_up = 1.3;
 };
+
 //TrackingParameters tp;
 
 
@@ -133,11 +177,7 @@ struct DetectROI
 
 
 
-struct TrackingPoint
-{
-    int id;
-    vector<Point> track;
-};
+
 
 ///////////////////////////////////////注意：SetSystemPara接口改变
 /*

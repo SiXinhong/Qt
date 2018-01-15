@@ -2187,14 +2187,14 @@ void MainWindow::jinTimerout(){
     //qDebug()<<"jinTimerout";
   //  int v=in.getIntegratedData();
    // qDebug()<<"jinTimerOut2";
-    /**********start*******************/
-    t2=clock();
-    /**********end*******************/
+
 
 qDebug()<<"jinTimerout";
     int v=in.getIntegratedData();
 qDebug()<<"jinTimerOut2";
-
+/**********start*******************/
+t2=clock();
+/**********end*******************/
     if(v == 0){
 
         //std::cout<<"getintegrated data "<<std::endl;
@@ -2305,7 +2305,7 @@ qDebug()<<"jinTimerOut2";
 
             //qDebug()<<"obj.point!!!!!"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
 
-            qDebug()<<"obj.point!!!!!"<<obj.cenPoint.x<<","<<obj.cenPoint.y;
+            qDebug()<<"obj.point!!!!!x="<<obj.cenPoint.x<<",y="<<obj.cenPoint.y<<",rect w="<<obj.getRect().width<<",rect h = "<<obj.getRect().height;
 
             Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
             rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);

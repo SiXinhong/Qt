@@ -701,6 +701,10 @@ void ZWidget::ZoomIn(){
         //this->rect.y = this->rect.y + this->rect.height/8;
         this->rect.height = this->rect.height *3/4;
     }
+
+    rect.x= rect.x+1/3*rect.width;
+    rect.y=rect.y+1/3*rect.width;
+
     //qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
 }
 

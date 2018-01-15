@@ -7,7 +7,7 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-#define SEND_BUFFER_SIZE 1024
+#define SEND_BUFFER_SIZE 2048
 #define RECV_BUFFER_SIZE 2048
 #define DATA_BUFFER_SIZE 40*1024*1024
 
