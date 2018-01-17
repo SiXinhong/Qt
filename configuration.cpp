@@ -394,7 +394,8 @@ void Configuration::zhanModify(){
         return;
     }
 
-    zhan->setText(newName.append("站位"));
+    //zhan->setText(newName.append("站位"));
+    zhan->setText(newName);
     mw->zhanweiLabel->setText(newName);
 
 

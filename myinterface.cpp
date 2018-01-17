@@ -288,10 +288,10 @@ int MyInterface::getIntegratedData2(){
     index1++;
     //QString filename("./s1/1.bmp")
     qDebug()<<"getdata2";
-    QString filename("./s/");
+    QString filename("./s1/");
 
     //QString qj = vc[(index1)%6];
-    index1=index1%6;
+    index1=index1%314;
     qDebug()<<"getdata3";
     filename = filename.append(QString::number(index1)).append(".bmp");
     qDebug()<<"filename"<<filename;

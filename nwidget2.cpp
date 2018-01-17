@@ -689,6 +689,15 @@ void NWidget2::CompleteRGDefining(){
        mw->rgs[mw->rgsIndex].addRegion(mw->rs[i]);
    }
 
+   //将矩形告警区设置下发到下位机
+     vector <vector<cv::Point> > polys;
+
+     for(int i= 0;i<mw->rs.size();i++){
+          polys.push_back(mw->rs[i].poly);
+     }
+
+      SetORIPoints(polys);
+
    mw->rs.clear();
    this->rs.clear();
    //两种情况：自然的编辑，完成一个添加一个组，index总是最后一个组

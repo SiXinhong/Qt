@@ -679,6 +679,14 @@ void NWidget1::CompleteRGDefining(){
    for(int i = 0; i < mw->rs.size(); i++){
        mw->rgs[mw->rgsIndex].addRegion(mw->rs[i]);
    }
+//将矩形告警区设置下发到下位机
+  vector <vector<cv::Point> > polys;
+
+  for(int i= 0;i<mw->rs.size();i++){
+       polys.push_back(mw->rs[i].poly);
+  }
+
+   SetORIPoints(polys);
 
    mw->rs.clear();
    this->rs.clear();

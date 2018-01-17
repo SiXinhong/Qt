@@ -959,6 +959,7 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
         mw->widget1->isClicked = false;
 
         if(mw->widget3->isClicked){
+
             int height = mw->widget1->mat.rows;
             int width = height * mw->widget3->width() / mw->widget3->height();
             int xx2, yy2;
@@ -993,6 +994,7 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
                 rectan=  mw->widget1->rectan3;
                 mw->widget3->setRect(mw->widget2->rectan3);
             }
+
             mw->widget3->setRect(mw->widget1->rectan3);
             Mat mat1 = mw->widget1->getTwoPano();
             Size dsize ;
