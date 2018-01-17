@@ -29,6 +29,7 @@ INPUT(
 ./release\alert.o
 ./release\configuration.o
 ./release\hourwidget.o
+./release\sensitivity.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o
@@ -45,4 +46,5 @@ INPUT(
 ./release\moc_alert.o
 ./release\moc_configuration.o
 ./release\moc_hourwidget.o
+./release\moc_sensitivity.o
 );

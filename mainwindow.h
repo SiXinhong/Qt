@@ -70,6 +70,7 @@ class MainWindow;
 #include "configuration.h"
 #include "monitor.h"
 #include "alert.h"
+#include "sensitivity.h"
 using namespace cv;
 using namespace std;
 
@@ -87,6 +88,10 @@ public slots:
   void onAlertTimer();
     
 public:
+
+  //灵敏度调节
+   Sensitivity *senAdjust;
+    bool isSensi;
 
    QToolButton *zWini;
    QToolButton *zWZoomIn;

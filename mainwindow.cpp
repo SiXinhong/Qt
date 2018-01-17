@@ -15,6 +15,7 @@
 #include "imagedeal.h"
 #include "monitor.h"
 
+
 //opencv的头文件
 #include <vector>
 #include <highgui.h>
@@ -88,6 +89,9 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 
 void MainWindow::init(){
 //    configure = 0;
+
+
+
     alert = 0;
     monitor = 0;
 
@@ -296,6 +300,9 @@ void MainWindow::init(){
     this->setWindowState(Qt::WindowMaximized);
 //    this->trackBar=new TrackBar(this);
 //    this->strackBar = new STrackBar(this);
+//      senAdjust = new Sensitivity(this);
+      isSensi =false;
+      senAdjust = 0;
  qDebug()<<"ini()5";
 
     //    double x = widget5->getDirectionX(1,2);
@@ -318,6 +325,8 @@ MainWindow::~MainWindow(){
     // delete hsl;
     //delete strackBar;
     //delete trackBar;
+    if(senAdjust)
+        delete senAdjust;
     if( objectAttributes)
         delete objectAttributes;
     if(monitor)
@@ -4378,6 +4387,24 @@ void MainWindow::openCloseFunction()
 //调整探测灵敏度等级
 void MainWindow::objectsFunction()
 {
+        isSensi = !isSensi;
+        if(senAdjust == NULL)
+            senAdjust = new Sensitivity(this);
+
+        senAdjust->setWindowFlags(Qt::WindowStaysOnTopHint);
+        senAdjust->activateWindow();
+       //senAdjust->move(senAdjust->x(),senAdjust->y());
+        //qDebug()<<"senAdjust"<<senAdjust->x()<<" "<<senAdjust->y();
+        QDesktopWidget *desktop= QApplication::desktop();
+        QRect screenRect = desktop->screenGeometry();
+        int width = screenRect.width();
+        int height = screenRect.height();
+        senAdjust->move(13*width/20-5,height/10);
+
+        if(isSensi)
+            senAdjust->show();
+        else
+            senAdjust->hide();
     //    //if(objectSet=="./icon/13_2.png")
     //    if(isMubiao)
     //    {

@@ -29,6 +29,7 @@ INPUT(
 ./debug\alert.o
 ./debug\configuration.o
 ./debug\hourwidget.o
+./debug\sensitivity.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o
@@ -45,4 +46,5 @@ INPUT(
 ./debug\moc_alert.o
 ./debug\moc_configuration.o
 ./debug\moc_hourwidget.o
+./debug\moc_sensitivity.o
 );
