@@ -93,10 +93,10 @@ double HWidget::getDirectionX(double x, double y){
     else
         x90 = x-3*pano.cols/4;
 
-//    if(x90< 3*pano.cols/4)
-//        x90 = x90+pano.cols/4;
-//    else
-//        x90 = x90-3*pano.cols/4;
+    if(x90< 3*pano.cols/4)
+        x90 = x90+pano.cols/4;
+    else
+        x90 = x90-3*pano.cols/4;
 
 //    if(x<pano.cols/2){
 //        x90=x+pano.cols/2;
@@ -123,28 +123,46 @@ double HWidget::getInverseDirectionX(double x, double y){
 //        x2 = x2-pano.cols/4;
 //    else if(x2<pano.cols/4&&x2>0)
 //        x2 = x2+3*pano.cols/4;
-    if(x<x0){
-        if(y<y0)
-            x2+=pano.cols/4;
-        else
-            x2+=3*pano.cols/4;
-    }else{
-        if(y<y0)
-            x2+=pano.cols/4;
-        else
-            x2+=3*pano.cols/4;
-    }
+//    if(x<x0){
+//        if(y<y0)
+//            x2+=pano.cols/4;
+//        else
+//            x2+=3*pano.cols/4;
+//    }else{
+//        if(y<y0)
+//            x2+=pano.cols/4;
+//        else
+//            x2+=3*pano.cols/4;
+//    }
+
+    if(x2<0)
+        x2+=pano.cols/2;
+
+    if(x<x0 && x2<pano.cols/2){
+ //       if(y>y0)
+             x2+=2*pano.cols/4;
+     }else if(x>x0 && x2>pano.cols/2){
+ //    if(y>y0)
+             x2-=2*pano.cols/4;
+
+     }
     return x2;
 }
 
 double HWidget::getInverseDirectionY(double x, double y){
     double x2 = this->getInverseDirectionX(x,y);
-    if(x2< 3*pano.cols/4)
-        x2 = x2+pano.cols/4;
-    else
-        x2 = x2-3*pano.cols/4;
+//    if(x2< 3*pano.cols/4)
+//        x2 = x2+pano.cols/4;
+//    else
+//        x2 = x2-3*pano.cols/4;
 
-    double y2 =(((x-x0)/qSin(2*M_PI*x2/pano.cols)+(r/r0)*r0)*pano.rows)/(r-r1);
+//    double y2 =(((x-x0)/qSin(2*M_PI*x2/pano.cols)+(r/r0)*r0)*pano.rows)/(r-r1);
+
+    double d_sin = qSin(2*M_PI*x2/pano.cols);
+    double ratio = (x-x0)/d_sin;
+    if(ratio > 0)
+        ratio = -ratio;
+    double y2 = (ratio +r)*pano.rows/(r-r1);
     return y2;
 }
 
@@ -157,10 +175,10 @@ double HWidget::getDirectionY(double x, double y){
     else
         x90 = x-3*pano.cols/4;
 
-//    if(x< 3*pano.cols/4)
-//        x90 = x90+pano.cols/4;
-//    else
-//        x90 = x90-3*pano.cols/4;
+    if(x< 3*pano.cols/4)
+        x90 = x90+pano.cols/4;
+    else
+        x90 = x90-3*pano.cols/4;
 
 //    if(x<pano.cols/2){
 //        x90=x+pano.cols/2;

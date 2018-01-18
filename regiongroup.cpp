@@ -26,6 +26,7 @@ RegionGroup::RegionGroup(){
 }
 
 RegionGroup::RegionGroup(QString name, Scalar c){
+    this->isDrawLabel = false;
     this->name = name;
     this->color = c;
     this->isActive = true;
@@ -38,6 +39,7 @@ RegionGroup::RegionGroup(QString name, Scalar c){
 }
 
 RegionGroup::RegionGroup(QString name, Scalar c, vector<Region> rs){
+    this->isDrawLabel = false;
     this->name = name;
     this->color = c;
     this->rs = rs;

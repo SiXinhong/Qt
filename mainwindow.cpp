@@ -4397,16 +4397,16 @@ void MainWindow::objectsFunction()
         if(senAdjust == NULL)
             senAdjust = new Sensitivity(this);
 
-        senAdjust->setWindowFlags(Qt::WindowStaysOnTopHint);
+        senAdjust->setWindowFlags(Qt::ToolTip);
         senAdjust->activateWindow();
        //senAdjust->move(senAdjust->x(),senAdjust->y());
         //qDebug()<<"senAdjust"<<senAdjust->x()<<" "<<senAdjust->y();
-        QDesktopWidget *desktop= QApplication::desktop();
-        QRect screenRect = desktop->screenGeometry();
-        int width = screenRect.width();
-        int height = screenRect.height();
-        senAdjust->move(13*width/20-5,height/10);
-
+//        QDesktopWidget *desktop= QApplication::desktop();
+//        QRect screenRect = desktop->screenGeometry();
+//        int width = screenRect.width();
+//        int height = screenRect.height();
+//        senAdjust->move(13*width/20-5,height/10);
+senAdjust->move(objects->parentWidget()->x()+objects->x()+0.3*objects->width(),mainToolBar->y()+mainToolBar->height());
         if(isSensi)
             senAdjust->show();
         else

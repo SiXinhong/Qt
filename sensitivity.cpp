@@ -5,9 +5,9 @@ Sensitivity::Sensitivity(MainWindow *mw) :
 {
     this->mw = mw;
     this->mousedown = false;
-    this->setMinimumSize(40,150);
-    this->setMaximumSize(40,150);
-    this->position=0;
+    this->setMinimumSize(40,130);
+    this->setMaximumSize(40,130);
+    this->position=50;
 }
 
 
@@ -27,11 +27,11 @@ void Sensitivity::mouseReleaseEvent(QMouseEvent *event){
 void Sensitivity::paintEvent(QPaintEvent *){
     QPainter p(this);
     p.setBackground(QBrush(Qt::lightGray));
-    p.setPen(Qt::yellow);
+    p.setPen(Qt::black);
     p.drawLine(QPoint(20,5),QPoint(20,105));
-    p.setPen(QPen(Qt::yellow,5));
+    p.setPen(QPen(Qt::black,5));
     p.drawLine(QPoint(10,position+5),QPoint(30,position+5));
-    p.drawText(20,120,QString::number(position));
+    p.drawText(15,120,QString::number(position));
 }
 
 void Sensitivity::mousePressEvent(QMouseEvent *){
