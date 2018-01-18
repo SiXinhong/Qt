@@ -129,6 +129,11 @@ void Monitor::widgetShow(){
         edit->setToolTip(tip);
         connect(edit,SIGNAL(clicked()),this,SLOT(editFunction()));
 
+        QToolButton *regionID = new QToolButton(cenWidget);
+        regionID->setText(QString("增加标签"));
+        regionID->setToolTip(tip);
+        connect(regionID,SIGNAL(clicked()),this,SLOT(addRegionID()));
+
         mlayout->addLayout(layout);
 
         layout->addWidget(namelabel,0,1);
@@ -141,6 +146,7 @@ void Monitor::widgetShow(){
         layout->addWidget(edit,0,5);
         //layout->addWidget(details,i,5);
         //layout->addWidget(timeCon,0,5);
+        layout->addWidget(regionID,0,6);
 
         //layout->addStretch();
         QGridLayout * layout1 = new QGridLayout;
@@ -659,4 +665,20 @@ void Monitor::deleteRegionG(){
 
     stackedLayout->setCurrentIndex(index);
 
+}
+
+void Monitor::addRegionID(){
+    QObject* obj = sender();
+    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+    int index = stackedLayout->currentIndex();
+    int rNo = button->toolTip().toInt();
+
+    if(button->text()=="增加标签"){
+
+        button->setText("隐藏标签");
+    }
+    else if(button->text()=="隐藏标签"){
+
+        button->setText("增加标签");
+    }
 }

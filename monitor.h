@@ -63,6 +63,7 @@ public slots:
     void timeControl();
     void regionShow();
     void listWidgetChange(int);
+    void addRegionID();
 
     //优先级
     void inPri();

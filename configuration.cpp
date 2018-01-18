@@ -29,12 +29,16 @@ Configuration::Configuration(MainWindow *mw)
     buildCenWidgetCamera();
     buildCenWidgetSoftWare();
     buildCenWidgetAlgorithm();
+    buildCenWidgetFront();
+
     stackedLayout = new QStackedLayout();
 
     stackedLayout->addWidget(new QWidget(this));//先显示空白的
+
     stackedLayout->addWidget(cenWidgetCamera);
     stackedLayout->addWidget(cenWidgetSoftWare);
     stackedLayout->addWidget(cenWidgetAlgorithm);
+    stackedLayout->addWidget(frontWidget);
 
     QWidget *cenWidget = new QWidget();
     cenWidget->setLayout(stackedLayout);
@@ -51,13 +55,17 @@ Configuration::Configuration(MainWindow *mw)
 void Configuration::configure(){
     QGridLayout *leftLayout = new QGridLayout();
 
-    QToolButton *camera = new QToolButton(menuWidget);
-    camera->setText("转台配置");
-    connect(camera,SIGNAL(clicked()),this,SLOT(cameraShow()));
-     qDebug()<<"config33";
-    QToolButton *algorithm = new QToolButton(menuWidget);
-    algorithm->setText("算法配置");
-    connect(algorithm,SIGNAL(clicked()),this,SLOT(algorithmShow()));
+//    QToolButton *camera = new QToolButton(menuWidget);
+//    camera->setText("转台配置");
+//    connect(camera,SIGNAL(clicked()),this,SLOT(cameraShow()));
+
+//    QToolButton *algorithm = new QToolButton(menuWidget);
+//    algorithm->setText("算法配置");
+//    connect(algorithm,SIGNAL(clicked()),this,SLOT(algorithmShow()));
+
+    QToolButton *front = new QToolButton(menuWidget);
+    front->setText("前端配置");
+    connect(front,SIGNAL(clicked()),this,SLOT(frontConfig()));
 
     QToolButton *software = new QToolButton(menuWidget);
     software->setText("软件配置");
@@ -68,25 +76,9 @@ void Configuration::configure(){
     connect(startMw,SIGNAL(clicked()),this,SLOT(mainwindowShow()));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      leftLayout->addWidget(camera,0,0);
-      leftLayout->addWidget(algorithm,0,1);
+//      leftLayout->addWidget(camera,0,0);
+//      leftLayout->addWidget(algorithm,0,1);
+      leftLayout->addWidget(front,0,1);
       leftLayout->addWidget(software,0,2);
       leftLayout->addWidget(startMw,0,3);
 
@@ -341,7 +333,7 @@ void Configuration::okF(){
 
 //    printf("333444\n");
 //    GetOri16Img(gMat);
-    stackedLayout->setCurrentIndex(0);
+    stackedLayout->setCurrentIndex(4);
 
 }
 
@@ -396,9 +388,11 @@ void Configuration::zhanModify(){
 
     //zhan->setText(newName.append("站位"));
     zhan->setText(newName);
-    mw->zhanweiLabel->setText(newName);
 
-
+    if(mw->zhanweiLabel==NULL){
+        MainWindow::zhanweiName = newName;
+    }else
+        mw->zhanweiLabel->setText(newName);
 
 }
 void Configuration::setCameraMat(Mat mat){
@@ -408,7 +402,6 @@ void Configuration::setCameraMat(Mat mat){
     imageLabel->setScaledContents(true);
     imageLabel->setPixmap(pixmap);
 }
-
 
 
 void Configuration::setAlgorithmMat(Mat mat){
@@ -484,4 +477,41 @@ void Configuration::mainwindowShow(){
     }
     cv::destroyAllWindows();
     this->close();
+}
+
+void Configuration::frontConfig(){
+     stackedLayout->setCurrentIndex(4);
+}
+
+
+void Configuration::buildCenWidgetFront(){
+
+    frontLayout = new QGridLayout();
+    frontWidget = new QWidget(this);
+
+//    QHBoxLayout *layout1 = new QHBoxLayout(frontWidget);
+
+    QToolButton *camera = new QToolButton(frontWidget);
+    camera->setText("转台配置");
+    connect(camera,SIGNAL(clicked()),this,SLOT(cameraShow()));
+
+    QToolButton *algorithm = new QToolButton(frontWidget);
+    algorithm->setText("算法配置");
+    connect(algorithm,SIGNAL(clicked()),this,SLOT(algorithmShow()));
+
+//    layout1->addWidget(camera,0);
+//    layout1->addWidget(algorithm,1);
+
+//    layout1->addStretch();
+
+    //frontLayout->addLayout(layout1,0,0);
+
+    frontLayout->addWidget(camera,0,1);
+    frontLayout->addWidget(algorithm,0,2);
+
+    frontLayout->setRowStretch(0,1);
+    frontLayout->setRowStretch(1,10);
+    frontWidget->setLayout(frontLayout);
+
+    //this->setMenuWidget(frontWidget);
 }

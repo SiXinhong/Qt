@@ -62,6 +62,13 @@ public:
     QTimer *timerCamera;
 bool isStartMw;
 
+//改为前端配置
+QGridLayout *frontLayout;
+QWidget *frontWidget;
+void buildCenWidgetFront();
+
+
+
 public slots:
     void startF();
     void stopFF();
@@ -92,6 +99,8 @@ public slots:
     //void returnPressed();
 
     void mainwindowShow();
+
+    void frontConfig();
 };
 
 #endif // CONFIGURATION_H

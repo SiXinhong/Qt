@@ -310,6 +310,7 @@ public:
      //-----------------------------------------------
          QString zhanwei;
           QLabel *zhanweiLabel;
+          static QString zhanweiName;
 
 protected:
      double getDirectionX(double x, Mat mat);

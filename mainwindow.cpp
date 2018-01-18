@@ -87,10 +87,10 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
     }
 }
 
+QString MainWindow::zhanweiName="";
+
 void MainWindow::init(){
 //    configure = 0;
-
-
 
     alert = 0;
     monitor = 0;
@@ -1142,7 +1142,7 @@ void MainWindow::addMyToolBar()
     //回放
     backLabel = new QLabel(this);
     QPixmap pixmap4("./iconUpdate/回放.png");
-    fitpixmap4=pixmap4.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap4=pixmap4.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     backLabel->setPixmap(fitpixmap4);
     vbox1->addWidget(backLabel);
 
@@ -1208,7 +1208,7 @@ void MainWindow::addMyToolBar()
     //图像
     photo = new QLabel(this);
     QPixmap pixmap5("./iconUpdate/图像.png");
-    fitpixmap5=pixmap5.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap5=pixmap5.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     photo->setPixmap(fitpixmap5);
     vbox2->addWidget(photo);
 
@@ -1337,13 +1337,17 @@ void MainWindow::addMyToolBar()
     //站位
     position = new QLabel(this);
     QPixmap pixmap8("./iconUpdate/位置.png");
-    fitpixmap8=pixmap8.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap8=pixmap8.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     position->setPixmap(fitpixmap8);
     vbox8->addWidget(position);
 
     zhanweiLabel = new QLabel(this);
-    zhanwei = "BJ036 战位";
-    zhanweiLabel->setText(zhanwei);
+    if(zhanweiName!="")
+        zhanweiLabel->setText(zhanweiName);
+    else{
+        zhanwei = "BJ036 战位";
+        zhanweiLabel->setText(zhanwei);
+    }
     vbox8->addWidget(zhanweiLabel);
 
     vbox8->addWidget(new QLabel("  "));
@@ -1357,7 +1361,7 @@ void MainWindow::addMyToolBar()
     //时间组
     currentTime = new QLabel(this);
     QPixmap pixmap3("./iconUpdate/当前时间.png");
-    fitpixmap3=pixmap3.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap3=pixmap3.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     currentTime->setPixmap(fitpixmap3);
     vbox6->addWidget(currentTime);
 
@@ -1379,7 +1383,7 @@ void MainWindow::addMyToolBar()
 
     setup = new QLabel(this);
     QPixmap pixmap6("./iconUpdate/设置.png");
-    fitpixmap6=pixmap6.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap6=pixmap6.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     setup->setPixmap(fitpixmap6);
     vbox3->addWidget(setup);
 
@@ -1443,7 +1447,7 @@ void MainWindow::addMyToolBar()
 
     alarm = new QLabel(this);
     QPixmap pixmap7("./iconUpdate/告警.png");
-    fitpixmap7=pixmap7.scaled(0.8*buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    fitpixmap7=pixmap7.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     alarm->setPixmap(fitpixmap7);
     vbox4->addWidget(alarm);
 
