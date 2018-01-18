@@ -9,6 +9,7 @@
 #include <opencv2/highgui/highgui.hpp>
 
 #include <QString>
+#include <QDebug>
 
 
 #include "region.h"
@@ -53,5 +54,11 @@ public:
     bool timeActive[7][48];
 
     bool isTimeAlertTrue();
+
+    void drawLabel(Mat images);
+
+    bool isDrawLabel;
+
+
 };
 #endif // REGIONGROUP_H

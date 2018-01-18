@@ -610,7 +610,7 @@ void Qj1Widget::CompleteRDefining(){
         QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
     }
     else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
-        QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+        QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
         Region r = Region(name, mw->rgs[mw->rgsIndex].color, this->rectRegion.x, this->rectRegion.y, this->rectRegion.width, this->rectRegion.height);
         mw->rs.push_back(r);
 
@@ -626,7 +626,7 @@ void Qj1Widget::CompleteRDefining(){
         this->isFirstDoubleClick = false;
     }
     else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
-        QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+        QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
         vector<Point> points1;
         for(int i = 0; i < points.size(); i++){
             Point pp2 = Point(points[i].x, points[i].y);

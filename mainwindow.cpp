@@ -357,6 +357,7 @@ void MainWindow::alertProcessing(vector<MyObject> os){
                 }
             }
             if(alert){
+                //播放音效
                 break;
             }
         }
@@ -1908,6 +1909,7 @@ void MainWindow::selfTimerout(){
     for(int iii = 0; iii < this->rgs.size(); iii++){
         RegionGroup rg = rgs[iii];
         rg.draw(mat);
+        rg.drawLabel(mat);
     }
     //qDebug()<<"widget1,isTo3"<<this->widget1->isTo3;
     //画矩形

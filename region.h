@@ -8,6 +8,7 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
+#include<QDebug>
 #include <QString>
 
 using namespace cv;
@@ -50,6 +51,10 @@ public:
     //在显示区画，只画一变，draw在主mat中（两个全景图拼接）画两份
     void draw1Time(Mat &mat);
     bool isInner(Point2f p);
+
+    //找到区域最左边的点
+    Point leftPoint(vector<Point> poly);
+    Point leftPoint(Rect rect);
 
 };
 #endif // REGION_H

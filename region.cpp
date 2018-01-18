@@ -145,3 +145,23 @@ bool Region::isInner(Point2f p){
 
     return in;
 }
+
+Point Region::leftPoint(vector<Point> poly){
+    int size = poly.size();
+    int minX = poly[0].x;
+    Point left = poly[0];
+    for(int i = 1;i<size;i++){
+        if(poly[i].x<minX){
+            minX=poly[i].x;
+            left=poly[i];
+        }
+    }
+    left = Point(minX-15,left.y-3);
+    qDebug()<<"leftpoint:"<<left.x<<" "<<left.y;
+    return left;
+}
+
+Point Region::leftPoint(Rect rect){
+    qDebug()<<"leftpoint:"<<rect.x;
+    return Point(rect.x-15,rect.y-3);
+}

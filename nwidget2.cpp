@@ -640,7 +640,7 @@ void NWidget2::CompleteRDefining(){
          QMessageBox::information(this,tr("监控区域定义"),tr("矩形监控区域的定义尚未完成，需要定义两个顶点。"));
      }
      else if(mw->isDefiningRectRegion && !(this->rectRegion.width == 0)){
-         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
          Region r = Region(name, mw->rgs[mw->rgsIndex].color, convertToOriginX(rectRegion.x), convertToOriginY(rectRegion.y), convertToOriginWidth(rectRegion.width), convertToOriginHeight(rectRegion.height));
          mw->rs.push_back(r);
          //为了在点完成监控区域后，timerout刷新画面时，还能显示刚刚画的区域，先保存在临时rs中，因为尚未完成组，所以不能在主mat中画
@@ -658,7 +658,7 @@ void NWidget2::CompleteRDefining(){
          this->isFirstDoubleClick = false;
      }
      else if(!(mw->isDefiningRectRegion) && (this->points.size() > 2)){
-         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd");
+         QString name = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
          vector<Point> points1;
          for(int i = 0; i < points.size(); i++){
              Point pp2 = Point(convertToOriginX(points[i].x), convertToOriginY(points[i].y));

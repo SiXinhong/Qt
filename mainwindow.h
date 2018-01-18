@@ -28,6 +28,7 @@
 #include<QGroupBox>
 #include <QButtonGroup>
 
+
 //OpenCV头文件
 #include <vector>
 #include <highgui.h>

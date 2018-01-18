@@ -674,11 +674,11 @@ void Monitor::addRegionID(){
     int rNo = button->toolTip().toInt();
 
     if(button->text()=="增加标签"){
-
+        mw->rgs.at(rNo).isDrawLabel = true;
         button->setText("隐藏标签");
     }
     else if(button->text()=="隐藏标签"){
-
+         mw->rgs.at(rNo).isDrawLabel = false;
         button->setText("增加标签");
     }
 }

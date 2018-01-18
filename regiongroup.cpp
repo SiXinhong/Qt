@@ -15,6 +15,7 @@ using namespace cv;
 using namespace std;
 
 RegionGroup::RegionGroup(){
+    this->isDrawLabel = false;
     this->isActive = true;
     this->isAlert = true;
     for(int i=0;i<7;i++){
@@ -113,5 +114,26 @@ bool RegionGroup::isTimeAlertTrue(){
     else
         j++;
     return timeActive[i][j];
+}
+
+void RegionGroup::drawLabel(Mat image){
+    if(isDrawLabel){
+        for(int i =0;i<rs.size();i++){
+            if(rs.at(i).isRect){
+                qDebug()<<"drawlabel1";
+                Point point = rs.at(i).leftPoint(rs.at(i).rect);
+                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                Point point2 = Point(point.x+image.cols/2,point.y);
+                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+            }
+            else{
+                qDebug()<<"drawlabel2";
+                Point point = rs.at(i).leftPoint(rs.at(i).poly);
+                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                Point point2 = Point(point.x+image.cols/2,point.y);
+                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+            }
+        }
+    }
 }
 
