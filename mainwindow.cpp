@@ -358,6 +358,11 @@ void MainWindow::alertProcessing(vector<MyObject> os){
             }
             if(alert){
                 //播放音效
+                if(isShengyin){
+                    mp.setMedia(QUrl::fromLocalFile("./1.mp3"));
+                    mp.setVolume(100);
+                    mp.play();
+                }
                 break;
             }
         }
@@ -4462,6 +4467,12 @@ void MainWindow::voiceFunction()
         isShengyin = true;
         //voiceSet="./icon/15_2.png";
         voice->setToolTip("关闭声音");
+
+       // QMediaPlayer mp;
+        //mp.setMedia(QUrl::fromLocalFile("E:\\github\\Qt\\1.mp3"));
+        mp.setMedia(QUrl::fromLocalFile("./1.mp3"));
+        mp.setVolume(100);
+        mp.play();
 
     }
 }

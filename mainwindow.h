@@ -27,7 +27,7 @@
 //#include <QSound>
 #include<QGroupBox>
 #include <QButtonGroup>
-
+#include <QMediaPlayer>
 
 //OpenCV头文件
 #include <vector>
@@ -93,6 +93,9 @@ public:
   //灵敏度调节
    Sensitivity *senAdjust;
     bool isSensi;
+
+    //报警声音
+    QMediaPlayer mp;
 
    QToolButton *zWini;
    QToolButton *zWZoomIn;
