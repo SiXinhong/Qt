@@ -978,27 +978,49 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
 
         if(mw->widget3->isClicked){
 
-            int height = mw->widget1->mat.rows;
-            int width = height * mw->widget3->width() / mw->widget3->height();
+            int height;
+            int width;
+            if(!mw->widget1->hasRect3){
+                height = mw->widget1->mat.rows;
+                width = height * mw->widget3->width() / mw->widget3->height();
+                mw->widget1->hasRect3 = true;
+            }else{
+                height = mw->widget3->rect.height;
+                width = mw->widget3->rect.width;
+            }
             int xx2, yy2;
-            if(qjx<=mat.cols/2){
+
+//            if(qjx<=mat.cols/2){
+            if(qjx<=pano.cols/2){
                 mw->widget1->isTo3 = true;
                 mw->widget2->isTo3 = false;
-            }else if(qjx > mat.cols/2){
-                qjx-=mat.cols/2;
+//            }else if(qjx > mat.cols/2){
+                }else if(qjx > pano.cols/2){
+//                qjx-=pano.cols/2;不需要减去，因为点全景2时坐标本来就是加了pano.cols/2
 //                mw->widget1->isTo3 = false;
 //                mw->widget2->isTo3 =true;
-                mw->widget1->isTo3 = true;
-                mw->widget2->isTo3 = false;
+//                mw->widget1->isTo3 = true;
+//                mw->widget2->isTo3 = false;
+                mw->widget1->isTo3 = false;
+                mw->widget2->isTo3 = true;
             }
             if(qjx-width/2 >= 0){
                 xx2 = qjx- width/2;
                 yy2 = 0;
             }
             else{
-                xx2 = qjx- width/2 + this->pano.cols;
+//                xx2 = qjx- width/2 + this->pano.cols;
+                xx2 = qjx- width/2 + this->pano.cols/2;
+//                yy2 = 0;
+            }
+            yy2 = qjy-height/2;
+            if(yy2 < 0){
                 yy2 = 0;
             }
+            if(yy2+height > this->pano.rows){
+                yy2 = pano.rows-height;
+            }
+
             Rect rectan;
             if(mw->widget1->isTo3){
                 mw->widget3->setFrom(1);
@@ -1009,11 +1031,12 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             else if(mw->widget2->isTo3){
                 mw->widget3->setFrom(2);
                 mw->widget2->rectan3 = Rect(xx2, yy2, width, height);
-                rectan=  mw->widget1->rectan3;
+//                rectan=  mw->widget1->rectan3;
+                rectan=  mw->widget2->rectan3;
                 mw->widget3->setRect(mw->widget2->rectan3);
             }
 
-            mw->widget3->setRect(mw->widget1->rectan3);
+//            mw->widget3->setRect(mw->widget1->rectan3);
             Mat mat1 = mw->widget1->getTwoPano();
             Size dsize ;
             double scale = 1;
@@ -1030,18 +1053,30 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
         }
 
         else if(mw->widget4->isClicked){
-            if(qjx<=mat.cols/2){
+//            if(qjx<=mat.cols/2){
+            if(qjx<=pano.cols/2){
                 mw->widget1->isTo4 = true;
                 mw->widget2->isTo4 = false;
-            }else if(qjx > mat.cols/2){
-                qjx-=mat.cols/2;
-                mw->widget1->isTo4 = true;
-                mw->widget2->isTo4 =false;
+//            }else if(qjx > mat.cols/2){
+            }else if(qjx > pano.cols/2){
+//                qjx-=mat.cols/2;
+//                mw->widget1->isTo4 = true;
+//                mw->widget2->isTo4 =false;
+                mw->widget1->isTo4 = false;
+                mw->widget2->isTo4 =true;
 //                mw->widget1->isTo6 = true;
 //                mw->widget2->isTo6 =false;
             }
-            int height =mw->widget1->mat.rows/2;
-            int width = height * mw->widget4->width() / mw->widget4->height();
+            int height;
+            int width;
+            if(mw->widget1->hasRect4){
+                height = mw->widget4->rect.height;
+                width = mw->widget4->rect.width;
+            }else{
+                height =mw->widget1->mat.rows/2;
+                width = height * mw->widget4->width() / mw->widget4->height();
+                mw->widget1->hasRect4=true;
+            }
             int xx2, yy2;
             if(qjx-width/2 >= 0){
                 xx2 = qjx- width/2;
@@ -1087,13 +1122,17 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             mw->widget6->isClicked = false;
         }
         else if(mw->widget6->isClicked){
-            if(qjx<=mat.cols/2){
+//            if(qjx<=mat.cols/2){
+            if(qjx<=pano.cols/2){
                 mw->widget1->isTo6 = true;
                 mw->widget2->isTo6 = false;
-            }else if(qjx > mat.cols/2){
-                qjx-=mat.cols/2;
+//            }else if(qjx > mat.cols/2){
+            }else if(qjx > pano.cols/2){
+//                qjx-=mat.cols/2;
                 mw->widget1->isTo6 = true;
                 mw->widget2->isTo6 =false;
+                mw->widget1->isTo6 = false;
+                mw->widget2->isTo6 =true;
 //                mw->widget1->isTo6 = false;
 //                mw->widget2->isTo6 =true;
 
@@ -1101,6 +1140,14 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
 
             int height = mw->widget1->mat.rows/2;
             int width = height * mw->widget6->width() / mw->widget6->height();
+            if(mw->widget1->hasRect6){
+                height = mw->widget6->rect.height;
+                width = mw->widget6->rect.width;
+            }else{
+                height = mw->widget1->mat.rows/2;
+                width = height * mw->widget6->width() / mw->widget6->height();
+                mw->widget1->hasRect6=true;
+            }
             int xx2, yy2;
             if(qjx-width/2 >= 0){
                 xx2 = qjx- width/2;
@@ -1128,6 +1175,7 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
                 mw->widget6->setFrom(2);
                 mw->widget2->rectan6 =Rect(xx2, yy2, width, height);
                 rectan = mw->widget2->rectan6;
+                mw->widget6->setRect(mw->widget2->rectan6);
 }
             Mat mat1 = mw->widget1->getTwoPano();
             Size dsize ;
