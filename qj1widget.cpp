@@ -965,14 +965,23 @@ void Qj1Widget::mouseReleaseEvent(QMouseEvent *e)
                 int xx2, yy2;
                 if(xx-width/2 >= 0){
                     xx2 = xx- width/2;
-                    yy2 = 0;
+                    //yy2 = 0;
                 }
                 else{
                     xx2 = xx- width/2 + this->pano.cols;
+                    //yy2 = 0;
+                }
+
+                yy2 = yy-height/2;
+                if(yy2 < 0){
                     yy2 = 0;
                 }
-                this->rectan3 = Rect(xx2, yy2, width, height);
+                if(yy2+height > this->pano.rows){
+                    yy2 = pano.rows-height;
+                }
 
+
+                this->rectan3 = Rect(xx2, yy2, width, height);
             }
             else{
                 int height = this->mat.rows;
