@@ -1010,7 +1010,7 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             }
             else{
 //                xx2 = qjx- width/2 + this->pano.cols;
-                xx2 = qjx- width/2 + this->pano.cols/2;
+                xx2 = qjx- width/2 + this->pano.cols;
 //                yy2 = 0;
             }
             yy2 = qjy-height/2;
