@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     #timecontrol.cpp \
     configuration.cpp \
     hourwidget.cpp \
-    sensitivity.cpp
+    sensitivity.cpp \
+    interfacethread.cpp
 HEADERS  += mainwindow.h \
     mylabel.h \
     rectan.h \
@@ -86,7 +87,8 @@ HEADERS  += mainwindow.h \
     #timecontrol.h \
     configuration.h \
     hourwidget.h \
-    sensitivity.h
+    sensitivity.h \
+    interfacethread.h
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
     timetrackbar.ui \

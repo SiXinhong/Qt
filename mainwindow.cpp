@@ -91,7 +91,7 @@ QString MainWindow::zhanweiName="";
 
 void MainWindow::init(){
 //    configure = 0;
-
+    inThread.start();//启动通信线程
     alert = 0;
     monitor = 0;
 
@@ -237,9 +237,9 @@ void MainWindow::init(){
    // MySocketInitial();
     qDebug()<<"ini()6";
     //自定义接口处理，将来被金老师SDK替换--------------------------------
-    in = MyInterface();
-    selfProcessing();
-    //this->jinProcessing();
+    //in = MyInterface();
+//    selfProcessing();
+    this->jinProcessing();
     //---------------------------------------------------------
     qDebug()<<"ini()4";
     //临时性处理，将来被金老师SDK替换--------------------------------
@@ -383,8 +383,9 @@ void MainWindow::alertProcessing(vector<MyObject> os){
 
 //与金老师的接口处理
 void MainWindow::jinProcessing(){
-    int v=in.getIntegratedData();
-    if(v == 0){
+    //int v=in.getIntegratedData();
+    int v = inThread.getIntegratedData();
+//    if(v == 0){
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
         //        QString s1=in.getQJ1();
@@ -400,7 +401,16 @@ void MainWindow::jinProcessing(){
         }
         // delete todayDir;
 
-        Mat pano = in.getPano();
+        /***
+         * 从interfaceThread一次性获取完数据，然后马上获取下一次的数据，不要到后边还有get调用，否则可能到下次执行timer通信还没结束
+         */
+        Mat pano = inThread.getPano();
+        vector<TrackingPoint> tps = inThread.GetTps();
+        vector<MyObject> objs = inThread.getObjs();
+
+        inThread.getNext();//开始下次通信
+        //从interfaceThread获取数据结束
+
         qDebug()<<"jinPano.x.y"<<pano.cols<<pano.rows;
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -427,8 +437,8 @@ void MainWindow::jinProcessing(){
         hconcat(pano1,pano2,mat);
         //画轨迹
         if(isMubiao){
-            for(int ii = 0; ii < in.tps.size(); ii++){
-                TrackingPoint tp = in.tps[ii];
+            for(int ii = 0; ii < tps.size(); ii++){
+                TrackingPoint tp = tps[ii];
                 int id = tp.id;
                 vector<Point> points = tp.track;
                 //if(id == obj.getID()){
@@ -449,7 +459,7 @@ void MainWindow::jinProcessing(){
             }
         }
         //在全景上画矩形，文字，轨迹等
-        vector<MyObject> objs = in.getObjs();
+//        vector<MyObject> objs = in.getObjs();
         for(int i=0;i<objs.size();i++){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
@@ -464,7 +474,7 @@ void MainWindow::jinProcessing(){
             current_path.clear();
         }
 
-        vector<MyObjectTrack> tracks = in.getTracks();
+//        vector<MyObjectTrack> tracks = in.getTracks();
 
         int num_objs = objs.size();
         for (int i = 0; i < num_objs;i++)
@@ -577,14 +587,14 @@ void MainWindow::jinProcessing(){
         widget1->setPano(newpano);
         widget1->setTwoPano(mat);
         widget1->setObjects(objs);
-        widget1->setTracks(in.getTracks());
+//        widget1->setTracks(in.getTracks());
         widget1->draw();
         //图片2
         widget2->setPano(newpano);
         widget2->setMat(mat2);
         widget2->setTwoPano(mat);
         widget2->setObjects(objs);
-        widget2->setTracks(in.getTracks());
+//        widget2->setTracks(in.getTracks());
         widget2->draw();
         //qDebug()<<s2;
         //drawUiLabel(mat2,2);
@@ -592,7 +602,7 @@ void MainWindow::jinProcessing(){
         //Mat mat3 =imread(imageurl);
         widget3->setPano(newpano);
         widget3->setTwoPanos(mat);
-        widget3->setAllObjects(in.getObjs());
+        widget3->setAllObjects(objs);
         widget3->draw();
         //drawUiLabelByCopy(mat3,3);
         //图片4
@@ -600,11 +610,11 @@ void MainWindow::jinProcessing(){
         //drawUiLabelByCopy(mat4,4);
         widget4->setPano(newpano);
         widget4->setTwoPanos(mat);
-        widget4->setAllObjects(in.getObjs());
+        widget4->setAllObjects(objs);
         widget4->draw();
         //图片5
         widget5->setPano(pano);
-        QString imageurl5=in.getHD();
+        QString imageurl5="./0.png";//in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
         widget5->setMat(mat5);
         widget5->setObjects(objs);
@@ -618,296 +628,296 @@ void MainWindow::jinProcessing(){
         //        widget6->draw();
         widget6->setPano(newpano);
         widget6->setTwoPanos(mat);
-        widget6->setAllObjects(in.getObjs());
+        widget6->setAllObjects(objs);
         widget6->draw();
-        this->alertProcessing(in.getObjs());
-    }
-    else{
-        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
-        this->selfProcessing();
+        this->alertProcessing(objs);
+//    }
+//    else{
+//        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
+//        this->selfProcessing();
 
-    }
+//    }
 }
 
 //自定义接口处理函数，将来被金老师SDK替换------------------------------
 void MainWindow::selfProcessing(){
-    //QDir *todayDir=new QDir();
-    QString huiFile = QString("./回放");
-    QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
-    bool exist = directory->exists(huiFile);
-    if(!exist){
-        directory->mkdir(huiFile);
-    }
-    exist=directory->exists(today);
-    if(!exist){
-        directory->mkdir(today);
-    }
+//    //QDir *todayDir=new QDir();
+//    QString huiFile = QString("./回放");
+//    QString today=QString("./回放/")+QDate::currentDate().toString("yyyy-MM-dd");
+//    bool exist = directory->exists(huiFile);
+//    if(!exist){
+//        directory->mkdir(huiFile);
+//    }
+//    exist=directory->exists(today);
+//    if(!exist){
+//        directory->mkdir(today);
+//    }
 
 
-    in.getIntegratedData2();
-    qDebug()<<"selfpocessing1";
-    vector<MyObject> objs;// = in.getObjs2();
-    num_objs =objs.size();
-    // num_objs =0;
-    for(int i=0;i<objs.size();i++){
-        QString current_time=QTime::currentTime().toString("hh-mm-ss");
-        QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
-        QFile file(current_path);
-        if(isJixu == true){
-            file.open(QIODevice::WriteOnly);
-            QDataStream out(&file);
-            out<<objs.at(i);
-            file.close();
-        }
-        current_time.clear();
-        current_path.clear();
-    }
+//    in.getIntegratedData2();
+//    qDebug()<<"selfpocessing1";
+//    vector<MyObject> objs;// = in.getObjs2();
+//    num_objs =objs.size();
+//    // num_objs =0;
+//    for(int i=0;i<objs.size();i++){
+//        QString current_time=QTime::currentTime().toString("hh-mm-ss");
+//        QString current_path=QString("").append(today).append("/").append(current_time).append("-").append(QString::number(i)).append(".dat");
+//        QFile file(current_path);
+//        if(isJixu == true){
+//            file.open(QIODevice::WriteOnly);
+//            QDataStream out(&file);
+//            out<<objs.at(i);
+//            file.close();
+//        }
+//        current_time.clear();
+//        current_path.clear();
+//    }
 
-     qDebug()<<"selfpocessing3";
-    //    for(int i = 0; i < objs.size(); i++){
-    //        MyObject obj = objs[i];
-    //        qDebug()<<i;
-    //        qDebug()<<obj.getID();
-    //        qDebug()<<obj.getCenPoint().x;
-    //        qDebug()<<obj.getCenPoint().y;
-    //        qDebug()<<obj.getRect().x;
-    //        qDebug()<<obj.getRect().y;
-    //        qDebug()<<obj.getRect().width;
-    //        qDebug()<<obj.getRect().height;
-    //    }
+//     qDebug()<<"selfpocessing3";
+//    //    for(int i = 0; i < objs.size(); i++){
+//    //        MyObject obj = objs[i];
+//    //        qDebug()<<i;
+//    //        qDebug()<<obj.getID();
+//    //        qDebug()<<obj.getCenPoint().x;
+//    //        qDebug()<<obj.getCenPoint().y;
+//    //        qDebug()<<obj.getRect().x;
+//    //        qDebug()<<obj.getRect().y;
+//    //        qDebug()<<obj.getRect().width;
+//    //        qDebug()<<obj.getRect().height;
+//    //    }
 
-    //图片1
-    //图片1
-    //    QString s1=in.getQJ1();
-    //    imageurl=s1.toStdString();
-    //    Mat mat1 =imread(imageurl);
+//    //图片1
+//    //图片1
+//    //    QString s1=in.getQJ1();
+//    //    imageurl=s1.toStdString();
+//    //    Mat mat1 =imread(imageurl);
 
-    //在两个全景上画矩形，文字，轨迹等
-    Mat pano = in.getPano();
-    qDebug()<<"selfpocessing6";
-    Mat pano1 = pano.clone();
-    Mat pano2 = pano.clone();
+//    //在两个全景上画矩形，文字，轨迹等
+//    Mat pano = in.getPano();
+//    qDebug()<<"selfpocessing6";
+//    Mat pano1 = pano.clone();
+//    Mat pano2 = pano.clone();
 
-    Mat mat;
-     qDebug()<<"selfpocessing8";
-    hconcat(pano1,pano2,mat);
-     qDebug()<<"selfpocessing7";
-    //在全景上画矩形，文字，轨迹等
-    //vector<MyObject> objs = in.getObjs();
-    vector<MyObjectTrack> tracks = in.getTracks();
-    qDebug()<<num_objs;
-    for (int i = 0; i < num_objs;i++)
-    {
-        //画对象的box
-        MyObject obj = objs[i];
-        Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
-        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
-        rectangle(mat,rect2,obj.getColor(),2,1,0);
-        // cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    Mat mat;
+//     qDebug()<<"selfpocessing8";
+//    hconcat(pano1,pano2,mat);
+//     qDebug()<<"selfpocessing7";
+//    //在全景上画矩形，文字，轨迹等
+//    //vector<MyObject> objs = in.getObjs();
+//    vector<MyObjectTrack> tracks = in.getTracks();
+//    qDebug()<<num_objs;
+//    for (int i = 0; i < num_objs;i++)
+//    {
+//        //画对象的box
+//        MyObject obj = objs[i];
+//        Rect rect2 = Rect(obj.getRect().x+pano.cols, obj.getRect().y, obj.getRect().width, obj.getRect().height);
+//        rectangle(mat,obj.getRect(),obj.getColor(),2,1,0);
+//        rectangle(mat,rect2,obj.getColor(),2,1,0);
+//        // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
-        //画轨迹
-        if(isMubiao){
-            for(int ii = 0; ii < tracks.size(); ii++){
-                MyObjectTrack track = tracks[ii];
-                int id = track.getId();
-                vector<Point> points = track.getTrack();
-                if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+pano.cols, point.y);
-                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+pano.cols, point3.y);
-                            line(mat,point,point3,obj.getColor(),1,8,0);
-                            line(mat,point2,point4,obj.getColor(),1,8,0);
-                        }
-                        // cv::cvtColor(mat, mat, CV_BGR2RGB);
-                    }
-                }
-            }
-        }
-         qDebug()<<"selfpocessing4";
-        //画对象中心点的位置
-        if(isMubiao){
-            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-            QString tx = QString::number(x,10);
-            QString ty = QString::number(y,10);
-            QString tstr = "x="+tx+",y="+ty;
-            string str = tstr.toStdString();
-            QString idstr = "id="+QString::number(obj.getID(),10);
-            string idst = idstr.toStdString();
-            //qDebug()<<tstr;
-            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-            Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+//        //画轨迹
+//        if(isMubiao){
+//            for(int ii = 0; ii < tracks.size(); ii++){
+//                MyObjectTrack track = tracks[ii];
+//                int id = track.getId();
+//                vector<Point> points = track.getTrack();
+//                if(id == obj.getID()){
+//                    for(int iii = 0; iii < points.size(); iii++){
+//                        Point point = points[iii];
+//                        Point point2 = Point(point.x+pano.cols, point.y);
+//                        circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                        circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                        if(iii >= 1){
+//                            Point point3 = points[iii-1];
+//                            Point point4 = Point(point3.x+pano.cols, point3.y);
+//                            line(mat,point,point3,obj.getColor(),1,8,0);
+//                            line(mat,point2,point4,obj.getColor(),1,8,0);
+//                        }
+//                        // cv::cvtColor(mat, mat, CV_BGR2RGB);
+//                    }
+//                }
+//            }
+//        }
+//         qDebug()<<"selfpocessing4";
+//        //画对象中心点的位置
+//        if(isMubiao){
+//            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
+//            int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+//            QString tx = QString::number(x,10);
+//            QString ty = QString::number(y,10);
+//            QString tstr = "x="+tx+",y="+ty;
+//            string str = tstr.toStdString();
+//            QString idstr = "id="+QString::number(obj.getID(),10);
+//            string idst = idstr.toStdString();
+//            //qDebug()<<tstr;
+//            Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+//            Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
 
-            putText(mat,str,p,3,0.5,obj.getColor());
-            putText(mat,str,p2,3,0.5,obj.getColor());
+//            putText(mat,str,p,3,0.5,obj.getColor());
+//            putText(mat,str,p2,3,0.5,obj.getColor());
 
-            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+//            Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+//            Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
 
-            putText(mat,idst,p3,3,0.5,obj.getColor());
-            putText(mat,idst,p4,3,0.5,obj.getColor());
-        }
-        // cv::cvtColor(mat, mat, CV_BGR2RGB);
-    }
-    //cv::cvtColor(mat, mat, CV_BGR2RGB);
-    //画告警区域
-    for(int iii = 0; iii < this->rgs.size(); iii++){
-        RegionGroup rg = rgs[iii];
-        rg.draw(mat);
-    }
-    qDebug()<<"selfpocessing2";
-    //画矩形
-    if(this->widget1->isTo3){
-        //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
-        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
-        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
-    }
-    if(this->widget1->isTo4){
-        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
-        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
-    }
-    if(this->widget1->isTo6){
-        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
-        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-    }
-    if(this->widget2->isTo3){
-        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
-        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
-    }
-    if(this->widget2->isTo4){
-        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
-        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
-    }
-    if(this->widget2->isTo6){
-        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
-        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
-        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
-    }
-    //然后劈成2半
+//            putText(mat,idst,p3,3,0.5,obj.getColor());
+//            putText(mat,idst,p4,3,0.5,obj.getColor());
+//        }
+//        // cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    }
+//    //cv::cvtColor(mat, mat, CV_BGR2RGB);
+//    //画告警区域
+//    for(int iii = 0; iii < this->rgs.size(); iii++){
+//        RegionGroup rg = rgs[iii];
+//        rg.draw(mat);
+//    }
+//    qDebug()<<"selfpocessing2";
+//    //画矩形
+//    if(this->widget1->isTo3){
+//        //qDebug()<<"w1 rect3: x="<<this->widget1->rectan3.x<<",y="<<this->widget1->rectan3.y<<",width="<<this->widget1->rectan3.width<<",height="<<this->widget1->rectan3.height;
+//        rectangle(mat,this->widget1->rectan3,this->widget3->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan3.x+pano.cols, this->widget1->rectan3.y, this->widget1->rectan3.width, this->widget1->rectan3.height);
+//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+//    }
+//    if(this->widget1->isTo4){
+//        rectangle(mat,this->widget1->rectan4,this->widget4->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan4.x+pano.cols, this->widget1->rectan4.y, this->widget1->rectan4.width, this->widget1->rectan4.height);
+//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+//    }
+//    if(this->widget1->isTo6){
+//        rectangle(mat,this->widget1->rectan6,this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget1->rectan6.x+pano.cols, this->widget1->rectan6.y, this->widget1->rectan6.width, this->widget1->rectan6.height);
+//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+//    }
+//    if(this->widget2->isTo3){
+//        rectangle(mat,this->widget2->getQRectan3(),this->widget3->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan3().x+pano.cols, this->widget2->getQRectan3().y, this->widget2->getQRectan3().width, this->widget2->getQRectan3().height);
+//        rectangle(mat,rect2,this->widget3->getColor(),4,1,0);
+//    }
+//    if(this->widget2->isTo4){
+//        rectangle(mat,this->widget2->getQRectan4(),this->widget4->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan4().x+pano.cols, this->widget2->getQRectan4().y, this->widget2->getQRectan4().width, this->widget2->getQRectan4().height);
+//        rectangle(mat,rect2,this->widget4->getColor(),4,1,0);
+//    }
+//    if(this->widget2->isTo6){
+//        rectangle(mat,this->widget2->getQRectan6(),this->widget6->getColor(),4,1,0);
+//        Rect rect2 = Rect(this->widget2->getQRectan6().x+pano.cols, this->widget2->getQRectan6().y, this->widget2->getQRectan6().width, this->widget2->getQRectan6().height);
+//        rectangle(mat,rect2,this->widget6->getColor(),4,1,0);
+//    }
+//    //然后劈成2半
 
-    //    Size dsize ;
-    //    double scale = 1;
-    //    dsize = Size(mat.cols*scale,mat.rows*scale);
-    //    Mat image11 = Mat(dsize,CV_32S);
-    //    cv::resize(mat, image11,dsize);
+//    //    Size dsize ;
+//    //    double scale = 1;
+//    //    dsize = Size(mat.cols*scale,mat.rows*scale);
+//    //    Mat image11 = Mat(dsize,CV_32S);
+//    //    cv::resize(mat, image11,dsize);
 
-    //    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
-    //    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
-    //    Mat image4 = CVUtil::QImageToMat(aa);
-    //    Mat image44 = Mat(dsize,CV_32S);
-    //    cv::resize(image4, image44,dsize);
+//    //    QImage img = QImage((const unsigned char*)(image11.data),image11.cols,image11.rows, image11.cols*image11.channels(),  QImage::Format_RGB888);
+//    //    QImage aa=(&img)->copy(QRect(0,0,mat.cols/2,mat.rows));
+//    //    Mat image4 = CVUtil::QImageToMat(aa);
+//    //    Mat image44 = Mat(dsize,CV_32S);
+//    //    cv::resize(image4, image44,dsize);
 
-    //    //全景2Mat
-    //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
-    //    Mat image5 = CVUtil::QImageToMat(aa2);
-    //    Mat image55 = Mat(dsize,CV_32S);
-    //    cv::resize(image5, image55,dsize);
-     qDebug()<<"selfpocessing999";
-    if(this->isPseudo==true)
-        mat=setPseudocolor(mat);
-    updateBright(mat);
-    updateContrast(mat);
+//    //    //全景2Mat
+//    //    QImage aa2=(&img)->copy(QRect(mat.cols/2,0,mat.cols/2,mat.rows));
+//    //    Mat image5 = CVUtil::QImageToMat(aa2);
+//    //    Mat image55 = Mat(dsize,CV_32S);
+//    //    cv::resize(image5, image55,dsize);
+//     qDebug()<<"selfpocessing999";
+//    if(this->isPseudo==true)
+//        mat=setPseudocolor(mat);
+//    updateBright(mat);
+//    updateContrast(mat);
 
-    Mat mat1, mat2;
-    mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
-    mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
+//    Mat mat1, mat2;
+//    mat(Rect(mat.cols/2,0,mat.cols/4,mat.rows)).copyTo(mat1);
+//    mat(Rect(mat.cols/4,0,mat.cols/4,mat.rows)).copyTo(mat2);
 
-    Mat newpano;
+//    Mat newpano;
 
-    hconcat(mat1,mat2,newpano);
-    //Mat mat1 = image44;
-    //    if(this->isPseudo==true)
-    //        mat1=setPseudocolor(mat1);
-    //    updateBright(mat1);
-    //    updateContrast(mat1);
-    //        if(saturation1!=100){
-    //               hsl->channels[color].saturation1 = saturation1 - 100;
-    //               hsl->adjust(mat1, mat1);
-    //           }
-    widget1->setMat(mat1);
-    widget1->setPano(newpano);
-    widget1->setTwoPano(mat);
-    widget1->setObjects(objs);
-    widget1->setTracks(in.getTracks());
-    widget1->draw();
-    //qDebug()<<s1;
-    //图片2
-    //图片1
-    //    QString s1=in.getQJ1();
-    //    imageurl=s1.toStdString();
-    //    Mat mat1 =imread(imageurl);
+//    hconcat(mat1,mat2,newpano);
+//    //Mat mat1 = image44;
+//    //    if(this->isPseudo==true)
+//    //        mat1=setPseudocolor(mat1);
+//    //    updateBright(mat1);
+//    //    updateContrast(mat1);
+//    //        if(saturation1!=100){
+//    //               hsl->channels[color].saturation1 = saturation1 - 100;
+//    //               hsl->adjust(mat1, mat1);
+//    //           }
+//    widget1->setMat(mat1);
+//    widget1->setPano(newpano);
+//    widget1->setTwoPano(mat);
+//    widget1->setObjects(objs);
+//    widget1->setTracks(in.getTracks());
+//    widget1->draw();
+//    //qDebug()<<s1;
+//    //图片2
+//    //图片1
+//    //    QString s1=in.getQJ1();
+//    //    imageurl=s1.toStdString();
+//    //    Mat mat1 =imread(imageurl);
 
-    //Mat mat2 = image55;
-    if(this->isPseudo==true)
-        mat2=setPseudocolor(mat2);
-    updateBright(mat2);
-    updateContrast(mat2);
-    //        if(saturation1!=100){
-    //               hsl->channels[color].saturation1 = saturation1 - 100;
-    //               hsl->adjust(mat2, mat2);
-    //           }
-    widget2->setPano(newpano);
-    //    if(this->isPseudo==true)
-    //        mat2=setPseudocolor(mat2);
-    //    updateBright(mat2);
-    //    updateContrast(mat2);
-    //        if(saturation1!=100){
-    //               hsl->channels[color].saturation1 = saturation1 - 100;
-    //               hsl->adjust(mat2, mat2);
-    //           }
-    //widget2->setPano(mat);
-    widget2->setMat(mat2);
-    widget2->setTwoPano(mat);
-    widget2->setObjects(objs);
-    widget2->setTracks(in.getTracks());
-    widget2->draw();
-    //qDebug()<<s2;
-    //drawUiLabel(mat2,2);
-    //图片3
-    //Mat mat3 =imread(imageurl);
+//    //Mat mat2 = image55;
+//    if(this->isPseudo==true)
+//        mat2=setPseudocolor(mat2);
+//    updateBright(mat2);
+//    updateContrast(mat2);
+//    //        if(saturation1!=100){
+//    //               hsl->channels[color].saturation1 = saturation1 - 100;
+//    //               hsl->adjust(mat2, mat2);
+//    //           }
+//    widget2->setPano(newpano);
+//    //    if(this->isPseudo==true)
+//    //        mat2=setPseudocolor(mat2);
+//    //    updateBright(mat2);
+//    //    updateContrast(mat2);
+//    //        if(saturation1!=100){
+//    //               hsl->channels[color].saturation1 = saturation1 - 100;
+//    //               hsl->adjust(mat2, mat2);
+//    //           }
+//    //widget2->setPano(mat);
+//    widget2->setMat(mat2);
+//    widget2->setTwoPano(mat);
+//    widget2->setObjects(objs);
+//    widget2->setTracks(in.getTracks());
+//    widget2->draw();
+//    //qDebug()<<s2;
+//    //drawUiLabel(mat2,2);
+//    //图片3
+//    //Mat mat3 =imread(imageurl);
 
-    widget3->setPano(newpano);
-    widget3->setTwoPanos(mat);
-    widget3->setAllObjects(in.getObjs());
-    widget3->draw();
-    //drawUiLabelByCopy(mat3,3);
-    //图片4
-    //Mat mat4 =imread(imageurl2);
-    //drawUiLabelByCopy(mat4,4);
-    widget4->setPano(newpano);
-    widget4->setTwoPanos(mat);
-    widget4->setAllObjects(in.getObjs());
-    widget4->draw();
-    //图片5
-    widget5->setPano(pano);
-    QString imageurl5=in.getHD();
-    Mat mat5 =imread(imageurl5.toStdString());
-    widget5->setMat(mat5);
-    widget5->setObjects(objs);
-    widget5->draw();
-    //图片6
-    //    QString imageurl6= in.getLD();
-    //    Mat mat6 =imread(imageurl6.toStdString());
-    //    widget6->setMat(mat6);
-    //    widget6->setPano(pano);
-    //    widget6->setObjects(objs);
-    //    widget6->draw();
-    widget6->setPano(newpano);
-    widget6->setTwoPanos(mat);
-    widget6->setAllObjects(in.getObjs());
-    widget6->draw();
-    this->alertProcessing(objs);
-    qDebug()<<"selfpocessing";
+//    widget3->setPano(newpano);
+//    widget3->setTwoPanos(mat);
+//    widget3->setAllObjects(in.getObjs());
+//    widget3->draw();
+//    //drawUiLabelByCopy(mat3,3);
+//    //图片4
+//    //Mat mat4 =imread(imageurl2);
+//    //drawUiLabelByCopy(mat4,4);
+//    widget4->setPano(newpano);
+//    widget4->setTwoPanos(mat);
+//    widget4->setAllObjects(in.getObjs());
+//    widget4->draw();
+//    //图片5
+//    widget5->setPano(pano);
+//    QString imageurl5=in.getHD();
+//    Mat mat5 =imread(imageurl5.toStdString());
+//    widget5->setMat(mat5);
+//    widget5->setObjects(objs);
+//    widget5->draw();
+//    //图片6
+//    //    QString imageurl6= in.getLD();
+//    //    Mat mat6 =imread(imageurl6.toStdString());
+//    //    widget6->setMat(mat6);
+//    //    widget6->setPano(pano);
+//    //    widget6->setObjects(objs);
+//    //    widget6->draw();
+//    widget6->setPano(newpano);
+//    widget6->setTwoPanos(mat);
+//    widget6->setAllObjects(in.getObjs());
+//    widget6->draw();
+//    this->alertProcessing(objs);
+//    qDebug()<<"selfpocessing";
 }
 //----------------------------------------------------------
 
@@ -1651,7 +1661,7 @@ void MainWindow::onTimerOut2(){
 }
 
 void MainWindow::adjustment()
-{
+{/*
     Mat pano = in.getPano();
 
     Mat pano1 = pano.clone();
@@ -1720,6 +1730,7 @@ void MainWindow::adjustment()
     widget6->setTwoPanos(mat);
     widget6->setAllObjects(widget1->objs);
     widget6->draw();
+    */
 }
 
 //定时器任务
@@ -1732,6 +1743,7 @@ void MainWindow::onTimerOut()
 
 //自定义接口定时器
 void MainWindow::selfTimerout(){
+    /*
     //index=index+1;
 
     timerFlash->stop();
@@ -2190,6 +2202,7 @@ void MainWindow::selfTimerout(){
     //     lights[3]->setPixmap(fitpixmap2);
     //     lights[4]->setPixmap(fitpixmap2);
     //}
+    */
 }
 
 //与金老师接口的定时器处理
@@ -2210,12 +2223,12 @@ void MainWindow::jinTimerout(){
 
 
 qDebug()<<"jinTimerout";
-    int v=in.getIntegratedData();
+    int v=inThread.getIntegratedData();
 qDebug()<<"jinTimerOut2";
 /**********start*******************/
 t2=clock();
 /**********end*******************/
-    if(v == 0){
+//    if(v == 0){
 
         //std::cout<<"getintegrated data "<<std::endl;
         //图片1
@@ -2234,12 +2247,21 @@ t2=clock();
         }
         //delete todayDir;
 
-        Mat pano = in.getPano();
+        /***
+         * 从interfaceThread一次性获取完数据，然后马上获取下一次的数据，不要到后边还有get调用，否则可能到下次执行timer通信还没结束
+         */
+        Mat pano = inThread.getPano();
+        vector<TrackingPoint> tps = inThread.GetTps();
+        vector<MyObject> objs = inThread.getObjs();
+
+        inThread.getNext();//开始下次通信
+        //从interfaceThread获取数据结束
+
         //cv::imshow("test",pano);
 
         //cv::imwrite("test.bmp",pano);
 
-        cv::imwrite("test.bmp",pano);
+//        cv::imwrite("test.bmp",pano);
 
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
@@ -2267,7 +2289,7 @@ t2=clock();
 
         //在全景上画矩形，文字，轨迹等
         //Mat mat = in.getPano().clone();
-        vector<MyObject> objs = in.getObjs();
+//        vector<MyObject> objs = in.getObjs();
         qDebug()<<"mainwindow objs.size "<<objs.size();
 
         if(isJixu == true){
@@ -2292,8 +2314,8 @@ t2=clock();
 
 
         if(isMubiao){
-            for(int ii = 0; ii < in.tps.size(); ii++){
-                TrackingPoint tp = in.tps[ii];
+            for(int ii = 0; ii < tps.size(); ii++){
+                TrackingPoint tp = tps[ii];
                 int id = tp.id;
                 vector<Point> points = tp.track;
                 //if(id == obj.getID()){
@@ -2473,7 +2495,7 @@ t2=clock();
         widget1->setPano(newpano);
         widget1->setTwoPano(mat);
         widget1->setObjects(objs);
-        widget1->setTracks(in.getTracks());
+//        widget1->setTracks(in.getTracks());
         /**********start*******************/
         t3=clock();
         /**********end*******************/
@@ -2486,7 +2508,7 @@ t2=clock();
         //widget2->setPano(mat);
         widget2->setMat(mat4);
         widget2->setObjects(objs);
-        widget2->setTracks(in.getTracks());
+//        widget2->setTracks(in.getTracks());
         widget2->draw();
 
         //qDebug()<<s2;
@@ -2626,15 +2648,15 @@ t2=clock();
         //         lights[3]->setPixmap(fitpixmap2);
         //         lights[4]->setPixmap(fitpixmap2);
         //    }
-    }
-    else{
-        //QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
-        this->selfTimerout();
-    }
+//    }
+//    else{
+//        //QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
+//        this->selfTimerout();
+//    }
     /**************start******************/
     t5=clock();
     FILE *pFile=fopen("check_time.txt","a+");
-    fprintf(pFile,"socket time is %d\n",t2-t1);
+//    fprintf(pFile,"socket time is %d\n",t2-t1);
     fprintf(pFile,"total  time is %d\n\n",t5-t1);
 
     fclose(pFile);

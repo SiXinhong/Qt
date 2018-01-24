@@ -72,6 +72,7 @@ class MainWindow;
 #include "monitor.h"
 #include "alert.h"
 #include "sensitivity.h"
+#include "interfacethread.h"
 using namespace cv;
 using namespace std;
 
@@ -83,6 +84,8 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+private:
+    InterfaceThread inThread;//private权限，不让backwindow使用
 public slots:
   void onTimerOut();
   virtual void onTimerOut2();
@@ -281,7 +284,7 @@ public:
      QGridLayout *gridlayout;
 
      //----------------以下为临时性变量-----------------
-     MyInterface in;
+     //MyInterface in;
      Mat image11;
      //动图需要的变量
      vector<Rectan> rectans1;

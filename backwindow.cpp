@@ -235,7 +235,7 @@ void BackWindow::selfTimerout(){
 
    //vector<MyObject> objs = in.getObjs();
 
-   vector<MyObjectTrack> tracks = in.getTracks();
+//   vector<MyObjectTrack> tracks = in.getTracks();
    if(this->isPseudo==true)
                        mat=setPseudocolor(mat);
        updateBright(mat);
@@ -251,28 +251,28 @@ void BackWindow::selfTimerout(){
        //cv::cvtColor(mat, mat, CV_BGR2RGB);
 
        //画轨迹
-       if(isMubiao){
-       for(int ii = 0; ii < tracks.size(); ii++){
-           MyObjectTrack track = tracks[ii];
-           int id = track.getId();
-           vector<Point> points = track.getTrack();
-           if(id == obj.getID()){
-               for(int iii = 0; iii < points.size(); iii++){
-                   Point point = points[iii];
-                   Point point2 = Point(point.x+pano.cols, point.y);
-                   circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                   circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                   if(iii >= 1){
-                       Point point3 = points[iii-1];
-                       Point point4 = Point(point3.x+pano.cols, point3.y);
-                       line(mat,point,point3,obj.getColor(),1,8,0);
-                       line(mat,point2,point4,obj.getColor(),1,8,0);
-                   }
-                   //cv::cvtColor(mat, mat, CV_BGR2RGB);
-               }
-           }
-       }
-}
+//       if(isMubiao){
+//       for(int ii = 0; ii < tracks.size(); ii++){
+//           MyObjectTrack track = tracks[ii];
+//           int id = track.getId();
+//           vector<Point> points = track.getTrack();
+//           if(id == obj.getID()){
+//               for(int iii = 0; iii < points.size(); iii++){
+//                   Point point = points[iii];
+//                   Point point2 = Point(point.x+pano.cols, point.y);
+//                   circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                   circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
+//                   if(iii >= 1){
+//                       Point point3 = points[iii-1];
+//                       Point point4 = Point(point3.x+pano.cols, point3.y);
+//                       line(mat,point,point3,obj.getColor(),1,8,0);
+//                       line(mat,point2,point4,obj.getColor(),1,8,0);
+//                   }
+//                   //cv::cvtColor(mat, mat, CV_BGR2RGB);
+//               }
+//           }
+//       }
+//}
        //qDebug()<<"huifang55555";
        //画对象中心点的位置
        if(isMubiao){
@@ -331,7 +331,7 @@ void BackWindow::selfTimerout(){
    widget1->setMat(mat1);
    widget1->setPano(newpano);
    widget1->setObjects(objs);
-   widget1->setTracks(in.getTracks());
+//   widget1->setTracks(in.getTracks());
    widget1->draw();
  //qDebug()<<"huifang6666";
    //qDebug()<<s1;
@@ -353,7 +353,7 @@ void BackWindow::selfTimerout(){
    widget1->setPano(newpano);
    widget2->setMat(mat2);
    widget2->setObjects(objs);
-   widget2->setTracks(in.getTracks());
+//   widget2->setTracks(in.getTracks());
    widget2->draw();
    //qDebug()<<s2;
    //drawUiLabel(mat2,2);
@@ -362,7 +362,7 @@ void BackWindow::selfTimerout(){
    widget3->setPano(newpano);
    widget3->setTwoPanos(mat);
    //widget3->setPano(mat);
-   widget3->setAllObjects(in.getObjs2());
+   widget3->setAllObjects(objs);
    widget3->draw();
    //drawUiLabelByCopy(mat3,3);
    //图片4
@@ -371,7 +371,7 @@ void BackWindow::selfTimerout(){
    //widget4->setPano(mat);
    widget4->setPano(newpano);
    widget4->setTwoPanos(mat);
-   widget4->setAllObjects(in.getObjs2());
+   widget4->setAllObjects(objs);
    widget4->draw();
    //图片5
    //QString imageurl5=in.getHD();
