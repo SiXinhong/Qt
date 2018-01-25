@@ -623,6 +623,8 @@ void Monitor::inPri(){
 
 //      stackedLayout->setCurrentIndex(index);
     }
+
+    mw->writeRgs();
 }
 
 void Monitor::dePri(){
@@ -643,6 +645,7 @@ void Monitor::dePri(){
         }
         listWidget->setCurrentRow(index+1);
     }
+    mw->writeRgs();
 }
 
 void Monitor::deleteRegionG(){
@@ -664,7 +667,7 @@ void Monitor::deleteRegionG(){
     hourWidget->repaint();
 
     stackedLayout->setCurrentIndex(index);
-
+    mw->writeRgs();
 }
 
 void Monitor::addRegionID(){

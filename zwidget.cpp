@@ -902,7 +902,7 @@ void ZWidget::CompleteRGDefining(){
 //       }
 //   }
 
-
+    mw->writeRgs();
 }
 
 void ZWidget::mouseDoubleClickEvent(QMouseEvent *e){

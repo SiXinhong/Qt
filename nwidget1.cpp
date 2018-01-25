@@ -728,7 +728,7 @@ void NWidget1::CompleteRGDefining(){
        mw->rgsIndex = mw->rgs.size()-1;
    }
 
-
+    mw->writeRgs();
 }
 
 void NWidget1::mousePressEvent(QMouseEvent *e){
