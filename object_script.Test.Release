@@ -30,6 +30,8 @@ INPUT(
 ./release\configuration.o
 ./release\hourwidget.o
 ./release\sensitivity.o
+./release\interfacethread.o
+./release\storethread.o
 ./release\moc_mainwindow.o
 ./release\moc_mylabel.o
 ./release\moc_zwidget.o

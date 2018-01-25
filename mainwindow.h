@@ -73,6 +73,7 @@ class MainWindow;
 #include "alert.h"
 #include "sensitivity.h"
 #include "interfacethread.h"
+#include "storethread.h"
 using namespace cv;
 using namespace std;
 
@@ -86,13 +87,15 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 private:
     InterfaceThread inThread;//private权限，不让backwindow使用
+    //序列化多线程
+    StoreThread *storeThread;
 public slots:
   void onTimerOut();
   virtual void onTimerOut2();
   void onAlertTimer();
     
 public:
-
+Mat mainPano;
   //灵敏度调节
    Sensitivity *senAdjust;
     bool isSensi;
@@ -210,8 +213,8 @@ public:
     //判断目录所占大小
     QString memoryUnit;
 
-    int unitSize;
-    int getMemory(const  QString  &path);
+    long long unitSize;
+    long long getMemory(const  QString  &path);
     void removeFile(const  QString  &path);
 
     //记录工作日志
@@ -222,7 +225,7 @@ public:
     //启动还是停止
     boolean isQidong;
     //暂停还是继续
-    boolean isJixu;
+    volatile boolean isJixu;
     //告警启动还是关闭
     boolean isGaojing;
     //声音打开还是关闭
@@ -335,10 +338,10 @@ protected:
      void jinProcessing();
 
      //自定义接口定时器
-     virtual void selfTimerout();
+     void selfTimerout();
 
      //与金老师接口的定时器处理
-     void jinTimerout();
+     virtual void jinTimerout();
      //处理告警
      void alertProcessing(vector<MyObject> objs);
 

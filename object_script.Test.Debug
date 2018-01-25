@@ -30,6 +30,8 @@ INPUT(
 ./debug\configuration.o
 ./debug\hourwidget.o
 ./debug\sensitivity.o
+./debug\interfacethread.o
+./debug\storethread.o
 ./debug\moc_mainwindow.o
 ./debug\moc_mylabel.o
 ./debug\moc_zwidget.o

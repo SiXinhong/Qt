@@ -523,14 +523,27 @@ void NWidget1::DefineRect(){
 }
 
 void NWidget1::ZoomInitial(){
-    rect.width=352;
-    rect.height = 160;
+//    rect.width=352;
+//    rect.height = 160;
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    rect.height = mw->widget1->mat.rows/2;
+    rect.width = rect.height * this->width() / this->height();
+    adjustRect(x,y);
+    if(mw->widget1->isTo4)
+        mw->widget1->rectan4 = rect;
+    else
+        mw->widget2->rectan4 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
+
 }
 
 void NWidget1::ZoomIn(){
     qDebug()<<"n1widget:zoomin";
     qDebug()<<"rect.width:"<<rect.width;
     qDebug()<<"rect.height:"<<rect.height;
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
 ////    if(this->rect.x + 1/8 * this->rect.width >= 0){
 //        this->rect.x = this->rect.x + 1/8 * this->rect.width;
 //        this->rect.width = this->rect.width *3/4;
@@ -548,9 +561,17 @@ void NWidget1::ZoomIn(){
         //this->rect.y = this->rect.y + this->rect.height/8;
         this->rect.height = this->rect.height *3/4;
     }
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    adjustRect(x,y);
+    if(mw->widget1->isTo4)
+        mw->widget1->rectan4 = rect;
+    else
+        mw->widget2->rectan4 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
 }
 
 void NWidget1::ZoomOut(){
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     //if(this->rect.height < mw->widget1->height()){
          if(this->rect.width < 594){
@@ -563,13 +584,14 @@ void NWidget1::ZoomOut(){
         //        this->rect.height = this->rect.height *4/3;
         //    }
 
-        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
-            //this->rect.x = this->rect.x - this->rect.width/6;
-            this->rect.width = this->rect.width *4/3;
-        }
-        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+//        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
+//            //this->rect.x = this->rect.x - this->rect.width/6;
+//            this->rect.width = this->rect.width *4/3;
+//        }
+        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.height *4/3 < pano.rows)){
             //this->rect.y = this->rect.y - this->rect.height/6;
             this->rect.height = this->rect.height *4/3;
+            this->rect.width = this->rect.width *4/3;
         }
         qDebug()<<"IF  zoomOUT";
 
@@ -577,7 +599,11 @@ void NWidget1::ZoomOut(){
 
     qDebug()<<" rect:"<<this->rect.height;
     //qDebug()<<" w1 hei:"<<mw->widget1->height();
-
+    adjustRect(x,y);
+    if(mw->widget1->isTo4)
+        mw->widget1->rectan4 = rect;
+    else
+        mw->widget2->rectan4 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
 }
 
 
@@ -963,4 +989,20 @@ int NWidget1::convertToOriginWidth(int width){
 int NWidget1::convertToOriginHeight(int height){
     double ratio = ((double)realRect.height)/mat.rows;
     return height*ratio;
+}
+
+void NWidget1::adjustRect(int x,int y){
+    rect.x = x-rect.width/2;
+    if(rect.x < 0){
+        rect.x += pano.cols;
+    }
+
+    rect.y = y -rect.height/2;
+    if(rect.y < 0){
+        rect.y = 0;
+    }
+    if(rect.y + rect.height > pano.rows){
+        rect.y = pano.rows - rect.height;
+    }
+
 }

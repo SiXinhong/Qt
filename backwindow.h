@@ -11,7 +11,7 @@ public:
     BackWindow();
     ~BackWindow();
     BackWindow(QDate date,QTime start,QTime stop);
-    void selfTimerout();
+    void jinTimerout();
     QDate date;
     QTime start;
     QTime stop;

@@ -684,8 +684,18 @@ void ZWidget::draw(){
 }
 
 void ZWidget::ZoomInitial(){
-    rect.width=1485;
-    rect.height = 320;
+//    rect.width=1485;
+//    rect.height = 320;
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    rect.height = mw->widget1->mat.rows;
+    rect.width = rect.height * this->width() / this->height();
+    adjustRect(x,y);
+    if(mw->widget1->isTo3)
+        mw->widget1->rectan3 = rect;
+    else
+        mw->widget2->rectan3 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
 }
 
 void ZWidget::ZoomIn(){
@@ -693,6 +703,9 @@ void ZWidget::ZoomIn(){
     qDebug()<<"rect.width:"<<rect.width;
     qDebug()<<"rect.height:"<<rect.height;
 
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
     if(/*this->rect.x + this->rect.width/8 <= pano.cols && */this->rect.width*3/4>0){
         //this->rect.x = this->rect.x + this->rect.width/8;
         this->rect.width = this->rect.width *3/4;
@@ -702,25 +715,39 @@ void ZWidget::ZoomIn(){
         this->rect.height = this->rect.height *3/4;
     }
 
-    rect.x= rect.x+1/3*rect.width;
-    rect.y=rect.y+1/3*rect.width;
+//    rect.x= rect.x+1/3*rect.width;
+//    rect.y=rect.y+1/3*rect.width;
 
-    //qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
+    adjustRect(x,y);
+    if(mw->widget1->isTo3)
+        mw->widget1->rectan3 = rect;
+    else
+        mw->widget2->rectan3 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
+
+//    qDebug()<<"zwidget.zoomin.x:"<<this->rect.x<<"y:"<<this->rect.y<<"h:"<<this->rect.height<<"w:"<<this->rect.width;
 }
 
 void ZWidget::ZoomOut(){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    if(this->rect.height<mw->widget1->height()){
-        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.x + this->rect.width *4/3 < pano.cols)){
-            //this->rect.x = this->rect.x - this->rect.width/6;
-            this->rect.width = this->rect.width *4/3;
-        }
-        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.y + this->rect.height *4/3 < pano.rows)){
+    int x = rect.x + rect.width/2;
+    int y = rect.y + rect.height/2;
+//        if(/*(this->rect.x - this->rect.width/6 >= 0)&&*/(this->rect.width *4/3 < pano.cols)){
+//            //this->rect.x = this->rect.x - this->rect.width/6;
+//            this->rect.width = this->rect.width *4/3;
+//        }
+        if(/*(this->rect.y - 1/6 * this->rect.height >= 0)&&*/(this->rect.height *4/3 < pano.rows)){
             //this->rect.y = this->rect.y - this->rect.height/6;
             this->rect.height = this->rect.height *4/3;
+            this->rect.width = this->rect.width *4/3;
         }
         qDebug()<<rect.x<<","<<rect.y<<"width:"<<rect.width<<"heigth"<<rect.height;
-    }
+
+
+    adjustRect(x,y);
+    if(mw->widget1->isTo3)
+        mw->widget1->rectan3 = rect;
+    else
+        mw->widget2->rectan3 = Rect(rect.x-pano.cols/2,rect.y,rect.width,rect.height);
     //qDebug()<<"rect:x="<<rect.x<<",y="<<rect.y<<",width="<<rect.width<<",height="<<rect.height;
 }
 
@@ -1146,3 +1173,18 @@ int ZWidget::convertToOriginHeight(int height){
 }
 
 
+void ZWidget::adjustRect(int x,int y){
+    rect.x = x-rect.width/2;
+    if(rect.x < 0){
+        rect.x += pano.cols;
+    }
+
+    rect.y = y -rect.height/2;
+    if(rect.y < 0){
+        rect.y = 0;
+    }
+    if(rect.y + rect.height > pano.rows){
+        rect.y = pano.rows - rect.height;
+    }
+
+}

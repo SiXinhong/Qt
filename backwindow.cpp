@@ -4,6 +4,7 @@
 #include <map>
 #include "myobject.h"
 #include<QTimer>
+#include <QThread>
 BackWindow::BackWindow():MainWindow()
 {
     setWindowTitle("回放");
@@ -48,6 +49,22 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     this->stop=stop;
     this->date=date;
 
+    this->isJixu=true;
+    this->jinTimerout();
+    this->isJixu=false;
+
+    QThread *thread = new QThread();
+
+    connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()),Qt::DirectConnection);
+    connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()),Qt::DirectConnection);
+    connect(timerFlash, SIGNAL(timeout()), SLOT(flash()),Qt::DirectConnection);
+    timer->start();
+    timer->moveToThread(thread);
+    timerSysTime->start();
+    timerSysTime->moveToThread(thread);
+    timerFlash->start();
+    timerFlash->moveToThread(thread);
+    thread->start();
     //qDebug()<<"huifang1111111111111111111111";
 }
 BackWindow::~BackWindow()
@@ -59,7 +76,8 @@ BackWindow::~BackWindow()
         delete iter->second;
     }
 }
-void BackWindow::selfTimerout(){
+void BackWindow::jinTimerout(){
+    qDebug()<<"11111111111111111111111111111backwindow!!!!"<<QThread::currentThreadId();
     //qDebug()<<"huifangself11111";
     timerFlash->stop();
      //qDebug()<<"huifangself2222";
@@ -106,6 +124,8 @@ void BackWindow::selfTimerout(){
     Mat pano;
     if(panoIndex<filepano->count()){
         QFile file(filepano->at(panoIndex).filePath());
+        if(!file.exists())
+            return;
             //qDebug()<<filepano->at(fileIndex).filePath();
             file.open(QIODevice::ReadOnly);
             QDataStream din(&file);
@@ -377,10 +397,12 @@ void BackWindow::selfTimerout(){
    //QString imageurl5=in.getHD();
    //Mat mat5 =imread(imageurl5.toStdString());
    //widget5->setMat(mat5);
-//   widget5->setPano(newpano);
-//   //widget5->setPano(in.getPano());
-//   widget5->setObjects(objs);
-//   widget5->draw();
+   QString imageurl5="./0.png";//in.getHD();
+   Mat mat5 =imread(imageurl5.toStdString());
+   widget5->setMat(mat5);
+   widget5->setPano(newpano);
+   widget5->setObjects(objs);
+   widget5->draw();
    //drawUiLabel(mat5,5);
    //图片6
    //QString imageurl6= in.getLD();

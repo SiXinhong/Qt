@@ -35,6 +35,7 @@ private:
     int convertToOriginY(int y);
     int convertToOriginWidth(int width);
     int convertToOriginHeight(int height);
+    void adjustRect(int x,int y);
 public:
    // bool completeRDefine;
     bool isGaojing;
