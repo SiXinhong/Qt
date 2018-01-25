@@ -356,8 +356,9 @@ MainWindow::~MainWindow(){
 void MainWindow::alertProcessing(vector<MyObject> os){
     //qDebug()<<"rgs size:"<<this->rgs.size()<<",objs size:"<<os.size();
     QString group;
+     boolean alert = false;
     if(isGaojing){
-        boolean alert = false;
+//        boolean alert = false;
         for(int i = 0; i < os.size(); i++){
             MyObject mo = os[i];
             for(int j = 0; j < this->rgs.size(); j++){
@@ -378,6 +379,17 @@ void MainWindow::alertProcessing(vector<MyObject> os){
             }
         }
     }
+
+    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+    //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    if(alert){
+        light->setIcon(pixmap1);
+    }else{
+        //light->setIcon(pixmap2);
+    }
+
     //        if(alert)
     //            QMessageBox::information(this,tr("告警"),QString("有目标进入监控区域组").append(group).append(" !"));
     //    }
@@ -1549,15 +1561,15 @@ void MainWindow::addMyToolBar()
     //    vbox5->addWidget(new QLabel(" "));
 
     // 灯
-    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+   // QPixmap pixmap1("./iconUpdate/报警灯-红.png");
     QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
     //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     light = new QToolButton(this);
-    if(isGaojing){
-        light->setIcon(pixmap1);
-    }else
+//    if(isGaojing){
+//        light->setIcon(pixmap1);
+//    }else
         light->setIcon(pixmap2);
     light->setIconSize(QSize(buttonSize,buttonSize));
     connect(light,SIGNAL(clicked()),this,SLOT(alertInformation()));
@@ -4304,18 +4316,18 @@ void MainWindow::manualFunction()
 void MainWindow::openCloseFunction()
 {
     isGaojing = !isGaojing;
-    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
-    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+//    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+//    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
     QPixmap pixmap3("./iconUpdate/自动探测.png");
     QPixmap pixmap4("./iconUpdate/自动探测off.png");
     //      fitpixmap1=pixmap1.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     //      fitpixmap2=pixmap2.scaled(buttonSize,buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 
     if(isGaojing){
-        light->setIcon(pixmap1);
+        //light->setIcon(pixmap1);
         openClose->setIcon(pixmap3);
     }else{
-        light->setIcon(pixmap2);
+        //light->setIcon(pixmap2);
         openClose->setIcon(pixmap4);
     }
     //    QDesktopWidget* desktopWidget = QApplication::desktop();

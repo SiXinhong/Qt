@@ -122,19 +122,20 @@ void NWidget2::contextMenuEvent(QContextMenuEvent *){
     QMenu *menu=new QMenu(this);
 
       menu->setStyleSheet(QString::fromUtf8("border:0px"));
-    menu->addAction(Yuan_Xuanze); //添加菜单项1
-    menu->addAction(Wu_Bianxing); //添加菜单项1
-    menu->addSeparator();
+    //menu->addAction(Yuan_Xuanze); //添加菜单项1
+    //menu->addAction(Wu_Bianxing); //添加菜单项1
+    //menu->addSeparator();
     menu->addAction(Define_Rect);
     menu->addAction(Define_Poly);
     menu->addSeparator();
     menu->addAction(Cancel_RDefining);
     menu->addAction(Cancel_RGDefining);
+    menu->addSeparator();
     menu->addAction(Complete_RDefining);
     menu->addAction(Complete_RGDefining);
     menu->addSeparator();
-    menu->addAction(Zoom_In);
-    menu->addAction(Zoom_Out);
+    //menu->addAction(Zoom_In);
+    //menu->addAction(Zoom_Out);
     menu->exec(cur.pos()); //关联到光标
 }
 
