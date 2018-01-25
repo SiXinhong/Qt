@@ -9,7 +9,9 @@ TrackBar::TrackBar(Configuration *configuration):QWidget(configuration)
     this->configuration=configuration;
     this->setMinimumSize(280,40);
     this->setMaximumSize(280,40);
-    this->position=100;//竖线的位置，标识亮度的数值
+    //this->position=100;//竖线的位置，标识亮度的数值
+    this->position = Configuration::bright;
+    //this->position = configuration->bright;
     this->mousedown=false;//为了实现拖动效果，先判断是否点下了鼠标，然后鼠标移动才有效
 }
 
@@ -25,6 +27,8 @@ void TrackBar:: mouseReleaseEvent(QMouseEvent *event){
     update();//触发重绘操作，生成paintEvent事件
     deta = position*5-500;
     configuration->adjustment();
+    //configuration->bright=position;
+    Configuration::bright = position;
 //    mainWindow->bright_TrackbarValue=position;
 //    mainWindow->adjustment();
 }

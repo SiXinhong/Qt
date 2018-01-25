@@ -95,7 +95,11 @@ public slots:
   void onAlertTimer();
     
 public:
-Mat mainPano;
+
+  //判断监控区域见面是否进入
+  bool isOpenMonitor;
+
+    Mat mainPano;
   //灵敏度调节
    Sensitivity *senAdjust;
     bool isSensi;

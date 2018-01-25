@@ -6,6 +6,9 @@ extern double deta;
 
 int text;
 
+int Configuration::bright = 0;
+int Configuration::contrast = 0;
+int Configuration::defaultAngle = 0;
 Configuration::Configuration(MainWindow *mw)
 {
     this->mw = mw;
@@ -50,6 +53,7 @@ Configuration::Configuration(MainWindow *mw)
     }
     this->isStartMw = false;
   // MySocketInitial();
+
 }
 
 void Configuration::configure(){
@@ -93,7 +97,7 @@ void Configuration::buildCenWidgetCamera(){
 
     QLabel *input = new QLabel("输入俯仰角度（范围：140万-166万）:",cenWidgetCamera);
 
-    QLineEdit *angle = new QLineEdit();
+    QLineEdit *angle = new QLineEdit(QString::number(defaultAngle));
     connect(angle,SIGNAL(textEdited(QString)),this,SLOT(textChange(QString)));
     //connect(angle,SIGNAL(editingFinished()),this,SLOT(returnPressed()));
     angle->setValidator(new QIntValidator(1400000,1660000,this));
@@ -391,9 +395,10 @@ void Configuration::zhanModify(){
 
     if(mw->zhanweiLabel==NULL){
         MainWindow::zhanweiName = newName;
-    }else
+    }else{
         mw->zhanweiLabel->setText(newName);
-
+        //MainWindow::zhanweiName = newName;
+    }
 }
 void Configuration::setCameraMat(Mat mat){
     QImage image;
@@ -445,7 +450,8 @@ void Configuration::adjustment(){
 }
 
 void Configuration::closeEvent(QCloseEvent *event){
-    //END();
+        writeCon();
+
 }
 
 void Configuration::sureF(){
@@ -515,3 +521,35 @@ void Configuration::buildCenWidgetFront(){
 
     //this->setMenuWidget(frontWidget);
 }
+
+void Configuration::writeCon(){
+    QFile file(QString("./config/Configuration.config"));
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);
+
+    out<<text;
+    out<<contrast;
+    out<<bright;
+//    out<<MainWindow::zhanweiName;
+
+    file.flush();
+    file.close();
+}
+
+void Configuration::readCon(){
+    QFile file(QString("./config/Configuration.config"));
+    if(!file.exists()){
+        return;
+    }
+
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);
+    in>>defaultAngle;
+    in>>contrast;
+    in>>bright;
+//    in>>MainWindow::zhanweiName;
+
+    file.close();
+}
+
+

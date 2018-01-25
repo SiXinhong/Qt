@@ -685,3 +685,7 @@ void Monitor::addRegionID(){
         button->setText("增加标签");
     }
 }
+
+void Monitor::closeEvent(QCloseEvent *event){
+    mw->isOpenMonitor = false;
+}

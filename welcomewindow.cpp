@@ -83,6 +83,7 @@ void WelcomeWindow::exitClicked(){
 void WelcomeWindow::loginClicked(){
     if(!start){
          //mainwindow->init();
+        mainwindow->configure->readCon();
         mainwindow->configurationClicked();
          start =true;
     }

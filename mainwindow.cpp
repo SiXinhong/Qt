@@ -98,7 +98,7 @@ void MainWindow::init(){
     }
     alert = 0;
     monitor = 0;
-
+    isOpenMonitor = false;
     this->setWindowTitle("红外全景控制系统");
     location = false;
     directory = new QDir();
@@ -4666,6 +4666,7 @@ void MainWindow::saveconfigurationClicked(){
 
 void MainWindow::regionClicked(){
     isDefiningRegion = true;
+
     if(monitor == NULL){
         monitor = new Monitor(this);
     }
@@ -4683,6 +4684,7 @@ void MainWindow::regionClicked(){
 //    qDebug()<<"monitor main width"<<monitor->geometry().width();
 //    qDebug()<<"monitor main height"<<monitor->geometry().height();
     // QMessageBox::information(this,tr("创建或编辑区域菜单项"),tr("在告警区域的设置窗口中，完成对应的设置以后，包括分组、组颜色、等级等，在条带显示区和主显示区完成告警区域的实际绘制，支持两种形状：矩形和不规则多边形。并实现告警区域的保存。继续努力。"));
+    isOpenMonitor = true;
 }
 
 void MainWindow::figureClicked(){

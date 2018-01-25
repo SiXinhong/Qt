@@ -107,25 +107,27 @@ void ZWidget::Wubianxing(){
 }
 
 void ZWidget::contextMenuEvent(QContextMenuEvent *){
-
-    QCursor cur=this->cursor();
-    QMenu *menu=new QMenu(this);
-     menu->setStyleSheet(QString::fromUtf8("border:0px"));
-    //menu->addAction(Yuan_Xuanze); //添加菜单项1
-    //menu->addAction(Wu_Bianxing); //添加菜单项1
-    //menu->addSeparator();
-    menu->addAction(Define_Rect);
-    menu->addAction(Define_Poly);
-    menu->addSeparator();
-    menu->addAction(Cancel_RDefining);
-    menu->addAction(Cancel_RGDefining);
-    menu->addSeparator();
-    menu->addAction(Complete_RDefining);
-    menu->addAction(Complete_RGDefining);
-    menu->addSeparator();
-    //menu->addAction(Zoom_In);
-    //menu->addAction(Zoom_Out);
-    menu->exec(cur.pos()); //关联到光标
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+    if(mw->isOpenMonitor){
+        QCursor cur=this->cursor();
+        QMenu *menu=new QMenu(this);
+        menu->setStyleSheet(QString::fromUtf8("border:0px"));
+        //menu->addAction(Yuan_Xuanze); //添加菜单项1
+        //menu->addAction(Wu_Bianxing); //添加菜单项1
+        //menu->addSeparator();
+        menu->addAction(Define_Rect);
+        menu->addAction(Define_Poly);
+        menu->addSeparator();
+        menu->addAction(Cancel_RDefining);
+        menu->addAction(Cancel_RGDefining);
+        menu->addSeparator();
+        menu->addAction(Complete_RDefining);
+        menu->addAction(Complete_RGDefining);
+        menu->addSeparator();
+        //menu->addAction(Zoom_In);
+        //menu->addAction(Zoom_Out);
+        menu->exec(cur.pos()); //关联到光标
+    }
 }
 
 //实现目标的跟踪，因为不同的目标的运动速度不同，所以原先设定的选择框需要动态调整

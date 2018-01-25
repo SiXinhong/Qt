@@ -39,7 +39,7 @@ public:
     void onSelectTime();
     HourWidget *hourWidget;
 
-
+    void closeEvent(QCloseEvent *event);
 
 private:
     //QToolBar *mainToolBar;

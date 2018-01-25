@@ -68,6 +68,16 @@ QWidget *frontWidget;
 void buildCenWidgetFront();
 
 
+    //存取配置数据
+    void writeCon();
+    void readCon();
+    static int bright;
+    static int contrast;
+    static int defaultAngle;
+
+//    int bright;
+//    int contrast;
+//    int defaultAngle;
 
 public slots:
     void startF();

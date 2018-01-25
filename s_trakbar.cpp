@@ -11,7 +11,8 @@ STrackBar::STrackBar(Configuration *configuration):QWidget(configuration)
    this->configuration = configuration;
     this->setFixedHeight(40);
     this->setFixedWidth(280);
-    this->position=0;//竖线的位置，标识亮度的数值
+    //this->position=0;//竖线的位置，标识亮度的数值
+    this->position = Configuration::contrast;
     this->mousedown=false;//为了实现拖动效果，先判断是否点下了鼠标，然后鼠标移动才有效
 }
 
@@ -27,6 +28,8 @@ void STrackBar:: mouseReleaseEvent(QMouseEvent *event){
     update();//触发重绘操作，生成paintEvent事件
     coeffient = position/100;
     configuration->adjustment();
+    //configuration->contrast = position;
+    Configuration::contrast = position;
 //    mainWindow->alpha_contrast=position;
 //    mainWindow->adjustment();
 
