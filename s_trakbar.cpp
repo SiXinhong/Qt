@@ -40,7 +40,7 @@ void STrackBar::paintEvent(QPaintEvent *){
     p.drawLine(QPoint(5,20),QPoint(200,20));//中间的横线
     p.setPen(QPen(Qt::lightGray, 5));
     p.drawLine(QPoint(position+5,10),QPoint(position+5,30));//竖线，标识亮度数值的位置
-    p.drawText(215,25,QString::number(position/100));
+    p.drawText(215,25,QString::number(position/100.0));
 }
 void STrackBar:: mousePressEvent(QMouseEvent *){
     this->mousedown=true;//鼠标按下，之后鼠标移动操作产生拖动效果

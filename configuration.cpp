@@ -7,7 +7,7 @@ extern double deta;
 int text;
 
 int Configuration::bright = 0;
-int Configuration::contrast = 0;
+float Configuration::contrast = 0;
 int Configuration::defaultAngle = 0;
 Configuration::Configuration(MainWindow *mw)
 {
@@ -530,7 +530,7 @@ void Configuration::writeCon(){
     out<<text;
     out<<contrast;
     out<<bright;
-//    out<<MainWindow::zhanweiName;
+    out<<MainWindow::zhanweiName;
 
     file.flush();
     file.close();
@@ -547,7 +547,7 @@ void Configuration::readCon(){
     in>>defaultAngle;
     in>>contrast;
     in>>bright;
-//    in>>MainWindow::zhanweiName;
+    in>>MainWindow::zhanweiName;
 
     file.close();
 }

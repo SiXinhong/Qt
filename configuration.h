@@ -72,7 +72,7 @@ void buildCenWidgetFront();
     void writeCon();
     void readCon();
     static int bright;
-    static int contrast;
+    static float contrast;
     static int defaultAngle;
 
 //    int bright;
