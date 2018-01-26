@@ -1125,9 +1125,10 @@ double ZWidget::getDirectionX2(){
 
 double ZWidget::getDirectionY2(){
 
-    double yy = 10;
+    double yy = 640;
     double y = this->rect.y+this->rect.height;
-    return 10-yy*y/pano.rows;
+    //return 10-yy*y/pano.rows;
+    return yy*y/pano.rows;
 
 }
 

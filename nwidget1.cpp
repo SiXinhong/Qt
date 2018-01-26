@@ -948,7 +948,7 @@ double NWidget1::getDirectionX2(){
 
 double NWidget1::getDirectionY2(){
 
-    double yy = 20;
+    double yy = 640;
     double y = this->rect.y+this->rect.height;
     return yy*y/pano.rows;
 
