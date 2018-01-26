@@ -112,6 +112,10 @@ void MainWindow::init(){
     color = 0;
     //saturation1 = 100;
     //hsl=new HSL();
+
+    isBright = false;
+    isContrast = false;
+
     bright_TrackbarValue=0;
     alpha_contrast = 100;
     //objectAttributes = new QLabel();
@@ -2331,10 +2335,10 @@ t2=clock();
 //        }
 
         //vector<MyObjectTrack> tracks = in.getTracks();
-//       if(this->isPseudo==true)
-//           mat=setPseudocolor(mat);
-//        updateBright(mat);
-///        updateContrast(mat);
+       if(this->isPseudo==true)
+           mat=setPseudocolor(mat);
+        updateBright(mat);
+        updateContrast(mat);
 
 
         if(isMubiao){
@@ -4074,6 +4078,8 @@ void MainWindow::chexiaoFunction(){
 //自动
 void MainWindow::automFunction()
 {
+    isBright = false;
+    isContrast = false;
     bright_TrackbarValue = 0;
     alpha_contrast = 100;
 //    trackBar->setPosition(0);
@@ -4084,6 +4090,8 @@ void MainWindow::automFunction()
 }
 void MainWindow::updateBright(Mat &mat1 )
 {
+    if(!isBright)
+        return;
     for (int y = 0; y <mat1.rows; y++)
     {
         for (int x = 0; x < mat1.cols; x++)
@@ -4103,8 +4111,12 @@ void MainWindow::updateBright(Mat &mat1 )
 //增加亮度
 void MainWindow::addBrightnessFunction()
 {
+    isBright = true;
     bright_TrackbarValue+=20;
-    adjustment();
+    //adjustment();
+    if(0 == bright_TrackbarValue ){
+        isBright = false;
+    }
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     // trackBar->setWindowTitle("亮度");
     //trackBar->show();
@@ -4126,8 +4138,12 @@ void MainWindow::addBrightnessFunction()
 //降低亮度
 void MainWindow::reduceBrightnessFunction()
 {
+    isBright = true;
     bright_TrackbarValue-=20;
-    adjustment();
+    if(0 == bright_TrackbarValue ){
+        isBright = false;
+    }
+    //adjustment();
     //    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    trackBar->setWindowTitle("亮度");
     //    trackBar->show();
@@ -4147,6 +4163,9 @@ void MainWindow::reduceBrightnessFunction()
 }
 
 void MainWindow::updateContrast(Mat &mat1){
+    if(!isContrast)
+        return;
+
     for (int y = 0; y < mat1.rows; y++)
     {
         for (int x = 0; x < mat1.cols; x++)
@@ -4169,8 +4188,12 @@ void MainWindow::updateContrast(Mat &mat1){
 //增加对比度
 void MainWindow::addSaturationFunction()
 {
+    isContrast = true;
     alpha_contrast+=20;
-    adjustment();
+    if(100 == alpha_contrast ){
+        isContrast = false;
+    }
+    //adjustment();
     //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    strackBar->setWindowTitle("对比度");
     //    strackBar->show();
@@ -4192,8 +4215,12 @@ void MainWindow::addSaturationFunction()
 //降低对比度
 void MainWindow::reduceSaturationFunction()
 {
+    isContrast = true;
     alpha_contrast-=20;
-    adjustment();
+    if(100 == alpha_contrast ){
+        isContrast = false;
+    }
+    //adjustment();
     //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    strackBar->setWindowTitle("对比度");
     //    strackBar->show();

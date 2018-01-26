@@ -96,6 +96,12 @@ public slots:
     
 public:
 
+  //判断是否调节了图像
+  bool isBright;
+  bool isContrast;
+
+
+
   //判断监控区域见面是否进入
   bool isOpenMonitor;
 
