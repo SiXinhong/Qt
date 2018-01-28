@@ -203,7 +203,7 @@ void Configuration::buildCenWidgetSoftWare(){
 
     QVBoxLayout *zhanlayout = new QVBoxLayout(cenWidgetSoftWare);
 
-    QLabel * zhanwei = new QLabel("站位配置：",this);
+    QLabel * zhanwei = new QLabel("位置配置：",this);
     zhanlayout->addWidget(zhanwei);
 
     zhan = new QToolButton;

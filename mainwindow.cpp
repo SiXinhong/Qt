@@ -131,7 +131,7 @@ void MainWindow::init(){
     //声音打开还是关闭
     isShengyin = false;
     //目标属性是否跟随
-    isMubiao = true;
+    isMubiao = false;
     //系统编号
     //xtbh = QString("BJ036A战位");
     //-------------------------------------------------------
@@ -270,12 +270,17 @@ void MainWindow::init(){
 
     timerFlash = new QTimer();
     timerFlash->setInterval(100);
+
+    timerUpdateHWidget = new QTimer();
+    timerUpdateHWidget->setInterval(1000*60*5);//每5分钟更新一次环带视图
     if(0==backwindow){
         timer->start();
         connect(timer, SIGNAL(timeout()), SLOT(onTimerOut()));
         timerSysTime->start();
         connect(timerSysTime, SIGNAL(timeout()), SLOT(onTimerOut2()));
         connect(timerFlash, SIGNAL(timeout()), SLOT(flash()));
+        timerUpdateHWidget->start();
+        connect(timerUpdateHWidget, SIGNAL(timeout()), SLOT(updateHWidget()));
     }
 
     //创建菜单栏
@@ -318,7 +323,7 @@ void MainWindow::init(){
 //      senAdjust = new Sensitivity(this);
       isSensi =false;
       senAdjust = 0;
- qDebug()<<"ini()5";
+    qDebug()<<"ini()5";
 
     //    double x = widget5->getDirectionX(1,2);
     //    qDebug()<<x<<"getDirectionX";
@@ -439,7 +444,7 @@ void MainWindow::jinProcessing(){
         //从interfaceThread获取数据结束
         storeThread->con.wakeOne();
 
-        qDebug()<<"jinPano.x.y"<<mainPano.cols<<mainPano.rows;
+        //qDebug()<<"jinPano.x.y"<<mainPano.cols<<mainPano.rows;
         if(isJixu == true){
             QString current_time=QTime::currentTime().toString("hh-mm-ss");
             QString current_path=QString("").append(today).append("/").append(current_time).append(".pan");
@@ -464,28 +469,31 @@ void MainWindow::jinProcessing(){
         Mat mat;
         hconcat(pano1,pano2,mat);
         //画轨迹
-        if(isMubiao){
+        //if(isMubiao){
             for(int ii = 0; ii < tps.size(); ii++){
                 TrackingPoint tp = tps[ii];
                 int id = tp.id;
                 vector<Point> points = tp.track;
                 //if(id == obj.getID()){
-                    for(int iii = 0; iii < points.size(); iii++){
-                        Point point = points[iii];
-                        Point point2 = Point(point.x+mainPano.cols, point.y);
-                        //circle(mat, point, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                       // circle(mat, point2, 2, obj.getColor(),-1,8,0);//在图像中画出特征点，2是圆的半径
-                        if(iii >= 1){
-                            Point point3 = points[iii-1];
-                            Point point4 = Point(point3.x+mainPano.cols, point3.y);
-                           // line(mat,point,point3,obj.getColor(),1,8,0);
-                            //line(mat,point2,point4,obj.getColor(),1,8,0);
-                        }
-                        //cv::cvtColor(mat, mat, CV_BGR2RGB);
+                for(int iii = 0; iii < points.size(); iii++){
+                    Point point = points[iii];
+                    Point point2 = Point(point.x+mainPano.cols, point.y);
+                    //  std::cout<<"sdk point circle "<<point.x<<" "<<point.y<<std::endl;
+                    circle(mat, point, 2, Scalar(0,0,255),1,8,0);//在图像中画出特征点，2是圆的半径
+                    circle(mat, point2, 2, Scalar(0,0,255),1,8,0);//在图像中画出特征点，2是圆的半径
+                    if(iii >= 1){
+                        //std::cout<<"sdk point line "<<std::endl;
+                        Point point3 = points[iii-1];
+                       // std::cout<<"sdk point3 circle "<<point3.x<<" "<<point3.y<<std::endl;
+                        Point point4 = Point(point3.x+mainPano.cols, point3.y);
+                        line(mat,point,point3,Scalar(0,0,255),1,8,0);
+                        line(mat,point2,point4,Scalar(0,0,255),1,8,0);
                     }
+                    //cv::cvtColor(mat, mat, CV_BGR2RGB);
+                }
                 //}
             }
-        }
+        //}
         //在全景上画矩形，文字，轨迹等
 //        vector<MyObject> objs = in.getObjs();
 //        for(int i=0;i<objs.size();i++){
@@ -515,29 +523,29 @@ void MainWindow::jinProcessing(){
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
 
 
-//            //画对象中心点的位置
-//            if(isMubiao){
-//                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-//                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-//                QString tx = QString::number(x,10);
-//                QString ty = QString::number(y,10);
-//                QString tstr = "x="+tx+",y="+ty;
-//                string str = tstr.toStdString();
-//                QString idstr = "id="+QString::number(obj.getID(),10);
-//                string idst = idstr.toStdString();
-//                //qDebug()<<tstr;
-//                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-//                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+            //画对象中心点的位置
+            if(isMubiao){
+                int x = (int)(this->getDirectionX(obj.getCenPoint().x, mainPano));
+                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mainPano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+                QString tx = QString::number(x,10);
+                QString ty = QString::number(y,10);
+                QString tstr = "x="+tx+",y="+ty;
+                string str = tstr.toStdString();
+                QString idstr = "id="+QString::number(obj.getID(),10);
+                string idst = idstr.toStdString();
+                //qDebug()<<tstr;
+                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+                Point p2 = Point(obj.getRect().x+obj.getRect().width+mainPano.cols,obj.getRect().y+obj.getRect().height);
 
-//                putText(mat,str,p,3,0.5,obj.getColor());
-//                putText(mat,str,p2,3,0.5,obj.getColor());
+                putText(mat,str,p,3,0.5,obj.getColor());
+                putText(mat,str,p2,3,0.5,obj.getColor());
 
-//                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-//                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+                Point p4 = Point(obj.getRect().x+obj.getRect().width+mainPano.cols,obj.getRect().y+obj.getRect().height/3);
 
-//                putText(mat,idst,p3,3,0.5,obj.getColor());
-//                putText(mat,idst,p4,3,0.5,obj.getColor());
-//            }
+                putText(mat,idst,p3,3,0.5,obj.getColor());
+                putText(mat,idst,p4,3,0.5,obj.getColor());
+            }
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
         // cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -641,10 +649,10 @@ void MainWindow::jinProcessing(){
         widget4->setAllObjects(objs);
         widget4->draw();
         //图片5
-        widget5->setPano(mainPano);
         QString imageurl5="./0.png";//in.getHD();
         Mat mat5 =imread(imageurl5.toStdString());
         widget5->setMat(mat5);
+        widget5->setPano(mainPano);
         widget5->setObjects(objs);
         widget5->draw();
         //图片6
@@ -1143,7 +1151,7 @@ void MainWindow::addMyToolBar()
     QGroupBox *group4=new QGroupBox(this);
     //QGroupBox* group5=new QGroupBox(this);
     QGroupBox *group6=new QGroupBox(this);
-    // QGroupBox *group7=new QGroupBox(this);
+    QGroupBox *group7=new QGroupBox(this);
     QGroupBox *group8=new QGroupBox(this);
 
 
@@ -1153,8 +1161,9 @@ void MainWindow::addMyToolBar()
     QHBoxLayout *vbox4 = new QHBoxLayout;
     //QHBoxLayout *vbox5 = new QHBoxLayout;
     QHBoxLayout *vbox6 = new QHBoxLayout;
-    //  QHBoxLayout *vbox7 = new QHBoxLayout;
+    QHBoxLayout *vbox7 = new QHBoxLayout;
     QHBoxLayout *vbox8 = new QHBoxLayout;
+
 
     mainToolBar = addToolBar("monitoring");
 
@@ -1247,6 +1256,7 @@ void MainWindow::addMyToolBar()
 
 
     mainToolBar->addWidget(group1);
+    mainToolBar->addSeparator();
     //mainToolBar->addWidget(new QLabel("    "));
     //第二组按钮：图像
     //图像
@@ -1377,6 +1387,7 @@ void MainWindow::addMyToolBar()
     group2->setLayout(vbox2);
     group2->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-2.png)");
     mainToolBar->addWidget(group2);
+    mainToolBar->addSeparator();
 
     //站位
     position = new QLabel(this);
@@ -1401,6 +1412,7 @@ void MainWindow::addMyToolBar()
     group8->setLayout(vbox8);
     group8->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-3.png)");
     mainToolBar->addWidget(group8);
+    mainToolBar->addSeparator();
 
     //时间组
     currentTime = new QLabel(this);
@@ -1421,7 +1433,7 @@ void MainWindow::addMyToolBar()
     group6->setLayout(vbox6);
     group6->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-4.png)");
     mainToolBar->addWidget(group6);
-
+    mainToolBar->addSeparator();
 
     //第三组
 
@@ -1485,7 +1497,7 @@ void MainWindow::addMyToolBar()
     group3->setLayout(vbox3);
     group3->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-5.png)");
     mainToolBar->addWidget(group3);
-
+    mainToolBar->addSeparator();
     //第四组，告警
     //告警
 
@@ -1660,32 +1672,44 @@ void MainWindow::addMyToolBar()
     group4->setLayout(vbox4);
     group4->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-6.png)");
     mainToolBar->addWidget(group4);
+    mainToolBar->addSeparator();
 
     //        group5->setLayout(vbox5);
     //        mainToolBar->addWidget(group5);
 
 
     //第六组
-    //    exitButton = new QToolButton(this);
-    //    exitButton->setToolTip(tr("退出"));
-    //    exitButton->setMinimumHeight(buttonSize);
-    //    exitButton->setMaximumHeight(buttonSize);
-    //    exitButton->setMinimumWidth(buttonSize);
-    //    exitButton->setMaximumWidth(buttonSize);
-    //    exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
-    //    exitSet="./icon/18.png";
-    //    exitButton->setIcon(QPixmap(exitSet));
-    //    exitButton->setIconSize(QSize(buttonSize,buttonSize));
-    //    //mainToolBar->addWidget(exitButton);
-    //    vbox7->addWidget(exitButton);
-    //    connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
-    //    group7->setLayout(vbox7);
-    //    mainToolBar->addWidget(group7);
+        exitButton = new QToolButton(this);
+        exitButton->setToolTip(tr("退出"));
+        exitButton->setMinimumHeight(buttonSize);
+        exitButton->setMaximumHeight(buttonSize);
+        exitButton->setMinimumWidth(buttonSize);
+        exitButton->setMaximumWidth(buttonSize);
+        exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
+        exitSet="./iconUpdate/退出.png";
+        exitButton->setIcon(QPixmap(exitSet));
+        exitButton->setIconSize(QSize(buttonSize,buttonSize));
+        vbox7->addWidget(exitButton);
+        connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+        group7->setLayout(vbox7);
+        mainToolBar->addWidget(group7);
 }
 
 //获取系统当前时间定时器
 void MainWindow::onTimerOut2(){
     systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
+}
+
+void MainWindow::updateHWidget(){
+    //int v=inThread.getIntegratedData();
+    //mainPano = inThread.getPano();
+    //vector<MyObject> objs = inThread.getObjs();
+    widget5->setPano(mainPano);
+//    QString imageurl5="./0.png";//in.getHD();
+//    Mat mat5 =imread(imageurl5.toStdString());
+//    widget5->setMat(mat5);
+    //widget5->setObjects(objs);
+    widget5->draw();
 }
 
 void MainWindow::adjustment()
@@ -2235,6 +2259,7 @@ void MainWindow::selfTimerout(){
 
 //与金老师接口的定时器处理
 void MainWindow::jinTimerout(){
+if(!isDefiningRegion){
     /**********start*******************/
     clock_t t1,t2,t3,t4,t5;
     /**********end*******************/
@@ -2341,7 +2366,7 @@ t2=clock();
         updateContrast(mat);
 
 
-        if(isMubiao){
+        //if(isMubiao){
             for(int ii = 0; ii < tps.size(); ii++){
                 TrackingPoint tp = tps[ii];
                 int id = tp.id;
@@ -2365,7 +2390,7 @@ t2=clock();
                 }
                 //}
             }
-        }
+        //}
         num_objs = objs.size();
 
         for (int i = 0; i < num_objs;i++)
@@ -2407,28 +2432,28 @@ t2=clock();
 //            }
 
             //画对象中心点的位置
-//            if(isMubiao){
-//                int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
-//                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, pano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
-//                QString tx = QString::number(x,10);
-//                QString ty = QString::number(y,10);
-//                QString tstr = "x="+tx+",y="+ty;
-//                string str = tstr.toStdString();
-//                QString idstr = "id="+QString::number(obj.getID(),10);
-//                string idst = idstr.toStdString();
-//                //qDebug()<<tstr;
-//                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
-//                Point p2 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height);
+            if(isMubiao){
+                int x = (int)(this->getDirectionX(obj.getCenPoint().x, mainPano));
+                int y = (int)(10-this->getDirectionY(obj.getCenPoint().y, mainPano)/2);//(10-10*(this->getDirectionY(obj.getCenPoint().y)-this->getDirectionY())/(this->getDirectionY2()-this->getDirectionY()));//endh - i*(endh-starth)/10
+                QString tx = QString::number(x,10);
+                QString ty = QString::number(y,10);
+                QString tstr = "x="+tx+",y="+ty;
+                string str = tstr.toStdString();
+                QString idstr = "id="+QString::number(obj.getID(),10);
+                string idst = idstr.toStdString();
+                //qDebug()<<tstr;
+                Point p = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height);
+                Point p2 = Point(obj.getRect().x+obj.getRect().width+mainPano.cols,obj.getRect().y+obj.getRect().height);
 
-//                putText(mat,str,p,3,0.5,obj.getColor());
-//                putText(mat,str,p2,3,0.5,obj.getColor());
+                putText(mat,str,p,3,0.5,obj.getColor());
+                putText(mat,str,p2,3,0.5,obj.getColor());
 
-//                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
-//                Point p4 = Point(obj.getRect().x+obj.getRect().width+pano.cols,obj.getRect().y+obj.getRect().height/3);
+                Point p3 = Point(obj.getRect().x+obj.getRect().width,obj.getRect().y+obj.getRect().height/3);
+                Point p4 = Point(obj.getRect().x+obj.getRect().width+mainPano.cols,obj.getRect().y+obj.getRect().height/3);
 
-//                putText(mat,idst,p3,3,0.5,obj.getColor());
-//                putText(mat,idst,p4,3,0.5,obj.getColor());
-//            }
+                putText(mat,idst,p3,3,0.5,obj.getColor());
+                putText(mat,idst,p4,3,0.5,obj.getColor());
+            }
             // cv::cvtColor(mat, mat, CV_BGR2RGB);
         }
         //  cv::cvtColor(mat, mat, CV_BGR2RGB);
@@ -2559,7 +2584,7 @@ t2=clock();
         //QString imageurl5=in.getHD();
         //Mat mat5 =imread(imageurl5.toStdString());
         //widget5->setMat(mat5);
-        widget5->setPano(newpano);
+        //widget5->setPano(newpano);
         widget5->setObjects(objs);
         widget5->draw();
         //drawUiLabel(mat5,5);
@@ -2693,6 +2718,12 @@ t2=clock();
     printf("\t\t\t\twang time is %d\n",t5-t2);
     printf("\t\t\t\ttotal time is %d\n",t5-t1);
     /**********end*******************/
+}
+//定义监控区域的时候，停止接收图像。
+else{
+
+}
+
 }
 
 //以下处理鼠标拖拽事件，在全景显示区1或者2有选择框的情况下，从全景显示区1或者2出发，目标是主显示区，则拷贝图像到主显示区；目标是凝视显示区，则拷贝图像到凝视显示区。
@@ -3428,7 +3459,7 @@ void MainWindow::loadPictureToLabel(QLabel *label, QImage image){
 }
 
 //加载图片到Label1上
-void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
+void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs){
     //loadPictureToLabel(label,imgLabel1);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel1);
     QPainter painter(&pixmap1);
@@ -3459,6 +3490,17 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
             painter.drawLine(p1,p2);
         }
 
+        for(int i = 0; i < rgs.size(); i++){
+            vector<Point> ps2 = rgs[i].getPoly();
+            int size = ps2.size();
+            for(int ii = 0; ii < size - 1; ii++){
+                QPoint p1 = QPoint(ps2[ii].x, ps2[ii].y);
+                QPoint p2 = QPoint(ps2[ii+1].x, ps2[ii+1].y);
+                painter.drawLine(p1,p2);
+            }
+            painter.drawLine(QPoint(ps2[ps2.size()-1].x,ps2[ps2.size()-1].y), QPoint(ps2[0].x, ps2[0].y));
+        }
+
         //        if(size>2&&widget1->completeRDefine == true){
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
         //        }
@@ -3470,7 +3512,7 @@ void MainWindow::loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRe
 }
 
 //加载图片到Label2上
-void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps){
+void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs){
     //loadPictureToLabel(label2,imgLabel2);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel2);
     QPainter painter(&pixmap1);
@@ -3501,7 +3543,16 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
-
+        for(int i = 0; i < rgs.size(); i++){
+            vector<Point> ps2 = rgs[i].getPoly();
+            int size = ps2.size();
+            for(int ii = 0; ii < size -1 ; ii++){
+                QPoint p1 = QPoint(ps2[ii].x, ps2[ii].y);
+                QPoint p2 = QPoint(ps2[ii+1].x, ps2[ii+1].y);
+                painter.drawLine(p1,p2);
+            }
+            painter.drawLine(QPoint(ps2[ps2.size()-1].x,ps2[ps2.size()-1].y), QPoint(ps2[0].x, ps2[0].y));
+        }
         //        if(size>2&&widget2->completeRDefine == true){
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
         //        }
@@ -3512,7 +3563,7 @@ void MainWindow::loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRe
 }
 
 //加载图片到Label3上
-void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps){
+void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs){
     //loadPictureToLabel(label3,imgLabel3);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel3);
     QPainter painter(&pixmap1);
@@ -3535,7 +3586,18 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
         }
-
+        //qDebug()<<"rgs.size()="<<rgs.size();
+        for(int i = 0; i < rgs.size(); i++){
+            vector<Point> ps2 = rgs[i].getPoly();
+            int size = ps2.size();
+            //qDebug()<<"ps2.size()="<<size;
+            for(int ii = 0; ii < size - 1 ; ii++){
+                QPoint p1 = QPoint(ps2[ii].x, ps2[ii].y);
+                QPoint p2 = QPoint(ps2[ii+1].x, ps2[ii+1].y);
+                painter.drawLine(p1,p2);
+            }
+            painter.drawLine(QPoint(ps2[size-1].x,ps2[ps2.size()-1].y), QPoint(ps2[0].x, ps2[0].y));
+        }
         //        if(size>2&&widget3->completeRDefine == true){
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
         //        }
@@ -3558,7 +3620,7 @@ void MainWindow::loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> 
 }
 
 //加载图片到Label4上
-void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps){
+void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs){
     //loadPictureToLabel(label4,imgLabel4);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel4);
     QPainter painter(&pixmap1);
@@ -3581,6 +3643,16 @@ void MainWindow::loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> 
             QPoint p1 = QPoint(ps[i].x, ps[i].y);
             QPoint p2 = QPoint(ps[i+1].x, ps[i+1].y);
             painter.drawLine(p1,p2);
+        }
+        for(int i = 0; i < rgs.size(); i++){
+            vector<Point> ps2 = rgs[i].getPoly();
+            int size = ps2.size();
+            for(int ii = 0; ii < size - 1; ii++){
+                QPoint p1 = QPoint(ps2[ii].x, ps2[ii].y);
+                QPoint p2 = QPoint(ps2[ii+1].x, ps2[ii+1].y);
+                painter.drawLine(p1,p2);
+            }
+            painter.drawLine(QPoint(ps2[ps2.size()-1].x,ps2[ps2.size()-1].y), QPoint(ps2[0].x, ps2[0].y));
         }
         //        if(size>2&&widget4->completeRDefine == true){
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
@@ -3607,7 +3679,7 @@ void MainWindow::loadPictureToLabel5(){
 }
 
 //加载图片到Label6上
-void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps){
+void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs){
     //loadPictureToLabel(label6,imgLabel6);
     QPixmap pixmap1 = QPixmap::fromImage(imgLabel6);
     QPainter painter(&pixmap1);
@@ -3631,6 +3703,16 @@ void MainWindow::loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> 
             painter.drawLine(p1,p2);
         }
 
+        for(int i = 0; i < rgs.size(); i++){
+            vector<Point> ps2 = rgs[i].getPoly();
+            int size = ps2.size();
+            for(int ii = 0; ii < size - 1; ii++){
+                QPoint p1 = QPoint(ps2[ii].x, ps2[ii].y);
+                QPoint p2 = QPoint(ps2[ii+1].x, ps2[ii+1].y);
+                painter.drawLine(p1,p2);
+            }
+            painter.drawLine(QPoint(ps2[ps2.size()-1].x,ps2[ps2.size()-1].y), QPoint(ps2[0].x, ps2[0].y));
+        }
 
         //        if(size>2&&widget6->completeRDefine == true){
         //            painter.drawLine(QPoint(ps[0].x,ps[0].y),QPoint(ps[size-1].x,ps[size-1].y));
@@ -4335,6 +4417,19 @@ void MainWindow::manualFunction()
     //    drawRecOnPic2(mat1,rectan);
     //    cv::cvtColor(mat1, mat1, CV_BGR2RGB);
     //    loadPictureToLabel1();
+    if(this->isMubiao){
+        this->isMubiao = false;
+        for(int i = 0; i < this->rgs.size(); i++){
+            this->rgs[i].isDrawLabel = false;
+        }
+    }
+    else{
+        this->isMubiao = true;
+        for(int i = 0; i < this->rgs.size(); i++){
+            this->rgs[i].isDrawLabel = true;
+        }
+    }
+
 }
 
 
@@ -4692,7 +4787,7 @@ void MainWindow::saveconfigurationClicked(){
 }
 
 void MainWindow::regionClicked(){
-    isDefiningRegion = true;
+    //isDefiningRegion = true;
 
     if(monitor == NULL){
         monitor = new Monitor(this);

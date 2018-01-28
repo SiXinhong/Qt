@@ -25,6 +25,16 @@ HWidget::HWidget(QWidget *parent) :
 
 void HWidget::setMat(Mat m){
     mat = m;
+
+}
+
+Mat HWidget::getMat(){
+    return mat;
+}
+
+void HWidget::setPano(Mat p){
+    this->pano = p;
+    r0 = this->pano.cols/(2*M_PI);
     //在这里生成环带图像
 
     for(int i=0;i<pano.rows;i++){
@@ -37,15 +47,6 @@ void HWidget::setMat(Mat m){
             mat.at<cv::Vec3b>(jj,ii)[2]=pano.at<cv::Vec3b>(i,j)[2];
         }
     }
-}
-
-Mat HWidget::getMat(){
-    return mat;
-}
-
-void HWidget::setPano(Mat p){
-    this->pano = p;
-    r0 = this->pano.cols/(2*M_PI);
 }
 
 Mat HWidget::getPano(){

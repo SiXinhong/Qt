@@ -56,5 +56,7 @@ public:
     Point leftPoint(vector<Point> poly);
     Point leftPoint(Rect rect);
 
+    vector<Point> getPoly();
+
 };
 #endif // REGION_H

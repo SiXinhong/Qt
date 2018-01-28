@@ -82,7 +82,7 @@ void Qj1Widget::setMat(Mat m){
 //        isRect = true;
 //    }
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 }
 
 Mat Qj1Widget::getMat(){
@@ -122,23 +122,27 @@ vector<MyObjectTrack> Qj1Widget::getTracks(){
 }
 
 void Qj1Widget::contextMenuEvent(QContextMenuEvent *){
-    QCursor cur=this->cursor();
-    QMenu *menu=new QMenu(this);
-   //menu->addAction(Cancel_Select); //添加菜单项1
-   //menu->addAction(To_Zhu); //添加菜单项1
-   //menu->addAction(To_Ningshi1); //添加菜单项2
-   //menu->addAction(To_Ningshi2); //添加菜单项2
-   //menu->addAction(To_Tanchu);//添加菜单项3
-    //menu->addSeparator();
-    menu->addAction(Define_Rect);
-    menu->addAction(Define_Poly);
-    menu->addSeparator();
-    menu->addAction(Cancel_RDefining);
-    menu->addAction(Cancel_RGDefining);
-    menu->addSeparator();
-    menu->addAction(Complete_RDefining);
-    menu->addAction(Complete_RGDefining);
-    menu->exec(cur.pos()); //关联到光标
+    MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
+        if(mw->isDefiningRegion){
+        QCursor cur=this->cursor();
+        QMenu *menu=new QMenu(this);
+       //menu->addAction(Cancel_Select); //添加菜单项1
+       //menu->addAction(To_Zhu); //添加菜单项1
+       //menu->addAction(To_Ningshi1); //添加菜单项2
+       //menu->addAction(To_Ningshi2); //添加菜单项2
+       //menu->addAction(To_Tanchu);//添加菜单项3
+        //menu->addSeparator();
+        menu->addAction(Define_Rect);
+        menu->addAction(Define_Poly);
+        menu->addSeparator();
+        menu->addAction(Cancel_RDefining);
+        menu->addAction(Cancel_RGDefining);
+        menu->addSeparator();
+        menu->addAction(Complete_RDefining);
+        menu->addAction(Complete_RGDefining);
+        menu->exec(cur.pos()); //关联到光标
+        //menu->hide();
+    }
 }
 
 void Qj1Widget::CancelSelect(){
@@ -206,15 +210,15 @@ void Qj1Widget::draw(){
 
 //           }
 //}
-    for(int j=0;j<this->rs.size();j++){
-        this->rs[j].draw1Time(mat);
-    }
+//    for(int j=0;j<this->rs.size();j++){
+//        this->rs[j].draw1Time(mat);
+//    }
 
     clock_t tt1=clock();
     mw->imgLabel1 = mw->MatToQImage(mat,mw->imgLabel1);
     //cv::cvtColor(mat, mat, CV_BGR2RGB);
     clock_t tt2=clock();
-    mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
     clock_t tt3=clock();
     printf("\t\t\t\tfunction MatToQImage costs time:%d\n",tt2-tt1);
     printf("\t\t\t\tfunction loadPictureToLabel1 costs time:%d\n",tt3-tt2);
@@ -585,7 +589,7 @@ void Qj1Widget::CancelRDefining(){
     this->rectRegion.height = 0;
     this->points.clear();
     this->isFirstDoubleClick = false;
-    mw->isDefiningRegion = false;
+    //mw->isDefiningRegion = false;
 }
 
 //取消监控区域组定义
@@ -641,6 +645,7 @@ void Qj1Widget::CompleteRDefining(){
     else{
 
     }
+    mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 
 }
 
@@ -658,6 +663,17 @@ void Qj1Widget::CompleteRGDefining(){
    for(int i = 0; i < mw->rs.size(); i++){
        mw->rgs[mw->rgsIndex].addRegion(mw->rs[i]);
    }
+   vector <vector<cv::Point> > polys;
+
+  for(int i= 0;i<mw->rs.size();i++){
+     //qDebug()<<"zwidget";
+       polys.push_back(mw->rs[i].getPoly());
+      for(int j = 0; j<mw->rs[i].getPoly().size();j++){
+          //qDebug()<<"x,y:"<<mw->rs[i].poly[j].x<<mw->rs[i].poly[j].y;
+      }
+  }
+
+   SetORIPoints(polys);
 
    mw->rs.clear();
    this->rs.clear();
@@ -670,6 +686,8 @@ void Qj1Widget::CompleteRGDefining(){
    }else{
        mw->rgsIndex = mw->rgs.size()-1;
    }
+
+   mw->writeRgs();
 }
 
 void Qj1Widget::mouseDoubleClickEvent(QMouseEvent *e){
@@ -760,14 +778,14 @@ void Qj1Widget::mouseDoubleClickEvent(QMouseEvent *e){
 
         }
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
     }
     else if(e->button() == Qt::LeftButton && !mw->isDefiningRectRegion){
         QPoint qp = e->pos();
         Point p = Point(getMatX(qp.x()),getMatY(qp.y()));
         this->points.push_back(p);
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel1(isRect, qrect, mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
     }
     else{
 

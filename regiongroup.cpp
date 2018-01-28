@@ -60,6 +60,8 @@ void RegionGroup::draw(Mat &mat){
     for(int i = 0; i < this->rs.size(); i++){
         rs[i].draw(mat);
     }
+    //qDebug()<<"isDrawingLabel:"<<this->isDrawLabel;
+    this->drawLabel(mat);
     //    if(this->isActive){
     //        for(int i = 0; i < this->rs.size(); i++){
     //            rs[i].draw(mat);
@@ -122,18 +124,18 @@ void RegionGroup::drawLabel(Mat image){
     if(isDrawLabel){
         for(int i =0;i<rs.size();i++){
             if(rs.at(i).isRect){
-                qDebug()<<"drawlabel1";
+                //qDebug()<<"drawlabel1";
                 Point point = rs.at(i).leftPoint(rs.at(i).rect);
-                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
                 Point point2 = Point(point.x+image.cols/2,point.y);
-                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
             }
             else{
-                qDebug()<<"drawlabel2";
+                //qDebug()<<"drawlabel2";
                 Point point = rs.at(i).leftPoint(rs.at(i).poly);
-                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
                 Point point2 = Point(point.x+image.cols/2,point.y);
-                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
             }
         }
     }

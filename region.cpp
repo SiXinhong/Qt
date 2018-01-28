@@ -157,11 +157,27 @@ Point Region::leftPoint(vector<Point> poly){
         }
     }
     left = Point(minX-15,left.y-3);
-    qDebug()<<"leftpoint:"<<left.x<<" "<<left.y;
+    //qDebug()<<"leftpoint:"<<left.x<<" "<<left.y;
     return left;
 }
 
 Point Region::leftPoint(Rect rect){
     qDebug()<<"leftpoint:"<<rect.x;
     return Point(rect.x-15,rect.y-3);
+}
+
+vector<Point> Region::getPoly(){
+    if(this->isRect){
+        vector<Point> po;
+        Point p1 = Point(this->rect.x, this->rect.y);
+        Point p2 = Point(this->rect.x + this->rect.width, this->rect.y);
+        Point p3 = Point(this->rect.x + this->rect.width, this->rect.y + this->rect.height);
+        Point p4 = Point(this->rect.x, this->rect.y + this->rect.height);
+        po.push_back(p1);
+        po.push_back(p2);
+        po.push_back(p3);
+        po.push_back(p4);
+        return po;
+    }
+    return poly;
 }

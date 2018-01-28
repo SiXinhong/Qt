@@ -125,7 +125,7 @@ void Monitor::widgetShow(){
 //        connect(timeCon,SIGNAL(clicked()),this,SLOT(timeControl()));
 
         QToolButton *edit = new QToolButton(cenWidget);
-        edit->setText(QString("编辑"));
+        edit->setText(QString("增加监控区域"));
         edit->setToolTip(tip);
         connect(edit,SIGNAL(clicked()),this,SLOT(editFunction()));
 
@@ -374,9 +374,8 @@ void Monitor::editFunction(){
     QToolButton* button = dynamic_cast<QToolButton*>(obj);
     int index = button->toolTip().toInt();
     mw->rgsIndex = index;
-    mw->isDefiningRegion = true;
     this->close();
-
+    mw->isDefiningRegion = true;
 }
 
 void Monitor::onClickName(){
@@ -688,4 +687,5 @@ void Monitor::addRegionID(){
 
 void Monitor::closeEvent(QCloseEvent *event){
     mw->isOpenMonitor = false;
+    mw->isDefiningRegion = false;
 }

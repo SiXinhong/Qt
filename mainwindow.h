@@ -189,17 +189,17 @@ public:
     //---xiaotian   加载图片到Label上。
     void loadPictureToLabel(QLabel *label,QImage image);
     //加载图片到Label1上
-    void loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
+    void loadPictureToLabel1(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs);
     //加载图片到Label2上
-    void loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps);
+    void loadPictureToLabel2(boolean isRect, QRect qrect, Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs);
     //加载图片到Label3上
-    void loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps);
+    void loadPictureToLabel3(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs);
     //加载图片到Label4上
-    void loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps);
+    void loadPictureToLabel4(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs);
     //加载图片到Label5上
     void loadPictureToLabel5();
     //加载图片到Label6上
-    void loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps);
+    void loadPictureToLabel6(Scalar co, QRect rectRegion, vector<Point> ps, vector<Region> rgs);
     // 加载图片到Label7上
     void loadPictureToLabel7();
     //---xiaotian  在图像上绘制矩形框  使用数组，最多不超过10个
@@ -241,7 +241,7 @@ public:
     //声音打开还是关闭
     boolean isShengyin;
     //目标属性是否跟随
-    boolean isMubiao;
+    bool isMubiao;
     //系统编号
     QString xtbh;
     //判断窗口是否打开
@@ -287,6 +287,7 @@ public:
      QTimer *timer;
      QTimer *timerSysTime;
      QTimer *timerFlash;
+     QTimer *timerUpdateHWidget;
      QTimer *timerInit;
      QTimer *showAlert;
      //处理鼠标拖拽事件的变量
@@ -552,6 +553,7 @@ protected slots:
      void quXiaoFunction();
      virtual void timeLineFunction();
      void flash();
+     void updateHWidget();
 
 public slots:
     void init();

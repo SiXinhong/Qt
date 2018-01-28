@@ -85,7 +85,7 @@ void NWidget1::setMat(Mat m){
     mat = m;
    // cv::resize(m,mat,Size(m.cols*0.4,m.rows));
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 }
 
 Mat NWidget1::getMat(){
@@ -118,7 +118,7 @@ void NWidget1::Wubianxing(){
 
 void NWidget1::contextMenuEvent(QContextMenuEvent *){
     MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-    if(mw->isOpenMonitor){
+    if(mw->isDefiningRegion){
         QCursor cur=this->cursor();
         QMenu *menu=new QMenu(this);
         menu->setStyleSheet(QString::fromUtf8("border:0px"));
@@ -498,13 +498,13 @@ void NWidget1::draw(){
 
         }
 
-        for(int j=0;j<this->rs.size();j++){
-            this->rs[j].draw1Time(mat);
-        }
+//        for(int j=0;j<this->rs.size();j++){
+//            this->rs[j].draw1Time(mat);
+//        }
     mw->imgLabel4 = mw->MatToQImage(mat,mw->imgLabel4);
  //   cv::cvtColor(mat,mat,CV_BGR2RGB);
     //mw->loadPictureToLabel4();
-    mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+    mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 
 }
 
@@ -638,7 +638,7 @@ void NWidget1::CancelRDefining(){
     this->rectRegion.height = 0;
     this->points.clear();
     this->isFirstDoubleClick = false;
-    mw->isDefiningRegion = false;
+    //mw->isDefiningRegion = false;
 
 }
 
@@ -695,6 +695,8 @@ void NWidget1::CompleteRDefining(){
     else{
 
     }
+    mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
+
 }
 
 //完成监控区域组定义
@@ -713,7 +715,7 @@ void NWidget1::CompleteRGDefining(){
   vector <vector<cv::Point> > polys;
 
   for(int i= 0;i<mw->rs.size();i++){
-       polys.push_back(mw->rs[i].poly);
+       polys.push_back(mw->rs[i].getPoly());
   }
 
    SetORIPoints(polys);
@@ -840,7 +842,7 @@ void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){
 
         }
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 
     }
     else if(e->button() == Qt::LeftButton && !mw->isDefiningRectRegion){
@@ -848,7 +850,7 @@ void NWidget1::mouseDoubleClickEvent(QMouseEvent *e){
         Point p = Point(getMatX(qp.x()),getMatY(qp.y()));
         this->points.push_back(p);
         MainWindow *mw = (MainWindow*)parentWidget()->parentWidget();
-        mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points);
+        mw->loadPictureToLabel4(mw->rgs[mw->rgsIndex].color, QRect(rectRegion.x, rectRegion.y, rectRegion.width, rectRegion.height), points, rs);
 
     }
     else{
