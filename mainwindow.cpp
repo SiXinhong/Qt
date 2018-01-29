@@ -2360,10 +2360,10 @@ t2=clock();
 //        }
 
         //vector<MyObjectTrack> tracks = in.getTracks();
-       if(this->isPseudo==true)
-           mat=setPseudocolor(mat);
-        updateBright(mat);
-        updateContrast(mat);
+//       if(this->isPseudo==true)
+//           mat=setPseudocolor(mat);
+//        updateBright(mat);
+//        updateContrast(mat);
 
 
         //if(isMubiao){
@@ -4168,6 +4168,9 @@ void MainWindow::automFunction()
 //    strackBar->setPosition(100);
     //saturation1 = 100;
     isPseudo = false;
+    inThread.alpha_contrast = this->alpha_contrast;
+    inThread.bright_TrackbarValue = this->bright_TrackbarValue;
+    inThread.isPseudo = this->isPseudo;
     adjustment();
 }
 void MainWindow::updateBright(Mat &mat1 )
@@ -4199,6 +4202,7 @@ void MainWindow::addBrightnessFunction()
     if(0 == bright_TrackbarValue ){
         isBright = false;
     }
+    inThread.bright_TrackbarValue = this->bright_TrackbarValue;
     //trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     // trackBar->setWindowTitle("亮度");
     //trackBar->show();
@@ -4225,6 +4229,7 @@ void MainWindow::reduceBrightnessFunction()
     if(0 == bright_TrackbarValue ){
         isBright = false;
     }
+    inThread.bright_TrackbarValue = this->bright_TrackbarValue;
     //adjustment();
     //    trackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    trackBar->setWindowTitle("亮度");
@@ -4275,6 +4280,7 @@ void MainWindow::addSaturationFunction()
     if(100 == alpha_contrast ){
         isContrast = false;
     }
+    inThread.alpha_contrast = this->alpha_contrast;
     //adjustment();
     //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    strackBar->setWindowTitle("对比度");
@@ -4302,6 +4308,7 @@ void MainWindow::reduceSaturationFunction()
     if(100 == alpha_contrast ){
         isContrast = false;
     }
+    inThread.alpha_contrast = this->alpha_contrast;
     //adjustment();
     //    strackBar->setWindowFlags(Qt::WindowStaysOnTopHint);
     //    strackBar->setWindowTitle("对比度");
@@ -4324,6 +4331,7 @@ void MainWindow::reduceSaturationFunction()
 void MainWindow::pseudoColorFunction()
 {
     isPseudo=!isPseudo;
+    inThread.isPseudo = this->isPseudo;
     adjustment();
 }
 
