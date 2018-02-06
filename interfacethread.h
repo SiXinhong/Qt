@@ -22,6 +22,14 @@ public:
     vector<MyObject> getObjs();
     vector<TrackingPoint> GetTps();
     void getNext();
+    volatile int bright_TrackbarValue;
+    volatile int alpha_contrast;
+    volatile bool isPseudo;
+private:
+    void updateBright(Mat &mat1,int bright);
+    void updateContrast(Mat &mat1,int contrast);
+    Mat setPseudocolor(Mat& image);
+
 };
 
 #endif // INTERFACETHREAD_H
