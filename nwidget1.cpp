@@ -734,6 +734,18 @@ void NWidget1::CompleteRGDefining(){
    }
 
     mw->writeRgs();
+    if(mw->monitor == NULL){
+        mw->monitor = new Monitor(mw);
+    }
+    mw->monitor->setWindowTitle(QString("创建或编辑区域"));
+    mw->monitor->activateWindow();
+    QDesktopWidget *desktop= QApplication::desktop();
+    QRect screenRect = desktop->screenGeometry();
+    int width = screenRect.width();
+    int height = screenRect.height();
+    mw->monitor->setGeometry(screenRect.x(),height/4,4*width/6,3*height/5);
+    mw->monitor->show();
+    mw->monitor->widgetShow();
 }
 
 void NWidget1::mousePressEvent(QMouseEvent *e){

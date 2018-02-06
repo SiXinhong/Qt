@@ -33,6 +33,8 @@ public:
      QWidget *mainWidget;
      QWidget *regionWidget;
 
+     QVBoxLayout * mlayout;
+
 public:
     explicit Monitor(MainWindow *mw);
     int timeIndex;
@@ -46,7 +48,7 @@ private:
     QGridLayout* layout;
     QWidget *cenWidget;
 
-
+    void regionWidgetShow(int i);
 
 
 signals:
@@ -62,9 +64,10 @@ public slots:
     //void detailsShow();
     void timeControl();
     void regionShow();
+    void deleteRegion();
     void listWidgetChange(int);
     void addRegionID();
-
+    void renameRegion();
     //优先级
     void inPri();
     void dePri();

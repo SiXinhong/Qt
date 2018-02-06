@@ -196,44 +196,56 @@ void MainWindow::init(){
     n2WZoomout = new QToolButton(label6);
 
 
-    zWZoomIn->setText("放大");
-    zWZoomIn->setGeometry(40,40,50,30);
-    zWZoomIn->setToolTip(QString::number(3));
-    zWZoomout->setText("缩小");
-    zWZoomout->setGeometry(100,40,50,30);
-    zWZoomout->setToolTip(QString::number(3));
-    zWini->setText("还原");
-    zWini->setGeometry(160,40,50,30);
-    zWini->setToolTip(QString::number(3));
-    connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
-    connect(zWini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
+    //zWZoomIn->setText("放大");
+    zWZoomIn->setGeometry(40,40,50,50);
+    zWZoomIn->setToolTip("放大");
+    zWZoomIn->setIcon(QPixmap("./iconUpdate/放大.png"));
+    zWZoomIn->setIconSize(QSize(50,50));
+    //zWZoomout->setText("缩小");
+    zWZoomout->setGeometry(100,40,50,50);
+    zWZoomout->setToolTip("缩小");
+    zWZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
+    //zWini->setText("还原");
+    zWini->setGeometry(160,40,50,50);
+    zWini->setToolTip("还原");
+    zWini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn3()));
+    connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut3()));
+    connect(zWini,SIGNAL(clicked()),this,SLOT(zoomInitial3()));
 
     n1WZoomIn->setText("放大");
-    n1WZoomIn->setGeometry(40,40,50,30);
-    n1WZoomIn->setToolTip(QString::number(4));
+    n1WZoomIn->setGeometry(40,40,50,50);
+    n1WZoomIn->setToolTip("放大");
+    n1WZoomIn->setIcon(QPixmap("./iconUpdate/放大.png"));
+    n1WZoomIn->setIconSize(QSize(50,50));
     n1WZoomout->setText("缩小");
-    n1WZoomout->setGeometry(100,40,50,30);
-    n1WZoomout->setToolTip(QString::number(4));
+    n1WZoomout->setGeometry(100,40,50,50);
+    n1WZoomout->setToolTip("缩小");
+    n1WZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
     n1Wini->setText("还原");
-    n1Wini->setGeometry(160,40,50,30);
-    n1Wini->setToolTip(QString::number(4));
-    connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
-    connect(n1Wini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
+    n1Wini->setGeometry(160,40,50,50);
+    n1Wini->setToolTip("还原");
+    n1Wini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn4()));
+    connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut4()));
+    connect(n1Wini,SIGNAL(clicked()),this,SLOT(zoomInitial4()));
 
     n2WZoomIn->setText("放大");
-    n2WZoomIn->setGeometry(40,40,50,30);
-    n2WZoomIn->setToolTip(QString::number(6));
+    n2WZoomIn->setGeometry(40,40,50,50);
+    n2WZoomIn->setToolTip("放大");
+    n2WZoomIn->setIcon(QPixmap("./iconUpdate/放大.png"));
+    n2WZoomIn->setIconSize(QSize(50,50));
     n2WZoomout->setText("缩小");
-    n2WZoomout->setGeometry(100,40,50,30);
-    n2WZoomout->setToolTip(QString::number(6));
+    n2WZoomout->setGeometry(100,40,50,50);
+    n2WZoomout->setToolTip("缩小");
+    n2WZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
     n2Wini->setText("还原");
-    n2Wini->setGeometry(160,40,50,30);
-    n2Wini->setToolTip(QString::number(6));
-    connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn()));
-    connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut()));
-    connect(n2Wini,SIGNAL(clicked()),this,SLOT(zoomInitial()));
+    n2Wini->setGeometry(160,40,50,50);
+    n2Wini->setToolTip("还原");
+    n2Wini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn6()));
+    connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut6()));
+    connect(n2Wini,SIGNAL(clicked()),this,SLOT(zoomInitial6()));
 
     //鼠标拖拽控制变量赋初值
     isDrag1 = false;
@@ -1145,6 +1157,7 @@ void MainWindow::addMyToolBar()
     int screenWidth=screenRect.width();
     const int buttonSize=(screenWidth*0.7)/28;
 
+    QGroupBox* group0=new QGroupBox(this);
     QGroupBox* group1=new QGroupBox(this);
     QGroupBox* group2=new QGroupBox(this);
     QGroupBox *group3=new QGroupBox(this);
@@ -1154,7 +1167,7 @@ void MainWindow::addMyToolBar()
     QGroupBox *group7=new QGroupBox(this);
     QGroupBox *group8=new QGroupBox(this);
 
-
+    QHBoxLayout *vbox0 = new QHBoxLayout;
     QHBoxLayout *vbox1 = new QHBoxLayout;
     QHBoxLayout *vbox2 = new QHBoxLayout;
     QHBoxLayout *vbox3 = new QHBoxLayout;
@@ -1191,7 +1204,21 @@ void MainWindow::addMyToolBar()
     //    vbox1->addWidget(startStop);
     //    connect(startStop,SIGNAL(clicked()),this,SLOT(startStopFunction()));
     //    //vbox1->addWidget(new QLabel(" "));
+    //富吉瑞logo
+    logo = new QLabel(this);
+    QPixmap pixmap0("./iconUpdate/FJR(颜色）.png");
+    QPixmap fitpixmap0=pixmap0.scaled(1.4*buttonSize,0.9*buttonSize, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    logo->setPixmap(fitpixmap0);
+    vbox0->addWidget(logo);
 
+    vbox0->addWidget(new QLabel("  "));
+    vbox0->setMargin(0);
+    vbox0->setSpacing(0);
+
+    group0->setLayout(vbox0);
+    group0->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-3.png)");
+    mainToolBar->addWidget(group0);
+    mainToolBar->addSeparator();
     //回放
     backLabel = new QLabel(this);
     QPixmap pixmap4("./iconUpdate/回放.png");
@@ -1690,8 +1717,12 @@ void MainWindow::addMyToolBar()
         exitButton->setIcon(QPixmap(exitSet));
         exitButton->setIconSize(QSize(buttonSize,buttonSize));
         vbox7->addWidget(exitButton);
+        vbox7->addWidget(new QLabel("  "));
+        vbox7->setMargin(0);
+        vbox7->setSpacing(0);
         connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
         group7->setLayout(vbox7);
+        group7->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-6.png)");
         mainToolBar->addWidget(group7);
 }
 
@@ -4793,7 +4824,7 @@ void MainWindow::regionClicked(){
         monitor = new Monitor(this);
     }
     //this->monitor->setWindowFlags(/*Qt::WindowStaysOnTopHint|*/Qt::FramelessWindowHint);
-    this->monitor->setWindowTitle(QString("创建或编辑区域菜单项"));
+    this->monitor->setWindowTitle(QString("创建或编辑区域"));
     this->monitor->activateWindow();
     QDesktopWidget *desktop= QApplication::desktop();
     QRect screenRect = desktop->screenGeometry();
@@ -4986,7 +5017,7 @@ void MainWindow::alertInformation(){
     QRect screenRect = desktop->screenGeometry();
     int width = screenRect.width();
     int height = screenRect.height();
-    this->alert->setGeometry(7*width/10,height/10,width/10,height/10);
+    this->alert->setGeometry(8.5*width/10,height/10,width/10,height/10);
     if(isGaojing){
         this->alert->show();
         this->alert->alertInfo();
@@ -5001,53 +5032,87 @@ void MainWindow::onAlertTimer(){
     }
 }
 
-void MainWindow::zoomInitial(){
-    QObject *obj = sender();
-    QToolButton *button = dynamic_cast<QToolButton*>(obj);
-    int index = button->toolTip().toInt();
-    if(index==3){
-        this->widget3->ZoomInitial();
-    }else if(index == 4){
-        this->widget4->ZoomInitial();
-    }
-    else if(index == 6){
-        this->widget6->ZoomInitial();
-    }
-
+void MainWindow::zoomInitial3(){
+    this->widget3->ZoomInitial();
 }
 
-void MainWindow::zoomIn(){
-    qDebug()<<"main:zoomIN";
-    QObject* obj = sender();
-    QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    int index = button->toolTip().toInt();
-    if(index==3){
-        this->widget3->ZoomIn();
-    }
-    else if(index == 4){
-        this->widget4->ZoomIn();
-    }
-    else if(index == 6){
-        this->widget6->ZoomIn();
-    }
+void MainWindow::zoomIn3(){
+    this->widget3->ZoomIn();
 }
 
-
-void MainWindow::zoomOut(){
-
-    QObject* obj = sender();
-    QToolButton* button = dynamic_cast<QToolButton*>(obj);
-    int index = button->toolTip().toInt();
-    if(index==3){
-        this->widget3->ZoomOut();
-    }
-    else if(index == 4){
-        this->widget4->ZoomOut();
-    }
-    else if(index == 6){
-        this->widget6->ZoomOut();
-    }
+void MainWindow::zoomOut3(){
+    this->widget3->ZoomOut();
 }
+
+void MainWindow::zoomInitial4(){
+    this->widget4->ZoomInitial();
+}
+
+void MainWindow::zoomIn4(){
+    this->widget4->ZoomIn();
+}
+
+void MainWindow::zoomOut4(){
+    this->widget4->ZoomOut();
+}
+void MainWindow::zoomInitial6(){
+    this->widget6->ZoomInitial();
+}
+
+void MainWindow::zoomIn6(){
+    this->widget6->ZoomIn();
+}
+
+void MainWindow::zoomOut6(){
+    this->widget6->ZoomOut();
+}
+//void MainWindow::zoomInitial(){
+//    QObject *obj = sender();
+//    QToolButton *button = dynamic_cast<QToolButton*>(obj);
+//    int index = button->toolTip().toInt();
+//    if(index==3){
+//        this->widget3->ZoomInitial();
+//    }else if(index == 4){
+//        this->widget4->ZoomInitial();
+//    }
+//    else if(index == 6){
+//        this->widget6->ZoomInitial();
+//    }
+
+//}
+
+//void MainWindow::zoomIn(){
+//    qDebug()<<"main:zoomIN";
+//    QObject* obj = sender();
+//    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+//    int index = button->toolTip().toInt();
+//    if(index==3){
+//        this->widget3->ZoomIn();
+//    }
+//    else if(index == 4){
+//        this->widget4->ZoomIn();
+//    }
+//    else if(index == 6){
+//        this->widget6->ZoomIn();
+//    }
+//}
+
+
+//void MainWindow::zoomOut(){
+
+//    QObject* obj = sender();
+//    QToolButton* button = dynamic_cast<QToolButton*>(obj);
+//    int index = button->toolTip().toInt();
+//    if(index==3){
+//        this->widget3->ZoomOut();
+//    }
+//    else if(index == 4){
+//        this->widget4->ZoomOut();
+//    }
+//    else if(index == 6){
+//        this->widget6->ZoomOut();
+//    }
+//}
 
 long long MainWindow::getMemory(const  QString  &path){
     memoryUnit = "k";

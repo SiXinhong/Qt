@@ -99,21 +99,20 @@ QImage CVUtil::MatToQImage(const cv::Mat& mat, QImage imgLabel)
         return imgLabel;
     }
 }
-
 //画标尺
 void CVUtil::paintScale(Mat image,double startw,double starth, double endw, double endh,int widget)
 {
     //QImage img;
-    int c = image.cols/30;
+    int c = image.cols/(endw-startw);
     int r = image.rows/10;
     line(image,Point(0,0),Point(image.cols,0),Scalar(255,255,255),2,8,0);
-    for(int t=startw; t<=(int)startw+30; t++)
+
+    for(int t=startw; t<=endw; t++)
     {
      int i=t-(int)startw;
-     if(i%2 == 0){
-        line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
+     line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
         //标尺上写字
-        int ii = (int)(startw+i*(endw-startw)/30);
+        int ii = (int)(startw+i);
         if(ii > 360){
             ii = ii -360;
         }
@@ -125,10 +124,12 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
             putText(image,str,Point(i*c-10,30),FONT_HERSHEY_SCRIPT_SIMPLEX,0.60,Scalar(255,255,255),1,8,0);
         }
       //putText(image,str,Point(i*c-10,25),3,0.75,Scalar(255,255,255));
-     }
-     else{
-         line(image,Point(i*c,0),Point(i*c,8),Scalar(255,255,255),2,8,0);
-     }
+
+     line(image,Point((i+0.2)*c,0),Point((i+0.2)*c,8),Scalar(255,255,255),2,8,0);
+     line(image,Point((i+0.4)*c,0),Point((i+0.4)*c,8),Scalar(255,255,255),2,8,0);
+     line(image,Point((i+0.6)*c,0),Point((i+0.6)*c,8),Scalar(255,255,255),2,8,0);
+     line(image,Point((i+0.8)*c,0),Point((i+0.8)*c,8),Scalar(255,255,255),2,8,0);
+
     }
     line(image,Point(0,0),Point(0,image.rows),Scalar(255,255,255),2,8,0);
     for(int t=starth; t<=(int)starth+10; t++)
@@ -156,3 +157,59 @@ void CVUtil::paintScale(Mat image,double startw,double starth, double endw, doub
     }
     //return img;
 }
+////画标尺
+//void CVUtil::paintScale(Mat image,double startw,double starth, double endw, double endh,int widget)
+//{
+//    //QImage img;
+//    int c = image.cols/30;
+//    int r = image.rows/10;
+//    line(image,Point(0,0),Point(image.cols,0),Scalar(255,255,255),2,8,0);
+//    for(int t=startw; t<=(int)startw+30; t++)
+//    {
+//     int i=t-(int)startw;
+//     if(i%2 == 0){
+//        line(image,Point(i*c,0),Point(i*c,12),Scalar(255,255,255),2,8,0);
+//        //标尺上写字
+//        int ii = (int)(startw+i*(endw-startw)/30);
+//        if(ii > 360){
+//            ii = ii -360;
+//        }
+//        QString text = QString::number(ii,10);
+//        string str = text.toStdString();
+//        if(widget==1){
+//            putText(image,str,Point(i*c-10,25),FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+//        }else if (widget == 2){
+//            putText(image,str,Point(i*c-10,30),FONT_HERSHEY_SCRIPT_SIMPLEX,0.60,Scalar(255,255,255),1,8,0);
+//        }
+//      //putText(image,str,Point(i*c-10,25),3,0.75,Scalar(255,255,255));
+//     }
+//     else{
+//         line(image,Point(i*c,0),Point(i*c,8),Scalar(255,255,255),2,8,0);
+//     }
+//    }
+//    line(image,Point(0,0),Point(0,image.rows),Scalar(255,255,255),2,8,0);
+//    for(int t=starth; t<=(int)starth+10; t++)
+//    {
+//        int i=t-(int)starth;
+//        if(i%2 == 0){
+//            line(image,Point(0,i*r),Point(12,i*r),Scalar(255,255,255),2,8,0);
+//            //int ii = (int)(endh - i*(endh-starth)/10);
+//             int ii = (int)(starth+i*(endh-starth)/10);
+//            QString text2 = QString::number(ii,10);
+//            string str2 = text2.toStdString();
+
+//            // putText(image,str2,Point(20,i*r+10),3,0.75,Scalar(255,255,255));
+//            if(widget ==1){
+//                 putText(image,str2,Point(15,i*r+10),FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,Scalar(255,255,255),1,8,0);
+//             }
+//            else if (widget == 2){
+//                putText(image,str2,Point(20,i*r+10),FONT_HERSHEY_SCRIPT_SIMPLEX,0.60,Scalar(255,255,255),1,8,0);
+
+//            }
+//        }
+//        else{
+//            line(image,Point(0,i*r),Point(8,i*r),Scalar(255,255,255),2,8,0);
+//        }
+//    }
+//    //return img;
+//}

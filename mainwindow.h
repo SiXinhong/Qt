@@ -396,7 +396,7 @@ protected:
 //     QString light3Set;
 //     QString light4Set;
 //     QString light5Set;
-
+    QLabel *logo;
    // QLabel *light;
     QLabel *lights[5];
     QLabel *light1;
@@ -491,9 +491,15 @@ protected:
      QAction* about;
 
 protected slots:
-     void zoomInitial();
-     void zoomIn();
-     void zoomOut();
+     void zoomInitial3();
+     void zoomIn3();
+     void zoomOut3();
+     void zoomInitial4();
+     void zoomIn4();
+     void zoomOut4();
+     void zoomInitial6();
+     void zoomIn6();
+     void zoomOut6();
      void videoClick();//recent
      void startStopFunction();
      void mstopFunction();
