@@ -205,10 +205,12 @@ void MainWindow::init(){
     zWZoomout->setGeometry(100,40,50,50);
     zWZoomout->setToolTip("缩小");
     zWZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
+    zWZoomout->setIconSize(QSize(50,50));
     //zWini->setText("还原");
     zWini->setGeometry(160,40,50,50);
     zWini->setToolTip("还原");
     zWini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    zWini->setIconSize(QSize(50,50));
     connect(zWZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn3()));
     connect(zWZoomout,SIGNAL(clicked()),this,SLOT(zoomOut3()));
     connect(zWini,SIGNAL(clicked()),this,SLOT(zoomInitial3()));
@@ -222,10 +224,12 @@ void MainWindow::init(){
     n1WZoomout->setGeometry(100,40,50,50);
     n1WZoomout->setToolTip("缩小");
     n1WZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
+    n1WZoomout->setIconSize(QSize(50,50));
     n1Wini->setText("还原");
     n1Wini->setGeometry(160,40,50,50);
     n1Wini->setToolTip("还原");
     n1Wini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    n1Wini->setIconSize(QSize(50,50));
     connect(n1WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn4()));
     connect(n1WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut4()));
     connect(n1Wini,SIGNAL(clicked()),this,SLOT(zoomInitial4()));
@@ -239,10 +243,12 @@ void MainWindow::init(){
     n2WZoomout->setGeometry(100,40,50,50);
     n2WZoomout->setToolTip("缩小");
     n2WZoomout->setIcon(QPixmap("./iconUpdate/缩小.png"));
+    n2WZoomout->setIconSize(QSize(50,50));
     n2Wini->setText("还原");
     n2Wini->setGeometry(160,40,50,50);
     n2Wini->setToolTip("还原");
     n2Wini->setIcon(QPixmap("./iconUpdate/还原.png"));
+    n2Wini->setIconSize(QSize(50,50));
     connect(n2WZoomIn,SIGNAL(clicked()),this,SLOT(zoomIn6()));
     connect(n2WZoomout,SIGNAL(clicked()),this,SLOT(zoomOut6()));
     connect(n2Wini,SIGNAL(clicked()),this,SLOT(zoomInitial6()));
