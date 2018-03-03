@@ -414,7 +414,7 @@ void MainWindow::alertProcessing(vector<MyObject> os){
     if(alert){
         light->setIcon(pixmap1);
     }else{
-        //light->setIcon(pixmap2);
+        light->setIcon(pixmap2);
     }
 
     //        if(alert)
@@ -684,7 +684,7 @@ void MainWindow::jinProcessing(){
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(objs);
         widget6->draw();
-        this->alertProcessing(objs);
+        //this->alertProcessing(objs);
 //    }
 //    else{
 //        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
@@ -4875,8 +4875,8 @@ void MainWindow::figureClicked(){
 
 void MainWindow::openalertClicked(){
     isGaojing = true;
-    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
-    light->setIcon(pixmap1);
+//    QPixmap pixmap1("./iconUpdate/报警灯-红.png");
+//    light->setIcon(pixmap1);
     QPixmap pixmap2("./iconUpdate/自动探测.png");
     openClose->setIcon(pixmap2);
     //QMessageBox::information(this,tr("打开报警信息菜单项"),tr("打开报警信息。继续努力。"));
@@ -4885,8 +4885,8 @@ void MainWindow::openalertClicked(){
 
 void MainWindow::closealertClicked(){
     isGaojing = false;
-    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
-    light->setIcon(pixmap2);
+//    QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
+//    light->setIcon(pixmap2);
     QPixmap pixmap3("./iconUpdate/自动探测off.png");
     openClose->setIcon(pixmap3);
    // QMessageBox::information(this,tr("隐藏报警信息菜单项"),tr("隐藏报警信息。继续努力。"));
