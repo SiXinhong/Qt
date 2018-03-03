@@ -4862,12 +4862,12 @@ void MainWindow::figureClicked(){
     }
     QString filename = QString("./屏幕截图/")+QDateTime::currentDateTime().toString("yyyy年MM月dd日hh时mm分ss秒")+".bmp";
 
-    QDesktopWidget* desktopWidget = QApplication::desktop();
-    QRect screenRect = desktopWidget->screenGeometry();
+//    QDesktopWidget* desktopWidget = QApplication::desktop();
+//    QRect screenRect = desktopWidget->screenGeometry();
 
     QPixmap pix;
     //    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
-    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),screenRect.x(),screenRect.y(),screenRect.width(),screenRect.height());
+    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),0,0,widget6->x()+widget6->width(),widget6->y()+widget6->height());
     if(pix.save(filename,"bmp")){
         QMessageBox::information(this,"屏幕截图","截屏保存成功！",QMessageBox::Ok);
     }
@@ -4877,7 +4877,8 @@ void MainWindow::openalertClicked(){
     isGaojing = true;
     QPixmap pixmap1("./iconUpdate/报警灯-红.png");
     light->setIcon(pixmap1);
-
+    QPixmap pixmap2("./iconUpdate/自动探测.png");
+    openClose->setIcon(pixmap2);
     //QMessageBox::information(this,tr("打开报警信息菜单项"),tr("打开报警信息。继续努力。"));
 
 }
@@ -4886,6 +4887,8 @@ void MainWindow::closealertClicked(){
     isGaojing = false;
     QPixmap pixmap2("./iconUpdate/报警灯-绿.png");
     light->setIcon(pixmap2);
+    QPixmap pixmap3("./iconUpdate/自动探测off.png");
+    openClose->setIcon(pixmap3);
    // QMessageBox::information(this,tr("隐藏报警信息菜单项"),tr("隐藏报警信息。继续努力。"));
 
 }
