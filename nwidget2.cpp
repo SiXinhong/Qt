@@ -11,7 +11,8 @@ using namespace std;
 
 NWidget2::NWidget2(QWidget *parent) :
     QWidget(parent){
-    setStyleSheet(QString::fromUtf8("border:3px solid blue"));
+//    setStyleSheet(QString::fromUtf8("border:3px solid blue"));
+    setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
      this->isShow = true;
     this->from = 0;
    //completeRDefine = false;
@@ -45,12 +46,14 @@ NWidget2::NWidget2(QWidget *parent) :
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
     this->rectRegion = Rect(0,0,0,0);
 
-    this->color  = Scalar(255,0,0);
+    //this->color  = Scalar(255,0,0);
 }
 
 void NWidget2::setColor(Scalar c){
-    this->color = c;
+    NWidget2::color = c;
 }
+
+Scalar NWidget2::color = Scalar(255,0,0);
 
 Scalar NWidget2::getColor(){
     return this->color;

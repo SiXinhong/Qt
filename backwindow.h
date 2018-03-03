@@ -19,7 +19,7 @@ public:
     QList<QFileInfo> *filepano;
     int fileIndex;
     int panoIndex;
-
+bool isFirst;
     void exitFunction();
     void addMyToolBar_backWindow();
     QString currentFileTime;

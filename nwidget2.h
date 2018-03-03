@@ -69,7 +69,7 @@ public:
 
     Mat mat;
 
-    Scalar color;
+    static Scalar color;
 
     vector<MyObject> allobjs;
 
@@ -133,7 +133,7 @@ public:
 
     Mat getMat();
 
-    void setColor(Scalar c);
+    static void setColor(Scalar c);
 
     Scalar getColor();
 

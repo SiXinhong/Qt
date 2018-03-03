@@ -354,32 +354,35 @@ void Configuration::colorSet(){
     button->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
 
     if(button->text()=="主显示区边框颜色"){
-      mw->widget3->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+      //mw->widget3->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
       zRed = color.red();
       zBlue = color.blue();
       zGreen = color.green();
-      mw->widget3->setColor(Scalar(zBlue,zGreen,zRed));
-      mw->widget4->setColor(mw->widget4->getColor());
-      mw->widget6->setColor(mw->widget6->getColor());
+//      mw->widget3->setColor(Scalar(zBlue,zGreen,zRed));
+//      mw->widget4->setColor(mw->widget4->getColor());
+//      mw->widget6->setColor(mw->widget6->getColor());
+      ZWidget::setColor(Scalar(zBlue,zGreen,zRed));
     }
     else if(button->text()=="辅助显示区1边框颜色"){
-        mw->widget4->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+//        mw->widget4->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
         n1Red = color.red();
         n1Blue = color.blue();
         n1Green = color.green();
-        mw->widget4->setColor(Scalar(n1Blue,n1Green,n1Red));
-        mw->widget3->setColor(mw->widget3->getColor());
-        mw->widget6->setColor(mw->widget6->getColor());
+//        mw->widget4->setColor(Scalar(n1Blue,n1Green,n1Red));
+//        mw->widget3->setColor(mw->widget3->getColor());
+//        mw->widget6->setColor(mw->widget6->getColor());
+        NWidget1::setColor(Scalar(n1Blue,n1Green,n1Red));
 
     }
     else if (button->text() == "辅助显示区2边框颜色"){
-       mw->widget6->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+//       mw->widget6->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
        n2Red = color.red();
        n2Blue = color.blue();
        n2Green = color.green();
-       mw->widget6->setColor(Scalar(n2Blue,n2Green,n2Red));
-       mw->widget3->setColor(mw->widget3->getColor());
-       mw->widget4->setColor(mw->widget4->getColor());
+//       mw->widget6->setColor(Scalar(n2Blue,n2Green,n2Red));
+//       mw->widget3->setColor(mw->widget3->getColor());
+//       mw->widget4->setColor(mw->widget4->getColor());
+       NWidget2::setColor(Scalar(n2Blue,n2Green,n2Red));
     }
 }
 

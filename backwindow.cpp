@@ -50,6 +50,7 @@ BackWindow::BackWindow(QDate date,QTime start,QTime stop):MainWindow(){
     this->date=date;
 
     this->isJixu=true;
+    isFirst = true;
     this->jinTimerout();
     this->isJixu=false;
 
@@ -135,6 +136,7 @@ void BackWindow::jinTimerout(){
                 MyObject::readMat(din,pano);
             }
             file.close();
+            currentFileTime=filepano->at(panoIndex).fileName().left(8);
             panoIndex++;
     }else{
 //        widget1->setObjects(objs);
@@ -147,6 +149,10 @@ void BackWindow::jinTimerout(){
         widget6->draw();
         return;
  }
+    if(pano.cols<=0 || pano.rows<=0){
+        qDebug()<<"backwindow error pano!";
+        return;
+    }
 //qDebug()<<"huifang333333333333333333333333333333333";
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
 //    QRect screenRect = desktopWidget->screenGeometry();
@@ -256,10 +262,10 @@ void BackWindow::jinTimerout(){
    //vector<MyObject> objs = in.getObjs();
 
 //   vector<MyObjectTrack> tracks = in.getTracks();
-   if(this->isPseudo==true)
-                       mat=setPseudocolor(mat);
-       updateBright(mat);
-       updateContrast(mat);
+//   if(this->isPseudo==true)
+//                       mat=setPseudocolor(mat);
+//       updateBright(mat);
+//       updateContrast(mat);
 
    for (int i = 0; i < objs.size();i++)
    {
@@ -398,9 +404,12 @@ void BackWindow::jinTimerout(){
    //Mat mat5 =imread(imageurl5.toStdString());
    //widget5->setMat(mat5);
    QString imageurl5="./0.png";//in.getHD();
-   Mat mat5 =imread(imageurl5.toStdString());
-   widget5->setMat(mat5);
-   widget5->setPano(newpano);
+   static Mat mat5 =imread(imageurl5.toStdString());
+   if(isFirst){
+       widget5->setMat(mat5);
+       widget5->setPano(newpano);
+       isFirst = false;
+   }
    widget5->setObjects(objs);
    widget5->draw();
    //drawUiLabel(mat5,5);
@@ -1599,10 +1608,10 @@ void BackWindow::onTimerOut2(){
 
     systime->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss ddd"));//时间
 
-    if(fileIndex < fileInfo->count()&&!currentFileTime.isEmpty())
+    if(panoIndex < filepano->count()&&!currentFileTime.isEmpty())
     {
 
-        QString datetime = fileInfo->at(fileIndex).filePath();
+        QString datetime = filepano->at(panoIndex).filePath();
         QString backDate = datetime.right(datetime.length()-5).left(10);
 //      QString backHour = datetime.right(14).left(2);
 //      QString backMinute = datetime.right(11).left(2);

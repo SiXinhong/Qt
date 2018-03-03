@@ -10,7 +10,8 @@ using namespace std;
 
 NWidget1::NWidget1(QWidget *parent) :
     QWidget(parent){
-    setStyleSheet(QString::fromUtf8("border:3px solid #00FFFF"));
+    //setStyleSheet(QString::fromUtf8("border:3px solid #00FFFF"));
+    setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(NWidget1::color.val[2]).arg(NWidget1::color.val[1]).arg(NWidget1::color.val[0]));
     isGaojing = false;
     isShow = true;
     this->from = 0;
@@ -46,12 +47,14 @@ NWidget1::NWidget1(QWidget *parent) :
 
     this->rectRegion = Rect(0,0,0,0);
 
-    color = Scalar(255,255,0);
+    //color = Scalar(255,255,0);
 }
 
 void NWidget1::setColor(Scalar c){
-    this->color = c;
+    NWidget1::color = c;
 }
+
+Scalar NWidget1::color = Scalar(255,0,0);
 
 Scalar NWidget1::getColor(){
     return this->color;

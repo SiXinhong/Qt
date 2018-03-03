@@ -7,13 +7,13 @@ StoreThread::StoreThread(MainWindow *mw)
 
 void StoreThread::run(){
     long long maxSize = 1024L;
-    maxSize*=1024L*2000;
+    maxSize*=1024L*10000;
 //    maxSize*=1024L*1024L*100L;
     bool isReachMax = false;
 
 
     QString dirName = QString("./回放/");
-    QDir dir(dirName);
+    QDir dir;
     if(!dir.exists(dirName)){
         dir.mkdir(dirName);
     }

@@ -8,7 +8,8 @@ using namespace std;
 
 ZWidget::ZWidget(QWidget *parent) :
     QWidget(parent){
-    setStyleSheet(QString::fromUtf8("border:3px solid red"));
+//    setStyleSheet(QString::fromUtf8("border:3px solid red"));
+    setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.val[2]).arg(color.val[1]).arg(color.val[0]));
     //setStyleSheet(QString::fromUtf8("border:3px solid red"));
      this->isShow = true;
     isGaojing = true;
@@ -45,12 +46,14 @@ ZWidget::ZWidget(QWidget *parent) :
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
     this->rectRegion = Rect(0,0,0,0);
 
-    color = Scalar(0,0,255);
+    //color = Scalar(0,0,255);
 }
 
 void ZWidget::setColor(Scalar c){
-    this->color = c;
+    ZWidget::color = c;
 }
+
+Scalar ZWidget::color = Scalar(0,0,255);
 
 Scalar ZWidget::getColor(){
     return this->color;

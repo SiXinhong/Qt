@@ -70,7 +70,7 @@ public:
 
     vector<MyObject> objs;
 
-    Scalar color;
+    static Scalar color;
 
     int from;
 
@@ -92,7 +92,7 @@ public:
 
     int getFrom();
 
-    void setColor(Scalar c);
+    static void setColor(Scalar c);
     Scalar getColor();
 
     Rect getRectFromObjs(Rect r);
