@@ -1121,18 +1121,18 @@ void MainWindow::addMyMenuBar(){
 
     openalert = new QAction("显示报警信息",this);
     closealert = new QAction("关闭报警信息",this);
-    targetAtt = new QAction("目标属性列表",this);
+//    targetAtt = new QAction("目标属性列表",this);
 
     openalert->setShortcut(Qt::Key_F3);
     closealert->setShortcut(Qt::Key_F9);
 
     DisplayMenu->addAction(openalert);
     DisplayMenu->addAction(closealert);
-    DisplayMenu->addAction(targetAtt);
+//    DisplayMenu->addAction(targetAtt);
 
     connect(openalert,SIGNAL(triggered()),this,SLOT(openalertClicked()));
     connect(closealert,SIGNAL(triggered()),this,SLOT(closealertClicked()));
-    connect(targetAtt,SIGNAL(triggered()),this,SLOT(targetAttShow()));
+//    connect(targetAtt,SIGNAL(triggered()),this,SLOT(targetAttShow()));
 
 
     help = new QAction("帮助",this);
