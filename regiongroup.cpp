@@ -10,6 +10,8 @@
 
 #include "region.h"
 #include "regiongroup.h"
+#include "puttext.h"
+#include <QTextCodec>
 
 using namespace cv;
 using namespace std;
@@ -126,9 +128,12 @@ void RegionGroup::drawLabel(Mat image){
             if(rs.at(i).isRect){
                 //qDebug()<<"drawlabel1";
                 Point point = rs.at(i).leftPoint(rs.at(i).rect);
-                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
+//                putText(image,rs.at(i).name.toStdString(),point,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
+                // putTextZH的中文字符需要是GBK编码的
+                putTextZH(image, pCodec->fromUnicode(rs.at(i).name), point, this->color, 30, "Arial");
                 Point point2 = Point(point.x+image.cols/2,point.y);
-                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
+//                putText(image,rs.at(i).name.toStdString(),point2,FONT_HERSHEY_SCRIPT_SIMPLEX,0.40,this->color,1,8,0);
+                putTextZH(image, pCodec->fromUnicode(rs.at(i).name), point2, this->color, 30, "Arial");
             }
             else{
                 //qDebug()<<"drawlabel2";
@@ -141,3 +146,4 @@ void RegionGroup::drawLabel(Mat image){
     }
 }
 
+QTextCodec* RegionGroup::pCodec = QTextCodec::codecForName( "GBK" );

@@ -1,6 +1,6 @@
 #ifndef REGIONGROUP_H
 #define REGIONGROUP_H
-//OpenCVÍ·ÎÄ¼ş
+//OpenCVå¤´æ–‡ä»¶
 #include <vector>
 #include <QMap>
 #include <highgui.h>
@@ -10,6 +10,7 @@
 
 #include <QString>
 #include <QDebug>
+#include <QTextCodec>
 
 
 #include "region.h"
@@ -17,7 +18,7 @@
 using namespace cv;
 using namespace std;
 
-//¼à¿ØÇøÓò×éÀà
+//ç›‘æ§åŒºåŸŸç»„ç±»
 class RegionGroup
 {
 public:
@@ -27,17 +28,17 @@ public:
 
     RegionGroup(QString name, Scalar c, vector<Region> rs);
 
-    //ÑÕÉ«
+    //é¢œè‰²
     Scalar color;
 
     QString name;
 
-    //ÊÇ·ñÏÔÊ¾
+    //æ˜¯å¦æ˜¾ç¤º
     bool isActive;
 
-    //ÊÇ·ñ±¨¾¯
+    //æ˜¯å¦æŠ¥è­¦
     bool isAlert;
-    //¶à±ßĞÎ
+    //å¤šè¾¹å½¢
     vector<Region> rs;
 
 
@@ -58,7 +59,7 @@ public:
     void drawLabel(Mat images);
 
     bool isDrawLabel;
-
+    static QTextCodec *pCodec;
 
 };
 #endif // REGIONGROUP_H
