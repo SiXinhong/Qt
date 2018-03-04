@@ -121,7 +121,7 @@ void BackWindow::jinTimerout(){
         file.close();
         fileIndex++;
     }
- //qDebug()<<"huifang22222222222222222222";
+ qDebug()<<"huifang22222222222222222222";
     Mat pano;
     if(panoIndex<filepano->count()){
         QFile file(filepano->at(panoIndex).filePath());
@@ -153,7 +153,7 @@ void BackWindow::jinTimerout(){
         qDebug()<<"backwindow error pano!";
         return;
     }
-//qDebug()<<"huifang333333333333333333333333333333333";
+qDebug()<<"huifang333333333333333333333333333333333";
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
 //    QRect screenRect = desktopWidget->screenGeometry();
 //    const int buttonSize=(screenRect.width()*0.7)/21.6;
@@ -299,7 +299,7 @@ void BackWindow::jinTimerout(){
 //           }
 //       }
 //}
-       //qDebug()<<"huifang55555";
+       qDebug()<<"huifang55555";
        //画对象中心点的位置
        if(isMubiao){
            int x = (int)(this->getDirectionX(obj.getCenPoint().x, pano));
@@ -356,10 +356,11 @@ void BackWindow::jinTimerout(){
 //           }
    widget1->setMat(mat1);
    widget1->setPano(newpano);
+   widget1->setTwoPano(mat);
    widget1->setObjects(objs);
 //   widget1->setTracks(in.getTracks());
    widget1->draw();
- //qDebug()<<"huifang6666";
+ qDebug()<<"huifang6666";
    //qDebug()<<s1;
    //图片2
    //图片1
@@ -376,12 +377,14 @@ void BackWindow::jinTimerout(){
 //               hsl->channels[color].saturation1 = saturation1 - 100;
 //               hsl->adjust(mat2, mat2);
 //           }
-   widget1->setPano(newpano);
+//   widget1->setPano(newpano);
    widget2->setMat(mat2);
+   widget2->setPano(newpano);
+   widget2->setTwoPano(mat);
    widget2->setObjects(objs);
 //   widget2->setTracks(in.getTracks());
    widget2->draw();
-   //qDebug()<<s2;
+   qDebug()<<"huifang77777";
    //drawUiLabel(mat2,2);
    //图片3
    //Mat mat3 =imread(imageurl);
@@ -390,6 +393,7 @@ void BackWindow::jinTimerout(){
    //widget3->setPano(mat);
    widget3->setAllObjects(objs);
    widget3->draw();
+   qDebug()<<"huifang888888";
    //drawUiLabelByCopy(mat3,3);
    //图片4
    //Mat mat4 =imread(imageurl2);
@@ -419,21 +423,23 @@ void BackWindow::jinTimerout(){
    //widget6->setMat(mat6);
    //widget6->setPano(in.getPano());
    widget6->setPano(newpano);
-   widget6->setObjects(objs);
+//   widget6->setObjects(objs);
+   widget6->setAllObjects(objs);
+   widget6->setTwoPanos(mat);
    widget6->draw();
 
 //   timeLine->position= fileIndex*255/fileInfo->count();
 //   timeLine->update();
-   if(isGaojing)
-   {
+//   if(isGaojing)
+//   {
 
-   if(objs.size()> num_objs){
-//       this->sound->play();
-       newObjCount=objs.size()-num_objs;
-        timerFlash->start();
-       num_objs = objs.size();
-   }
-   }
+//   if(objs.size()> num_objs){
+////       this->sound->play();
+//       newObjCount=objs.size()-num_objs;
+//        timerFlash->start();
+//       num_objs = objs.size();
+//   }
+//   }
    num_objs = objs.size();
 
 //   if(isGaojing)
