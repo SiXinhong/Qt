@@ -554,7 +554,7 @@ void BackWindow::addMyToolBar_backWindow()
     QGroupBox *group4=new QGroupBox(this);
     //QGroupBox* group5=new QGroupBox(this);
     QGroupBox *group6=new QGroupBox(this);
-   // QGroupBox *group7=new QGroupBox(this);
+    QGroupBox *group7=new QGroupBox(this);
     QGroupBox *group8=new QGroupBox(this);
 
 
@@ -564,7 +564,7 @@ void BackWindow::addMyToolBar_backWindow()
     QHBoxLayout *vbox4 = new QHBoxLayout;
    //QHBoxLayout *vbox5 = new QHBoxLayout;
     QHBoxLayout *vbox6 = new QHBoxLayout;
-  //  QHBoxLayout *vbox7 = new QHBoxLayout;
+    QHBoxLayout *vbox7 = new QHBoxLayout;
     QHBoxLayout *vbox8 = new QHBoxLayout;
 
     //mainToolBar = addToolBar("monitoring");
@@ -576,7 +576,7 @@ void BackWindow::addMyToolBar_backWindow()
     text->setFont(font);
     text->setStyleSheet("color:white;");
     mainToolBar->addWidget(text);
-
+    mainToolBar->addSeparator();
     //    //图标太大导致在小屏幕上显示不全，改为按照屏幕宽度自动调整图标的大小
 
         //加图标
@@ -667,6 +667,7 @@ void BackWindow::addMyToolBar_backWindow()
         group1->setLayout(vbox1);
 
         mainToolBar->addWidget(group1);
+        mainToolBar->addSeparator();
         //mainToolBar->addWidget(new QLabel("    "));
         //第二组按钮：图像
         //图像
@@ -797,6 +798,7 @@ void BackWindow::addMyToolBar_backWindow()
 
         group2->setLayout(vbox2);
         mainToolBar->addWidget(group2);
+        mainToolBar->addSeparator();
 
         //站位
         position = new QLabel(this);
@@ -815,6 +817,7 @@ void BackWindow::addMyToolBar_backWindow()
         group8->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-3.png)");
         group8->setLayout(vbox8);
         mainToolBar->addWidget(group8);
+        mainToolBar->addSeparator();
 
         //时间组
                 currentTime = new QLabel(this);
@@ -838,6 +841,7 @@ void BackWindow::addMyToolBar_backWindow()
                 group6->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-4.png)");
                 group6->setLayout(vbox6);
                 mainToolBar->addWidget(group6);
+                mainToolBar->addSeparator();
 
 
         //第三组
@@ -901,6 +905,7 @@ void BackWindow::addMyToolBar_backWindow()
         //vbox5->addWidget(new QLabel(" "));
         group3->setLayout(vbox3);
         mainToolBar->addWidget(group3);
+        mainToolBar->addSeparator();
 
         //第四组，告警
         //告警
@@ -1071,7 +1076,26 @@ void BackWindow::addMyToolBar_backWindow()
           group4->setLayout(vbox4);
           group4->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-6.png)");
                 mainToolBar->addWidget(group4);
+                mainToolBar->addSeparator();
 
+                exitButton = new QToolButton(this);
+                exitButton->setToolTip(tr("退出"));
+                exitButton->setMinimumHeight(buttonSize);
+                exitButton->setMaximumHeight(buttonSize);
+                exitButton->setMinimumWidth(buttonSize);
+                exitButton->setMaximumWidth(buttonSize);
+                exitButton->setStyleSheet("border-style:flat;background-color:2E302D");
+                exitSet="./iconUpdate/退出.png";
+                exitButton->setIcon(QPixmap(exitSet));
+                exitButton->setIconSize(QSize(buttonSize,buttonSize));
+                vbox7->addWidget(exitButton);
+                vbox7->addWidget(new QLabel("  "));
+                vbox7->setMargin(0);
+                vbox7->setSpacing(0);
+                connect(exitButton,SIGNAL(clicked()),this,SLOT(exitFunction()));
+                group7->setLayout(vbox7);
+                group7->setStyleSheet("border:0px;background-image:url(./iconUpdate/回放栏-背景-6.png)");
+                mainToolBar->addWidget(group7);
 
 //    //第一组按钮：回放时间线,回放暂停,回放
 //    //回放时间线

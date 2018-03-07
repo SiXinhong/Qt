@@ -1050,7 +1050,7 @@ void MainWindow::addMyMenuBar(){
     disconnection = new QAction("断开连接",this);
     openplus = new QAction("打开回放",this);
     backplus = new QAction("回放",this);
-    closeaction = new QAction("关闭回放",this);
+    closeaction = new QAction("退出回放",this);
     //recentvidio = new QAction("最近视频",this);
     recentvidio = new QMenu("最近视频");//recent 有单独的子菜单，所以定义成menu
     changeuser = new QAction("切换用户",this);
@@ -1078,13 +1078,15 @@ void MainWindow::addMyMenuBar(){
         FileMenu->addAction(openplus);
     }
     //FileMenu->addAction(backplus);
-    if(backwindow){
-        FileMenu->addAction(closeaction);
-    }
     FileMenu->addMenu(recentvidio);
     FileMenu->addAction(changeuser);
     FileMenu->addAction(installation);
-    FileMenu->addAction(exit);
+    if(!backwindow){
+        FileMenu->addAction(exit);
+    }
+    if(backwindow){
+        FileMenu->addAction(closeaction);
+    }
 
     connect(connection,SIGNAL(triggered()),this,SLOT(connectionClicked()));
     connect(connectionplus,SIGNAL(triggered()),this,SLOT(connectionplusClicked()));
