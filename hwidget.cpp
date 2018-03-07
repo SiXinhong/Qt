@@ -1031,10 +1031,10 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             }
             else if(mw->widget2->isTo3){
                 mw->widget3->setFrom(2);
-                mw->widget2->rectan3 = Rect(xx2, yy2, width, height);
+                mw->widget2->rectan3 = Rect(xx2-pano.cols/2, yy2, width, height);
 //                rectan=  mw->widget1->rectan3;
-                rectan=  mw->widget2->rectan3;
-                mw->widget3->setRect(mw->widget2->rectan3);
+                rectan=  mw->widget2->getQRectan3();
+                mw->widget3->setRect(rectan);
             }
 
 //            mw->widget3->setRect(mw->widget1->rectan3);
@@ -1103,9 +1103,9 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             }
             else if(mw->widget2->isTo4){
                 mw->widget4->setFrom(2);
-                mw->widget2->rectan4 =Rect(xx2, yy2, width, height);
-                rectan = mw->widget2->rectan4;
-                mw->widget4->setRect(mw->widget2->rectan4);
+                mw->widget2->rectan4 =Rect(xx2-pano.cols/2, yy2, width, height);
+                rectan = mw->widget2->getQRectan4();
+                mw->widget4->setRect(rectan);
             }
             Mat mat1 = mw->widget1->getTwoPano();
             Size dsize ;
@@ -1174,9 +1174,9 @@ void HWidget::mouseReleaseEvent(QMouseEvent *e){
             }
             else if(mw->widget2->isTo6){
                 mw->widget6->setFrom(2);
-                mw->widget2->rectan6 =Rect(xx2, yy2, width, height);
-                rectan = mw->widget2->rectan6;
-                mw->widget6->setRect(mw->widget2->rectan6);
+                mw->widget2->rectan6 =Rect(xx2-pano.cols/2, yy2, width, height);
+                rectan = mw->widget2->getQRectan6();
+                mw->widget6->setRect(rectan);
 }
             Mat mat1 = mw->widget1->getTwoPano();
             Size dsize ;
