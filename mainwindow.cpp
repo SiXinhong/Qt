@@ -69,6 +69,9 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 {
     this->welcome=welcome;
     configure = 0;
+    widget3=0;
+    widget4=0;
+    widget6=0;
     qDebug()<<"mainwindow";
     //因为Backwindow继承了MainWindow，Backwindow不需要启动界面，给构造函数传递空指针，
     //这时候一定要立即执行init()，否则Backwindow以为初始化工作完成开始执行别的代码时就报错了
