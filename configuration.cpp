@@ -15,16 +15,18 @@ Configuration::Configuration(MainWindow *mw)
     isStart = false;
     start = NULL;
     menuWidget = new QWidget(this);
-    zRed = 0;
-    zBlue = 0;
-    zGreen = 0;
-    n1Red = 0;
-    n1Blue = 0;
-    n1Green = 0;
-    n2Red = 0;
-    n2Blue = 0;
-    n2Green = 0;
+    zRed = ZWidget::color[2];
+    zBlue = ZWidget::color[0];
+    zGreen = ZWidget::color[1];
+    n1Red = NWidget1::color[2];
+    n1Blue = NWidget1::color[0];
+    n1Green = NWidget1::color[1];
+    n2Red = NWidget2::color[2];
+    n2Blue = NWidget2::color[0];
+    n2Green = NWidget2::color[1];
     zhan = 0;
+
+    readCon();//读取配置文件
 
     strackbar = new STrackBar(this);
     trackbar = new TrackBar(this);
@@ -230,6 +232,9 @@ void Configuration::buildCenWidgetSoftWare(){
    // n2Color->setToolTip(QString::number(3));
     connect(n2Color,SIGNAL(clicked()),this,SLOT(colorSet()));
 
+    zColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(zRed).arg(zGreen).arg(zBlue));
+    n1Color->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(n1Red).arg(n1Green).arg(n1Blue));
+    n2Color->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(n2Red).arg(n2Green).arg(n2Blue));
     layoutSoftWare->addWidget(zColor,1,0);
     layoutSoftWare->addWidget(n1Color,1,1);
     layoutSoftWare->addWidget(n2Color,1,2);
@@ -357,18 +362,11 @@ void Configuration::colorSet(){
         zRed = color.red();
         zBlue = color.blue();
         zGreen = color.green();
-        qDebug()<<"zw:color:::::::::::::::::"<<mw;
-        qDebug()<<"zw:color:::::::::::::::::"<<mw->widget3;
+
         if(mw->widget3==0){
-            qDebug()<<"zwidget::change color";
-            std::cout<<(int*)(mw->widget3);
-            qDebug()<<(int*)(mw->widget3);
             ZWidget::setColor(Scalar(zBlue,zGreen,zRed));
         }
         else{
-             qDebug()<<"zwidget111111111::change color";
-             std::cout<<(int*)(mw->widget3);
-             qDebug()<<(int*)(mw->widget3);
             mw->widget3->setStyleSheet(QString("border-width:3px;border-style:solid;border-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
             mw->widget3->setColor(Scalar(zBlue,zGreen,zRed));
             mw->widget4->setColor(mw->widget4->getColor());
@@ -555,6 +553,10 @@ void Configuration::writeCon(){
     out<<bright;
     out<<MainWindow::zhanweiName;
 
+    out<<zRed<<zGreen<<zBlue;
+    out<<n1Red<<n1Green<<n1Blue;
+    out<<n2Red<<n2Green<<n2Blue;
+
     file.flush();
     file.close();
 }
@@ -571,6 +573,14 @@ void Configuration::readCon(){
     in>>contrast;
     in>>bright;
     in>>MainWindow::zhanweiName;
+
+    in>>zRed>>zGreen>>zBlue;
+    in>>n1Red>>n1Green>>n1Blue;
+    in>>n2Red>>n2Green>>n2Blue;
+
+    mw->widget3->setColor(Scalar(zBlue,zGreen,zRed));
+    mw->widget4->setColor(Scalar(n1Blue,n1Green,n1Red));
+    mw->widget6->setColor(Scalar(n2Blue,n2Green,n2Red));
 
     file.close();
 }

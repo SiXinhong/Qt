@@ -83,7 +83,10 @@ void WelcomeWindow::exitClicked(){
 void WelcomeWindow::loginClicked(){
     if(!start){
          //mainwindow->init();
-        mainwindow->configure->readCon();
+        if(mainwindow->configure == NULL){
+            mainwindow->configure = new Configuration(mainwindow);
+        }
+//        mainwindow->configure->readCon();放到configuration的构造函数里调用了
         mainwindow->configurationClicked();
          start =true;
     }
