@@ -54,7 +54,7 @@ void NWidget1::setColor(Scalar c){
     NWidget1::color = c;
 }
 
-Scalar NWidget1::color = Scalar(255,0,0);
+Scalar NWidget1::color = Scalar(255,255,0);
 
 Scalar NWidget1::getColor(){
     return this->color;
