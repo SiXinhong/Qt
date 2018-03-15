@@ -47,7 +47,7 @@ NWidget1::NWidget1(QWidget *parent) :
 
     this->rectRegion = Rect(0,0,0,0);
 
-    //color = Scalar(255,255,0);
+    color = Scalar(255,255,0);
 }
 
 void NWidget1::setColor(Scalar c){

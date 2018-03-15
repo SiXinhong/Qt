@@ -46,7 +46,7 @@ NWidget2::NWidget2(QWidget *parent) :
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
     this->rectRegion = Rect(0,0,0,0);
 
-    //this->color  = Scalar(255,0,0);
+    this->color  = Scalar(255,0,0);
 }
 
 void NWidget2::setColor(Scalar c){

@@ -46,7 +46,7 @@ ZWidget::ZWidget(QWidget *parent) :
     connect(Zoom_Out, SIGNAL(triggered()), this, SLOT(ZoomOut()));
     this->rectRegion = Rect(0,0,0,0);
 
-    //color = Scalar(0,0,255);
+    color = Scalar(0,0,255);
 }
 
 void ZWidget::setColor(Scalar c){
