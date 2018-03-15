@@ -111,6 +111,10 @@ public slots:
     void mainwindowShow();
 
     void frontConfig();
+
+    //显示区变换
+
+    void widgetModify();
 };
 
 #endif // CONFIGURATION_H

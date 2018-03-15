@@ -96,6 +96,10 @@ public slots:
     
 public:
 
+  //判断是否初始化了mainWindow
+ static bool isInit;
+
+
   //判断是否调节了图像
   bool isBright;
   bool isContrast;
@@ -281,8 +285,9 @@ public:
      ZWidget* widget3;
      NWidget1* widget4;
      HWidget* widget5;
-     //LWidget* widget6;
      NWidget2* widget6;
+
+     LWidget* widget7;
 
      QTimer *timer;
      QTimer *timerSysTime;
@@ -559,10 +564,11 @@ protected slots:
      void quXiaoFunction();
      virtual void timeLineFunction();
      void flash();
-     void updateHWidget();
+
 
 public slots:
-    void init();
+     void init();
+     void updateHWidget();
 void configurationClicked();
 //private:
 public:

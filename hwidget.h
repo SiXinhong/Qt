@@ -37,7 +37,7 @@ private:
 
     double y0;
 public:
-
+    static bool isRadar;
     bool isClicked;
 
     Mat mat;

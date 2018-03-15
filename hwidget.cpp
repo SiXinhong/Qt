@@ -14,6 +14,8 @@
 using namespace cv;
 using namespace std;
 
+bool HWidget::isRadar = false;
+
 HWidget::HWidget(QWidget *parent) :
     QWidget(parent){
     r = 120;
@@ -36,9 +38,8 @@ void HWidget::setPano(Mat p){
     this->pano = p;
     r0 = this->pano.cols/(2*M_PI);
     //在这里生成环带图像
-
+    if(isRadar)return;
     for(int i=0;i<pano.rows;i++){
-
         for(int j=0;j<pano.cols;j++){
             int ii = (int)this->getDirectionX((double)j, (double)i);
             int jj = (int)this->getDirectionY((double)j, (double)i);
@@ -106,8 +107,11 @@ double HWidget::getDirectionX(double x, double y){
 //        x90=x-pano.cols/2;
 
     //double x2 = x0 + (r/r0)*(((y*(r-r1)/(pano.rows))-r0) * qSin(2*M_PI*x/pano.cols));
-    double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x90/pano.cols);
-    return x2;
+//    double x2 = x0 + ((y*(r-r1)/(pano.rows))-(r/r0)*r0) * qSin(2*M_PI*x90/pano.cols);
+    if(isRadar)
+        return x0 + (r/r0)*(((y*(this->pano.cols)/(2*M_PI*pano.rows))-r0) * qSin(2*M_PI*x90/pano.cols));
+    else
+        return x0 + ((y*(r-r1)/(pano.rows))-r) * qSin(2*M_PI*x90/pano.cols);
 
 }
 
@@ -163,8 +167,11 @@ double HWidget::getInverseDirectionY(double x, double y){
     double ratio = (x-x0)/d_sin;
     if(ratio > 0)
         ratio = -ratio;
-    double y2 = (ratio +r)*pano.rows/(r-r1);
-    return y2;
+//    double y2 = (ratio +r)*pano.rows/(r-r1);
+    if(isRadar)
+        return (ratio +r)*2*M_PI*r0*pano.rows/r/pano.cols;
+    else
+        return (ratio +r)*pano.rows/(r-r1);
 }
 
 double HWidget::getDirectionY(double x, double y){
@@ -187,8 +194,11 @@ double HWidget::getDirectionY(double x, double y){
 //    else
 //        x90=x-pano.cols/2;
 
-    double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
-    return y2;
+//    double y2 = y0 + ((r/r0)*r0-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
+    if(isRadar)
+        return y0 + (r/r0)*((r0-(y*(this->pano.cols)/(2*M_PI*pano.rows))) * qCos(2*M_PI*x90/pano.cols));
+    else
+        return y0 + (r-(y*(r-r1)/(pano.rows))) * qCos(2*M_PI*x90/pano.cols);
 }
 
 Point HWidget::getInverseDirectionPoint(Point p){
@@ -275,17 +285,29 @@ void HWidget::drawArc4(Mat tmat, Rect re){
     //p11和p22之间是一段圆弧
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
-
-    if(p22.x<x0){
-        angle1+=180;
+    if(isRadar){
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
+        if(p21.x < x0 && angle1<90)
+            angle1+=180;
+    }else{
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
     }
-    if(p11.x<x0){
-        angle2+=180;
-    }
-    if(angle1<0 && angle2>180){
-        angle1+=360;
-    }
-
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
     double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
 
@@ -503,14 +525,37 @@ void HWidget::drawArc6(Mat tmat, Rect re){
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
-    if(p22.x<x0){
-        angle1+=180;
-    }
-    if(p11.x<x0){
-        angle2+=180;
-    }
-    if(angle1<0 && angle2>180){
-        angle1+=360;
+//    if(p22.x<x0){
+//        angle1+=180;
+//    }
+//    if(p11.x<x0){
+//        angle2+=180;
+//    }
+//    if(angle1<0 && angle2>180){
+//        angle1+=360;
+//    }
+    if(isRadar){
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
+        if(p21.x < x0 && angle1<90)
+            angle1+=180;
+    }else{
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
     }
 
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
@@ -721,16 +766,38 @@ void HWidget::drawArc3(Mat tmat, Rect re){
     double angle1 = 180*qAtan((p21.y-y0)/(p21.x-x0))/M_PI;
     double angle2 = 180*qAtan((p11.y-y0)/(p11.x-x0))/M_PI;
 
-    if(p22.x<x0){
-        angle1+=180;
+//    if(p22.x<x0){
+//        angle1+=180;
+//    }
+//    if(p11.x<x0){
+//        angle2+=180;
+//    }
+//    if(angle1<0 && angle2>180){
+//        angle1+=360;
+//    }
+    if(isRadar){
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
+        if(p21.x < x0 && angle1<90)
+            angle1+=180;
+    }else{
+        if(p22.x<x0){
+            angle1+=180;
+        }
+        if(p11.x<x0){
+            angle2+=180;
+        }
+        if(angle1<0 && angle2>180){
+            angle1+=360;
+        }
     }
-    if(p11.x<x0){
-        angle2+=180;
-    }
-    if(angle1<0 && angle2>180){
-        angle1+=360;
-    }
-
     double r11 = qSqrt((p11.x-x0)*(p11.x-x0)+(p11.y-y0)*(p11.y-y0));
     double r12 = qSqrt((p12.x-x0)*(p12.x-x0)+(p12.y-y0)*(p12.y-y0));
 

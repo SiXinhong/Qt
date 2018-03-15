@@ -44,6 +44,9 @@
 #include "stdio.h"
 #include <stdlib.h>
 
+//截图
+#include<windows.h>
+
 //////////////////////////////ZC/////////////////
 SOCKET hSocket;			//事件对象连接的套接字
 WSAEVENT hEvent;			//套接字相连的事件对象
@@ -67,6 +70,7 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
     this->welcome=welcome;
     configure = 0;
     widget3=0;
@@ -91,6 +95,8 @@ MainWindow::MainWindow(WelcomeWindow *welcome,QWidget *parent) :
 }
 
 QString MainWindow::zhanweiName="";
+
+bool MainWindow::isInit =false;
 
 void MainWindow::init(){
 //    configure = 0;
@@ -173,8 +179,8 @@ void MainWindow::init(){
     widget3 = new ZWidget(tempW);
     widget4 = new NWidget1(tempW);
     widget5 = new HWidget(tempW);
-    //widget6 = new LWidget(tempW));
     widget6 = new NWidget2(tempW);
+    widget7 = new LWidget(tempW);
 
     label=new QLabel(widget1);
     label2=new QLabel(widget2);
@@ -183,7 +189,7 @@ void MainWindow::init(){
     label5=new QLabel(widget5);
     label6=new QLabel(widget6);
 
-    //label7=new QLabel(widget7);
+    label7=new QLabel(widget7);
 
 
     zWini = new QToolButton(label3);
@@ -321,6 +327,7 @@ void MainWindow::init(){
     gridlayout->addWidget(widget3,4,0,1,3);
     gridlayout->addWidget(widget4,5,0);
     gridlayout->addWidget(widget5,5,1);
+    //gridlayout->addWidget(widget7,5,1);
     gridlayout->addWidget(widget6,5,2);
 
     //gridlayout->setRowStretch(1, 1);
@@ -359,6 +366,7 @@ void MainWindow::init(){
 //    }
  this->show();
     qDebug()<<"ini()7";
+    isInit = true;
 }
 
 MainWindow::~MainWindow(){
@@ -688,6 +696,13 @@ void MainWindow::jinProcessing(){
         widget6->setAllObjects(objs);
         widget6->draw();
         //this->alertProcessing(objs);
+        //7雷达图
+//                QString imageurl7= "./0.png";
+//                Mat mat7 =imread(imageurl7.toStdString());
+//                widget7->setMat(mat7);
+//                //widget7->setPano(mainPano);
+//                widget7->setObjects(objs);
+//                widget7->draw();
 //    }
 //    else{
 //        QMessageBox::information(this,tr("接口返回值"),QString::number(v,10));
@@ -1746,10 +1761,14 @@ void MainWindow::updateHWidget(){
     //int v=inThread.getIntegratedData();
     //mainPano = inThread.getPano();
     //vector<MyObject> objs = inThread.getObjs();
-    widget5->setPano(mainPano);
-//    QString imageurl5="./0.png";//in.getHD();
-//    Mat mat5 =imread(imageurl5.toStdString());
-//    widget5->setMat(mat5);
+    if(!HWidget::isRadar)
+        widget5->setPano(mainPano);
+    if(HWidget::isRadar){
+        QString imageurl5="./0.png";//in.getHD();
+        Mat mat5 =imread(imageurl5.toStdString());
+        widget5->setMat(mat5);
+       // widget5->setPano(mainPano);
+    }
     //widget5->setObjects(objs);
     widget5->draw();
 }
@@ -2641,6 +2660,13 @@ t2=clock();
         widget6->setTwoPanos(mat);
         widget6->setAllObjects(widget1->objs);
         widget6->draw();
+
+//        QString imageurl7= "./0.png";
+//        Mat mat7 =imread(imageurl7.toStdString());
+//        widget7->setMat(mat7);
+//        widget7->setObjects(objs);
+//        widget7->draw();
+
         this->alertProcessing(objs);
 
         //qDebug()<<QTime::currentTime().toString("hh:mm:ss");
@@ -3273,7 +3299,7 @@ void MainWindow::resizeEvent(QResizeEvent *){
     label4->resize(widget4->size());
     label5->resize(widget5->size());
     label6->resize(widget6->size());
-    //label7->resize(widget7->size());
+    label7->resize(widget7->size());
 }
 
 void MainWindow::paintEvent(QPaintEvent *){
@@ -4872,7 +4898,18 @@ void MainWindow::figureClicked(){
 
     QPixmap pix;
     //    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),widget1->x(),menubar->y()+widget1->y(),widget6->x()+widget6->width()-widget1->x(),widget6->y()+widget6->height()-widget1->y());
-    pix = QPixmap::grabWindow(QApplication::desktop()->winId(),0,0,widget6->x()+widget6->width(),widget6->y()+widget6->height());
+    //pix = QPixmap::grabWindow(QApplication::desktop()->winId(),0,0,widget6->x()+widget6->width(),widget6->y()+widget6->height());
+   RECT rect;
+   SystemParametersInfo(SPI_GETWORKAREA,0,&rect,0);
+   pix=QPixmap::grabWindow(QApplication::desktop()->winId(),rect.left,rect.top,rect.right,rect.bottom );
+   qDebug()<<rect.left<<"  left";
+   qDebug()<<rect.top<<"   top";
+   qDebug()<<rect.right<<" right";
+   qDebug()<<rect.bottom<<"  bottom";
+   int width  = GetSystemMetrics(SM_CXSCREEN);
+   int height = GetSystemMetrics(SM_CYSCREEN);
+   qDebug()<<width<<"  width";
+   qDebug()<<height<<"  height";
     if(pix.save(filename,"bmp")){
         QMessageBox::information(this,"屏幕截图","截屏保存成功！",QMessageBox::Ok);
     }

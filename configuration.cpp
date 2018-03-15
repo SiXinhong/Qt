@@ -1,5 +1,6 @@
 ﻿#include "configuration.h"
 #include <QInputDialog>
+#include <QRadioButton>
 
 extern double coeffient;
 extern double deta;
@@ -204,6 +205,19 @@ void Configuration::buildCenWidgetSoftWare(){
     cenWidgetSoftWare = new QWidget(this);
 
     QVBoxLayout *zhanlayout = new QVBoxLayout(cenWidgetSoftWare);
+    QLabel *widgetCon = new QLabel("显示区配置:",this);
+    zhanlayout->addWidget(widgetCon);
+
+    QRadioButton *huan = new QRadioButton("环带显示区",this);
+    huan->setChecked(true);
+    zhanlayout->addWidget(huan);
+
+    QRadioButton *radar = new QRadioButton("雷达显示区",this);
+    zhanlayout->addWidget(radar);
+    connect(huan,SIGNAL(toggled(bool)),this,SLOT(widgetModify()));
+
+    QLabel *kong = new QLabel("   ",this);
+    zhanlayout->addWidget(kong);
 
     QLabel * zhanwei = new QLabel("位置配置：",this);
     zhanlayout->addWidget(zhanwei);
@@ -213,6 +227,9 @@ void Configuration::buildCenWidgetSoftWare(){
     connect(zhan,SIGNAL(clicked()),this,SLOT(zhanModify()));
     zhan->setStyleSheet("border-style: flat;");
     zhanlayout->addWidget(zhan);
+
+    QLabel *kong1 = new QLabel("   ",this);
+    zhanlayout->addWidget(kong1);
 
     QLabel *color = new QLabel("边框颜色配置：",this);
     zhanlayout->addWidget(color);
@@ -231,6 +248,10 @@ void Configuration::buildCenWidgetSoftWare(){
     n2Color->setText("辅助显示区2边框颜色");
    // n2Color->setToolTip(QString::number(3));
     connect(n2Color,SIGNAL(clicked()),this,SLOT(colorSet()));
+    
+
+
+    
 
     zColor->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(zRed).arg(zGreen).arg(zBlue));
     n1Color->setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(n1Red).arg(n1Green).arg(n1Blue));
@@ -239,7 +260,9 @@ void Configuration::buildCenWidgetSoftWare(){
     layoutSoftWare->addWidget(n1Color,1,1);
     layoutSoftWare->addWidget(n2Color,1,2);
 
+
     zhanlayout->addLayout(layoutSoftWare);
+
     zhanlayout->addStretch();
 
     cenWidgetSoftWare->setLayout(layoutSoftWare);
@@ -586,3 +609,18 @@ void Configuration::readCon(){
 }
 
 
+void Configuration::widgetModify(){
+    QObject* obj = sender();
+    QRadioButton* button = dynamic_cast<QRadioButton*>(obj);
+    if(button->isChecked()){
+        HWidget::isRadar =false;
+        if(MainWindow::isInit){
+            mw->updateHWidget();
+        }
+    }else{
+        HWidget::isRadar = true;
+        if(MainWindow::isInit){
+            mw->updateHWidget();
+        }
+    }
+}
