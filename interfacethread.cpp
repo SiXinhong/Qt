@@ -29,6 +29,10 @@ void InterfaceThread::run(){
         if(0!=v){
             qDebug()<<"interfaceThread getData2"<<currentThreadId();
             v = in.getIntegratedData2();
+            in.getObjs2();
+            isLocal = true;
+        }else{
+            isLocal = false;
         }
         //避免函数运行时其他线程修改了值，比如bright，让mat的每一个都更新成同样的亮度
         bool isPseudoTmp = this->isPseudo;
@@ -54,6 +58,8 @@ vector<MyObject> InterfaceThread::getObjs(){
 }
 
 vector<TrackingPoint> InterfaceThread::GetTps(){
+    if(isLocal)
+        return in.tpsLocal;
     return in.tps;
 }
 

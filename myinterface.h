@@ -89,6 +89,7 @@ public:
     //对象的轨迹集合
 
     vector<MyObjectTrack> tracks;
+    vector<TrackingPoint> tpsLocal;//代替tracks，随机生成时使用这个
 
     vector<MyObjectTrack> tracks1;
 

@@ -799,28 +799,42 @@ vector<MyObject> MyInterface::getRandomObjs(){
         mo1.setCenPoint(Point(x1+w/2, y1+h/2));
         //设置轨迹
         boolean isExisted = false;
-        for(int i = 0; i < this->tracks.size(); i++){
-            MyObjectTrack track = tracks[i];
-            if(mo1.getID() == track.getId()){
-                vector<Point> ps = track.getTrack();
-                ps.push_back(mo1.getCenPoint());
-                track.setTrack(ps);
-                tracks[i]=track;
+//        for(int i = 0; i < this->tracks.size(); i++){
+//            MyObjectTrack track = tracks[i];
+//            if(mo1.getID() == track.getId()){
+//                vector<Point> ps = track.getTrack();
+//                ps.push_back(mo1.getCenPoint());
+//                track.setTrack(ps);
+//                tracks[i]=track;
+//                isExisted = true;
+//                //qDebug()<<"tracks"<<mo1.getID()<<":"<<track.getTrack().size();
+//            }
+//        }
+//        if(!isExisted){
+//            MyObjectTrack track1 = MyObjectTrack();
+//            track1.setId(mo1.getID());
+//            vector<Point> ps = track1.getTrack();
+//            ps.push_back(mo1.getCenPoint());
+//            track1.setTrack(ps);
+//            tracks.push_back(track1);
+//        }
+        for(int i = 0;i <this->tpsLocal.size(); i++){
+            if(mo1.getID() == this->tpsLocal[i].id){
+                tpsLocal[i].track.push_back(mo1.getCenPoint());
                 isExisted = true;
-                //qDebug()<<"tracks"<<mo1.getID()<<":"<<track.getTrack().size();
+                break;
             }
         }
         if(!isExisted){
-            MyObjectTrack track1 = MyObjectTrack();
-            track1.setId(mo1.getID());
-            vector<Point> ps = track1.getTrack();
-            ps.push_back(mo1.getCenPoint());
-            track1.setTrack(ps);
-            tracks.push_back(track1);
+            TrackingPoint tp;
+            tp.id=mo1.getID();
+            tp.track.push_back(mo1.getCenPoint());
+            tpsLocal.push_back(tp);
         }
 
 
         objs_self[idx]=mo1;
     }
+    this->objs = objs_self;
     return objs_self;
 }

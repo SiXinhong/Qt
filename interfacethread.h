@@ -29,7 +29,7 @@ private:
     void updateBright(Mat &mat1,int bright);
     void updateContrast(Mat &mat1,int contrast);
     Mat setPseudocolor(Mat& image);
-
+    bool isLocal;
 };
 
 #endif // INTERFACETHREAD_H
