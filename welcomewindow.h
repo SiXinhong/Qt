@@ -8,6 +8,8 @@
 #include<QToolButton>
 class WelcomeWindow;
 #include "mainwindow.h"
+#include <map>
+#include "user.h"
 
 class WelcomeWindow : public QWidget
 {
@@ -22,7 +24,7 @@ public:
     QToolButton *exit;
     MainWindow *mainwindow;
     bool start;
-
+    map<QString,User> users;
 signals:
     
 public slots:

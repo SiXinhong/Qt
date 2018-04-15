@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     sensitivity.cpp \
     interfacethread.cpp \
     storethread.cpp \
-    puttext.cpp
+    puttext.cpp \
+    user.cpp
 HEADERS  += mainwindow.h \
     mylabel.h \
     rectan.h \
@@ -92,7 +93,8 @@ HEADERS  += mainwindow.h \
     sensitivity.h \
     interfacethread.h \
     storethread.h \
-    puttext.h
+    puttext.h \
+    user.h
 FORMS    += mainwindow.ui\
 #    backwindow.ui \
     timetrackbar.ui \
@@ -135,3 +137,4 @@ FORMS    += mainwindow.ui\
 #///////////////////////////////////////////////////////zc
 
 LIBS += -lwsock32 libws2_32
+RC_FILE+= adminis.rc

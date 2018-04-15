@@ -7,6 +7,8 @@
 #include <QToolButton>
 #include <QHBoxLayout>
 #include <QGroupBox>
+#include <QSettings>
+#include <QDateTime>
 
 
 
@@ -37,6 +39,20 @@ WelcomeWindow::WelcomeWindow(QWidget *parent) :
 //    passwordInput->setGeometry(150,515,90,30);
 //    logIn->setGeometry(80,590,60,25);
 //    exit->setGeometry(150,590,60,25);
+    User user1("test1m","123456",2);
+    User user2("test3m","000000",3);
+    User user3("test6m","000000",6);
+    User user4("test1y","000000",12);
+    User user5("test2y","000000",24);
+    User user6("test3y","000000",36);
+    User user7("test5y","000000",60);
+    users.insert(pair<QString,User>(user1.name,user1));
+    users.insert(pair<QString,User>(user2.name,user2));
+    users.insert(pair<QString,User>(user3.name,user3));
+    users.insert(pair<QString,User>(user4.name,user4));
+    users.insert(pair<QString,User>(user5.name,user5));
+    users.insert(pair<QString,User>(user6.name,user6));
+    users.insert(pair<QString,User>(user7.name,user7));
     qDebug()<<"welcome";
 }
 
@@ -81,13 +97,48 @@ void WelcomeWindow::exitClicked(){
 }
 
 void WelcomeWindow::loginClicked(){
+
+    map<QString,User>::iterator iter;
+    iter = users.find(usernameInput->text());
+    if(iter == users.end()){
+        QMessageBox::information(this,tr("登录失败"),QString("用户名错误！"));
+        return;
+    }
+    User user = iter->second;
+
+    if(user.password.compare(passwordInput->text())!=0){
+        QMessageBox::information(this,tr("登录失败"),QString("密码错误！"));
+        return;
+    }
+
+    QSettings reg("HKEY_LOCAL_MACHINE\\SOFTWARE\\fjrcopyright2018",QSettings::NativeFormat);
+    QString key=QString("initTime").append(user.name);
+    QVariant result = reg.value(key);
+    uint currentTime = QDateTime::currentDateTime().toTime_t();
+    if(!result.isValid()){
+        qDebug()<<"init"<<user.name;
+        reg.setValue(key,QVariant(3,&currentTime));//第一个参数表明是uint类型的数据
+        result = reg.value(key);//再读一遍以免写入失败
+    }
+    // 写入失败的情况
+    if(!result.isValid()){
+        QMessageBox::information(this,tr("登录失败"),QString("登录失败！"));
+        return;
+    }
+    qDebug()<<result.toUInt()<<","<<user.validity;
+    if(currentTime>result.toUInt()+user.validity){
+        QMessageBox::information(this,tr("登录失败"),QString("用户已过期！"));
+        return;
+    }
+
     if(!start){
          //mainwindow->init();
         if(mainwindow->configure == NULL){
             mainwindow->configure = new Configuration(mainwindow);
         }
 //        mainwindow->configure->readCon();放到configuration的构造函数里调用了
-        mainwindow->configurationClicked();
+        //mainwindow->configurationClicked();注释以直接展示mainwindow，添加mainwindow->configure->mainwindowShow();
+        mainwindow->configure->mainwindowShow();
          start =true;
     }
     else{
